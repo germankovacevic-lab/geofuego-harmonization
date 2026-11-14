@@ -1,0 +1,55 @@
+{
+ "generated": "2026-11-14T21:47:49.407Z",
+ "years": "2012–2023",
+ "definition": "paired days only; VIIRS-active unit-month = Vp > 0; structural zero = Vp > 0 and (Tp + Ap) = 0 for set TA, Tp = 0 for set T",
+ "units": {
+  "cell": {
+   "units": 4070,
+   "viirs_active_unit_months": 142973,
+   "structural_zero_share_TA": 0.4489,
+   "hotspot_share_in_zeros_TA": 0.0723,
+   "structural_zero_share_T": 0.671,
+   "hotspot_share_in_zeros_T": 0.2029
+  },
+  "block_2x2": {
+   "units": 1177,
+   "viirs_active_unit_months": 70153,
+   "structural_zero_share_TA": 0.3816,
+   "hotspot_share_in_zeros_TA": 0.033,
+   "structural_zero_share_T": 0.5852,
+   "hotspot_share_in_zeros_T": 0.1009
+  },
+  "block_5x5": {
+   "units": 227,
+   "viirs_active_unit_months": 21898,
+   "structural_zero_share_TA": 0.2621,
+   "hotspot_share_in_zeros_TA": 0.009,
+   "structural_zero_share_T": 0.4373,
+   "hotspot_share_in_zeros_T": 0.0322
+  },
+  "block_10x10": {
+   "units": 69,
+   "viirs_active_unit_months": 7812,
+   "structural_zero_share_TA": 0.1667,
+   "hotspot_share_in_zeros_TA": 0.0023,
+   "structural_zero_share_T": 0.2958,
+   "hotspot_share_in_zeros_T": 0.0099
+  },
+  "province": {
+   "units": 24,
+   "viirs_active_unit_months": 3290,
+   "structural_zero_share_TA": 0.0584,
+   "hotspot_share_in_zeros_TA": 0.0004,
+   "structural_zero_share_T": 0.1191,
+   "hotspot_share_in_zeros_T": 0.0022
+  },
+  "country": {
+   "units": 1,
+   "viirs_active_unit_months": 144,
+   "structural_zero_share_TA": 0,
+   "hotspot_share_in_zeros_TA": 0,
+   "structural_zero_share_T": 0,
+   "hotspot_share_in_zeros_T": 0
+  }
+ }
+}

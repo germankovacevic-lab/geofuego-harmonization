@@ -11,4 +11,6 @@ tmp/
 data/external/era5/*.nc
 data/agg/cloud_cells.json
 data/agg/precip_cells.json
+!data/agg/cloud_cells.json.gz
+!data/agg/precip_cells.json.gz
 deploy/data/

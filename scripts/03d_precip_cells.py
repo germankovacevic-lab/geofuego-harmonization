@@ -19,5 +19,8 @@ for c in idx["cells"]:
     for (y, m), k in H.items():
         v = float(tp[k, i, j]); rec.setdefault(y, [None] * 12)[m - 1] = round(v, 3); acc[m] += v; cnt[m] += 1
     cells[c["id"]] = rec; clim[c["id"]] = [round(acc[m] / max(1, cnt[m]), 3) for m in range(1, 13)]
-(ROOT / "data/agg/precip_cells.json").write_text(json.dumps({"source": "ERA5 monthly averaged reanalysis, total_precipitation (mm/day), 0.25deg (Copernicus CDS)", "years": years, "cells": cells, "clim": clim}))
+_out = json.dumps({"source": "ERA5 monthly averaged reanalysis, total_precipitation (mm/day), 0.25deg (Copernicus CDS)", "years": years, "cells": cells, "clim": clim})
+(ROOT / "data/agg/precip_cells.json").write_text(_out)
+import gzip  # the gzipped copy is the versioned one (the .json is git-ignored); mtime 0 keeps the archive byte-stable
+with gzip.GzipFile(ROOT / "data/agg/precip_cells.json.gz", "wb", mtime=0) as _g: _g.write(_out.encode())
 print("cells", len(cells), "years", years[0], "-", years[-1], "| mean Aug tp mm/day over land cells:", round(float(np.mean([clim[c["id"]][7] for c in idx["cells"]])), 3))

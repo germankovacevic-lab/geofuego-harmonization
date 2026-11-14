@@ -44,9 +44,9 @@ for (const [file, meta] of Object.entries(manifest)) {
     let s2 = months02.get(k); if (!s2) months02.set(k, s2 = new Set()); s2.add(ym);
     const k3 = Math.floor(lat / 0.03) + ':' + Math.floor(lon / 0.03);
     let s3 = months03.get(k3); if (!s3) months03.set(k3, s3 = new Set()); s3.add(ym);
-    if (st || Math.random() < 0.05) { // province tallies (static exact; veg sampled ×20 for speed)
+    { // province tallies, exact for both classes (no sampling: the script must be deterministic, its shares are quoted in the README)
       const p = provinceOf(lat, lon) || '(outside)'; const t = (provTot[p] ??= { veg: 0, static: 0 });
-      if (st) t.static++; else t.veg += 20;
+      if (st) t.static++; else t.veg++;
     }
   }
 }

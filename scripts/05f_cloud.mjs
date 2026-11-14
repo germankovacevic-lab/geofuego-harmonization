@@ -14,12 +14,14 @@ import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fitFactors } from '../lib/factors.js';
+import { readJsonMaybeGz } from '../lib/io.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const agg = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'counts.json'), 'utf8'));
 const index = JSON.parse(await readFile(path.join(ROOT, 'data', 'grid', 'cells_index.json'), 'utf8'));
 const provOf = new Map(index.cells.map(c => [c.id, c.prov]));
-const CL = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'cloud_cells.json'), 'utf8'));
+const CL = readJsonMaybeGz(path.join(ROOT, 'data', 'agg', 'cloud_cells.json'));
+if (!CL) { console.error('05f_cloud: data/agg/cloud_cells.json(.gz) not found (run 01d + 03c or restore the versioned .gz)'); process.exit(1); }
 const YEARS = []; for (let y = 2012; y <= 2023; y++) YEARS.push(y);
 const anom = (cell, y, m, k) => { const r = CL.cells[cell]?.[y]?.[m - 1], c = CL.clim[cell]?.[m - 1]; return r && c && r[k] != null ? r[k] - c[k] : null; }; // k: 0 terra, 1 day13, 2 night
 const pearson = (xs, ys) => { const n = xs.length, mx = xs.reduce((a, b) => a + b, 0) / n, my = ys.reduce((a, b) => a + b, 0) / n; let sxy = 0, sxx = 0, syy = 0; for (let i = 0; i < n; i++) { sxy += (xs[i] - mx) * (ys[i] - my); sxx += (xs[i] - mx) ** 2; syy += (ys[i] - my) ** 2; } return { r: sxy / Math.sqrt(sxx * syy), slope: sxy / sxx, n }; };
@@ -58,7 +60,7 @@ const B = { viirs_vs_day13_cloud: levelTest(r => r[0], YEARS, 1), viirs_vs_night
 // The cloud coefficient conditional on precipitation approximates the pure obscuration effect. OLS with 2 covariates.
 let C = null;
 try {
-  const PR = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'precip_cells.json'), 'utf8'));
+  const PR = readJsonMaybeGz(path.join(ROOT, 'data', 'agg', 'precip_cells.json')); if (!PR) throw new Error('precip_cells.json(.gz) not found');
   const panom = (cell, y, m) => { const r = PR.cells[cell]?.[y]?.[m - 1], c = PR.clim[cell]?.[m - 1]; return r != null && c != null ? r - c : null; };
   const ols2 = rows => { // y = b0 + b1 x1 + b2 x2
     const n = rows.length; let X = [[0, 0, 0], [0, 0, 0], [0, 0, 0]], Xy = [0, 0, 0];

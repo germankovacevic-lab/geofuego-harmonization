@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-14T18:05:40.739Z",
+ "generated": "2026-11-14T21:47:25.015Z",
  "source": "GWIS/JRC MCD64A1_burned_area_full_dataset_2002_2025.csv (sha256 of zip 279a356d…6349f8), ha summed over land-cover classes",
  "gadm_regions_seen": [
   "Jujuy",
@@ -77,7 +77,7 @@
    "correlation_annual": {
     "pearson_log_all": 0.856,
     "spearman_all": 0.823,
-    "pearson_log_pre2012": 0.863,
+    "pearson_log_pre2012": 0.862,
     "pearson_log_post2012": 0.803
    }
   },
@@ -221,9 +221,9 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 36,
+     "pre2012": 36.03,
      "post2012": 39.12,
-     "ratio_pre_over_post": 0.92
+     "ratio_pre_over_post": 0.921
     },
     "naive_concat": {
      "pre2012": 127.5,
@@ -248,7 +248,7 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 8.9,
+     "pre2012": 8.91,
      "post2012": 14.11,
      "ratio_pre_over_post": 0.631
     },
@@ -320,7 +320,7 @@
    "correlation_annual": {
     "pearson_log_all": 0.833,
     "spearman_all": 0.799,
-    "pearson_log_pre2012": 0.621,
+    "pearson_log_pre2012": 0.619,
     "pearson_log_post2012": 0.717
    }
   },
@@ -437,7 +437,7 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 14.75,
+     "pre2012": 14.76,
      "post2012": 19.11,
      "ratio_pre_over_post": 0.772
     },
@@ -454,7 +454,7 @@
    },
    "correlation_annual": {
     "pearson_log_all": 0.821,
-    "spearman_all": 0.723,
+    "spearman_all": 0.725,
     "pearson_log_pre2012": 0.838,
     "pearson_log_post2012": 0.838
    }
@@ -491,9 +491,9 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 14.49,
+     "pre2012": 14.51,
      "post2012": 15.4,
-     "ratio_pre_over_post": 0.941
+     "ratio_pre_over_post": 0.942
     },
     "naive_concat": {
      "pre2012": 52.65,
@@ -507,7 +507,7 @@
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.915,
+    "pearson_log_all": 0.916,
     "spearman_all": 0.897,
     "pearson_log_pre2012": 0.936,
     "pearson_log_post2012": 0.882
@@ -518,9 +518,9 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 11.67,
+     "pre2012": 11.77,
      "post2012": 11.91,
-     "ratio_pre_over_post": 0.98
+     "ratio_pre_over_post": 0.988
     },
     "naive_concat": {
      "pre2012": 34.91,
@@ -535,7 +535,7 @@
    },
    "correlation_annual": {
     "pearson_log_all": 0.894,
-    "spearman_all": 0.902,
+    "spearman_all": 0.909,
     "pearson_log_pre2012": 0.92,
     "pearson_log_post2012": 0.881
    }
@@ -601,7 +601,7 @@
     "harmonized": {
      "pre2012": 3.56,
      "post2012": 3.12,
-     "ratio_pre_over_post": 1.141
+     "ratio_pre_over_post": 1.142
     },
     "naive_concat": {
      "pre2012": 10.28,

@@ -1,10 +1,10 @@
 {
- "generated": "2026-11-14T17:58:29.183Z",
+ "generated": "2026-11-14T21:47:34.528Z",
  "source": "ERA5 monthly averaged reanalysis by hour of day, total_cloud_cover, 0.25deg (Copernicus CDS)",
  "testA_ratio_residual_vs_cloud": {
   "differential_anomaly": {
-   "r": 0.022323240738433656,
-   "slope": 0.24132829100080463,
+   "r": 0.022834330091066998,
+   "slope": 0.24685156962063126,
    "n": 2242,
    "bins": [
     {
@@ -17,13 +17,13 @@
      "anomaly_from": -0.15,
      "anomaly_to": -0.08,
      "n": 11,
-     "median_log_ratio": -0.29
+     "median_log_ratio": -0.291
     },
     {
      "anomaly_from": -0.08,
      "anomaly_to": -0.03,
      "n": 388,
-     "median_log_ratio": -0.195
+     "median_log_ratio": -0.194
     },
     {
      "anomaly_from": -0.03,
@@ -52,8 +52,8 @@
    ]
   },
   "day13_anomaly": {
-   "r": -0.11409499234208817,
-   "slope": -0.401114524394401,
+   "r": -0.11484897327464755,
+   "slope": -0.40376209503848404,
    "n": 2242,
    "bins": [
     {
@@ -66,7 +66,7 @@
      "anomaly_from": -0.15,
      "anomaly_to": -0.08,
      "n": 382,
-     "median_log_ratio": -0.139
+     "median_log_ratio": -0.138
     },
     {
      "anomaly_from": -0.08,
@@ -78,7 +78,7 @@
      "anomaly_from": -0.03,
      "anomaly_to": 0.03,
      "n": 547,
-     "median_log_ratio": -0.237
+     "median_log_ratio": -0.236
     },
     {
      "anomaly_from": 0.03,

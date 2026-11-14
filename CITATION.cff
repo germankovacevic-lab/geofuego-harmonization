@@ -1,5 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this method, data or code, please cite it as below."
+type: software
 title: "GeoFuego Harmonization: MODIS to VIIRS-equivalent harmonized fire-hotspot calendar for Argentina, 2000 to 2025 (NASA Space Apps Challenge 2026)"
 version: 0.1.0
 date-released: "2026-11-14"
@@ -12,9 +13,9 @@ authors:
   - family-names: Kovacevic
     given-names: "Germán Ricardo"
     orcid: "https://orcid.org/0009-0007-4270-1963"
-    affiliation: "AgentNeo, Buenos Aires, Argentina (GEOFUEGO and Copernicus.com.ar projects)"
+    affiliation: "Independent researcher, Buenos Aires, Argentina (GeoFuego.com.ar)"
 keywords: [MODIS, VIIRS, FIRMS, active fire, hotspot harmonization, fire calendar, Argentina, NASA Space Apps 2026, CONAE]
-notes: "Code written with SI assistance (Claude, Anthropic); reviewed and validated by the team. Code is MIT; data products and figures are CC BY 4.0. Input data: NASA FIRMS (MODIS Collection 6/6.1 country archives, VIIRS S-NPP/NOAA-20/NOAA-21), ERA5 monthly cloud fraction and precipitation (Copernicus Climate Change Service, CDS; contains modified Copernicus Climate Change Service information 2026), NOAA CPC ONI, GWIS/JRC MCD64A1 country tables, IGN Argentina. Licences of all inputs are listed in README (Data sources and licences)."
+abstract: "One consistent monthly fire-hotspot calendar for Argentina, November 2000 to December 2025, from NASA FIRMS MODIS (Terra, Aqua) and VIIRS (S-NPP) active-fire detections: MODIS counts converted to VIIRS-equivalent counts with a conversion factor per 0.25 degree cell, calendar month and satellite set, fitted on paired days of the 2012-2023 overlap with hierarchical shrinkage, a separate static-source class (gas flares, industry), satellite-outage gap filling, and an 80 % prediction interval calibrated out of sample and tested on 2024-2025. Includes a bridge S-NPP to NOAA-20/NOAA-21 for the live series and a static web app (area of interest, date range, calendar, CSV/PNG). Code written with SI assistance (Claude, Anthropic); reviewed and validated by the team. Code is MIT; data products and figures are CC BY 4.0. Input data: NASA FIRMS (MODIS Collection 6/6.1 MCD14ML country archives; VIIRS VNP14IMG S-NPP, VJ114IMG NOAA-20, VJ214IMG NOAA-21), ERA5 monthly cloud fraction and precipitation (Copernicus Climate Change Service, CDS; contains modified Copernicus Climate Change Service information 2026), NOAA CPC ONI, GWIS/JRC MCD64A1 country tables, IGN Argentina. Licences of all inputs are listed in README (Data sources and licences)."
 references:
   - type: software
     title: "GeoFuego Index (GFI) method package"
@@ -23,13 +24,61 @@ references:
       - family-names: Kovacevic
         given-names: "Germán Ricardo"
   - type: data
-    title: "NASA FIRMS active fire archive (MODIS C6/6.1, VIIRS S-NPP, NOAA-20, NOAA-21)"
+    title: "NASA FIRMS active fire archive: MODIS Collection 6/6.1 (MCD14ML), VIIRS 375 m S-NPP (VNP14IMG), NOAA-20 (VJ114IMG), NOAA-21 (VJ214IMG)"
     url: "https://firms.modaps.eosdis.nasa.gov/"
+    notes: "We acknowledge the use of data from NASA's Fire Information for Resource Management System (FIRMS), part of NASA's Earth Science Data and Information System (ESDIS)."
     authors:
       - name: "NASA LANCE/FIRMS"
   - type: article
+    title: "The Collection 6 MODIS active fire detection algorithm and fire products"
+    doi: "10.1016/j.rse.2016.02.054"
+    journal: "Remote Sensing of Environment"
+    volume: 178
+    year: 2016
+    authors:
+      - family-names: Giglio
+        given-names: Louis
+      - family-names: Schroeder
+        given-names: Wilfrid
+      - family-names: Justice
+        given-names: "Christopher O."
+  - type: article
+    title: "The New VIIRS 375 m active fire detection data product: Algorithm description and initial assessment"
+    doi: "10.1016/j.rse.2013.12.008"
+    journal: "Remote Sensing of Environment"
+    volume: 143
+    year: 2014
+    authors:
+      - family-names: Schroeder
+        given-names: Wilfrid
+      - family-names: Oliva
+        given-names: Patricia
+      - family-names: Giglio
+        given-names: Louis
+      - family-names: Csiszar
+        given-names: "Ivan A."
+  - type: article
+    title: "The Collection 6 MODIS burned area mapping algorithm and product"
+    doi: "10.1016/j.rse.2018.08.005"
+    journal: "Remote Sensing of Environment"
+    volume: 217
+    year: 2018
+    authors:
+      - family-names: Giglio
+        given-names: Louis
+      - family-names: Boschetti
+        given-names: Luigi
+      - family-names: Roy
+        given-names: "David P."
+      - family-names: Humber
+        given-names: "Michael L."
+      - family-names: Justice
+        given-names: "Christopher O."
+  - type: article
     title: "The ERA5 global reanalysis"
     doi: "10.1002/qj.3803"
+    journal: "Quarterly Journal of the Royal Meteorological Society"
+    volume: 146
     year: 2020
     authors:
       - family-names: Hersbach
@@ -40,3 +89,18 @@ references:
     doi: "10.24381/cds.f17050d7"
     authors:
       - name: "Copernicus Climate Change Service (C3S), Climate Data Store"
+  - type: data
+    title: "Oceanic Niño Index (ONI), ERSSTv5, 3-month running mean"
+    url: "https://origin.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php"
+    authors:
+      - name: "NOAA Climate Prediction Center"
+  - type: data
+    title: "Global Wildfire Information System (GWIS) country profiles: MCD64A1 burned area by province and month"
+    url: "https://gwis.jrc.ec.europa.eu/apps/country.profile/"
+    authors:
+      - name: "European Commission, Joint Research Centre (GWIS / Copernicus Emergency Management Service)"
+  - type: data
+    title: "Capas SIG: límites provinciales de la República Argentina"
+    url: "https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/CapasSIG"
+    authors:
+      - name: "Instituto Geográfico Nacional (IGN), Argentina"

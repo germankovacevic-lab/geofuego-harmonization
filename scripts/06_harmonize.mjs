@@ -15,8 +15,8 @@
 //   under-predicted by the structural zeros of its other cells), so pooling them covered 67 % of province-months with P < 30.
 //   The country uses the national 'agg' bins; bins with < 30 residuals fall back to national|class → region → pooled (resolved in 05). The interval is asymmetric (low counts are biased high by the multiplicative model: median residual −0.4 at
 //   5–15; −0.76 in Patagonia) and depends on the count and the region, not on the number of cells. Measured coverage, out-of-
-//   sample for the band itself (TA): country 90 %, province 82 %, cell 80 %; Patagonia cells 80 % (74 % with pooled bins),
-//   Neuquén 82 %, Chubut 80 %; Pampa/Cuyo provinces conservative (85–94 %); Tierra del Fuego not verifiable (3 months).
+//   sample for the band itself (TA): country 89 %, province 79 %, cell 81 %; areas of 2–199 cells 80 % (by size class, 05g),
+//   Neuquén 77 %, Chubut 71 %; Pampa/Cuyo provinces conservative (85–94 %); Tierra del Fuego not verifiable (3 months).
 //   The Terra-only era (2000–mid 2002) uses its own, wider, bins (set T). Observed VIIRS months have no interval (they are the
 //   reference); gap-filled observed months get the interval of the filled part only. ENSO term (|0.025·ONI|) widens both sides.
 // Satellite outages (03b_coverage.mjs) are filled with the other sensor, so that a gap in one satellite does not become
@@ -35,6 +35,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
 import { REGION_OF } from '../lib/regions.js';
+import { readJsonMaybeGz } from '../lib/io.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'data', 'harmonized');
@@ -83,7 +84,7 @@ const rTA = {}; { const acc = {}; for (const [cid, yrs] of Object.entries(agg.ce
 // Optional ENSO conditioning of the reconstructed years (05e_enso.mjs): H *= exp(BETA * ONI(y,m)); BETA < 0 raises the
 // factor in La Niña (dry) months. Applied only to MODIS-reconstructed months (2000–2011); observed VIIRS is untouched.
 const BETA = +(process.argv.find(a => a.startsWith('--enso-beta='))?.split('=')[1] || 0);
-const ENSO_SIGMA_BETA = 0.025; // measured national sensitivity (05e): phase-dependent uncertainty added in quadrature to reconstructed months
+const ENSO_SIGMA_BETA = 0.025; // measured national sensitivity (05e): phase-dependent uncertainty added linearly to both log-bounds of reconstructed months
 const ONI = {};
 { const SEAS = ['DJF', 'JFM', 'FMA', 'MAM', 'AMJ', 'MJJ', 'JJA', 'JAS', 'ASO', 'SON', 'OND', 'NDJ']; for (const line of (await readFile(path.join(ROOT, 'data', 'external', 'oni', 'oni.ascii.txt'), 'utf8')).split('\n').slice(1)) { const f = line.trim().split(/\s+/); const mi = SEAS.indexOf(f[0]) + 1; if (mi) ONI[`${f[1]}-${mi}`] = +f[3]; } }
 const ensoAdj = (y, m) => BETA && y < 2012 ? Math.exp(BETA * (ONI[`${y}-${m}`] ?? 0)) : 1;
@@ -93,7 +94,12 @@ const ensoSig = (y, m) => y < 2012 ? Math.abs(ENSO_SIGMA_BETA * (ONI[`${y}-${m}`
 // unit cloud fraction). Counts are NOT corrected (the effect is partly fire weather); months with Δ > +0.05 are flagged with the
 // estimated under-detection, and in reconstructed months the upper bound of the interval is widened by exp(3·Δ).
 const CLOUD_SLOPE = 3.0, CLOUD_FLAG = 0.05;
-let CLOUD = null; try { CLOUD = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'cloud_cells.json'), 'utf8')); } catch { console.log('cloud_cells.json not found: no obscuration flag (run 01d + 03c)'); }
+// cloud_cells.json is produced by 03c from ERA5 (needs CDS credentials); the gzipped copy is versioned so that a clean clone
+// reproduces the published product. Missing input is an error, not a silent degradation: pass --no-cloud to build without the flag.
+const NO_CLOUD = process.argv.includes('--no-cloud');
+let CLOUD = NO_CLOUD ? null : readJsonMaybeGz(path.join(ROOT, 'data', 'agg', 'cloud_cells.json'));
+if (!CLOUD && !NO_CLOUD) { console.error('06_harmonize: data/agg/cloud_cells.json(.gz) not found. Run 01d + 03c, or `git checkout data/agg/cloud_cells.json.gz`, or pass --no-cloud to build without the cloud flag (the output will differ from the published product).'); process.exit(1); }
+if (NO_CLOUD) console.log('--no-cloud: building without the cloud-obscuration flag (output differs from the published product)');
 const cloudAnom = (cell, y, m, e) => { if (!CLOUD) return null; const r = CLOUD.cells[cell]?.[y]?.[m - 1], c = CLOUD.clim[cell]?.[m - 1]; if (!r || !c) return null; const k = e === 'MODIS-Terra->VIIRS-eq' ? 0 : 1; return r[k] == null ? null : +(r[k] - c[k]).toFixed(3); };
 let cloudFlagged = 0;
 const era = (y, m) => y >= 2012 ? 'VIIRS' : (y > 2002 || (y === 2002 && m >= 7)) ? 'MODIS->VIIRS-eq' : (y > 2000 || m >= 11) ? 'MODIS-Terra->VIIRS-eq' : null;

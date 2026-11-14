@@ -32,7 +32,10 @@ for c in idx["cells"]:
             if not np.isnan(v): acc[m, list(pass_hours).index(k)] += v; cnt[m, list(pass_hours).index(k)] += 1; s = csum.setdefault((y, m, k), [0.0, 0]); s[0] += v; s[1] += 1
         rec.setdefault(y, [None] * 12)[m - 1] = row
     cells[c["id"]] = rec; clim[c["id"]] = [[round(acc[m, k] / max(1, cnt[m, k]), 3) for k in range(3)] for m in range(1, 13)]
-(ROOT / "data/agg/cloud_cells.json").write_text(json.dumps({"source": "ERA5 monthly averaged reanalysis by hour of day, total_cloud_cover, 0.25deg (Copernicus CDS)", "passes": {"terra": "13-14 UTC (~10:30 local)", "day13": "16-17 UTC (~13:30 local, Aqua and VIIRS day)", "night": "04-05 UTC (~01:30 local, Aqua and VIIRS night)"}, "years": years, "cells": cells, "clim": clim}))
+_out = json.dumps({"source": "ERA5 monthly averaged reanalysis by hour of day, total_cloud_cover, 0.25deg (Copernicus CDS)", "passes": {"terra": "13-14 UTC (~10:30 local)", "day13": "16-17 UTC (~13:30 local, Aqua and VIIRS day)", "night": "04-05 UTC (~01:30 local, Aqua and VIIRS night)"}, "years": years, "cells": cells, "clim": clim})
+(ROOT / "data/agg/cloud_cells.json").write_text(_out)
+import gzip  # the gzipped copy is the versioned one (the .json is git-ignored); mtime 0 keeps the archive byte-stable
+with gzip.GzipFile(ROOT / "data/agg/cloud_cells.json.gz", "wb", mtime=0) as _g: _g.write(_out.encode())
 with open(ROOT / "data/agg/cloud_country.csv", "w") as f:
     f.write("year,month,tcc_terra,tcc_day13,tcc_night\n")
     for y in years:

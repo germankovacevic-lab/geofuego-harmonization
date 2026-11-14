@@ -332,7 +332,7 @@ function renderNow() {
   const ytdHist = ys.filter(y => monthsWithData.every(M => usable(y, M.m))).map(y => monthsWithData.reduce((a, M) => a + A.H[y - Y0][M.m - 1] * frac(M), 0));
   const ytdMed = median(ytdHist);
   cards.push(`<div class="kpi ${ytdMed && ytd / ytdMed >= 1.5 ? 'up' : ytdMed && ytd / ytdMed <= 0.67 ? 'down' : ''}"><div class="l">${t('months')[0]}–${t('months')[last.m - 1]} ${cur.year}${frac(last) < 1 ? ` (${t('through')} ${cur.through})` : ''}</div><div class="v">${fmt(ytd)}</div><div class="d">${ytdMed != null ? `${t(frac(last) < 1 ? 'vspace' : 'vsmedian', ytd / ytdMed)} · ${t('median')} ${fmt(ytdMed)} (${ytdHist.length} ${t('years')})` : '—'}</div></div>`);
-  el.innerHTML = `<div class="now-grid">${cards.join('')}</div><p class="note">${t('nowpre')} ${t('through')} ${cur.through}. ${t('snppeq')} (NOAA-20 ÷ ${cur.bridge['NOAA-20']}, NOAA-21 ÷ ${cur.bridge['NOAA-21']}). ${t('baseline')}: ${ys[0]}–${ys[ys.length - 1]}.${monthsWithData.some(M => M.partial) ? ' ⚠ ' + t('partial') : ''}</p>`;
+  el.innerHTML = `<div class="now-grid">${cards.join('')}</div><p class="note">${t('nowpre')} ${t('through')} ${cur.through}. ${t('snppeq')} (NOAA-20 ÷ ${cur.bridge['NOAA-20']}, NOAA-21 ÷ ${cur.bridge['NOAA-21']}).${ys.length ? ` ${t('baseline')}: ${ys[0]}–${ys[ys.length - 1]}.` : ''}${monthsWithData.some(M => M.partial) ? ' ⚠ ' + t('partial') : ''}</p>`;
 }
 
 
@@ -354,7 +354,7 @@ function renderStep() {
   const kp = [];
   if (mB != null && mB >= 20) {
     kp.push(`<div class="kpi bad"><div class="l">${t('stepnaive')}</div><div class="v">${ratioFmt(vA / mB)}</div><div class="d">${t('stepnaived')}</div></div>`);
-    kp.push(`<div class="kpi ref"><div class="l">${t('stepmodis')}</div><div class="v">${ratioFmt(mA / mB)}</div><div class="d">${mA / mB > 0.67 && mA / mB < 1.5 ? t('stepmodisd') : t('stepmodisd2')}</div></div>`);
+    kp.push(`<div class="kpi ref"><div class="l">${t('stepmodis')}</div><div class="v">${ratioFmt(mA / mB)}</div><div class="d">${mA / mB > 0.8 && mA / mB < 1.25 ? t('stepmodisd') : t('stepmodisd2')}</div></div>`);
     kp.push(hB ? `<div class="kpi good"><div class="l">${t('stepharm')}</div><div class="v">${ratioFmt(hA / hB)}</div><div class="d">${Math.abs(Math.log((hA / hB) / (mA / mB))) < Math.log(1.25) ? t('stepharmd') : t('stepharmd2', ratioFmt(mA / mB))}</div></div>` : `<div class="kpi"><div class="l">${t('stepharm')}</div><div class="v">—</div><div class="d">${t('stepharmna')}</div></div>`);
   } else kp.push(`<p class="note warn">${t('steplow')}</p>`);
   $('step-kpis').innerHTML = kp.join('');
@@ -447,7 +447,7 @@ function renderKpis() {
   const ys = baselineYears(); const out = [];
   const meds = []; for (let m = 1; m <= 12; m++) meds.push(median(ys.filter(y => usable(y, m)).map(y => A.H[y - Y0][m - 1])) || 0);
   const tot = meds.reduce((a, b) => a + b, 0);
-  if (tot > 0) {
+  if (tot >= 12) { // too few hotspots in a typical year: no 'critical months' (one stray month would read as 100 %)
     const order = meds.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]); const pick = new Set(); let acc = 0;
     for (const [v, i] of order) { if (acc >= 0.8 * tot) break; pick.add(i); acc += v; }
     // consecutive runs (circular: Dec–Jan joins)
@@ -734,7 +734,9 @@ function downloadPNG() {
   g.drawImage(cal, pad, pad + titleH);
   g.fillStyle = '#9aa3b5'; g.font = '11px system-ui, sans-serif';
   g.fillText(t('unit').split(/\. /)[0] + '. ' + t('unit').split(/\. /)[1] + '.', pad, pad + titleH + cal.height + 8); g.fillText('GeoFuego Harmonization · NASA FIRMS (MODIS, VIIRS) · spaceapps.geofuego.com.ar · CC BY 4.0', pad, pad + titleH + cal.height + 24);
-  out.toBlob(b => save(b, `geofuego-calendar_${slug()}.png`));
+  // synchronous blob (toDataURL), so the save dialog / download still runs inside the click's user activation
+  const bin = atob(out.toDataURL('image/png').split(',')[1]); const u8 = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+  save(new Blob([u8], { type: 'image/png' }), `geofuego-calendar_${slug()}.png`);
 }
 const slug = () => (A.sel.label || A.sel.kind || 'aoi').toString().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/gi, '-').toLowerCase().replace(/^-|-$/g, '');
 async function save(blob, name) {
@@ -781,11 +783,11 @@ function select(sel) {
   A = aggregate(sel);
   if (cellsLayer) { cellsLayer.remove(); cellsLayer = null; }
   const feats = sel.cells.map(id => { const [a, c, b, d] = cellBounds(id); return [[a, c], [b, d]]; });
-  if (sel.kind !== 'cells') { picked = new Set(); paintPicked(); cellsLayer = L.layerGroup(feats.length > 1500 ? [L.rectangle(L.latLngBounds(feats.map(f => f[0]).concat(feats.map(f => f[1]))), { color: '#f5a623', weight: 1.5, fill: false, dashArray: '4 3', interactive: false })] : feats.map(f => L.rectangle(f, { color: '#f5a623', weight: 0.6, opacity: 0.6, fillOpacity: 0, interactive: false }))).addTo(map); }
+  if (sel.kind !== 'cells') { picked = new Set(); paintPicked(); cellsLayer = L.layerGroup(sel.kind === 'country' ? [] : feats.length > 1500 ? [L.rectangle(L.latLngBounds(feats.map(f => f[0]).concat(feats.map(f => f[1]))), { color: '#f5a623', weight: 1.5, fill: false, dashArray: '4 3', interactive: false })] : feats.map(f => L.rectangle(f, { color: '#f5a623', weight: 0.6, opacity: 0.6, fillOpacity: 0, interactive: false }))).addTo(map); }
   if (sel.kind !== 'drawn') { if (drawn) drawn.clearLayers(); }
   highlightProvince(sel.kind === 'province' ? sel.label : null);
   $('empty').hidden = true;
-  if (sel.kind === 'point' || sel.kind === 'province' || sel.kind === 'country') { map.invalidateSize(); map.fitBounds(L.latLngBounds(feats.flat()), { padding: [10, 10], maxZoom: sel.kind === 'point' ? 9 : 7, animate: false }); }
+  if (sel.kind === 'point' || sel.kind === 'province' || sel.kind === 'country') { map.invalidateSize(); map.fitBounds(L.latLngBounds(feats.flat()), { paddingTopLeft: [10, 10], paddingBottomRight: [10, 104], maxZoom: sel.kind === 'point' ? 9 : 7, animate: false }); }
   location.hash = encodeSel(sel);
   if (movie) movieOff(); else renderFireMap();
   render();
@@ -811,7 +813,7 @@ function fromHash() {
   if (h.get('case') && CASES.some(c => c.id === h.get('case'))) { goCase(h.get('case')); return true; }
   if (h.get('aoi') === 'ar') { selectCountry(); return true; }
   if (h.get('prov')) { const p = h.get('prov'); $('prov').value = p; selectProvince(p); return true; }
-  if (h.get('pt')) { const [lat, lon] = h.get('pt').split(',').map(Number); $('lat').value = lat; $('lon').value = lon; selectPoint(lat, lon); return true; }
+  if (h.get('pt')) { const [lat, lon] = h.get('pt').split(',').map(Number); $('lat').value = lat; $('lon').value = lon; selectPoint(lat, lon); if (!A) selectCountry(); return true; }
   if (h.get('cells')) { picked = new Set(decodeIds(h.get('cells')).filter(id => D.cells[id])); if (picked.size) { paintPicked(); A = null; select({ kind: 'cells', label: `${t('cellsel')} (${picked.size})`, cells: [...picked] }); map.fitBounds(L.latLngBounds([...picked].map(id => { const [a, c, b, d] = cellBounds(id); return [[a, c], [b, d]]; }).flat()), { padding: [20, 20], maxZoom: 8, animate: false }); } return true; }
   if (h.get('bbox')) { const [s, w, n, e] = h.get('bbox').split(',').map(Number); const r = L.rectangle([[s, w], [n, e]], DRAW_STYLE); drawn.addLayer(r); selectLayer(r); return true; }
 }
@@ -831,7 +833,7 @@ function selectLayer(layer) { const { ids, snapped1 } = cellsForLayer(layer); co
 function rectToCells(layer) { const { ids } = cellsForLayer(layer); drawn.clearLayers(); if (!ids.length) return; picked = new Set(ids); paintPicked(); A = null; select({ kind: 'cells', label: `${t('cellsel')} (${picked.size})`, cells: [...picked] }); }
 
 function initMap() {
-  map = L.map('map', { preferCanvas: true, zoomControl: true, attributionControl: true }).setView([-38.5, -63.5], 4);
+  map = L.map('map', { preferCanvas: true, zoomControl: true, attributionControl: true, zoomSnap: 0.25, zoomDelta: 0.5 }).setView([-38.5, -63.5], 4);
   map.attributionControl.setPrefix(false);
   const esri = 'https://server.arcgisonline.com/ArcGIS/rest/services/';
   const sat = L.layerGroup([L.tileLayer(esri + 'World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, attribution: '© Esri, Maxar, Earthstar Geographics · NASA FIRMS' }), L.tileLayer(esri + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, opacity: 0.9 })]);

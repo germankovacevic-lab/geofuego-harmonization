@@ -693,7 +693,7 @@ function renderWhere() {
   const cv = $('where'), ctx = cv.getContext('2d'); const W = cv.width, rowH = 24, left = 150, Hh = rows.length * rowH + 30; cv.height = Hh; ctx.clearRect(0, 0, W, Hh); ctx.fillStyle = '#1e2230'; ctx.fillRect(0, 0, W, Hh);
   const max = Math.max(0.01, ...rows.map(r => Math.max(r.share, r.cshare))); const bw = W - left - 120; ctx.font = '12px system-ui, sans-serif'; ctx.textBaseline = 'middle';
   rows.forEach((r, i) => { const y = 8 + i * rowH; ctx.fillStyle = '#e8eaf0'; ctx.textAlign = 'right'; ctx.fillText(r.p === TDF ? 'Tierra del Fuego' : r.p, left - 8, y + 10); ctx.fillStyle = '#f5a623'; ctx.fillRect(left, y + 2, bw * r.share / max, 9); if (A.cur) { ctx.fillStyle = '#4fc3f7'; ctx.fillRect(left, y + 12, bw * r.cshare / max, 6); } ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'left'; ctx.fillText(`${(100 * r.share).toFixed(1)} %${A.cur ? ` · ${(100 * r.cshare).toFixed(0)} %` : ''}`, left + bw * Math.max(r.share, r.cshare) / max + 6, y + 10); });
-  ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'left'; ctx.fillText(lang === 'es' ? `naranja: participación ${Math.max(A.fromYear, range.from[0])}–${Math.min(2025, range.to[0])} · verde: ${YCUR} a la fecha` : `orange: share ${Math.max(A.fromYear, range.from[0])}–${Math.min(2025, range.to[0])} · green: ${YCUR} to date`, left, Hh - 10);
+  ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'left'; ctx.fillText(lang === 'es' ? `naranja: participación ${Math.max(A.fromYear, range.from[0])}–${Math.min(2025, range.to[0])} · celeste: ${YCUR} a la fecha` : `orange: share ${Math.max(A.fromYear, range.from[0])}–${Math.min(2025, range.to[0])} · blue: ${YCUR} to date`, left, Hh - 10);
 }
 
 // ---------- static sources (R6) ----------

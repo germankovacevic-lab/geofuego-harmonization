@@ -850,7 +850,9 @@ function initUI() {
 (async () => {
   applyI18n();
   try { await load(); } catch (e) { $('empty').innerHTML = `<p>Data could not be loaded (${e.message}).</p>`; return; }
-  initMap(); initUI(); if (fromHash() === undefined && !A) selectCountry();
+  const chrome = () => { const h = document.querySelector('header.top')?.offsetHeight || 0, f = document.querySelector('footer')?.offsetHeight || 0; document.documentElement.style.setProperty('--chrome', (h + f + 30) + 'px'); if (map) map.invalidateSize(); };
+  chrome(); window.addEventListener('resize', chrome);
+  initMap(); initUI(); chrome(); if (fromHash() === undefined && !A) selectCountry();
   window.__ready = { cells: Object.keys(D.cells).length, live: L26 ? L26.data_through : null };
   window.__rectToCells = rectToCells; // test hook (QA scripts drive the rectangle tool without pointer gestures)
 })();

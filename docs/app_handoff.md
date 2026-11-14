@@ -1,4 +1,4 @@
-# App build — handoff (14 Nov 2026, 19:40 ART)
+# App build — handoff (14 Nov 2026, committed 16:09 ART)
 
 Starting point for the web application at https://spaceapps.geofuego.com.ar/ (Pages project `geofuego-spaceapps`, placeholder with noindex + CSP `script-src 'self'`; vendored Leaflet 1.9.4, Leaflet.draw 1.0.4, uPlot 1.6.31 staged in `~/.openclaw/data/spaceapps-vendor/` with licences and sha256). Data core is closed: repository at commit `b299fbb`, four peer reviews answered (`docs/peer_review_round{,2,3_judge,4_nasa}.md`, responses in `docs/audit_2026-11-14.md`).
 
@@ -7,7 +7,7 @@ Rules R1–R13 and the texts of §3.3 are the spec. Summary: snap the drawn area
 
 ## Data the app reads
 - `data/harmonized/cells.json.gz` (1.15 MB): `grid`, `years` 2000–2025, `cells[id] = { p: province, h: [26][12] harmonized counts (−1 = no data), s: [26][12] 1 = reconstructed/gap-filled, st: static counts by year, gf: gap fill, cl: cloud anomaly ×100 }`, `band_by_region_size`, `band_by_region_class`, `region_of_prov`, `note`. To publish: R2 bucket `geofuego-data` (exists), or Pages asset.
-- Live 2026: GeoFuego D1 `geofuego-db` (per-satellite monthly counts; export in `~/.openclaw/data/firms_ar/geofuego_live_2026_mensual.json`) via a new Worker `geofuego-harmonization` (never touch prod workers); raw hotspot CSV per AOI from R2 is optional (fallback: 2026 only from D1).
+- Live 2026 — **D1 is not enough for a drawn AOI** (checked 14 Nov 16:20): `flama_focos` (points with lat/lon and satellite) starts 2026-09-18; before that `flama_dia` holds only country/province totals with no satellite column, and the live static flag (`fijo`, GeoFuego's 910-point mask) is not the harmonization static class. The consistent route is the FIRMS Area API: `VIIRS_{SNPP,NOAA20,NOAA21}_SP` serves 2026-01-01 → 2026-07-31 and `_NRT` 2026-08-01 → today (S-NPP NRT ends 2026-11-02), per point, so 2026 can be run through the same grid → static mask (`data/agg/static_cells.json`) → bridge (`data/factors/bridge.json`) as the archive and shipped as a per-cell preliminary payload (`cells_2026.json`, month to date, data date stamped), refreshed by script before each deploy. A Worker on D1 is optional, not required.
 - Province polygons `lib/provincias.js`; cell geometry from `lib/geo.js` (GRID latMin −55, latMax −21, lonMin −74, lonMax −53, step 0.25, 136 × 84).
 
 ## Decisions already taken (German)

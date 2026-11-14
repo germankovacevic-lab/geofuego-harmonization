@@ -41,6 +41,16 @@ for (const line of (await readFile(path.join(ROOT, 'data', 'external', 'oni', 'o
   }
   await writeFile(path.join(OUT, 'raw.json'), JSON.stringify({ source: 'NASA FIRMS country archives, annual raw hotspot counts per 0.25° cell (vegetation class, static sources excluded); m = MODIS Terra+Aqua, v = VIIRS S-NPP; produced by 08_app_payload.mjs from data/agg/counts.json', y0: RY0, y1: RY1, cells }));
 }
+// skill.json: out-of-sample fire-season error (LOYO 2012–2023, Terra+Aqua set) shown in the app's summary strip:
+// country (loyo_summary), per province (loyo_by_province) and per area size (aoi_error_curve, random contiguous blocks)
+{
+  const V = path.join(ROOT, 'data', 'validation'); const rd = async f => (await readFile(path.join(V, f), 'utf8')).trim().split('\n').map(l => l.split(','));
+  const sum = await rd('loyo_summary.csv'); const h = sum[0]; const country = sum.find(r => r[h.indexOf('set')] === 'TA' && r[h.indexOf('level')] === 'country');
+  const bp = await rd('loyo_by_province.csv'); const hp = bp[0]; const prov = {};
+  for (const r of bp.slice(1)) if (r[hp.indexOf('set')] === 'TA') prov[r[hp.indexOf('prov')]] = { mape: +r[hp.indexOf('season_mape_mean')], folds: +r[hp.indexOf('n_folds')] };
+  const curve = JSON.parse(await readFile(path.join(V, 'aoi_error_curve.json'), 'utf8')).curve.map(c => ({ n: c.n_cells_nominal, mape: c.season_mape_mean }));
+  await writeFile(path.join(OUT, 'skill.json'), JSON.stringify({ source: 'data/validation: loyo_summary.csv, loyo_by_province.csv, aoi_error_curve.json — fire-season mean absolute percentage error, leave-one-year-out 2012–2023, Terra+Aqua set', country: +country[h.indexOf('season_mape')], country_scalar: +country[h.indexOf('season_mape_scalar')], prov, curve }));
+}
 await writeFile(path.join(OUT, 'provincias.json'), JSON.stringify({ source: 'IGN Argentina, WFS ign:provincia, simplified with mapshaper (reused from GeoFuego, pre-existing work)', provincias: PROVINCIAS.map(p => ({ n: p.n, rings: p.rings })) }));
 await writeFile(path.join(OUT, 'oni.json'), JSON.stringify({ source: 'NOAA CPC Oceanic Niño Index (ONI v5), 3-month running mean centred on the month', oni }));
 
@@ -52,7 +62,7 @@ for (const line of (await readFile(path.join(VEND, 'SHA256SUMS.txt'), 'utf8')).s
   if (h !== m[1]) { bad++; console.error('vendor checksum mismatch:', m[2]); }
 }
 if (bad) { console.error(`08_app_payload: ${bad} vendored file(s) do not match SHA256SUMS.txt`); process.exit(1); }
-for (const f of ['cells.json', 'cells_2026.json', 'oni.json', 'provincias.json', 'raw.json']) console.log(f, ((await stat(path.join(OUT, f))).size / 1e6).toFixed(2), 'MB');
+for (const f of ['cells.json', 'cells_2026.json', 'oni.json', 'provincias.json', 'raw.json', 'skill.json']) console.log(f, ((await stat(path.join(OUT, f))).size / 1e6).toFixed(2), 'MB');
 console.log(`vendor: ${nv} files verified against SHA256SUMS.txt`);
 
 // cache-busting: stamp the version of app.css / app.js in index.html (browsers and the edge cache them for hours)

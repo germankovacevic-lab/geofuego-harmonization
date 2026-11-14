@@ -8,6 +8,11 @@
 // ---------- i18n ----------
 const T = {
   en: {
+    mcount: 'Count', manom: 'Anomaly', kcrit: 'Critical months', kcritd: (pct, peak) => `${pct} % of a typical year's activity · peak ${peak}`,
+    kworst: 'Worst year', kworstd: (v, x) => `${v} hotspots · ${x} the median year`, kmean: 'Typical year', kmeand: (a, b) => `median of annual totals, ${a}–${b}`,
+    kskill: 'Calibration skill', kskilld: (sc) => `fire-season error out of sample (leave-one-year-out 2012–23) · one national factor: ${sc}`, kskillsz: (n) => `fire-season error out of sample for ${n === 1 ? 'a single cell' : `areas of ~${n} cells`} (leave-one-year-out 2012–23)`,
+    anomlegend: (y0, y1) => `Anomaly = month ÷ median of the same month, ${y0}–${y1}. Blue below normal, red above. “·” = too little fire in the record to compare.`,
+    pulse: 'Fire pulse: play the years', pulseTitle: 'Fire pulse',
     colours: 'Colours',
     casestitle: 'Known fire seasons — one click', validtitle: 'How well it works — tested on years the model never saw',
     validnote: 'Country-level tests, out of sample. Factors fitted on 2012–2023 only; 2024 and 2025 were used neither for the factors nor for the range. Details and every script: Method &amp; code.',
@@ -69,6 +74,11 @@ const T = {
     csvhdr: 'GeoFuego Harmonization — CC BY 4.0 — produced by scripts written with SI assistance (Claude, Anthropic) from NASA FIRMS data',
   },
   es: {
+    mcount: 'Conteo', manom: 'Anomalía', kcrit: 'Meses críticos', kcritd: (pct, peak) => `${pct} % de la actividad de un año típico · pico en ${peak}`,
+    kworst: 'Peor año', kworstd: (v, x) => `${v} focos · ${x} el año mediano`, kmean: 'Año típico', kmeand: (a, b) => `mediana de los totales anuales, ${a}–${b}`,
+    kskill: 'Calidad de la calibración', kskilld: (sc) => `error de temporada fuera de muestra (dejando un año afuera, 2012–23) · un factor nacional único: ${sc}`, kskillsz: (n) => `error de temporada fuera de muestra para ${n === 1 ? 'una celda suelta' : `áreas de ~${n} celdas`} (dejando un año afuera, 2012–23)`,
+    anomlegend: (y0, y1) => `Anomalía = mes ÷ mediana del mismo mes, ${y0}–${y1}. Azul debajo de lo normal, rojo arriba. “·” = muy poco fuego en el registro para comparar.`,
+    pulse: 'Pulso de fuego: recorrer los años', pulseTitle: 'Pulso de fuego',
     colours: 'Colores',
     casestitle: 'Temporadas de fuego conocidas — un click', validtitle: 'Qué tan bien funciona — probado en años que el modelo nunca vio',
     validnote: 'Pruebas a nivel país, fuera de muestra. Factores ajustados solo con 2012–2023; 2024 y 2025 no se usaron ni para los factores ni para el rango. Detalle y cada script: Método y código.',
@@ -140,7 +150,7 @@ function applyI18n() {
 }
 
 // ---------- data ----------
-let D = null, L26 = null, ONI = {}, PROV = null, RAW = null;
+let D = null, L26 = null, ONI = {}, PROV = null, RAW = null, SKILL = null;
 const Y0 = 2000, YEARS = 26, YCUR = 2026;
 const grid = { latMin: -55, latMax: -21, lonMin: -74, lonMax: -53, step: 0.25, nCols: 84 };
 const cellOf = (lat, lon) => (lat < grid.latMin || lat >= grid.latMax || lon < grid.lonMin || lon >= grid.lonMax) ? null : Math.floor((lat - grid.latMin) / grid.step) * grid.nCols + Math.floor((lon - grid.lonMin) / grid.step);
@@ -154,7 +164,7 @@ const SIZE = n => n === 1 ? '1' : n <= 9 ? '2-9' : n <= 49 ? '10-49' : n <= 199 
 async function load() {
   const [a, b, c, p] = await Promise.all([fetch('data/cells.json').then(r => r.json()), fetch('data/cells_2026.json').then(r => r.json()).catch(() => null), fetch('data/oni.json').then(r => r.json()).catch(() => ({ oni: {} })), fetch('data/provincias.json').then(r => r.json()).catch(() => null)]);
   D = a; L26 = b; ONI = c.oni || {}; PROV = p;
-  RAW = await fetch('data/raw.json').then(r => r.json()).catch(() => null);
+  [RAW, SKILL] = await Promise.all([fetch('data/raw.json').then(r => r.json()).catch(() => null), fetch('data/skill.json').then(r => r.json()).catch(() => null)]);
   Object.assign(grid, D.grid);
 }
 
@@ -260,7 +270,9 @@ const RAMPS = {
   viridis: VIR,
   cividis: [[0, 34, 78], [18, 53, 112], [59, 73, 108], [87, 92, 109], [112, 113, 115], [138, 134, 120], [166, 157, 117], [195, 181, 109], [226, 206, 92], [254, 232, 56]],
 };
-let rampName = 'fire';
+let rampName = 'fire'; let calMode = 'count';
+const DIV = [[33, 102, 172], [103, 169, 207], [180, 210, 230], [70, 74, 88], [253, 174, 97], [240, 80, 40], [200, 20, 30]];
+const divRamp = x => { x = Math.max(0, Math.min(1, x)); const i = Math.min(DIV.length - 2, Math.floor(x * (DIV.length - 1))), f = x * (DIV.length - 1) - i; const c = DIV[i].map((v, k) => Math.round(v + (DIV[i + 1][k] - v) * f)); return { css: `rgb(${c[0]},${c[1]},${c[2]})`, lum: (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255 }; };
 const ramp = x => { const R = RAMPS[rampName]; x = Math.max(0, Math.min(1, x)); const i = Math.min(R.length - 2, Math.floor(x * (R.length - 1))), f = x * (R.length - 1) - i; const c = R[i].map((v, k) => Math.round(v + (R[i + 1][k] - v) * f)); return { css: `rgb(${c[0]},${c[1]},${c[2]})`, lum: (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255 }; };
 const kfmt = v => v == null ? '' : v < 1000 ? String(Math.round(v)) : v < 9950 ? (v / 1000).toFixed(1).replace('.', lang === 'es' ? ',' : '.') + 'K' : Math.round(v / 1000) + 'K';
 const viridis = x => { x = Math.max(0, Math.min(1, x)); const i = Math.min(VIR.length - 2, Math.floor(x * (VIR.length - 1))), f = x * (VIR.length - 1) - i; const c = VIR[i].map((v, k) => Math.round(v + (VIR[i + 1][k] - v) * f)); return `rgb(${c[0]},${c[1]},${c[2]})`; };
@@ -268,7 +280,7 @@ const viridis = x => { x = Math.max(0, Math.min(1, x)); const i = Math.min(VIR.l
 function render() {
   if (!A) return;
   $('empty').hidden = true; $('out').hidden = false;
-  renderSummary(); renderStep(); renderCase(); renderValid(); renderNow(); renderCalendar(); renderSeries(); renderYears(); renderSeason(); renderWhere(); renderStatic();
+  renderSummary(); renderKpis(); renderStep(); renderCase(); renderValid(); renderNow(); renderCalendar(); renderSeries(); renderYears(); renderSeason(); renderWhere(); renderStatic();
   $('small-note').hidden = !(A.tier === 'C' || A.tier === 'D');
   $('tog-pre').disabled = A.tier !== 'D'; $('tog-pre').parentElement.style.opacity = A.tier !== 'D' ? '.45' : '';
   if (location.hash !== '#' + encodeSel(A.sel)) history.replaceState(null, '', '#' + encodeSel(A.sel));
@@ -420,6 +432,60 @@ function renderFireMap() {
   if (on || fireLayer._first !== false) { fireLayer.addTo(map); fireLayer._first = false; }
 }
 
+
+// ---------- summary strip: critical months, typical year, worst year, calibration skill ----------
+const pctFmt = x => (100 * x).toFixed(1).replace('.', lang === 'es' ? ',' : '.') + ' %';
+function renderKpis() {
+  const ys = baselineYears(); const out = [];
+  const meds = []; for (let m = 1; m <= 12; m++) meds.push(median(ys.filter(y => usable(y, m)).map(y => A.H[y - Y0][m - 1])) || 0);
+  const tot = meds.reduce((a, b) => a + b, 0);
+  if (tot > 0) {
+    const order = meds.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]); const pick = new Set(); let acc = 0;
+    for (const [v, i] of order) { if (acc >= 0.8 * tot) break; pick.add(i); acc += v; }
+    // consecutive runs (circular: Dec–Jan joins)
+    const runs = []; let start = null; for (let k = 0; k < 12; k++) { if (pick.has(k) && start == null) start = k; if (!pick.has(k) && start != null) { runs.push([start, k - 1]); start = null; } } if (start != null) runs.push([start, 11]);
+    if (runs.length > 1 && runs[0][0] === 0 && runs[runs.length - 1][1] === 11) { const last = runs.pop(); runs[0] = [last[0], runs[0][1]]; }
+    const M = t('months'); const label = runs.map(([a, b]) => a === b ? M[a] : `${M[a]}–${M[b]}`).join(' · ');
+    out.push(`<div class="kpi"><div class="l">${t('kcrit')}</div><div class="v">${label}</div><div class="d">${t('kcritd', Math.round(100 * acc / tot), M[order[0][1]])}</div></div>`);
+  }
+  const yrs = annualTotals().filter(d => d.complete && d.y !== 2000 && ys.includes(d.y));
+  if (yrs.length >= 3) {
+    const medY = median(yrs.map(d => d.tot)); let ranked = yrs; if (A.tier === 'D' && showPre) ranked = yrs.filter(d => d.y >= 2012);
+    const w = ranked.reduce((a, b) => b.tot > a.tot ? b : a, ranked[0]);
+    out.push(`<div class="kpi"><div class="l">${t('kmean')}</div><div class="v">${fmt(medY)}</div><div class="d">${t('kmeand', yrs[0].y, yrs[yrs.length - 1].y)}</div></div>`);
+    out.push(`<div class="kpi"><div class="l">${t('kworst')}</div><div class="v">${w.y}</div><div class="d">${t('kworstd', fmt(w.tot), medY > 0 ? (w.tot / medY).toFixed(1).replace('.', lang === 'es' ? ',' : '.') + '×' : '—')}</div></div>`);
+  }
+  if (SKILL) {
+    const s = A.sel; let v = null, d = '';
+    if (s.kind === 'country') { v = SKILL.country; d = t('kskilld', pctFmt(SKILL.country_scalar)); }
+    else if (s.kind === 'province' && SKILL.prov[s.label]) { v = SKILL.prov[s.label].mape; d = t('kskillsz', A.n).replace(/~\d+ (cells|celdas)/, s.label); d = lang === 'es' ? `error de temporada fuera de muestra en ${s.label} (dejando un año afuera, 2012–23)` : `fire-season error out of sample in ${s.label} (leave-one-year-out 2012–23)`; }
+    else { const c = SKILL.curve.filter(c => c.n <= Math.max(1, A.n)).pop() || SKILL.curve[0]; v = c.mape; d = t('kskillsz', c.n); }
+    if (v != null) out.push(`<div class="kpi"><div class="l">${t('kskill')}</div><div class="v">± ${pctFmt(v)}</div><div class="d">${d}</div></div>`);
+  }
+  $('sum-kpis').innerHTML = out.join('');
+}
+
+// ---------- fire pulse: animate the years on the map ----------
+let pulseTimer = null;
+function stopPulse() { if (pulseTimer) { clearInterval(pulseTimer); pulseTimer = null; } document.querySelector('.pulse-label')?.remove(); const b = document.querySelector('.leaflet-control-pulse a'); if (b) b.textContent = '▶'; renderFireMap(); }
+function startPulse() {
+  if (pulseTimer) { stopPulse(); return; }
+  if (!map.hasLayer(fireLayer)) fireLayer.addTo(map);
+  // one fixed scale over all years so the years are comparable
+  const per = {}; let max = 1;
+  for (const [id, c] of Object.entries(D.cells)) { const a = []; for (let y = 2001; y <= 2025; y++) { let v = 0; for (const h of c.h[y - Y0]) if (h > 0) v += h; a.push(v); if (v > max) max = v; } if (L26) { const lc = L26.cells[id]; a.push(lc ? lc.h.reduce((p, q) => p + (q > 0 ? q : 0), 0) : 0); } per[id] = a; }
+  const years = []; for (let y = 2001; y <= 2025; y++) years.push(y); if (L26) years.push(YCUR);
+  const lm = Math.log1p(max); const lab = document.createElement('div'); lab.className = 'pulse-label'; document.getElementById('map').appendChild(lab);
+  const b = document.querySelector('.leaflet-control-pulse a'); if (b) b.textContent = '■';
+  let k = 0; const step = () => {
+    if (k >= years.length) { stopPulse(); return; }
+    const y = years[k]; lab.textContent = y === YCUR ? `${y}*` : String(y); fireLayer.clearLayers(); const r0 = rampName; rampName = 'fire';
+    for (const [id, a] of Object.entries(per)) { const v = a[k]; if (!v) continue; const x = Math.log1p(v) / lm; if (x < 0.2) continue; const [p, c, q, d] = cellBounds(+id); fireLayer.addLayer(L.rectangle([[p, c], [q, d]], { stroke: false, fillColor: ramp(0.25 + 0.75 * (x - 0.2) / 0.8).css, fillOpacity: 0.2 + 0.6 * x, interactive: false })); }
+    rampName = r0; k++;
+  };
+  step(); pulseTimer = setInterval(step, 700);
+}
+
 // ---------- calendar heatmap ----------
 let calCells = []; // for hit testing
 function calendarRows() {
@@ -443,6 +509,7 @@ function renderCalendar() {
   // colour by percentile of the months shown (full contrast at any scale); zero is always the bottom colour
   vals.sort((a, b) => a - b);
   const scale = v => { if (v <= 0 || vals.length < 2) return 0; let lo = 0, hi = vals.length; while (lo < hi) { const mid = (lo + hi) >> 1; if (vals[mid] <= v) lo = mid + 1; else hi = mid; } return (lo - 1) / (vals.length - 1); };
+  const ysB = baselineYears(); const monMed = []; for (let m = 1; m <= 12; m++) monMed.push(median(ysB.filter(y => usable(y, m)).map(y => A.H[y - Y0][m - 1])));
   // annual totals of the shown range (usable months; current year = preliminary sum)
   const tot = {}; let tmax = 1;
   for (const y of rows) { let v = 0, n = 0; for (let m = 1; m <= 12; m++) { if (!inRange(y, m)) continue; const c = cellValue(y, m); if (c.v != null && !c.grey && c.kind !== 'nodata') { v += c.v; n++; } } if (n) { tot[y] = v; if (y !== 2000) tmax = Math.max(tmax, v); } }
@@ -459,6 +526,7 @@ function renderCalendar() {
       let fill = '#2a3040', txtCol = '#e8eaf0', txt = '';
       if (!inR || c.kind === 'nodata') fill = '#262a36';
       else if (c.grey) { fill = '#3a3f4e'; txt = c.v ? kfmt(c.v) : ''; txtCol = '#7d8496'; }
+      else if (c.v != null && calMode === 'anom') { const md = monMed[m - 1]; if (md == null || md < 3) { fill = '#2e3240'; txt = '·'; txtCol = '#7d8496'; } else { const r = c.v / md; const k = divRamp(0.5 + Math.max(-1, Math.min(1, Math.log2(Math.max(r, 1e-3)) / 2)) / 2); fill = k.css; txtCol = k.lum > 0.55 ? '#14161c' : '#ffffff'; txt = (r >= 10 ? r.toFixed(0) : r.toFixed(1)).replace('.', lang === 'es' ? ',' : '.') + '×'; } }
       else if (c.v != null) { const k = ramp(scale(c.v)); fill = k.css; txtCol = k.lum > 0.55 ? '#14161c' : '#ffffff'; txt = kfmt(c.v); }
       ctx.fillStyle = fill; ctx.fillRect(x + 1, yy + 1, cw - 2, ch - 2);
       if (inR && c.kind === 'terra' && !c.grey) { ctx.save(); ctx.beginPath(); ctx.rect(x + 1, yy + 1, cw - 2, ch - 2); ctx.clip(); ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 1; for (let k = -ch; k < cw; k += 6) { ctx.beginPath(); ctx.moveTo(x + k, yy + ch); ctx.lineTo(x + k + ch, yy); ctx.stroke(); } ctx.restore(); }
@@ -480,8 +548,9 @@ function renderCalendar() {
   ctx.strokeStyle = '#2a3040'; ctx.beginPath(); ctx.moveTo(left, yy); ctx.lineTo(left + 12 * cw, yy); ctx.stroke();
   // legend
   const lg = $('legend'); lg.innerHTML = '';
-  const lc = document.createElement('canvas'); lc.width = 160; lc.height = 10; const g = lc.getContext('2d'); for (let i = 0; i < 160; i++) { g.fillStyle = ramp(i / 159).css; g.fillRect(i, 0, 1, 10); }
-  lg.append(Object.assign(document.createElement('span'), { textContent: t('legendlow') }), lc, Object.assign(document.createElement('span'), { textContent: `${t('legendhigh')} (${fmt(max)})` }));
+  const lc = document.createElement('canvas'); lc.width = 160; lc.height = 10; const g = lc.getContext('2d'); for (let i = 0; i < 160; i++) { g.fillStyle = calMode === 'anom' ? divRamp(i / 159).css : ramp(i / 159).css; g.fillRect(i, 0, 1, 10); }
+  if (calMode === 'anom') lg.append(Object.assign(document.createElement('span'), { textContent: '0,25×' }), lc, Object.assign(document.createElement('span'), { textContent: '4× · ' + t('anomlegend', ysB[0], ysB[ysB.length - 1]) }));
+  else lg.append(Object.assign(document.createElement('span'), { textContent: t('legendlow') }), lc, Object.assign(document.createElement('span'), { textContent: `${t('legendhigh')} (${fmt(max)})` }));
   const sw = (color, label, dashed) => { const s = document.createElement('span'); s.innerHTML = `<i style="display:inline-block;width:12px;height:12px;background:${color};border-radius:2px;vertical-align:-2px;margin-right:4px;${dashed ? 'border:1px dashed #fff;background:transparent;' : ''}"></i>${label}`; return s; };
   lg.append(sw('#3a3f4e', t('legendgrey')), sw('#262a36', t('legendnd')), sw('', t('prelim') + ' (*)', true), Object.assign(document.createElement('span'), { textContent: '◤ ' + t('cloud').split(':')[0] }), Object.assign(document.createElement('span'), { textContent: '◆ ' + t('gap', '').replace(' ()', '') }), Object.assign(document.createElement('span'), { textContent: `${lang === 'es' ? 'Mediana' : 'Median'}: ${ys.length ? ys[0] + '–' + ys[ys.length - 1] : '—'}` }));
 }
@@ -740,6 +809,8 @@ function initMap() {
   map.on(L.Draw.Event.CREATED, e => { lastDrawTs = Date.now(); $('prov').value = ''; rectToCells(e.layer); });
   const Home = L.Control.extend({ onAdd() { const d = L.DomUtil.create('div', 'leaflet-bar leaflet-control-home'); const a = L.DomUtil.create('a', '', d); a.href = '#'; a.title = t('home'); a.setAttribute('aria-label', t('home')); a.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="2"/></svg>'; L.DomEvent.on(a, 'click', ev => { L.DomEvent.preventDefault(ev); L.DomEvent.stopPropagation(ev); map.setView([-38.5, -63.5], 4); }); return d; } });
   map.addControl(new Home({ position: 'topleft' }));
+  const Pulse = L.Control.extend({ onAdd() { const d = L.DomUtil.create('div', 'leaflet-bar leaflet-control-pulse'); const a = L.DomUtil.create('a', '', d); a.href = '#'; a.title = t('pulse'); a.setAttribute('aria-label', t('pulse')); a.textContent = '▶'; L.DomEvent.on(a, 'click', ev => { L.DomEvent.preventDefault(ev); L.DomEvent.stopPropagation(ev); startPulse(); }); return d; } });
+  map.addControl(new Pulse({ position: 'topleft' }));
   buildGrid();
   renderFireMap();
   L.control.layers(null, { [t('fireslayer')]: fireLayer }, { position: 'bottomright', collapsed: false }).addTo(map);
@@ -767,6 +838,7 @@ function initUI() {
   $('tog-pre').addEventListener('change', e => { showPre = e.target.checked; render(); });
   $('tog-static').addEventListener('change', e => { showStatic = e.target.checked; renderStatic(); if (A) history.replaceState(null, '', '#' + encodeSel(A.sel)); if (showStatic) $('static-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
   $('ramp').addEventListener('change', e => { rampName = e.target.value; renderCalendar(); });
+  document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => { calMode = b.dataset.mode; document.querySelectorAll('[data-mode]').forEach(x => x.classList.toggle('on', x === b)); $('ramp').disabled = calMode === 'anom'; renderCalendar(); }));
   $('dl-csv').addEventListener('click', downloadCSV); $('dl-png').addEventListener('click', downloadPNG);
   $('cal').addEventListener('mousemove', calTip); $('cal').addEventListener('mouseleave', () => { $('tip').hidden = true; });
   $('lang').addEventListener('click', () => { lang = lang === 'en' ? 'es' : 'en'; applyI18n(); applyDrawLocale(); if (A) { location.hash = encodeSel(A.sel); render(); } });

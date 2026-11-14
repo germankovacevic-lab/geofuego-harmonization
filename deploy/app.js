@@ -457,7 +457,7 @@ function toggleCell(id) {
 function paintPicked() { for (const r of Object.values(gridRects)) r.setStyle({ color: '#ffffff', opacity: 0.35, weight: 0.6, fillOpacity: 0 }); for (const id of picked) gridRects[id]?.setStyle(CELL_ON); }
 const DRAW_STYLE = { color: '#d9480f', weight: 2, fillColor: '#f5a623', fillOpacity: 0.15 };
 function highlightProvince(name) { for (const [n, l] of Object.entries(provLayers)) l.setStyle(n === name ? { color: '#f5a623', opacity: 1, weight: 3, fillOpacity: 0 } : { color: '#ffffff', opacity: 0.7, weight: 1, fillOpacity: 0 }); }
-function clearSelection() { if (drawn) drawn.clearLayers(); if (cellsLayer) { cellsLayer.remove(); cellsLayer = null; } A = null; highlightProvince(null); picked = new Set(); paintPicked(); $('prov').value = ''; $('out').hidden = true; $('empty').hidden = false; history.replaceState(null, '', location.pathname + (lang === 'es' ? '#lang=es' : '')); map.setView([-38.5, -63.5], 4); }
+function clearSelection() { if (drawn) drawn.clearLayers(); if (cellsLayer) { cellsLayer.remove(); cellsLayer = null; } A = null; highlightProvince(null); picked = new Set(); paintPicked(); $('prov').value = ''; map.setView([-38.5, -63.5], 4); selectCountry(); }
 function pointInRing(lat, lon, ring) { let inside = false; for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) { const yi = ring[i].lat, xi = ring[i].lng, yj = ring[j].lat, xj = ring[j].lng; if ((yi > lat) !== (yj > lat) && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside; } return inside; }
 function cellsForLayer(layer) {
   const b = layer.getBounds(); const ring = layer instanceof L.Rectangle ? null : layer.getLatLngs()[0];
@@ -483,11 +483,11 @@ function select(sel) {
 function encodeSel(sel) { const p = [`lang=${lang}`]; if (sel.kind === 'country') p.push('aoi=ar'); else if (sel.kind === 'province') p.push('prov=' + encodeURIComponent(sel.label)); else if (sel.kind === 'point') p.push('pt=' + sel.label.replace(/\s/g, '')); else if (sel.kind === 'drawn' && sel.bbox) p.push('bbox=' + sel.bbox.map(v => v.toFixed(3)).join(',')); else if (sel.kind === 'cells') p.push('cells=' + sel.cells.slice(0, 400).join('.')); return p.join('&'); }
 function fromHash() {
   const h = new URLSearchParams(location.hash.replace(/^#/, ''));
-  if (h.get('aoi') === 'ar') return selectCountry();
-  if (h.get('prov')) { const p = h.get('prov'); $('prov').value = p; return selectProvince(p); }
-  if (h.get('pt')) { const [lat, lon] = h.get('pt').split(',').map(Number); $('lat').value = lat; $('lon').value = lon; return selectPoint(lat, lon); }
-  if (h.get('cells')) { picked = new Set(h.get('cells').split('.').map(Number).filter(id => D.cells[id])); if (picked.size) { paintPicked(); A = null; select({ kind: 'cells', label: `${t('cellsel')} (${picked.size})`, cells: [...picked] }); map.fitBounds(L.latLngBounds([...picked].map(id => { const [a, c, b, d] = cellBounds(id); return [[a, c], [b, d]]; }).flat()), { padding: [20, 20], maxZoom: 8, animate: false }); } return; }
-  if (h.get('bbox')) { const [s, w, n, e] = h.get('bbox').split(',').map(Number); const r = L.rectangle([[s, w], [n, e]], DRAW_STYLE); drawn.addLayer(r); return selectLayer(r); }
+  if (h.get('aoi') === 'ar') { selectCountry(); return true; }
+  if (h.get('prov')) { const p = h.get('prov'); $('prov').value = p; selectProvince(p); return true; }
+  if (h.get('pt')) { const [lat, lon] = h.get('pt').split(',').map(Number); $('lat').value = lat; $('lon').value = lon; selectPoint(lat, lon); return true; }
+  if (h.get('cells')) { picked = new Set(h.get('cells').split('.').map(Number).filter(id => D.cells[id])); if (picked.size) { paintPicked(); A = null; select({ kind: 'cells', label: `${t('cellsel')} (${picked.size})`, cells: [...picked] }); map.fitBounds(L.latLngBounds([...picked].map(id => { const [a, c, b, d] = cellBounds(id); return [[a, c], [b, d]]; }).flat()), { padding: [20, 20], maxZoom: 8, animate: false }); } return true; }
+  if (h.get('bbox')) { const [s, w, n, e] = h.get('bbox').split(',').map(Number); const r = L.rectangle([[s, w], [n, e]], DRAW_STYLE); drawn.addLayer(r); selectLayer(r); return true; }
 }
 function selectCountry() { $('prov').value = ''; select({ kind: 'country', label: 'Argentina', cells: Object.keys(D.cells).map(Number) }); }
 function selectProvince(p) { if (!p) return; select({ kind: 'province', label: p, cells: Object.keys(D.cells).filter(id => D.cells[id].p === p).map(Number) }); }
@@ -535,7 +535,7 @@ function initUI() {
 (async () => {
   applyI18n();
   try { await load(); } catch (e) { $('empty').innerHTML = `<p>Data could not be loaded (${e.message}).</p>`; return; }
-  initMap(); initUI(); fromHash();
+  initMap(); initUI(); if (fromHash() === undefined && !A) selectCountry();
   window.__ready = { cells: Object.keys(D.cells).length, live: L26 ? L26.data_through : null };
 })();
 })();

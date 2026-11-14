@@ -53,10 +53,38 @@ function levelTest(valueOf, years, k) {
 const YM = []; for (let y = 2003; y <= 2023; y++) YM.push(y);
 const B = { viirs_vs_day13_cloud: levelTest(r => r[0], YEARS, 1), viirs_vs_night_cloud: levelTest(r => r[0], YEARS, 2), modis_TA_vs_day13_cloud: levelTest(r => r[1] + r[2], YM, 1), modis_T_vs_terra_cloud: levelTest(r => r[1], YM, 0) };
 
+// ---- Test C: separate obscuration from rain-suppressed fire. Province-month log(V/clim) regressed on BOTH the cloud
+// anomaly at the overpass and the precipitation anomaly (ERA5 tp, mm/day, relative to the cell-month climatology).
+// The cloud coefficient conditional on precipitation approximates the pure obscuration effect. OLS with 2 covariates.
+let C = null;
+try {
+  const PR = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'precip_cells.json'), 'utf8'));
+  const panom = (cell, y, m) => { const r = PR.cells[cell]?.[y]?.[m - 1], c = PR.clim[cell]?.[m - 1]; return r != null && c != null ? r - c : null; };
+  const ols2 = rows => { // y = b0 + b1 x1 + b2 x2
+    const n = rows.length; let X = [[0, 0, 0], [0, 0, 0], [0, 0, 0]], Xy = [0, 0, 0];
+    for (const r of rows) { const x = [1, r.x1, r.x2]; for (let i = 0; i < 3; i++) { Xy[i] += x[i] * r.y; for (let j = 0; j < 3; j++) X[i][j] += x[i] * x[j]; } }
+    // solve 3x3 by Cramer
+    const det = m => m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+    const D = det(X); const col = (k) => det(X.map((row, i) => row.map((v, j) => j === k ? Xy[i] : v)));
+    const b = [col(0) / D, col(1) / D, col(2) / D];
+    let ss = 0, st = 0; const my = rows.reduce((a, r) => a + r.y, 0) / n; for (const r of rows) { const f = b[0] + b[1] * r.x1 + b[2] * r.x2; ss += (r.y - f) ** 2; st += (r.y - my) ** 2; }
+    return { n, intercept: +b[0].toFixed(3), slope_cloud: +b[1].toFixed(2), slope_precip_per_mm_day: +b[2].toFixed(3), r2: +(1 - ss / st).toFixed(3) };
+  };
+  function levelTest2(valueOf, years, k) {
+    const pv = {}; const rows = [];
+    for (const [cid, yrs] of Object.entries(agg.cells)) { const cell = +cid, prov = provOf.get(cell); if (!prov) continue; for (const y of years) { const ym = yrs[y]; if (!ym) continue; for (const [m, r] of Object.entries(ym)) { const v = valueOf(r); const a = anom(cell, y, +m, k), p = panom(cell, y, +m); if (a === null || p === null) continue; const w = Math.max(1, v); const u = ((pv[prov] ??= {})[`${y}-${m}`] ??= { V: 0, aw: 0, pw: 0, w: 0, m: +m }); u.V += v; u.aw += a * w; u.pw += p * w; u.w += w; } } }
+    for (const months of Object.values(pv)) { const c = {}; for (const u of Object.values(months)) (c[u.m] ??= []).push(u.V); for (const u of Object.values(months)) { const arr = c[u.m]; const mean = arr.reduce((a, b) => a + b, 0) / arr.length; if (mean >= 30 && u.V > 0) rows.push({ x1: u.aw / u.w, x2: u.pw / u.w, y: Math.log(u.V / mean) }); } }
+    const r1 = pearson(rows.map(r => r.x1), rows.map(r => r.y)), r2 = pearson(rows.map(r => r.x2), rows.map(r => r.y)), rx = pearson(rows.map(r => r.x1), rows.map(r => r.x2));
+    return { cloud_only: { r: +r1.r.toFixed(3), slope: +r1.slope.toFixed(2) }, precip_only: { r: +r2.r.toFixed(3), slope_per_mm_day: +r2.slope.toFixed(3) }, cloud_vs_precip_r: +rx.r.toFixed(3), joint: ols2(rows) };
+  }
+  C = { viirs_day13: levelTest2(r => r[0], YEARS, 1), modis_TA_day13: levelTest2(r => r[1] + r[2], YM, 1), modis_T_terra: levelTest2(r => r[1], YM, 0) };
+} catch (e) { C = { skipped: e.message }; }
+
 await mkdir(path.join(ROOT, 'data', 'validation'), { recursive: true });
-await writeFile(path.join(ROOT, 'data', 'validation', 'cloud_tests.json'), JSON.stringify({ generated: new Date().toISOString(), source: CL.source, testA_ratio_residual_vs_cloud: A, testB_count_level_vs_cloud: B }, null, 1));
+await writeFile(path.join(ROOT, 'data', 'validation', 'cloud_tests.json'), JSON.stringify({ generated: new Date().toISOString(), source: CL.source, testA_ratio_residual_vs_cloud: A, testB_count_level_vs_cloud: B, testC_cloud_conditional_on_precip: C }, null, 1));
 const show = (name, t) => { console.log(`${name}: r = ${t.r.toFixed(3)}, slope (log per unit cloud fraction) = ${t.slope.toFixed(2)}, n = ${t.n}`); console.log('   anomaly bin → median log ratio: ' + t.bins.map(b => `[${b.anomaly_from},${b.anomaly_to}) ${b.median_log_ratio === null ? '-' : b.median_log_ratio} (n${b.n})`).join('  ')); };
 console.log('TEST A — LOYO residual log(V/P), province-month, vs cloud anomaly');
 show('  differential (day13 − terra)', A.differential_anomaly); show('  day13 absolute', A.day13_anomaly);
 console.log('\nTEST B — observed count vs province-month climatology, log(V/clim), vs cloud anomaly at the overpass');
 show('  VIIRS vs day13 cloud', B.viirs_vs_day13_cloud); show('  VIIRS vs night cloud', B.viirs_vs_night_cloud); show('  MODIS T+A vs day13 cloud', B.modis_TA_vs_day13_cloud); show('  MODIS Terra vs terra cloud', B.modis_T_vs_terra_cloud);
+if (C && !C.skipped) { console.log('\nTEST C — cloud effect conditional on precipitation (province-month OLS: log(V/clim) ~ cloud anomaly + precip anomaly)'); for (const [k, v] of Object.entries(C)) console.log(`  ${k.padEnd(16)} cloud-only slope ${v.cloud_only.slope} (r ${v.cloud_only.r}) · precip-only slope ${v.precip_only.slope_per_mm_day}/mm/d (r ${v.precip_only.r}) · corr(cloud,precip) ${v.cloud_vs_precip_r} → joint: cloud ${v.joint.slope_cloud}, precip ${v.joint.slope_precip_per_mm_day}, R² ${v.joint.r2}, n ${v.joint.n}`); } else if (C) console.log('\nTEST C skipped: ' + C.skipped);

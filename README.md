@@ -32,6 +32,7 @@ All code in this repository was written during the hackathon window (14–15 Nov
 | Consistency across the 2012 splice vs MODIS burned area (MCD64A1) | burned ha per hotspot pre/post 2012: **0.97** harmonized vs **3.10** naive concatenation (not an independent validation: MCD64A1 is trained with MODIS active fires) |
 | S-NPP/NOAA bridge vs production NRT data (different pipeline) | 0.982 vs 0.980 (NOAA-20); provincial spread (w > 0.9) 0.93–1.16 (NOAA-20), 0.89–0.99 (NOAA-21) |
 | ENSO dependence of the ratio (team hypothesis) | real (r = −0.37 monthly) but small; conditioning did not improve out-of-sample skill → carried as extra band width in strong-phase months |
+| Cloud obscuration (ERA5 cloud fraction by overpass hour + precipitation, 0.25°) | cloud does **not** bias the factor (differential 13:30−10:30 anomaly vs LOYO residual: r = 0.02); it does lower counts: conditional on rain, +0.10 cloud anomaly ≈ −26 % detections for both sensors → counts not corrected, every cell-month carries `cloud_anom` / `cloud_underdetection`, upper bound widened in reconstructed months |
 | Day/night split factors (reviewer suggestion) | night VIIRS/MODIS ratio **6.1–6.7** vs day **2.7–3.0** (physics confirmed), but separate day and night factors give no net skill gain (country 3.3 → 2.9 %, province 10.2 → 10.6 %, cell 29.7 → 30.8 %): the pooled cell×month factor already absorbs the local day/night mix → not adopted, kept as an option |
 | Additive term for months where MODIS saw nothing (reviewer suggestion) | fixes single cells (Terra-only cell error 54 → 42 %) but degrades every aggregate and both out-of-time tests → not adopted; the structural zero of small pre-2012 AOIs stays declared |
 
@@ -46,11 +47,12 @@ All code in this repository was written during the hackathon window (14–15 Nov
 - **NASA FIRMS** active fire archive by country: MODIS (2000–2025; the `version` column reads 6.2 up to 2018, 6.03 for 2019–2022 and 61.03 for 2023–2025 — all Collection 6 / 6.1 archive products, treated as one series; FIRMS version-notes check pending) and VIIRS S-NPP (2012–2025) — `scripts/01_fetch.mjs`, sha256 of every file in `data/raw/MANIFEST.json`.
 - **NASA FIRMS Area API**, standard processing: VIIRS S-NPP, NOAA-20, NOAA-21 2023–2025 over Argentina (bridge only) — `scripts/01b_fetch_viirs_sp.mjs` (needs a free FIRMS MAP_KEY in `~/.config/nasa/firms-map-key`).
 - **NOAA CPC Oceanic Niño Index** and **GWIS/JRC burned-area tables (MCD64A1, MVP64)** — `scripts/01c_fetch_aux.mjs`; Argentina rows committed in `data/external/`.
+- **ERA5** (Copernicus Climate Data Store): monthly cloud fraction by hour of day and monthly precipitation, 0.25°, 2000–2025 — `scripts/01d_fetch_era5_cloud.py`, `01e_fetch_era5_precip.py` (needs a free CDS key); sha256 in `data/external/MANIFEST_aux.json`.
 - Raw hotspot CSVs are not committed (≈ 1 GB); derived products are published in the Zenodo record.
 
 ## Known limits (declared)
 
-Observed VIIRS months carry no interval (they are the reference); a cloudy month reads as a quiet month (no obscuration correction); day and night detections are pooled (split tested, no gain); the region table is hand-made; the outage detector conditions on MODIS zeros (effect < 1 % of counts per year); the unit is VIIRS-equivalent 375 m pixel counts, not fires nor area; Argentina only.
+Observed VIIRS months carry no interval (they are the reference); a cloudy month still reads low (obscuration is measured and flagged, not corrected); day and night detections are pooled (split tested, no gain); the region table is hand-made; the outage detector conditions on MODIS zeros (effect < 1 % of counts per year); the unit is VIIRS-equivalent 375 m pixel counts, not fires nor area; Argentina only.
 
 ## Pipeline
 

@@ -74,19 +74,27 @@ const ONI = {};
 { const SEAS = ['DJF', 'JFM', 'FMA', 'MAM', 'AMJ', 'MJJ', 'JJA', 'JAS', 'ASO', 'SON', 'OND', 'NDJ']; for (const line of (await readFile(path.join(ROOT, 'data', 'external', 'oni', 'oni.ascii.txt'), 'utf8')).split('\n').slice(1)) { const f = line.trim().split(/\s+/); const mi = SEAS.indexOf(f[0]) + 1; if (mi) ONI[`${f[1]}-${mi}`] = +f[3]; } }
 const ensoAdj = (y, m) => BETA && y < 2012 ? Math.exp(BETA * (ONI[`${y}-${m}`] ?? 0)) : 1;
 const ensoSig = (y, m) => y < 2012 ? Math.abs(ENSO_SIGMA_BETA * (ONI[`${y}-${m}`] ?? 0)) : 0;
+// Cloud obscuration (03c_cloud_cells.py + 05f_cloud.mjs): infrared detection is blocked by cloud. Conditional on precipitation,
+// a cloud-fraction anomaly Δ at the overpass changes detections by ≈ exp(−3·Δ) for both sensors (VIIRS −3.1, MODIS −2.8 per
+// unit cloud fraction). Counts are NOT corrected (the effect is partly fire weather); months with Δ > +0.05 are flagged with the
+// estimated under-detection, and in reconstructed months the upper bound of the interval is widened by exp(3·Δ).
+const CLOUD_SLOPE = 3.0, CLOUD_FLAG = 0.05;
+let CLOUD = null; try { CLOUD = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'cloud_cells.json'), 'utf8')); } catch { console.log('cloud_cells.json not found: no obscuration flag (run 01d + 03c)'); }
+const cloudAnom = (cell, y, m, e) => { if (!CLOUD) return null; const r = CLOUD.cells[cell]?.[y]?.[m - 1], c = CLOUD.clim[cell]?.[m - 1]; if (!r || !c) return null; const k = e === 'MODIS-Terra->VIIRS-eq' ? 0 : 1; return r[k] == null ? null : +(r[k] - c[k]).toFixed(3); };
+let cloudFlagged = 0;
 const era = (y, m) => y >= 2012 ? 'VIIRS' : (y > 2002 || (y === 2002 && m >= 7)) ? 'MODIS->VIIRS-eq' : (y > 2000 || m >= 11) ? 'MODIS-Terra->VIIRS-eq' : null;
 
-let cellsCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval calibrated out-of-sample by predicted count and satellite set (see band_calibration.json); empty for observed VIIRS months\ncell,prov,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,V,T,A,sensor,terra_only,gap_fill,additive,static_viirs,static_modis\n`;
+let cellsCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval calibrated out-of-sample by predicted count and satellite set (see band_calibration.json); empty for observed VIIRS months\ncell,prov,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,V,T,A,sensor,terra_only,gap_fill,additive,cloud_anom,cloud_underdetection,static_viirs,static_modis\n`;
 let fillTotal = { snpp: 0, terra: 0, aqua: 0, terra_only: 0, additive: 0 };
 const compact = { grid: index.grid, years: YEARS, terra_only_until: '2002-06', band_by_count: BINSET, band: '80% prediction interval [H*exp(p10), H*exp(p90)] with p10/p90 from band_by_count[set] bin containing the predicted count H (set T before 2002-07, TA until 2011-12, none for observed VIIRS months); widen by |0.025*ONI| per side in reconstructed months', sigma_curve_by_cells_diagnostic: CURVES, note: SI_NOTE.slice(2), cells: {} };
 const provSeries = {}; // prov -> { H:[y][m], var:[y][m], obs:[y][m], static:[y][m] }
-const provAcc = p => (provSeries[p] ??= { n: 0, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)) });
+const provAcc = p => (provSeries[p] ??= { n: 0, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)), ca: YEARS.map(() => Array(12).fill(0)), caw: YEARS.map(() => Array(12).fill(0)) });
 
 for (const [cid, yrs] of Object.entries(agg.cells)) {
   const cell = +cid, prov = provOf.get(cell); if (!prov) continue;
   const fTA = F.cell.TA[cell], fT = F.cell.T[cell]; if (!fTA || !fT) continue;
   const aTA = F.add?.TA?.cell?.[cell], aT = F.add?.T?.cell?.[cell]; // additive term: expected VIIRS count when MODIS saw nothing
-  const h = [], s = [], st = {}, gfc = {};
+  const h = [], s = [], st = {}, gfc = {}, cld = {};
   provAcc(prov).n++;
   for (const y of YEARS) {
     const hy = Array(12).fill(-1), sy = Array(12).fill(0);
@@ -107,30 +115,33 @@ for (const [cid, yrs] of Object.entries(agg.cells)) {
         H = fT[m - 1][0] * T * scale * adj; gf = fT[m - 1][0] * T * (scale - 1) * adj; fillTotal.terra_only += gf; sig = 1; terra = 1;
         if (T === 0 && aT) { H = aT[m - 1] * adj; additive = 1; fillTotal.additive += H; }
       }
-      if (e !== 'VIIRS') { const es = ensoSig(y, m); [b10, b90] = bandLog(H, terra ? 'T' : 'TA'); b10 -= es; b90 += es; lo = H * Math.exp(b10); hi = H * Math.exp(b90); }
+      const ca = cloudAnom(cell, y, m, e); const under = ca !== null && ca > CLOUD_FLAG ? +(1 - Math.exp(-CLOUD_SLOPE * ca)).toFixed(3) : 0;
+      if (under) { (cld[y] ??= Array(12).fill(0))[m - 1] = Math.round(100 * ca); cloudFlagged++; }
+      if (e !== 'VIIRS') { const es = ensoSig(y, m); [b10, b90] = bandLog(H, terra ? 'T' : 'TA'); b10 -= es; b90 += es; if (under) b90 += CLOUD_SLOPE * ca; lo = H * Math.exp(b10); hi = H * Math.exp(b90); }
       hy[m - 1] = Math.round(H); sy[m - 1] = e === 'VIIRS' && !gf ? 0 : 1;
       if (Vs || Ms) (st[y] ??= Array(12).fill(0))[m - 1] = e === 'VIIRS' ? Vs : Ms;
       if (gf > 0.5) (gfc[y] ??= Array(12).fill(0))[m - 1] = Math.round(gf);
-      if (H > 0.5 || V || T || A || Vs || Ms) cellsCsv += `${cell},"${prov}",${y},${m},${H.toFixed(1)},${sig ? lo.toFixed(1) : ''},${sig ? hi.toFixed(1) : ''},${sig ? b10.toFixed(3) : ''},${sig ? b90.toFixed(3) : ''},${V},${T},${A},${e},${terra},${gf ? gf.toFixed(1) : 0},${additive},${e === 'VIIRS' ? Vs : ''},${Ms}\n`;
-      const P = provAcc(prov), yi = y - Y0; P.H[yi][m - 1] += H; P.nodata[yi][m - 1] = false; P.st[yi][m - 1] += e === 'VIIRS' ? Vs : Ms; P.gf[yi][m - 1] += gf;
+      if (H > 0.5 || V || T || A || Vs || Ms) cellsCsv += `${cell},"${prov}",${y},${m},${H.toFixed(1)},${sig ? lo.toFixed(1) : ''},${sig ? hi.toFixed(1) : ''},${sig ? b10.toFixed(3) : ''},${sig ? b90.toFixed(3) : ''},${V},${T},${A},${e},${terra},${gf ? gf.toFixed(1) : 0},${additive},${ca === null ? '' : ca},${under || 0},${e === 'VIIRS' ? Vs : ''},${Ms}\n`;
+      const P = provAcc(prov), yi = y - Y0; P.H[yi][m - 1] += H; P.nodata[yi][m - 1] = false; P.st[yi][m - 1] += e === 'VIIRS' ? Vs : Ms; P.gf[yi][m - 1] += gf; if (ca !== null) { P.ca[yi][m - 1] += ca * Math.max(1, H); P.caw[yi][m - 1] += Math.max(1, H); }
     }
     h.push(hy); s.push(sy);
   }
-  compact.cells[cell] = { p: prov, h, s, ...(Object.keys(st).length ? { st } : {}), ...(Object.keys(gfc).length ? { gf: gfc } : {}) };
+  compact.cells[cell] = { p: prov, h, s, ...(Object.keys(st).length ? { st } : {}), ...(Object.keys(gfc).length ? { gf: gfc } : {}), ...(Object.keys(cld).length ? { cl: cld } : {}) };
 }
 
 // provinces + country
-const AR = { n: N_CELLS_TOTAL, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)) };
-for (const P of Object.values(provSeries)) for (let yi = 0; yi < YEARS.length; yi++) for (let m = 0; m < 12; m++) { AR.H[yi][m] += P.H[yi][m]; AR.var[yi][m] += P.var[yi][m]; if (!P.nodata[yi][m]) AR.nodata[yi][m] = false; AR.st[yi][m] += P.st[yi][m]; AR.gf[yi][m] += P.gf[yi][m]; }
+const AR = { n: N_CELLS_TOTAL, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)), ca: YEARS.map(() => Array(12).fill(0)), caw: YEARS.map(() => Array(12).fill(0)) };
+for (const P of Object.values(provSeries)) for (let yi = 0; yi < YEARS.length; yi++) for (let m = 0; m < 12; m++) { AR.H[yi][m] += P.H[yi][m]; AR.var[yi][m] += P.var[yi][m]; if (!P.nodata[yi][m]) AR.nodata[yi][m] = false; AR.st[yi][m] += P.st[yi][m]; AR.gf[yi][m] += P.gf[yi][m]; AR.ca[yi][m] += P.ca[yi][m]; AR.caw[yi][m] += P.caw[yi][m]; }
 provSeries['Argentina'] = AR;
-let provCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval [H*exp(p10), H*exp(p90)] calibrated out-of-sample by predicted count and satellite set (band_calibration.json), widened by |0.025*ONI| per side in reconstructed months; empty for observed VIIRS months without gap fill\nregion,n_cells,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,sensor,gap_fill,outage_days_terra,outage_days_aqua,outage_days_snpp,static\n`;
+let provCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval [H*exp(p10), H*exp(p90)] calibrated out-of-sample by predicted count and satellite set (band_calibration.json), widened by |0.025*ONI| per side in reconstructed months; empty for observed VIIRS months without gap fill\nregion,n_cells,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,sensor,gap_fill,outage_days_terra,outage_days_aqua,outage_days_snpp,cloud_anom,cloud_underdetection,static\n`;
 for (const [p, P] of Object.entries(provSeries)) for (let yi = 0; yi < YEARS.length; yi++) for (let m = 0; m < 12; m++) {
   if (P.nodata[yi][m]) continue;
   const yy = YEARS[yi], mm = m + 1, H = P.H[yi][m], gf = P.gf[yi][m];
   let lo = '', hi = '', b10 = '', b90 = '';
-  if (yy < 2012 && H > 0) { const es = ensoSig(yy, mm); let [q1, q9] = bandLog(H, setOf(yy, mm)); q1 -= es; q9 += es; lo = (H * Math.exp(q1)).toFixed(1); hi = (H * Math.exp(q9)).toFixed(1); b10 = q1.toFixed(3); b90 = q9.toFixed(3); }
+  const caP = P.caw[yi][m] ? P.ca[yi][m] / P.caw[yi][m] : null, underP = caP !== null && caP > CLOUD_FLAG ? +(1 - Math.exp(-CLOUD_SLOPE * caP)).toFixed(3) : 0;
+  if (yy < 2012 && H > 0) { const es = ensoSig(yy, mm); let [q1, q9] = bandLog(H, setOf(yy, mm)); q1 -= es; q9 += es; if (underP) q9 += CLOUD_SLOPE * caP; lo = (H * Math.exp(q1)).toFixed(1); hi = (H * Math.exp(q9)).toFixed(1); b10 = q1.toFixed(3); b90 = q9.toFixed(3); }
   else if (gf > 0 && H > 0) { const [q1, q9] = bandLog(gf, 'TA'); const l = H - gf + gf * Math.exp(q1), h = H - gf + gf * Math.exp(q9); lo = l.toFixed(1); hi = h.toFixed(1); b10 = Math.log(l / H).toFixed(3); b90 = Math.log(h / H).toFixed(3); }
-  provCsv += `"${p}",${P.n},${yy},${mm},${H.toFixed(1)},${lo},${hi},${b10},${b90},${era(yy, mm)},${gf ? gf.toFixed(1) : 0},${outDays('Terra', yy, mm)},${yy > 2002 || (yy === 2002 && mm >= 7) ? outDays('Aqua', yy, mm) : ''},${yy >= 2012 ? outDays('SNPP', yy, mm) : ''},${P.st[yi][m]}\n`;
+  provCsv += `"${p}",${P.n},${yy},${mm},${H.toFixed(1)},${lo},${hi},${b10},${b90},${era(yy, mm)},${gf ? gf.toFixed(1) : 0},${outDays('Terra', yy, mm)},${yy > 2002 || (yy === 2002 && mm >= 7) ? outDays('Aqua', yy, mm) : ''},${yy >= 2012 ? outDays('SNPP', yy, mm) : ''},${caP === null ? '' : caP.toFixed(3)},${underP || 0},${P.st[yi][m]}\n`;
 }
 await writeFile(path.join(OUT, 'harmonized_cells.csv'), cellsCsv);
 await writeFile(path.join(OUT, 'harmonized_provinces.csv'), provCsv);
@@ -141,6 +152,7 @@ await writeFile(path.join(OUT, 'cells.json.gz'), gzipSync(json, { level: 9 }));
 // report: country annual totals with band
 console.log(`cells: ${Object.keys(compact.cells).length} · cells.json ${(json.length / 1e6).toFixed(1)} MB (gz ${(gzipSync(json, { level: 9 }).length / 1e6).toFixed(2)} MB) · cells.csv ${(cellsCsv.length / 1e6).toFixed(1)} MB`);
 if (BETA) console.log(`ENSO conditioning applied to 2000–2011: beta=${BETA} (H *= exp(beta*ONI))`);
+if (CLOUD) console.log(`cloud obscuration flag: ${cloudFlagged} cell-months with cloud anomaly > +${CLOUD_FLAG} at the overpass (estimated under-detection 1 − exp(−3·Δ); upper bound widened in reconstructed months)`);
 console.log(`gap fill (VIIRS-eq hotspots added): S-NPP outages ${Math.round(fillTotal.snpp)} · Terra outages ${Math.round(fillTotal.terra)} · Aqua outages ${Math.round(fillTotal.aqua)} · Terra-only era ${Math.round(fillTotal.terra_only)} · additive term (MODIS = 0 months) ${Math.round(fillTotal.additive)}`);
 for (const set of ['TA', 'T']) console.log(`80% interval by predicted count (${set}): ` + BINSET[set].map(b => `${b.P_min}+:[${(100 * (Math.exp(b.p10_log) - 1)).toFixed(0)}%,+${(100 * (Math.exp(b.p90_log) - 1)).toFixed(0)}%]`).join(' '));
 console.log('\nArgentina, annual VIIRS-equivalent hotspots (vegetation class); interval = sum of monthly 80% intervals (conservative):');

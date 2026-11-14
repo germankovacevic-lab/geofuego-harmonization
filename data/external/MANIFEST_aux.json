@@ -19,5 +19,18 @@
     ],
     "bytes": 53439832,
     "sha256": "d760fc4bac0851d08407042ebd89591965d7b30ca7443c35de50a8691eecc360"
+  },
+  "era5_tp_monthly": {
+    "dataset": "reanalysis-era5-single-levels-monthly-means",
+    "product": "monthly_averaged_reanalysis",
+    "variable": "total_precipitation",
+    "area": [
+      -21,
+      -74,
+      -55,
+      -53
+    ],
+    "bytes": 5802668,
+    "sha256": "9ab4d6477ad6a37554a474868264130fff9295f20f7d23deab1aa988bb7825c8"
   }
 }

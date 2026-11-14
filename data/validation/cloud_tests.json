@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-14T16:23:33.157Z",
+ "generated": "2026-11-14T16:32:19.139Z",
  "source": "ERA5 monthly averaged reanalysis by hour of day, total_cloud_cover, 0.25deg (Copernicus CDS)",
  "testA_ratio_residual_vs_cloud": {
   "differential_anomaly": {
@@ -297,6 +297,62 @@
      "median_log_ratio": -1.065
     }
    ]
+  }
+ },
+ "testC_cloud_conditional_on_precip": {
+  "viirs_day13": {
+   "cloud_only": {
+    "r": -0.463,
+    "slope": -4.62
+   },
+   "precip_only": {
+    "r": -0.449,
+    "slope_per_mm_day": -0.314
+   },
+   "cloud_vs_precip_r": 0.559,
+   "joint": {
+    "n": 2716,
+    "intercept": -0.469,
+    "slope_cloud": -3.08,
+    "slope_precip_per_mm_day": -0.193,
+    "r2": 0.267
+   }
+  },
+  "modis_TA_day13": {
+   "cloud_only": {
+    "r": -0.416,
+    "slope": -4.12
+   },
+   "precip_only": {
+    "r": -0.393,
+    "slope_per_mm_day": -0.266
+   },
+   "cloud_vs_precip_r": 0.547,
+   "joint": {
+    "n": 4107,
+    "intercept": -0.435,
+    "slope_cloud": -2.84,
+    "slope_precip_per_mm_day": -0.16,
+    "r2": 0.212
+   }
+  },
+  "modis_T_terra": {
+   "cloud_only": {
+    "r": -0.422,
+    "slope": -4.18
+   },
+   "precip_only": {
+    "r": -0.401,
+    "slope_per_mm_day": -0.265
+   },
+   "cloud_vs_precip_r": 0.587,
+   "joint": {
+    "n": 3011,
+    "intercept": -0.43,
+    "slope_cloud": -2.82,
+    "slope_precip_per_mm_day": -0.155,
+    "r2": 0.214
+   }
   }
  }
 }

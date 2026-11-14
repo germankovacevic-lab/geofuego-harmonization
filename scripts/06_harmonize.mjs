@@ -57,6 +57,12 @@ const outDays = (sat, y, m) => COV.by_month[sat]?.[`${y}-${String(m).padStart(2,
 const dim = (y, m) => new Date(Date.UTC(y, m, 0)).getUTCDate();
 // province-level Terra/Aqua ratio per calendar month (2003–2023, all days) for filling one MODIS satellite with the other
 const rTA = {}; { const acc = {}; for (const [cid, yrs] of Object.entries(agg.cells)) { const p = provOf.get(+cid); if (!p) continue; for (const [y, ms] of Object.entries(yrs)) { if (+y < 2003 || +y > 2023) continue; for (const [m, r] of Object.entries(ms)) { const o = ((acc[p] ??= {})[m] ??= [0, 0]); o[0] += r[1]; o[1] += r[2]; } } } for (const [p, ms] of Object.entries(acc)) { rTA[p] = {}; for (const [m, [T, A]] of Object.entries(ms)) rTA[p][m] = A > 0 ? T / A : 0.55; } }
+// Optional ENSO conditioning of the reconstructed years (05e_enso.mjs): H *= exp(BETA * ONI(y,m)); BETA < 0 raises the
+// factor in La Niña (dry) months. Applied only to MODIS-reconstructed months (2000–2011); observed VIIRS is untouched.
+const BETA = +(process.argv.find(a => a.startsWith('--enso-beta='))?.split('=')[1] || 0);
+const ONI = {};
+if (BETA) { const SEAS = ['DJF', 'JFM', 'FMA', 'MAM', 'AMJ', 'MJJ', 'JJA', 'JAS', 'ASO', 'SON', 'OND', 'NDJ']; for (const line of (await readFile(path.join(process.env.HOME, '.openclaw', 'data', 'firms_ar', 'oni.ascii.txt'), 'utf8')).split('\n').slice(1)) { const f = line.trim().split(/\s+/); const mi = SEAS.indexOf(f[0]) + 1; if (mi) ONI[`${f[1]}-${mi}`] = +f[3]; } }
+const ensoAdj = (y, m) => BETA && y < 2012 ? Math.exp(BETA * (ONI[`${y}-${m}`] ?? 0)) : 1;
 const era = (y, m) => y >= 2012 ? 'VIIRS' : (y > 2002 || (y === 2002 && m >= 7)) ? 'MODIS->VIIRS-eq' : (y > 2000 || m >= 11) ? 'MODIS-Terra->VIIRS-eq' : null;
 
 let cellsCsv = `${SI_NOTE}\ncell,prov,year,month,H,H_lo,H_hi,sigma_log,V,T,A,sensor,terra_only,gap_fill,static_viirs,static_modis\n`;
@@ -80,10 +86,12 @@ for (const [cid, yrs] of Object.entries(agg.cells)) {
       if (e === 'VIIRS') { H = V; if (Mso) { gf = fTA[m - 1][0] * Mso; H += gf; fillTotal.snpp += gf; } }
       else if (e === 'MODIS->VIIRS-eq') {
         const k = rTA[prov]?.[m] ?? 0.55; const fillT = Ato * k, fillA = Tao / Math.max(k, 0.05);
-        H = fTA[m - 1][0] * (T + A + fillT + fillA); gf = fTA[m - 1][0] * (fillT + fillA); fillTotal.terra += fTA[m - 1][0] * fillT; fillTotal.aqua += fTA[m - 1][0] * fillA; sig = fTA[m - 1][1];
+        const adj = ensoAdj(y, m);
+        H = fTA[m - 1][0] * (T + A + fillT + fillA) * adj; gf = fTA[m - 1][0] * (fillT + fillA) * adj; fillTotal.terra += fTA[m - 1][0] * fillT; fillTotal.aqua += fTA[m - 1][0] * fillA; sig = fTA[m - 1][1];
       } else {
         const od = outDays('Terra', y, m), scale = od ? dim(y, m) / Math.max(1, dim(y, m) - od) : 1;
-        H = fT[m - 1][0] * T * scale; gf = fT[m - 1][0] * T * (scale - 1); fillTotal.terra_only += gf; sig = fT[m - 1][1]; terra = 1;
+        const adj = ensoAdj(y, m);
+        H = fT[m - 1][0] * T * scale * adj; gf = fT[m - 1][0] * T * (scale - 1) * adj; fillTotal.terra_only += gf; sig = fT[m - 1][1]; terra = 1;
       }
       const lo = sig ? H * Math.exp(-Z * sig) : H, hi = sig ? H * Math.exp(Z * sig) : H;
       hy[m - 1] = Math.round(H); sy[m - 1] = Math.round(sig * 1000);
@@ -116,6 +124,7 @@ await writeFile(path.join(OUT, 'cells.json.gz'), gzipSync(json, { level: 9 }));
 
 // report: country annual totals with band
 console.log(`cells: ${Object.keys(compact.cells).length} · cells.json ${(json.length / 1e6).toFixed(1)} MB (gz ${(gzipSync(json, { level: 9 }).length / 1e6).toFixed(2)} MB) · cells.csv ${(cellsCsv.length / 1e6).toFixed(1)} MB`);
+if (BETA) console.log(`ENSO conditioning applied to 2000–2011: beta=${BETA} (H *= exp(beta*ONI))`);
 console.log(`gap fill (VIIRS-eq hotspots added): S-NPP outages ${Math.round(fillTotal.snpp)} · Terra outages ${Math.round(fillTotal.terra)} · Aqua outages ${Math.round(fillTotal.aqua)} · Terra-only era ${Math.round(fillTotal.terra_only)}`);
 console.log(`empirical σ curve (LOYO, monthly median |err| vs n cells): ` + CURVE.map(([n, s]) => `${n}:${(100 * s).toFixed(0)}%`).join(' '));
 console.log('\nArgentina, annual VIIRS-equivalent hotspots (vegetation class), band = IC80 (max of RSS and LOYO floor):');

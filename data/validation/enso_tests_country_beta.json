@@ -1,0 +1,750 @@
+{
+ "generated": "2026-11-14T14:59:11.765Z",
+ "phases": {
+  "2012": "neutral",
+  "2013": "neutral",
+  "2014": "neutral",
+  "2015": "Niño",
+  "2016": "neutral",
+  "2017": "neutral",
+  "2018": "Niño",
+  "2019": "neutral",
+  "2020": "Niña",
+  "2021": "Niña",
+  "2022": "Niña",
+  "2023": "Niño"
+ },
+ "test1": {
+  "patagonia": {
+   "annual_r": -0.101,
+   "monthly_resid_r": 0.117,
+   "n_months": 60,
+   "by_year": [
+    {
+     "y": 2012,
+     "ratio": 4.631,
+     "oni": 0.29,
+     "phase": "neutral"
+    },
+    {
+     "y": 2013,
+     "ratio": 4.514,
+     "oni": -0.27,
+     "phase": "neutral"
+    },
+    {
+     "y": 2014,
+     "ratio": 5.035,
+     "oni": 0.32,
+     "phase": "neutral"
+    },
+    {
+     "y": 2015,
+     "ratio": 3.935,
+     "oni": 1.98,
+     "phase": "Niño"
+    },
+    {
+     "y": 2016,
+     "ratio": 4.514,
+     "oni": -0.39,
+     "phase": "neutral"
+    },
+    {
+     "y": 2017,
+     "ratio": 3.373,
+     "oni": -0.24,
+     "phase": "neutral"
+    },
+    {
+     "y": 2018,
+     "ratio": 4.26,
+     "oni": 0.58,
+     "phase": "Niño"
+    },
+    {
+     "y": 2019,
+     "ratio": 3.896,
+     "oni": 0.42,
+     "phase": "neutral"
+    },
+    {
+     "y": 2020,
+     "ratio": 3.731,
+     "oni": -0.72,
+     "phase": "Niña"
+    },
+    {
+     "y": 2021,
+     "ratio": 3.916,
+     "oni": -0.63,
+     "phase": "Niña"
+    },
+    {
+     "y": 2022,
+     "ratio": 4.158,
+     "oni": -0.81,
+     "phase": "Niña"
+    },
+    {
+     "y": 2023,
+     "ratio": 3.582,
+     "oni": 1.48,
+     "phase": "Niño"
+    }
+   ]
+  },
+  "Argentina": {
+   "annual_r": -0.357,
+   "monthly_resid_r": -0.374,
+   "n_months": 144,
+   "by_year": [
+    {
+     "y": 2012,
+     "ratio": 3.132,
+     "oni": 0.29,
+     "phase": "neutral"
+    },
+    {
+     "y": 2013,
+     "ratio": 3.325,
+     "oni": -0.27,
+     "phase": "neutral"
+    },
+    {
+     "y": 2014,
+     "ratio": 3.107,
+     "oni": 0.32,
+     "phase": "neutral"
+    },
+    {
+     "y": 2015,
+     "ratio": 3.196,
+     "oni": 1.98,
+     "phase": "Niño"
+    },
+    {
+     "y": 2016,
+     "ratio": 3.066,
+     "oni": -0.39,
+     "phase": "neutral"
+    },
+    {
+     "y": 2017,
+     "ratio": 3.123,
+     "oni": -0.24,
+     "phase": "neutral"
+    },
+    {
+     "y": 2018,
+     "ratio": 3.278,
+     "oni": 0.58,
+     "phase": "Niño"
+    },
+    {
+     "y": 2019,
+     "ratio": 3.063,
+     "oni": 0.42,
+     "phase": "neutral"
+    },
+    {
+     "y": 2020,
+     "ratio": 3.488,
+     "oni": -0.72,
+     "phase": "Niña"
+    },
+    {
+     "y": 2021,
+     "ratio": 3.254,
+     "oni": -0.63,
+     "phase": "Niña"
+    },
+    {
+     "y": 2022,
+     "ratio": 3.829,
+     "oni": -0.81,
+     "phase": "Niña"
+    },
+    {
+     "y": 2023,
+     "ratio": 3.302,
+     "oni": 1.48,
+     "phase": "Niño"
+    }
+   ]
+  },
+  "pampa": {
+   "annual_r": -0.461,
+   "monthly_resid_r": -0.331,
+   "n_months": 137,
+   "by_year": [
+    {
+     "y": 2012,
+     "ratio": 2.529,
+     "oni": 0.29,
+     "phase": "neutral"
+    },
+    {
+     "y": 2013,
+     "ratio": 3.404,
+     "oni": -0.27,
+     "phase": "neutral"
+    },
+    {
+     "y": 2014,
+     "ratio": 3.013,
+     "oni": 0.32,
+     "phase": "neutral"
+    },
+    {
+     "y": 2015,
+     "ratio": 2.681,
+     "oni": 1.98,
+     "phase": "Niño"
+    },
+    {
+     "y": 2016,
+     "ratio": 3.01,
+     "oni": -0.39,
+     "phase": "neutral"
+    },
+    {
+     "y": 2017,
+     "ratio": 3.571,
+     "oni": -0.24,
+     "phase": "neutral"
+    },
+    {
+     "y": 2018,
+     "ratio": 3.242,
+     "oni": 0.58,
+     "phase": "Niño"
+    },
+    {
+     "y": 2019,
+     "ratio": 3.371,
+     "oni": 0.42,
+     "phase": "neutral"
+    },
+    {
+     "y": 2020,
+     "ratio": 3.548,
+     "oni": -0.72,
+     "phase": "Niña"
+    },
+    {
+     "y": 2021,
+     "ratio": 3.397,
+     "oni": -0.63,
+     "phase": "Niña"
+    },
+    {
+     "y": 2022,
+     "ratio": 3.613,
+     "oni": -0.81,
+     "phase": "Niña"
+    },
+    {
+     "y": 2023,
+     "ratio": 3.512,
+     "oni": 1.48,
+     "phase": "Niño"
+    }
+   ]
+  },
+  "monte-cuyo": {
+   "annual_r": -0.023,
+   "monthly_resid_r": 0.045,
+   "n_months": 78,
+   "by_year": [
+    {
+     "y": 2012,
+     "ratio": 3.09,
+     "oni": 0.29,
+     "phase": "neutral"
+    },
+    {
+     "y": 2013,
+     "ratio": 3.137,
+     "oni": -0.27,
+     "phase": "neutral"
+    },
+    {
+     "y": 2014,
+     "ratio": 3.217,
+     "oni": 0.32,
+     "phase": "neutral"
+    },
+    {
+     "y": 2015,
+     "ratio": 3.099,
+     "oni": 1.98,
+     "phase": "Niño"
+    },
+    {
+     "y": 2016,
+     "ratio": 3.209,
+     "oni": -0.39,
+     "phase": "neutral"
+    },
+    {
+     "y": 2017,
+     "ratio": 3.682,
+     "oni": -0.24,
+     "phase": "neutral"
+    },
+    {
+     "y": 2018,
+     "ratio": 3.383,
+     "oni": 0.58,
+     "phase": "Niño"
+    },
+    {
+     "y": 2019,
+     "ratio": 3.249,
+     "oni": 0.42,
+     "phase": "neutral"
+    },
+    {
+     "y": 2020,
+     "ratio": 3.502,
+     "oni": -0.72,
+     "phase": "Niña"
+    },
+    {
+     "y": 2021,
+     "ratio": 3.447,
+     "oni": -0.63,
+     "phase": "Niña"
+    },
+    {
+     "y": 2022,
+     "ratio": 3.269,
+     "oni": -0.81,
+     "phase": "Niña"
+    },
+    {
+     "y": 2023,
+     "ratio": 3.815,
+     "oni": 1.48,
+     "phase": "Niño"
+    }
+   ]
+  },
+  "litoral-nea": {
+   "annual_r": -0.158,
+   "monthly_resid_r": -0.366,
+   "n_months": 143,
+   "by_year": [
+    {
+     "y": 2012,
+     "ratio": 3.211,
+     "oni": 0.29,
+     "phase": "neutral"
+    },
+    {
+     "y": 2013,
+     "ratio": 3.131,
+     "oni": -0.27,
+     "phase": "neutral"
+    },
+    {
+     "y": 2014,
+     "ratio": 3.192,
+     "oni": 0.32,
+     "phase": "neutral"
+    },
+    {
+     "y": 2015,
+     "ratio": 3.275,
+     "oni": 1.98,
+     "phase": "Niño"
+    },
+    {
+     "y": 2016,
+     "ratio": 2.945,
+     "oni": -0.39,
+     "phase": "neutral"
+    },
+    {
+     "y": 2017,
+     "ratio": 2.981,
+     "oni": -0.24,
+     "phase": "neutral"
+    },
+    {
+     "y": 2018,
+     "ratio": 3.296,
+     "oni": 0.58,
+     "phase": "Niño"
+    },
+    {
+     "y": 2019,
+     "ratio": 3.003,
+     "oni": 0.42,
+     "phase": "neutral"
+    },
+    {
+     "y": 2020,
+     "ratio": 3.565,
+     "oni": -0.72,
+     "phase": "Niña"
+    },
+    {
+     "y": 2021,
+     "ratio": 3.352,
+     "oni": -0.63,
+     "phase": "Niña"
+    },
+    {
+     "y": 2022,
+     "ratio": 3.758,
+     "oni": -0.81,
+     "phase": "Niña"
+    },
+    {
+     "y": 2023,
+     "ratio": 3.346,
+     "oni": 1.48,
+     "phase": "Niño"
+    }
+   ]
+  },
+  "noa-chaco-seco": {
+   "annual_r": -0.307,
+   "monthly_resid_r": -0.187,
+   "n_months": 122,
+   "by_year": [
+    {
+     "y": 2012,
+     "ratio": 3.067,
+     "oni": 0.29,
+     "phase": "neutral"
+    },
+    {
+     "y": 2013,
+     "ratio": 3.544,
+     "oni": -0.27,
+     "phase": "neutral"
+    },
+    {
+     "y": 2014,
+     "ratio": 2.827,
+     "oni": 0.32,
+     "phase": "neutral"
+    },
+    {
+     "y": 2015,
+     "ratio": 3.067,
+     "oni": 1.98,
+     "phase": "Niño"
+    },
+    {
+     "y": 2016,
+     "ratio": 2.837,
+     "oni": -0.39,
+     "phase": "neutral"
+    },
+    {
+     "y": 2017,
+     "ratio": 2.739,
+     "oni": -0.24,
+     "phase": "neutral"
+    },
+    {
+     "y": 2018,
+     "ratio": 3.068,
+     "oni": 0.58,
+     "phase": "Niño"
+    },
+    {
+     "y": 2019,
+     "ratio": 2.856,
+     "oni": 0.42,
+     "phase": "neutral"
+    },
+    {
+     "y": 2020,
+     "ratio": 3.085,
+     "oni": -0.72,
+     "phase": "Niña"
+    },
+    {
+     "y": 2021,
+     "ratio": 2.798,
+     "oni": -0.63,
+     "phase": "Niña"
+    },
+    {
+     "y": 2022,
+     "ratio": 4.184,
+     "oni": -0.81,
+     "phase": "Niña"
+    },
+    {
+     "y": 2023,
+     "ratio": 2.803,
+     "oni": 1.48,
+     "phase": "Niño"
+    }
+   ]
+  }
+ },
+ "test2": {
+  "Niña": {
+   "test_years": [
+    2020,
+    2021,
+    2022
+   ],
+   "per_year": {
+    "2020": {
+     "prov_mape": 0.1076,
+     "pred_over_obs": 0.922,
+     "phase": "Niña"
+    },
+    "2021": {
+     "prov_mape": 0.0953,
+     "pred_over_obs": 0.969,
+     "phase": "Niña"
+    },
+    "2022": {
+     "prov_mape": 0.1563,
+     "pred_over_obs": 0.879,
+     "phase": "Niña"
+    }
+   },
+   "prov_mape": 0.1192,
+   "pred_over_obs": 0.918,
+   "loyo_same_years": {
+    "prov_mape": 0.0933,
+    "pred_over_obs_mean": 0.949
+   }
+  },
+  "Niño": {
+   "test_years": [
+    2015,
+    2018,
+    2023
+   ],
+   "per_year": {
+    "2015": {
+     "prov_mape": 0.1086,
+     "pred_over_obs": 0.997,
+     "phase": "Niño"
+    },
+    "2018": {
+     "prov_mape": 0.1408,
+     "pred_over_obs": 0.993,
+     "phase": "Niño"
+    },
+    "2023": {
+     "prov_mape": 0.1059,
+     "pred_over_obs": 0.975,
+     "phase": "Niño"
+    }
+   },
+   "prov_mape": 0.1186,
+   "pred_over_obs": 0.988,
+   "loyo_same_years": {
+    "prov_mape": 0.114,
+    "pred_over_obs_mean": 0.987
+   }
+  },
+  "neutral": {
+   "test_years": [
+    2012,
+    2013,
+    2014,
+    2016,
+    2017,
+    2019
+   ],
+   "per_year": {
+    "2012": {
+     "prov_mape": 0.1048,
+     "pred_over_obs": 1.034,
+     "phase": "neutral"
+    },
+    "2013": {
+     "prov_mape": 0.1172,
+     "pred_over_obs": 0.981,
+     "phase": "neutral"
+    },
+    "2014": {
+     "prov_mape": 0.155,
+     "pred_over_obs": 1.041,
+     "phase": "neutral"
+    },
+    "2016": {
+     "prov_mape": 0.127,
+     "pred_over_obs": 1.019,
+     "phase": "neutral"
+    },
+    "2017": {
+     "prov_mape": 0.1705,
+     "pred_over_obs": 1.036,
+     "phase": "neutral"
+    },
+    "2019": {
+     "prov_mape": 0.1042,
+     "pred_over_obs": 1.03,
+     "phase": "neutral"
+    }
+   },
+   "prov_mape": 0.1295,
+   "pred_over_obs": 1.021,
+   "loyo_same_years": {
+    "prov_mape": 0.1076,
+    "pred_over_obs_mean": 0.996
+   }
+  }
+ },
+ "test3": {
+  "baseline": {
+   "2012": {
+    "prov_mape": 0.0851,
+    "pred_over_obs": 1.006,
+    "phase": "neutral"
+   },
+   "2013": {
+    "prov_mape": 0.1103,
+    "pred_over_obs": 0.954,
+    "phase": "neutral"
+   },
+   "2014": {
+    "prov_mape": 0.1132,
+    "pred_over_obs": 1.009,
+    "phase": "neutral"
+   },
+   "2015": {
+    "prov_mape": 0.1033,
+    "pred_over_obs": 0.998,
+    "phase": "Niño"
+   },
+   "2016": {
+    "prov_mape": 0.0999,
+    "pred_over_obs": 0.981,
+    "phase": "neutral"
+   },
+   "2017": {
+    "prov_mape": 0.1331,
+    "pred_over_obs": 1.016,
+    "phase": "neutral"
+   },
+   "2018": {
+    "prov_mape": 0.1352,
+    "pred_over_obs": 0.99,
+    "phase": "Niño"
+   },
+   "2019": {
+    "prov_mape": 0.1041,
+    "pred_over_obs": 1.012,
+    "phase": "neutral"
+   },
+   "2020": {
+    "prov_mape": 0.0862,
+    "pred_over_obs": 0.949,
+    "phase": "Niña"
+   },
+   "2021": {
+    "prov_mape": 0.0688,
+    "pred_over_obs": 0.998,
+    "phase": "Niña"
+   },
+   "2022": {
+    "prov_mape": 0.1248,
+    "pred_over_obs": 0.901,
+    "phase": "Niña"
+   },
+   "2023": {
+    "prov_mape": 0.1034,
+    "pred_over_obs": 0.974,
+    "phase": "Niño"
+   }
+  },
+  "enso": {
+   "2012": {
+    "prov_mape": 0.0831,
+    "pred_over_obs": 1.003,
+    "phase": "neutral"
+   },
+   "2013": {
+    "prov_mape": 0.1098,
+    "pred_over_obs": 0.963,
+    "phase": "neutral"
+   },
+   "2014": {
+    "prov_mape": 0.1125,
+    "pred_over_obs": 1.005,
+    "phase": "neutral"
+   },
+   "2015": {
+    "prov_mape": 0.1025,
+    "pred_over_obs": 1.008,
+    "phase": "Niño"
+   },
+   "2016": {
+    "prov_mape": 0.1067,
+    "pred_over_obs": 0.984,
+    "phase": "neutral"
+   },
+   "2017": {
+    "prov_mape": 0.1375,
+    "pred_over_obs": 1.022,
+    "phase": "neutral"
+   },
+   "2018": {
+    "prov_mape": 0.1385,
+    "pred_over_obs": 0.988,
+    "phase": "Niño"
+   },
+   "2019": {
+    "prov_mape": 0.1035,
+    "pred_over_obs": 1.006,
+    "phase": "neutral"
+   },
+   "2020": {
+    "prov_mape": 0.0898,
+    "pred_over_obs": 0.964,
+    "phase": "Niña"
+   },
+   "2021": {
+    "prov_mape": 0.0796,
+    "pred_over_obs": 1.023,
+    "phase": "Niña"
+   },
+   "2022": {
+    "prov_mape": 0.1287,
+    "pred_over_obs": 0.933,
+    "phase": "Niña"
+   },
+   "2023": {
+    "prov_mape": 0.1019,
+    "pred_over_obs": 0.968,
+    "phase": "Niño"
+   }
+  },
+  "summary": {
+   "baseline": {
+    "prov_mape_mean": 0.1056,
+    "pred_over_obs_min": 0.901,
+    "pred_over_obs_max": 1.016,
+    "pred_over_obs_sd": 0.0367
+   },
+   "enso": {
+    "prov_mape_mean": 0.1078,
+    "pred_over_obs_min": 0.933,
+    "pred_over_obs_max": 1.023,
+    "pred_over_obs_sd": 0.0285
+   },
+   "beta_all_years": {
+    "patagonia": -0.025223956279165946,
+    "pampa": -0.025223956279165946,
+    "monte-cuyo": -0.025223956279165946,
+    "litoral-nea": -0.025223956279165946,
+    "noa-chaco-seco": -0.025223956279165946
+   }
+  }
+ }
+}

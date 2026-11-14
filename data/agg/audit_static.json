@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-14T18:05:40.507Z",
+  "generated": "2026-11-14T21:47:53.572Z",
   "caveat": "night fraction and FRP are inputs of rules 1-2; type-2 co-location is partly by construction with rule 3; only seasonality and threshold sensitivity are independent of every rule",
   "signatures": {
     "static": {
@@ -116,30 +116,30 @@
     }
   ],
   "by_province_viirs_share_static": {
-    "Neuquén": 0.571,
-    "Santa Cruz": 0.292,
-    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.21,
-    "Mendoza": 0.116,
+    "Neuquén": 0.58,
+    "Santa Cruz": 0.265,
+    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.247,
+    "Mendoza": 0.113,
     "Buenos Aires": 0.053,
     "Tucumán": 0.053,
-    "(outside)": 0.051,
     "San Juan": 0.05,
     "La Rioja": 0.049,
-    "Ciudad Autónoma de Buenos Aires": 0.048,
+    "(outside)": 0.048,
     "Chubut": 0.026,
+    "Ciudad Autónoma de Buenos Aires": 0.025,
     "Jujuy": 0.019,
     "Salta": 0.018,
-    "Catamarca": 0.018,
-    "Córdoba": 0.017,
+    "Córdoba": 0.018,
     "Río Negro": 0.017,
+    "Catamarca": 0.017,
     "Chaco": 0.013,
     "Entre Ríos": 0.012,
-    "Santiago del Estero": 0.011,
-    "Misiones": 0.009,
+    "Santiago del Estero": 0.01,
     "Corrientes": 0.009,
+    "Misiones": 0.009,
     "San Luis": 0.007,
-    "Santa Fe": 0.004,
     "Formosa": 0.004,
+    "Santa Fe": 0.004,
     "La Pampa": 0.004
   },
   "pre2012_modis_vegetation_inside_flare_cells": {

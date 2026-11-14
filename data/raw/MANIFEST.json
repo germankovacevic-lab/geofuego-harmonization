@@ -412,5 +412,32 @@
     "sha256": "363abafc880aae50ad44223939cbeeaff5e8a0417800e9dec57037d660860ebe",
     "rows": 272047,
     "fetched_at": "2026-11-14T13:47:22.689Z"
+  },
+  "viirs-sp_NOAA21_2023_Argentina.csv": {
+    "sensor": "viirs-sp-noaa21",
+    "year": 2023,
+    "url": "https://firms.modaps.eosdis.nasa.gov/api/area/csv/<MAP_KEY>/VIIRS_NOAA21_SP/-74,-55,-53,-21/5/<date>",
+    "bytes": 19650902,
+    "sha256": "fc298c97547ca6a5b511dad6f089af62211c8e040640c17fb0f3f49987654a26",
+    "rows": 239497,
+    "fetched_at": "2026-11-14T14:03:23.491Z"
+  },
+  "viirs-sp_NOAA21_2024_Argentina.csv": {
+    "sensor": "viirs-sp-noaa21",
+    "year": 2024,
+    "url": "https://firms.modaps.eosdis.nasa.gov/api/area/csv/<MAP_KEY>/VIIRS_NOAA21_SP/-74,-55,-53,-21/5/<date>",
+    "bytes": 25858067,
+    "sha256": "8c27a1c25a46a941a0b3be239dd6dfaa5e63d54c6622f5d8678b874073e7d902",
+    "rows": 315243,
+    "fetched_at": "2026-11-14T14:04:24.158Z"
+  },
+  "viirs-sp_NOAA21_2025_Argentina.csv": {
+    "sensor": "viirs-sp-noaa21",
+    "year": 2025,
+    "url": "https://firms.modaps.eosdis.nasa.gov/api/area/csv/<MAP_KEY>/VIIRS_NOAA21_SP/-74,-55,-53,-21/5/<date>",
+    "bytes": 21874451,
+    "sha256": "61f151ce6ffd2dbd3113e9923c379a2fda047a88ed1d3a49eb30ee18d32479ba",
+    "rows": 266607,
+    "fetched_at": "2026-11-14T14:04:58.432Z"
   }
 }

@@ -38,3 +38,6 @@ for (const [dir, files] of [['leaflet-1.9.4', ['leaflet.js', 'leaflet.css', 'LIC
 await cp(path.join(VENDOR, 'SHA256SUMS.txt'), path.join(ROOT, 'deploy', 'vendor', 'SHA256SUMS.txt'));
 for (const f of ['cells.json', 'cells_2026.json', 'oni.json', 'provincias.json']) console.log(f, ((await stat(path.join(OUT, f))).size / 1e6).toFixed(2), 'MB');
 console.log('vendor copied from', VENDOR);
+
+// cache-busting: stamp the version of app.css / app.js in index.html (browsers and the edge cache them for hours)
+{ const idx = path.join(ROOT, 'deploy', 'index.html'); const v = new Date().toISOString().replace(/\D/g, '').slice(0, 12); const html = (await readFile(idx, 'utf8')).replace(/app\.css(\?v=\d+)?"/, `app.css?v=${v}"`).replace(/app\.js(\?v=\d+)?"/, `app.js?v=${v}"`); await writeFile(idx, html); console.log('index.html assets stamped v=' + v); }

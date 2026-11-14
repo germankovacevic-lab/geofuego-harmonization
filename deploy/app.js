@@ -503,7 +503,8 @@ function initMap() {
   const grey = L.tileLayer(esri + 'Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3 });
   const topo = L.tileLayer(esri + 'World_Topo_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3 });
   sat.addTo(map);
-  L.control.layers({ [lang === 'es' ? 'Satelital' : 'Satellite']: sat, [lang === 'es' ? 'Topográfico' : 'Topographic']: topo, [lang === 'es' ? 'Gris' : 'Light grey']: grey }, null, { position: 'topright', collapsed: true }).addTo(map);
+  L.control.layers({ [lang === 'es' ? 'Satelital' : 'Satellite']: sat, [lang === 'es' ? 'Topográfico' : 'Topographic']: topo, [lang === 'es' ? 'Gris' : 'Light grey']: grey }, null, { position: 'bottomright', collapsed: true }).addTo(map);
+  const brand = document.createElement('img'); brand.src = 'assets/geofuego-globo.png'; brand.alt = ''; brand.className = 'map-globo'; document.getElementById('map').appendChild(brand);
   if (PROV) for (const p of PROV.provincias) { const l = L.polygon(p.rings.map(r => [r]), { color: '#ffffff', opacity: 0.7, weight: 1, fillOpacity: 0, fillColor: '#f5a623', interactive: true, bubblingMouseEvents: true }).addTo(map); l.bindTooltip(p.n === TDF ? 'Tierra del Fuego' : p.n, { sticky: true, direction: 'top', opacity: 0.9 }); l.on('click', () => { if (drawing()) return; $('prov').value = p.n; selectProvince(p.n); }); l.on('mouseover', () => { if (!(A && A.sel.kind === 'province' && A.sel.label === p.n)) l.setStyle({ fillOpacity: 0.12 }); }); l.on('mouseout', () => l.setStyle({ fillOpacity: 0 })); provLayers[p.n] = l; }
   drawn = new L.FeatureGroup().addTo(map);
   const ctl = new L.Control.Draw({ position: 'topleft', draw: { polyline: false, circle: false, circlemarker: false, marker: false, polygon: false, rectangle: { shapeOptions: DRAW_STYLE, showArea: false } }, edit: false });

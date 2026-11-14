@@ -63,3 +63,4 @@ footer p { margin:0; }
 .leaflet-container { background:#1b1d22; font-family:var(--font); }
 .leaflet-control-home a { display:flex; align-items:center; justify-content:center; width:30px; height:30px; color:#000; }
 .u-legend { font-size:12px; }
+.map-globo { position:absolute; right:12px; top:12px; z-index:790; height:46px; width:auto; pointer-events:none; filter:drop-shadow(0 1px 3px rgba(0,0,0,.6)); }

@@ -16,7 +16,7 @@ const T = {
     unit: 'Counts are satellite fire detections expressed in VIIRS-equivalent pixels (375 m). They are not a number of fires and not burned area. A fire that burns for several days is counted on every satellite pass.',
     eras: 'From 2012 the values are observed by VIIRS. Before 2012 they are estimated from MODIS, a coarser sensor, and shown with an 80 % range: about 1 month in 5 falls outside it.',
     smallnote: 'MODIS missed many small fires that VIIRS detects. In an area this size, a month with no value before 2012 means “MODIS detected nothing”, not “nothing burned”. Do not compare how often it burned before and after 2012.',
-    seriestitle: 'Monthly series with 80 % range', yearstitle: 'Which years burned most', seasontitle: 'Which months of the year',
+    seriestitle: 'Monthly series with 80 % range', yearstitle: 'Which years burned most', seasontitle: 'Which months of the year', wheretitle: 'Where it burns — share of hotspots by province',
     statictitle: 'Fixed heat sources (gas flares, industry) — separate series, VIIRS counts, 2012 →',
     staticnote: "Never added to the calendar above. In the sensor's own units: VIIRS counts since 2012; the MODIS-era values are not shown.",
     how: 'How to read this',
@@ -57,7 +57,7 @@ const T = {
     unit: 'Los conteos son detecciones satelitales de fuego expresadas en píxeles equivalentes VIIRS (375 m). No son cantidad de incendios ni área quemada. Un fuego que dura varios días se cuenta en cada pasada del satélite.',
     eras: 'Desde 2012 los valores son observados por VIIRS. Antes de 2012 se estiman desde MODIS, un sensor más grueso, y se muestran con un rango del 80 %: cerca de 1 mes de cada 5 cae afuera.',
     smallnote: 'MODIS no vio muchos fuegos chicos que VIIRS detecta. En un área de este tamaño, un mes sin valor antes de 2012 significa “MODIS no detectó nada”, no “no se quemó nada”. No comparar la frecuencia de meses con fuego antes y después de 2012.',
-    seriestitle: 'Serie mensual con rango del 80 %', yearstitle: 'Qué años se quemó más', seasontitle: 'Qué meses del año',
+    seriestitle: 'Serie mensual con rango del 80 %', yearstitle: 'Qué años se quemó más', seasontitle: 'Qué meses del año', wheretitle: 'Dónde se quema — participación por provincia',
     statictitle: 'Fuentes fijas de calor (antorchas de gas, industria) — serie aparte, conteos VIIRS, 2012 →',
     staticnote: 'Nunca se suman al calendario de arriba. En las unidades del sensor: conteos VIIRS desde 2012; los valores de la era MODIS no se muestran.',
     how: 'Cómo leer esto',
@@ -124,7 +124,7 @@ function aggregate(sel) {
   const recon = Array.from({ length: YEARS }, () => Array(12).fill(0)), gap = Array.from({ length: YEARS }, () => Array(12).fill(0));
   const cloudH = Array.from({ length: YEARS }, () => Array(12).fill(0)), cloudN = Array.from({ length: YEARS }, () => Array(12).fill(0)), cloudD = Array.from({ length: YEARS }, () => Array(12).fill(0));
   const st = Array.from({ length: YEARS }, () => Array(12).fill(0));
-  const provH = {}, provN = {}, regionH = {};
+  const provH = {}, provN = {}, regionH = {}; const provHY = {}; const provCur = {};
   let km2 = 0;
   for (const id of ids) {
     const c = D.cells[id]; if (!c) continue; km2 += cellKm2(id);
@@ -132,7 +132,7 @@ function aggregate(sel) {
     for (let y = 0; y < YEARS; y++) {
       const hy = c.h[y], sy = c.s[y]; const Y = Y0 + y;
       for (let m = 0; m < 12; m++) {
-        const h = hy[m]; if (h < 0) continue; has[y][m] = true; H[y][m] += h;
+        const h = hy[m]; if (h < 0) continue; has[y][m] = true; H[y][m] += h; (provHY[c.p] ??= Array.from({ length: YEARS }, () => Array(12).fill(0)))[y][m] += h;
         if (sy[m]) recon[y][m] += h;
         if (Y >= 2012) provH[c.p] = (provH[c.p] || 0) + h;
         const g = c.gf?.[Y]?.[m]; if (g) gap[y][m] += h * g / 100;
@@ -176,11 +176,11 @@ function aggregate(sel) {
   let cur = null;
   if (L26) {
     const h = Array(12).fill(0), s = Array(12).fill(0), any = Array(12).fill(false);
-    for (const id of ids) { const c = L26.cells[id]; if (!c) continue; for (let m = 0; m < 12; m++) if (c.h[m] != null) { h[m] += c.h[m]; s[m] += c.st[m] || 0; any[m] = true; } }
+    for (const id of ids) { const c = L26.cells[id]; if (!c) continue; const pn = D.cells[id]?.p; for (let m = 0; m < 12; m++) if (c.h[m] != null) { h[m] += c.h[m]; s[m] += c.st[m] || 0; any[m] = true; if (pn) (provCur[pn] ??= Array(12).fill(0))[m] += c.h[m]; } }
     const months = L26.months.map(M => ({ ...M, h: M.days ? h[M.m - 1] : null, st: M.days ? s[M.m - 1] : null, partial: M.days > 0 && (M.d0 > 0 || M.d1 > 0 || M.d2 > 0) }));
     cur = { year: L26.year, through: L26.data_through, months, bridge: L26.bridge };
   }
-  return { sel, n, km2, dominant, shareDom, region, tier, stricter, tdf, borrowed, fromYear, baselineFrom, H, has, recon, gap, cloudFlag, st, lo, hi, staticShare, cur };
+  return { sel, n, km2, dominant, shareDom, region, tier, stricter, tdf, borrowed, fromYear, baselineFrom, H, has, recon, gap, cloudFlag, st, lo, hi, staticShare, cur, provHY, provCur, provN };
 }
 
 // ---------- state & UI ----------
@@ -210,7 +210,7 @@ const viridis = x => { x = Math.max(0, Math.min(1, x)); const i = Math.min(VIR.l
 function render() {
   if (!A) return;
   $('empty').hidden = true; $('out').hidden = false;
-  renderSummary(); renderNow(); renderCalendar(); renderSeries(); renderYears(); renderSeason(); renderStatic();
+  renderSummary(); renderNow(); renderCalendar(); renderSeries(); renderYears(); renderSeason(); renderWhere(); renderStatic();
   $('small-note').hidden = !(A.tier === 'C' || A.tier === 'D');
 }
 
@@ -395,6 +395,18 @@ function renderSeason() {
   }
   ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.fillText(fmt(max), left - 4, 12); ctx.fillText('0', left - 4, Hh - bottom);
   $('season-note').textContent = ys.length ? t('seasonnote', ys[0], ys[ys.length - 1]) + (A.cur ? ` ● ${YCUR}` : '') : '';
+}
+
+// ---------- where it burns: share by province (selections spanning 2+ provinces) ----------
+function renderWhere() {
+  const card = $('where-card'); const provs = Object.keys(A.provHY); if (provs.length < 2) { card.hidden = true; return; } card.hidden = false;
+  const tot = {}; let T = 0; for (const p of provs) { let v = 0; for (let y = Math.max(A.fromYear, range.from[0]); y <= Math.min(2025, range.to[0]); y++) for (let m = 1; m <= 12; m++) if (inRange(y, m) && usable(y, m)) v += A.provHY[p][y - Y0][m - 1]; tot[p] = v; T += v; }
+  const cur = {}; let TC = 0; if (A.cur) for (const p of provs) { const a = A.provCur[p]; const v = a ? a.reduce((x, y, i) => x + (A.cur.months[i].days ? y : 0), 0) : 0; cur[p] = v; TC += v; }
+  const rows = provs.map(p => ({ p, share: T ? tot[p] / T : 0, cshare: TC ? cur[p] / TC : 0, tot: tot[p] })).sort((a, b) => b.share - a.share).slice(0, 10);
+  const cv = $('where'), ctx = cv.getContext('2d'); const W = cv.width, rowH = 24, left = 150, Hh = rows.length * rowH + 30; cv.height = Hh; ctx.clearRect(0, 0, W, Hh); ctx.fillStyle = '#1e2230'; ctx.fillRect(0, 0, W, Hh);
+  const max = Math.max(0.01, ...rows.map(r => Math.max(r.share, r.cshare))); const bw = W - left - 120; ctx.font = '12px system-ui, sans-serif'; ctx.textBaseline = 'middle';
+  rows.forEach((r, i) => { const y = 8 + i * rowH; ctx.fillStyle = '#e8eaf0'; ctx.textAlign = 'right'; ctx.fillText(r.p === TDF ? 'Tierra del Fuego' : r.p, left - 8, y + 10); ctx.fillStyle = '#f5a623'; ctx.fillRect(left, y + 2, bw * r.share / max, 9); if (A.cur) { ctx.fillStyle = '#7dd3a5'; ctx.fillRect(left, y + 12, bw * r.cshare / max, 6); } ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'left'; ctx.fillText(`${(100 * r.share).toFixed(1)} %${A.cur ? ` · ${(100 * r.cshare).toFixed(0)} %` : ''}`, left + bw * Math.max(r.share, r.cshare) / max + 6, y + 10); });
+  ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'left'; ctx.fillText(lang === 'es' ? `naranja: participación ${Math.max(A.fromYear, range.from[0])}–${Math.min(2025, range.to[0])} · verde: ${YCUR} a la fecha` : `orange: share ${Math.max(A.fromYear, range.from[0])}–${Math.min(2025, range.to[0])} · green: ${YCUR} to date`, left, Hh - 10);
 }
 
 // ---------- static sources (R6) ----------

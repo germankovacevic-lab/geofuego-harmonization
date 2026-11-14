@@ -513,11 +513,12 @@ function selectLayer(layer) { const { ids, snapped1 } = cellsForLayer(layer); co
 function rectToCells(layer) { const { ids } = cellsForLayer(layer); drawn.clearLayers(); if (!ids.length) return; picked = new Set(ids); paintPicked(); A = null; select({ kind: 'cells', label: `${t('cellsel')} (${picked.size})`, cells: [...picked] }); }
 
 function initMap() {
-  map = L.map('map', { preferCanvas: true, zoomControl: true, attributionControl: false }).setView([-38.5, -63.5], 4);
+  map = L.map('map', { preferCanvas: true, zoomControl: true, attributionControl: true }).setView([-38.5, -63.5], 4);
+  map.attributionControl.setPrefix(false);
   const esri = 'https://server.arcgisonline.com/ArcGIS/rest/services/';
-  const sat = L.layerGroup([L.tileLayer(esri + 'World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3 }), L.tileLayer(esri + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, opacity: 0.9 })]);
-  const grey = L.tileLayer(esri + 'Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3 });
-  const topo = L.tileLayer(esri + 'World_Topo_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3 });
+  const sat = L.layerGroup([L.tileLayer(esri + 'World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, attribution: '© Esri, Maxar, Earthstar Geographics · NASA FIRMS' }), L.tileLayer(esri + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, opacity: 0.9 })]);
+  const grey = L.tileLayer(esri + 'Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, attribution: '© Esri, HERE, Garmin, OpenStreetMap contributors · NASA FIRMS' });
+  const topo = L.tileLayer(esri + 'World_Topo_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, attribution: '© Esri, HERE, Garmin, FAO, NOAA, USGS · NASA FIRMS' });
   sat.addTo(map);
   L.control.layers({ [lang === 'es' ? 'Satelital' : 'Satellite']: sat, [lang === 'es' ? 'Topográfico' : 'Topographic']: topo, [lang === 'es' ? 'Gris' : 'Light grey']: grey }, null, { position: 'bottomright', collapsed: true }).addTo(map);
   const brand = document.createElement('img'); brand.src = 'assets/geofuego-globo.png'; brand.alt = ''; brand.className = 'map-globo'; document.getElementById('map').appendChild(brand);

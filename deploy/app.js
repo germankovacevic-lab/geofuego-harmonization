@@ -38,8 +38,10 @@ const T = {
     staticbanner: (pct) => `Fixed heat sources (gas flares, industry) are excluded from this calendar. In this area they are ${pct} % of all detections since 2012.`,
     partial: 'Some days of this month had fewer than three satellites reporting; the month-to-date value is a lower bound.',
     nowpre: 'Preliminary near-real-time data, month to date. Smoke and cloud hide fires from the satellite. This is not an alert system: an empty cell does not mean there is no fire.',
-    mtd: 'month to date', lastfull: 'last complete month', median: 'median', of: 'of', years: 'years', rank: (r, n) => `${ord(r)} highest of ${n} years`,
+    mtd: 'month to date', lastfull: 'last complete month', fullmonth: 'complete month', median: 'median', of: 'of', years: 'years', rank: (r, n) => `${ord(r)} highest of ${n} years`,
     vsmedian: (x) => x >= 1 ? `${x.toFixed(1)}× the median` : `${(100 * (1 - x)).toFixed(0)} % below the median`,
+    sofar: (d, n) => `${d} of ${n} days`, paced: (v) => `a typical month has ≈ ${v} by this date`, vspace: (x) => x >= 1 ? `${x.toFixed(1)}× the usual pace` : `${(100 * (1 - x)).toFixed(0)} % below the usual pace`,
+    cell: 'cell', rangenote: (a, b) => `Showing ${a} – ${b}. Medians and rankings use only the years inside this range.`, tierDon: 'Years before 2012 are shown and included in the statistics (toggle off to exclude them). Treat them as rough: 1–3 cells.', borrowedOnly: 'Factor borrowed from the region (not estimated in this area): too few detections to fit a local conversion.', prelimfull: 'preliminary, near-real-time, complete month', rangehi: 'range high', rangelo: 'range low', outside: 'Point outside the mainland grid: no hotspot data.', needpt: 'Enter both latitude and longitude.',
     nodata26: 'No data yet for the current year in this area.', baseline: 'baseline', recon: 'reconstructed from MODIS', obs: 'observed (VIIRS)', terra: 'Terra only', nodata: 'no data',
     nomodis: 'no MODIS detection', range: '80 % range', cloud: 'cloudier than usual at overpass time: the count may be low', gap: (p) => `partly modelled (satellite outage${p ? `, ${p} %` : ''})`,
     prelim: 'preliminary, near-real-time, month to date', snppeq: 'S-NPP-equivalent', hotspots: 'VIIRS-equivalent hotspots',
@@ -78,8 +80,10 @@ const T = {
     staticbanner: (pct) => `Las fuentes fijas de calor (antorchas de gas, industria) están excluidas de este calendario. En esta área son el ${pct} % de todas las detecciones desde 2012.`,
     partial: 'Algunos días de este mes reportaron menos de tres satélites; el valor a la fecha es una cota inferior.',
     nowpre: 'Datos preliminares casi en tiempo real, mes a la fecha. El humo y las nubes esconden fuegos al satélite. No es un sistema de alerta: una celda vacía no significa que no haya fuego.',
-    mtd: 'mes a la fecha', lastfull: 'último mes completo', median: 'mediana', of: 'de', years: 'años', rank: (r, n) => `${r}º más alto de ${n} años`,
+    mtd: 'mes a la fecha', lastfull: 'último mes completo', fullmonth: 'mes completo', median: 'mediana', of: 'de', years: 'años', rank: (r, n) => `${r}º más alto de ${n} años`,
     vsmedian: (x) => x >= 1 ? `${x.toFixed(1).replace('.', ',')}× la mediana` : `${(100 * (1 - x)).toFixed(0)} % debajo de la mediana`,
+    sofar: (d, n) => `${d} de ${n} días`, paced: (v) => `un mes típico lleva ≈ ${v} a esta fecha`, vspace: (x) => x >= 1 ? `${x.toFixed(1).replace('.', ',')}× el ritmo habitual` : `${(100 * (1 - x)).toFixed(0)} % debajo del ritmo habitual`,
+    cell: 'celda', rangenote: (a, b) => `Mostrando ${a} – ${b}. Medianas y rankings usan solo los años dentro de este rango.`, tierDon: 'Los años anteriores a 2012 se muestran e incluyen en las estadísticas (desactivá el interruptor para excluirlos). Tomarlos como aproximados: 1–3 celdas.', borrowedOnly: 'Factor prestado de la región (no estimado en esta área): muy pocas detecciones para ajustar una conversión local.', prelimfull: 'preliminar, casi en tiempo real, mes completo', rangehi: 'rango alto', rangelo: 'rango bajo', outside: 'Punto fuera de la grilla continental: sin datos de focos.', needpt: 'Ingresá latitud y longitud.',
     nodata26: 'Todavía no hay datos del año en curso en esta área.', baseline: 'base', recon: 'reconstruido desde MODIS', obs: 'observado (VIIRS)', terra: 'solo Terra', nodata: 'sin datos',
     nomodis: 'sin detección MODIS', range: 'rango 80 %', cloud: 'más nublado que lo normal a la hora de paso: el conteo puede estar bajo', gap: (p) => `parcialmente modelado (corte de satélite${p ? `, ${p} %` : ''})`,
     prelim: 'preliminar, casi en tiempo real, mes a la fecha', snppeq: 'equivalente S-NPP', hotspots: 'focos equivalentes VIIRS',
@@ -150,6 +154,7 @@ function aggregate(sel) {
   let tier = n >= 100 ? 'A' : n >= 25 ? 'B' : n >= 4 ? 'C' : 'D';
   const stricter = STRICT.has(dominant) && shareDom > 0.5;
   if (stricter) tier = tier === 'B' ? 'C' : tier === 'C' ? 'D' : tier;
+  const lowered = stricter && n >= 4 && n < 100; // R8 actually changed the tier (B→C or C→D)
   const tdf = dominant === TDF && shareDom > 0.5;
   const borrowed = (dominant === TDF || dominant === CABA) && shareDom > 0.5;
   const fromYear = tdf ? 2012 : 2000;
@@ -163,7 +168,8 @@ function aggregate(sel) {
     // R9: flag the month when the H-weighted mean cloud anomaly at overpass time (unflagged cells count as 0) is >= +0.10
     const anom = H[y][m] > 0 ? cloudD[y][m] / H[y][m] : (cloudN[y][m] / Math.max(1, n) >= 0.5 ? 0.10 : 0);
     cloudFlag[y][m] = anom >= 0.10;
-    const s = setOf(Y, m + 1); if (!s || H[y][m] <= 0) continue;
+    // R10: a VIIRS-era month that is mostly gap-filled from MODIS (January 2012) is reconstructed: it gets the Terra+Aqua band
+    const s = setOf(Y, m + 1) || (H[y][m] > 0 && recon[y][m] > 0.5 * H[y][m] ? 'TA' : null); if (!s || H[y][m] <= 0) continue;
     const B = bins(s); let b = B[0]; for (const x of B) if (H[y][m] >= x.P_min) b = x;
     const es = Math.abs(0.025 * (ONI[`${Y}-${m + 1}`] || 0));
     const dCloud = cloudFlag[y][m] && H[y][m] > 0 ? Math.max(0, cloudD[y][m] / H[y][m]) : 0;
@@ -180,7 +186,7 @@ function aggregate(sel) {
     const months = L26.months.map(M => ({ ...M, h: M.days ? h[M.m - 1] : null, st: M.days ? s[M.m - 1] : null, partial: M.days > 0 && (M.d0 > 0 || M.d1 > 0 || M.d2 > 0) }));
     cur = { year: L26.year, through: L26.data_through, months, bridge: L26.bridge };
   }
-  return { sel, n, km2, dominant, shareDom, region, tier, stricter, tdf, borrowed, fromYear, baselineFrom, H, has, recon, gap, cloudFlag, st, lo, hi, staticShare, cur, provHY, provCur, provN };
+  return { sel, n, km2, dominant, shareDom, region, tier, stricter, lowered, tdf, borrowed, fromYear, baselineFrom, H, has, recon, gap, cloudFlag, st, lo, hi, staticShare, cur, provHY, provCur, provN };
 }
 
 // ---------- state & UI ----------
@@ -199,7 +205,12 @@ function usable(y, m) { // m 1-based, y calendar year ≤ 2025
   if (y < 2012 && A.tier === 'D' && !showPre) return false;
   return true;
 }
-const baselineYears = () => { const ys = []; for (let y = Math.max(A.baselineFrom, range.from[0]); y <= Math.min(2025, range.to[0]); y++) ys.push(y); return ys.filter(y => y !== 2000); };
+/** years that contribute at least one usable month (R5: for tiers B–D the Terra-only years drop out here, so the label matches the statistics) */
+const baselineYears = () => { const ys = []; for (let y = Math.max(A.baselineFrom, range.from[0]); y <= Math.min(2025, range.to[0]); y++) ys.push(y); return ys.filter(y => y !== 2000 && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].some(m => usable(y, m))); };
+const daysInMonth = (y, m) => new Date(Date.UTC(y, m, 0)).getUTCDate();
+const RANGE_DEFAULT = [[2000, 11], [2026, 12]];
+const rangeIsDefault = () => range.from[0] === RANGE_DEFAULT[0][0] && range.from[1] === RANGE_DEFAULT[0][1] && range.to[0] === RANGE_DEFAULT[1][0] && range.to[1] === RANGE_DEFAULT[1][1];
+const ym = ([y, m]) => `${y}-${String(m).padStart(2, '0')}`;
 const median = arr => { const a = arr.filter(v => v != null).sort((x, y) => x - y); if (!a.length) return null; const k = a.length / 2; return a.length % 2 ? a[Math.floor(k)] : (a[k - 1] + a[k]) / 2; };
 const quantile = (arr, q) => { const a = arr.filter(v => v != null).sort((x, y) => x - y); if (!a.length) return null; const i = (a.length - 1) * q, lo = Math.floor(i), hi = Math.ceil(i); return a[lo] + (a[hi] - a[lo]) * (i - lo); };
 
@@ -212,20 +223,23 @@ function render() {
   $('empty').hidden = true; $('out').hidden = false;
   renderSummary(); renderNow(); renderCalendar(); renderSeries(); renderYears(); renderSeason(); renderWhere(); renderStatic();
   $('small-note').hidden = !(A.tier === 'C' || A.tier === 'D');
+  $('tog-pre').disabled = A.tier !== 'D'; $('tog-pre').parentElement.style.opacity = A.tier !== 'D' ? '.45' : '';
+  if (location.hash !== '#' + encodeSel(A.sel)) history.replaceState(null, '', '#' + encodeSel(A.sel));
 }
 
 function renderSummary() {
   const s = A.sel; const title = s.kind === 'country' ? t('argentina') : s.kind === 'province' ? s.label : s.kind === 'point' ? `${t('point')} ${s.label}` : s.kind === 'cells' ? `${t('cellsel')} (${A.n})` : t('drawn');
   $('aoi-title').textContent = title;
-  const parts = [`${A.n} ${t('cells')} · ~${fmt(A.km2)} ${t('km2')} · ${t('tier')} ${A.tier}`];
+  const parts = [`${A.n} ${A.n === 1 ? t('cell') : t('cells')} · ~${fmt(A.km2)} ${t('km2')} · ${t('tier')} ${A.tier}`];
   if (s.kind !== 'country' && s.kind !== 'province') parts.push(`${t('dominant')} ${A.dominant} (${Math.round(100 * A.shareDom)} %)`);
   if (s.kind !== 'country') parts.push(`${t('region')}: ${A.region}`);
   $('aoi-sub').textContent = parts.join(' · ');
   const b = []; const banner = (txt, cls = '') => b.push(`<div class="banner ${cls}">${txt}</div>`);
   if (s.snapped1) banner(t('snapped1'), 'info');
-  if (A.tdf) banner(t('tdf')); else banner(t('tier' + A.tier), 'info');
-  if (A.stricter) banner(t('stricter'));
-  if (A.borrowed) banner(t('borrowed'));
+  if (A.tdf) banner(t('tdf')); else banner(t(A.tier === 'D' && showPre ? 'tierDon' : 'tier' + A.tier), 'info');
+  if (A.lowered) banner(t('stricter'));
+  if (A.borrowed && !A.tdf) banner(t('borrowedOnly'));
+  if (!rangeIsDefault()) { const ys = baselineYears(); banner(t('rangenote', ym(range.from), ym(range.to)) + (ys.length ? ` ${t('baseline')}: ${ys[0]}–${ys[ys.length - 1]}.` : ''), 'info'); }
   if (A.staticShare > 0.10) banner(t('staticbanner', Math.round(100 * A.staticShare)));
   $('banners').innerHTML = b.join('');
 }
@@ -238,22 +252,25 @@ function renderNow() {
   if (!monthsWithData.length) { el.innerHTML = `<p class="note">${t('nodata26')}</p>`; return; }
   const last = monthsWithData[monthsWithData.length - 1];
   const cards = [];
+  // a month is incomplete when the data stop before its last day; its median is prorated by the fraction of days with data (R4)
+  const frac = M => { const dim = daysInMonth(cur.year, M.m); return Math.min(1, Math.max(0, M.days / dim)); };
   const card = (M, label) => {
     const m = M.m; const hist = ys.filter(y => usable(y, m)).map(y => A.H[y - Y0][m - 1]);
-    const med = median(hist); const v = M.h;
+    const med = median(hist); const v = M.h; const f = frac(M); const partialMonth = f < 1;
     let cls = '', detail;
     if (med == null) detail = '—';
-    else if (med < 10) { const rank = hist.filter(x => x > v).length + 1; detail = t('rank', rank, hist.length + 1); cls = rank <= Math.ceil((hist.length + 1) / 3) ? 'up' : ''; }
-    else { const r = v / med; detail = t('vsmedian', r); cls = r >= 1.5 ? 'up' : r <= 0.67 ? 'down' : ''; }
-    cards.push(`<div class="kpi ${cls}"><div class="l">${t('months')[m - 1]} ${cur.year} · ${label}${M.partial ? ' ⚠' : ''}</div><div class="v">${fmt(v)}</div><div class="d">${detail}${med != null ? ` · ${t('median')} ${fmt(med)} (${ys.length} ${t('years')})` : ''}</div></div>`);
+    else if (partialMonth) { const paced = med * f; if (paced < 10) detail = `${t('sofar', M.days, daysInMonth(cur.year, m))} · ${t('median')} ${fmt(med)} (${hist.length} ${t('years')})`; else { const r = v / paced; detail = `${t('vspace', r)} · ${t('paced', fmt(paced))} · ${t('median')} ${fmt(med)} (${hist.length} ${t('years')})`; cls = r >= 1.5 ? 'up' : r <= 0.67 ? 'down' : ''; } }
+    else if (med < 10) { const rank = hist.filter(x => x > v).length + 1; detail = `${t('rank', rank, hist.length + 1)} · ${t('median')} ${fmt(med)} (${hist.length} ${t('years')})`; cls = rank <= Math.ceil((hist.length + 1) / 3) ? 'up' : ''; }
+    else { const r = v / med; detail = `${t('vsmedian', r)} · ${t('median')} ${fmt(med)} (${hist.length} ${t('years')})`; cls = r >= 1.5 ? 'up' : r <= 0.67 ? 'down' : ''; }
+    cards.push(`<div class="kpi ${cls}"><div class="l">${t('months')[m - 1]} ${cur.year} · ${label}${partialMonth ? ` (${t('sofar', M.days, daysInMonth(cur.year, m))})` : ''}${M.partial ? ' ⚠' : ''}</div><div class="v">${fmt(v)}</div><div class="d">${detail}</div></div>`);
   };
-  card(last, last.through && last.through.slice(0, 7) === `${cur.year}-${String(last.m).padStart(2, '0')}` && new Date(last.through).getUTCDate() < 28 ? t('mtd') : t('mtd'));
+  card(last, frac(last) < 1 ? t('mtd') : t('fullmonth'));
   if (monthsWithData.length > 1) card(monthsWithData[monthsWithData.length - 2], t('lastfull'));
-  // annual to date vs same-period medians
+  // year to date vs the same period in each baseline year; the incomplete month enters prorated on both sides
   const ytd = monthsWithData.reduce((a, M) => a + (M.h || 0), 0);
-  const ytdHist = ys.filter(y => monthsWithData.every(M => usable(y, M.m))).map(y => monthsWithData.reduce((a, M) => a + A.H[y - Y0][M.m - 1], 0));
+  const ytdHist = ys.filter(y => monthsWithData.every(M => usable(y, M.m))).map(y => monthsWithData.reduce((a, M) => a + A.H[y - Y0][M.m - 1] * frac(M), 0));
   const ytdMed = median(ytdHist);
-  cards.push(`<div class="kpi ${ytdMed && ytd / ytdMed >= 1.5 ? 'up' : ytdMed && ytd / ytdMed <= 0.67 ? 'down' : ''}"><div class="l">${t('months')[0]}–${t('months')[last.m - 1]} ${cur.year}</div><div class="v">${fmt(ytd)}</div><div class="d">${ytdMed != null ? `${t('vsmedian', ytd / ytdMed)} · ${t('median')} ${fmt(ytdMed)}` : '—'}</div></div>`);
+  cards.push(`<div class="kpi ${ytdMed && ytd / ytdMed >= 1.5 ? 'up' : ytdMed && ytd / ytdMed <= 0.67 ? 'down' : ''}"><div class="l">${t('months')[0]}–${t('months')[last.m - 1]} ${cur.year}${frac(last) < 1 ? ` (${t('through')} ${cur.through})` : ''}</div><div class="v">${fmt(ytd)}</div><div class="d">${ytdMed != null ? `${t(frac(last) < 1 ? 'vspace' : 'vsmedian', ytd / ytdMed)} · ${t('median')} ${fmt(ytdMed)} (${ytdHist.length} ${t('years')})` : '—'}</div></div>`);
   el.innerHTML = `<div class="now-grid">${cards.join('')}</div><p class="note">${t('nowpre')} ${t('through')} ${cur.through}. ${t('snppeq')} (NOAA-20 ÷ ${cur.bridge['NOAA-20']}, NOAA-21 ÷ ${cur.bridge['NOAA-21']}). ${t('baseline')}: ${ys[0]}–${ys[ys.length - 1]}.${monthsWithData.some(M => M.partial) ? ' ⚠ ' + t('partial') : ''}</p>`;
 }
 
@@ -263,10 +280,12 @@ function calendarRows() {
   const rows = []; for (let y = Math.max(range.from[0], 2000); y <= Math.min(range.to[0], 2026); y++) rows.push(y); return rows;
 }
 function cellValue(y, m) { // y calendar, m 1-based → { v, kind, lo, hi, flags }
-  if (y === YCUR) { const M = A.cur?.months[m - 1]; if (!M || !M.days) return { v: null, kind: 'nodata' }; return { v: M.h, kind: 'prelim', partial: M.partial, through: M.through }; }
+  if (y === YCUR) { const M = A.cur?.months[m - 1]; if (!M || !M.days) return { v: null, kind: 'nodata' }; return { v: M.h, kind: 'prelim', partial: M.partial, through: M.through, complete: M.days >= daysInMonth(YCUR, m) }; }
   const yi = y - Y0; if (!A.has[yi][m - 1]) return { v: null, kind: 'nodata' };
   const v = A.H[yi][m - 1];
-  const o = { v, kind: y >= 2012 ? 'obs' : terraOnly(y, m) ? 'terra' : 'recon', lo: A.lo[yi][m - 1], hi: A.hi[yi][m - 1], cloud: A.cloudFlag[yi][m - 1], gap: v > 0 ? A.gap[yi][m - 1] / v : 0, grey: !usable(y, m) };
+  // R10: a VIIRS-era month mostly filled from MODIS (January 2012) is labelled reconstructed; the gap share is capped at 100 %
+  const reconShare = v > 0 ? A.recon[yi][m - 1] / v : 0;
+  const o = { v, kind: y >= 2012 && reconShare <= 0.5 ? 'obs' : terraOnly(y, m) ? 'terra' : 'recon', lo: A.lo[yi][m - 1], hi: A.hi[yi][m - 1], cloud: A.cloudFlag[yi][m - 1], gap: v > 0 ? Math.min(1, A.gap[yi][m - 1] / v) : 0, grey: !usable(y, m) };
   return o;
 }
 function renderCalendar() {
@@ -312,7 +331,7 @@ function calTip(ev) {
   const tip = $('tip'); if (!hit || !hit.inR) { tip.hidden = true; return; }
   const c = hit.c; const lines = [`<b>${t('months')[hit.month - 1]} ${hit.year}</b>`];
   if (c.kind === 'nodata') lines.push(t('nodata'));
-  else if (c.kind === 'prelim') { lines.push(`${fmt(c.v)} ${t('hotspots')} (${t('snppeq')})`, t('prelim') + (c.through ? ` · ${t('through')} ${c.through}` : ''), c.partial ? '⚠ ' + t('partial') : ''); }
+  else if (c.kind === 'prelim') { lines.push(`${fmt(c.v)} ${t('hotspots')} (${t('snppeq')})`, t(c.complete ? 'prelimfull' : 'prelim') + (c.through ? ` · ${t('through')} ${c.through}` : ''), c.partial ? '⚠ ' + t('partial') : ''); }
   else {
     lines.push(`${fmt(c.v)} ${t('hotspots')}`);
     lines.push(c.kind === 'obs' ? t('obs') : c.kind === 'terra' ? `${t('recon')} (${t('terra')})` : t('recon'));
@@ -334,7 +353,7 @@ function renderSeries() {
     if (!inRange(y, m)) continue; const c = cellValue(y, m); xs.push(Date.UTC(y, m - 1, 1) / 1000);
     if (c.kind === 'prelim') { cur.push(c.v); h.push(null); lo.push(null); hi.push(null); }
     else if (c.kind === 'nodata' || c.grey) { h.push(null); lo.push(null); hi.push(null); cur.push(null); }
-    else { h.push(c.v); lo.push(c.lo ?? c.v); hi.push(c.hi ?? c.v); cur.push(null); }
+    else { h.push(c.v); lo.push(c.lo ?? null); hi.push(c.hi ?? null); cur.push(null); } // observed months carry no range (R3)
   }
   const el = $('series'); el.innerHTML = ''; if (uplot) { uplot.destroy(); uplot = null; }
   const width = Math.min(900, el.clientWidth || 900);
@@ -343,9 +362,9 @@ function renderSeries() {
     axes: [{ stroke: '#9aa3b5', grid: { stroke: '#2a3040' }, ticks: { stroke: '#2a3040' } }, { stroke: '#9aa3b5', grid: { stroke: '#2a3040' }, ticks: { stroke: '#2a3040' }, size: 60, values: (u, vs) => vs.map(v => fmt(v)) }],
     series: [
       { label: lang === 'es' ? 'mes' : 'month', value: (u, v) => v == null ? '—' : new Date(v * 1000).toISOString().slice(0, 7) },
-      { label: 'H', stroke: '#f5a623', width: 1.5, value: (u, v) => fmt(v), spanGaps: false },
-      { label: 'p90', stroke: 'rgba(245,166,35,0)', fill: 'rgba(245,166,35,0.18)', value: (u, v) => fmt(v), spanGaps: false },
-      { label: 'p10', stroke: 'rgba(245,166,35,0)', value: (u, v) => fmt(v), spanGaps: false },
+      { label: t('hotspots'), stroke: '#f5a623', width: 1.5, value: (u, v) => fmt(v), spanGaps: false },
+      { label: t('rangehi'), stroke: 'rgba(245,166,35,0)', fill: 'rgba(245,166,35,0.18)', value: (u, v) => fmt(v), spanGaps: false },
+      { label: t('rangelo'), stroke: 'rgba(245,166,35,0)', value: (u, v) => fmt(v), spanGaps: false },
       { label: String(YCUR), stroke: '#7dd3a5', width: 2, dash: [4, 3], points: { show: true, size: 6 }, value: (u, v) => fmt(v) },
     ],
     bands: [{ series: [2, 3], fill: 'rgba(245,166,35,0.18)' }],
@@ -421,18 +440,23 @@ function renderStatic() {
 }
 
 // ---------- downloads (R13) ----------
+const csvField = s => { s = String(s ?? ''); return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+const csvRow = a => a.map(csvField).join(',');
 function downloadCSV() {
-  const rows = [`# ${t('csvhdr')}`, `# unit: VIIRS-equivalent 375 m pixel counts (vegetation class; static sources in a separate column, VIIRS units from 2012) · area: ${A.sel.kind} ${A.sel.label || ''} · ${A.n} cells · tier ${A.tier} · region ${A.region} · dominant province ${A.dominant} · baseline ${A.baselineFrom}–2025 · factor_source ${A.borrowed ? 'assigned (borrowed from the region)' : 'estimated'} · generated ${new Date().toISOString()}`,
+  const ys = baselineYears(); const base = ys.length ? `${ys[0]}–${ys[ys.length - 1]}` : '—';
+  const rows = [`# ${t('csvhdr')}`, `# unit: VIIRS-equivalent 375 m pixel counts (vegetation class; static sources in a separate column, VIIRS units from 2012) · area: ${A.sel.kind} ${A.sel.label || ''} · ${A.n} cells · tier ${A.tier} · region ${A.region} · dominant province ${A.dominant} · baseline ${base} (years with usable months) · factor_source ${A.borrowed ? 'assigned (borrowed from the region)' : 'estimated'} · generated ${new Date().toISOString()}`,
+    `# rows: the full record Nov 2000 → today regardless of the date range shown on screen; in_statistics = 1 marks the months that enter medians and rankings · decimal point, comma separator`,
     'year,month,H,H_lo,H_hi,sensor,tier,baseline_from,in_statistics,reconstructed_share,gap_fill_share,cloud_flag,static_viirs,factor_source,note'];
   for (let y = 2000; y <= 2025; y++) for (let m = 1; m <= 12; m++) {
     const yi = y - Y0; if (!A.has[yi][m - 1]) continue; const v = A.H[yi][m - 1];
-    const sensor = y >= 2012 ? 'VIIRS' : terraOnly(y, m) ? 'MODIS-Terra->VIIRS-eq' : 'MODIS->VIIRS-eq';
-    const lo = A.lo[yi][m - 1], hi = A.hi[yi][m - 1]; const rs = v > 0 ? A.recon[yi][m - 1] / v : (y < 2012 ? 1 : 0), gs = v > 0 ? A.gap[yi][m - 1] / v : 0;
+    const rs = v > 0 ? A.recon[yi][m - 1] / v : (y < 2012 ? 1 : 0), gs = v > 0 ? Math.min(1, A.gap[yi][m - 1] / v) : 0;
+    const sensor = y >= 2012 ? (rs > 0.5 ? 'MODIS->VIIRS-eq (gap fill)' : 'VIIRS') : terraOnly(y, m) ? 'MODIS-Terra->VIIRS-eq' : 'MODIS->VIIRS-eq';
+    const lo = A.lo[yi][m - 1], hi = A.hi[yi][m - 1];
     const note = y < 2012 && v === 0 && (A.tier === 'C' || A.tier === 'D') ? 'no MODIS detection' : y === 2002 ? 'mixed Terra-only / Terra+Aqua year' : y === 2000 ? 'two months only' : '';
-    rows.push([y, m, v.toFixed(1), lo == null ? '' : lo.toFixed(1), hi == null ? '' : hi.toFixed(1), sensor, A.tier, A.baselineFrom, usable(y, m) ? 1 : 0, rs.toFixed(2), gs.toFixed(2), A.cloudFlag[yi][m - 1] ? 1 : 0, y >= 2012 ? A.st[yi][m - 1] : '', A.borrowed ? 'assigned' : 'estimated', note].join(','));
+    rows.push(csvRow([y, m, v.toFixed(1), lo == null ? '' : lo.toFixed(1), hi == null ? '' : hi.toFixed(1), sensor, A.tier, A.baselineFrom, usable(y, m) ? 1 : 0, rs.toFixed(2), gs.toFixed(2), A.cloudFlag[yi][m - 1] ? 1 : 0, y >= 2012 ? A.st[yi][m - 1] : '', A.borrowed ? 'assigned' : 'estimated', note]));
   }
-  if (A.cur) for (const M of A.cur.months) if (M.days) rows.push([A.cur.year, M.m, M.h.toFixed(1), '', '', `VIIRS NRT S-NPP-eq (NOAA-20/${A.cur.bridge['NOAA-20']}, NOAA-21/${A.cur.bridge['NOAA-21']})`, A.tier, A.baselineFrom, 0, 0, '', '', M.st.toFixed(1), '', `preliminary, month to date through ${M.through}; days with 3/2/1/0 satellites ${M.d3}/${M.d2}/${M.d1}/${M.d0}`].join(','));
-  save(new Blob([rows.join('\n')], { type: 'text/csv' }), `geofuego-harmonized_${slug()}.csv`);
+  if (A.cur) for (const M of A.cur.months) if (M.days) { const complete = M.days >= daysInMonth(A.cur.year, M.m); rows.push(csvRow([A.cur.year, M.m, M.h.toFixed(1), '', '', `VIIRS NRT S-NPP-eq (NOAA-20/${A.cur.bridge['NOAA-20']}, NOAA-21/${A.cur.bridge['NOAA-21']})`, A.tier, A.baselineFrom, 0, 0, '', '', M.st.toFixed(1), '', `preliminary, ${complete ? 'complete month' : `month to date through ${M.through}`}; days with 3/2/1/0 satellites ${M.d3}/${M.d2}/${M.d1}/${M.d0}`])); }
+  save(new Blob(['﻿' + rows.join('\r\n')], { type: 'text/csv;charset=utf-8' }), `geofuego-harmonized_${slug()}.csv`);
 }
 function downloadPNG() {
   const cal = $('cal'); const W = cal.width, pad = 16, titleH = 56, footH = 44; const out = document.createElement('canvas'); out.width = W + 2 * pad; out.height = cal.height + titleH + footH + 2 * pad;
@@ -496,18 +520,41 @@ function select(sel) {
   location.hash = encodeSel(sel);
   render();
 }
-function encodeSel(sel) { const p = [`lang=${lang}`]; if (sel.kind === 'country') p.push('aoi=ar'); else if (sel.kind === 'province') p.push('prov=' + encodeURIComponent(sel.label)); else if (sel.kind === 'point') p.push('pt=' + sel.label.replace(/\s/g, '')); else if (sel.kind === 'drawn' && sel.bbox) p.push('bbox=' + sel.bbox.map(v => v.toFixed(3)).join(',')); else if (sel.kind === 'cells') p.push('cells=' + sel.cells.slice(0, 400).join('.')); return p.join('&'); }
+// cell ids are encoded as sorted runs "a-b.c.d-e" (a rectangle is a handful of runs, one per grid row), never truncated
+function encodeIds(ids) { const a = [...ids].sort((x, y) => x - y); const out = []; for (let i = 0; i < a.length;) { let j = i; while (j + 1 < a.length && a[j + 1] === a[j] + 1) j++; out.push(j > i ? `${a[i]}-${a[j]}` : String(a[i])); i = j + 1; } return out.join('.'); }
+function decodeIds(s) { const ids = []; for (const part of s.split('.')) { if (!part) continue; const [a, b] = part.split('-').map(Number); if (!isFinite(a)) continue; if (b != null && isFinite(b)) { for (let k = a; k <= Math.min(b, a + 20000); k++) ids.push(k); } else ids.push(a); } return ids; }
+function encodeSel(sel) {
+  const p = [`lang=${lang}`]; if (sel.kind === 'country') p.push('aoi=ar'); else if (sel.kind === 'province') p.push('prov=' + encodeURIComponent(sel.label)); else if (sel.kind === 'point') p.push('pt=' + sel.label.replace(/\s/g, '')); else if (sel.kind === 'drawn' && sel.bbox) p.push('bbox=' + sel.bbox.map(v => v.toFixed(3)).join(',')); else if (sel.kind === 'cells') p.push('cells=' + encodeIds(sel.cells));
+  if (!rangeIsDefault()) p.push(`from=${ym(range.from)}`, `to=${ym(range.to)}`);
+  if (showPre) p.push('pre=1'); if (showStatic) p.push('st=1');
+  return p.join('&');
+}
+function readRangeFromHash(h) {
+  const parse = s => { const [y, m] = (s || '').split('-').map(Number); return y && m ? [y, m] : null; };
+  const f = parse(h.get('from')), to = parse(h.get('to'));
+  if (f || to) { range = { from: f || RANGE_DEFAULT[0], to: to || RANGE_DEFAULT[1] }; normalizeRange(); $('from').value = ym(range.from); $('to').value = ym(range.to); }
+  showPre = h.get('pre') === '1'; $('tog-pre').checked = showPre; showStatic = h.get('st') === '1'; $('tog-static').checked = showStatic;
+}
 function fromHash() {
   const h = new URLSearchParams(location.hash.replace(/^#/, ''));
+  readRangeFromHash(h);
   if (h.get('aoi') === 'ar') { selectCountry(); return true; }
   if (h.get('prov')) { const p = h.get('prov'); $('prov').value = p; selectProvince(p); return true; }
   if (h.get('pt')) { const [lat, lon] = h.get('pt').split(',').map(Number); $('lat').value = lat; $('lon').value = lon; selectPoint(lat, lon); return true; }
-  if (h.get('cells')) { picked = new Set(h.get('cells').split('.').map(Number).filter(id => D.cells[id])); if (picked.size) { paintPicked(); A = null; select({ kind: 'cells', label: `${t('cellsel')} (${picked.size})`, cells: [...picked] }); map.fitBounds(L.latLngBounds([...picked].map(id => { const [a, c, b, d] = cellBounds(id); return [[a, c], [b, d]]; }).flat()), { padding: [20, 20], maxZoom: 8, animate: false }); } return true; }
+  if (h.get('cells')) { picked = new Set(decodeIds(h.get('cells')).filter(id => D.cells[id])); if (picked.size) { paintPicked(); A = null; select({ kind: 'cells', label: `${t('cellsel')} (${picked.size})`, cells: [...picked] }); map.fitBounds(L.latLngBounds([...picked].map(id => { const [a, c, b, d] = cellBounds(id); return [[a, c], [b, d]]; }).flat()), { padding: [20, 20], maxZoom: 8, animate: false }); } return true; }
   if (h.get('bbox')) { const [s, w, n, e] = h.get('bbox').split(',').map(Number); const r = L.rectangle([[s, w], [n, e]], DRAW_STYLE); drawn.addLayer(r); selectLayer(r); return true; }
+}
+// B5: an inverted range is swapped, out-of-bounds months are clamped
+const cmpYM = (a, b) => a[0] !== b[0] ? a[0] - b[0] : a[1] - b[1];
+function normalizeRange() {
+  const clamp = v => cmpYM(v, RANGE_DEFAULT[0]) < 0 ? [...RANGE_DEFAULT[0]] : cmpYM(v, RANGE_DEFAULT[1]) > 0 ? [...RANGE_DEFAULT[1]] : [v[0], Math.min(12, Math.max(1, v[1]))];
+  range.from = clamp(range.from); range.to = clamp(range.to);
+  if (cmpYM(range.from, range.to) > 0) { const x = range.from; range.from = range.to; range.to = x; }
 }
 function selectCountry() { $('prov').value = ''; select({ kind: 'country', label: 'Argentina', cells: Object.keys(D.cells).map(Number) }); }
 function selectProvince(p) { if (!p) return; select({ kind: 'province', label: p, cells: Object.keys(D.cells).filter(id => D.cells[id].p === p).map(Number) }); }
-function selectPoint(lat, lon) { $('prov').value = ''; const id = cellOf(lat, lon); if (id == null || !D.cells[id]) { alert(lang === 'es' ? 'Punto fuera de la grilla de Argentina.' : 'Point outside the Argentina grid.'); return; } select({ kind: 'point', label: `${lat.toFixed(2)}, ${lon.toFixed(2)}`, cells: [id] }); }
+function msg(text) { const el = $('msg'); el.textContent = text || ''; el.hidden = !text; if (text) setTimeout(() => { if (el.textContent === text) { el.hidden = true; el.textContent = ''; } }, 6000); }
+function selectPoint(lat, lon) { const id = cellOf(lat, lon); if (id == null || !D.cells[id]) { msg(t('outside')); return; } $('prov').value = ''; select({ kind: 'point', label: `${lat.toFixed(2)}, ${lon.toFixed(2)}`, cells: [id] }); }
 function selectLayer(layer) { const { ids, snapped1 } = cellsForLayer(layer); const b = layer.getBounds(); select({ kind: 'drawn', label: 'drawn', cells: ids, snapped1, bbox: [b.getSouth(), b.getWest(), b.getNorth(), b.getEast()] }); }
 // rectangle tool → the cells become an editable cell selection (click to add/remove)
 function rectToCells(layer) { const { ids } = cellsForLayer(layer); drawn.clearLayers(); if (!ids.length) return; picked = new Set(ids); paintPicked(); A = null; select({ kind: 'cells', label: `${t('cellsel')} (${picked.size})`, cells: [...picked] }); }
@@ -521,6 +568,7 @@ function initMap() {
   const topo = L.tileLayer(esri + 'World_Topo_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, attribution: '© Esri, HERE, Garmin, FAO, NOAA, USGS · NASA FIRMS' });
   sat.addTo(map);
   L.control.layers({ [lang === 'es' ? 'Satelital' : 'Satellite']: sat, [lang === 'es' ? 'Topográfico' : 'Topographic']: topo, [lang === 'es' ? 'Gris' : 'Light grey']: grey }, null, { position: 'bottomright', collapsed: true }).addTo(map);
+  applyDrawLocale();
   const brand = document.createElement('img'); brand.src = 'assets/geofuego-globo.png'; brand.alt = ''; brand.className = 'map-globo'; document.getElementById('map').appendChild(brand);
   if (PROV) for (const p of PROV.provincias) { const l = L.polygon(p.rings.map(r => [r]), { color: '#ffffff', opacity: 0.7, weight: 1, fillOpacity: 0, fillColor: '#f5a623', interactive: true, bubblingMouseEvents: true }).addTo(map); l.bindTooltip(p.n === TDF ? 'Tierra del Fuego' : p.n, { sticky: true, direction: 'top', opacity: 0.9 }); l.on('click', () => { if (drawing()) return; $('prov').value = p.n; selectProvince(p.n); }); l.on('mouseover', () => { if (!(A && A.sel.kind === 'province' && A.sel.label === p.n)) l.setStyle({ fillOpacity: 0.12 }); }); l.on('mouseout', () => l.setStyle({ fillOpacity: 0 })); provLayers[p.n] = l; }
   drawn = new L.FeatureGroup().addTo(map);
@@ -532,20 +580,30 @@ function initMap() {
   buildGrid();
 }
 
+// Leaflet.draw strings (B7-i): the toolbar reads L.drawLocal when the button is built and when a drawing starts
+function applyDrawLocale() {
+  const es = lang === 'es'; const d = L.drawLocal.draw;
+  d.toolbar.buttons.rectangle = es ? 'Dibujar un rectángulo' : 'Draw a rectangle';
+  d.toolbar.actions.title = es ? 'Cancelar el dibujo' : 'Cancel drawing'; d.toolbar.actions.text = es ? 'Cancelar' : 'Cancel';
+  d.handlers.rectangle.tooltip.start = es ? 'Hacé click y arrastrá para dibujar un rectángulo' : 'Click and drag to draw a rectangle';
+  d.handlers.simpleshape.tooltip.end = es ? 'Soltá el mouse para terminar' : 'Release mouse to finish drawing';
+  const btn = document.querySelector('.leaflet-draw-draw-rectangle'); if (btn) btn.title = d.toolbar.buttons.rectangle;
+  document.title = es ? 'GeoFuego Harmonization — calendario de focos de calor de 26 años para cualquier área de Argentina' : 'GeoFuego Harmonization — a 26-year fire-hotspot calendar for any area of Argentina';
+}
 function initUI() {
   const provs = [...new Set(Object.values(D.cells).map(c => c.p))].filter(Boolean).sort((a, b) => a.localeCompare(b, 'es'));
   for (const p of provs) $('prov').append(Object.assign(document.createElement('option'), { value: p, textContent: p === TDF ? 'Tierra del Fuego' : p }));
   $('prov').addEventListener('change', e => selectProvince(e.target.value));
   $('country').addEventListener('click', () => { $('prov').value = ''; selectCountry(); });
   $('clear').addEventListener('click', clearSelection);
-  $('go').addEventListener('click', () => { const lat = +$('lat').value, lon = +$('lon').value; if (!isFinite(lat) || !isFinite(lon) || !$('lat').value || !$('lon').value) return; $('prov').value = ''; selectPoint(lat, lon); });
-  $('from').addEventListener('change', e => { const [y, m] = e.target.value.split('-').map(Number); if (y) { range.from = [y, m]; render(); } });
-  $('to').addEventListener('change', e => { const [y, m] = e.target.value.split('-').map(Number); if (y) { range.to = [y, m]; render(); } });
+  $('go').addEventListener('click', () => { const lat = +$('lat').value, lon = +$('lon').value; if (!isFinite(lat) || !isFinite(lon) || !$('lat').value || !$('lon').value) { msg(t('needpt')); return; } selectPoint(lat, lon); });
+  const onRange = () => { const p = s => { const [y, m] = s.split('-').map(Number); return y && m ? [y, m] : null; }; range = { from: p($('from').value) || RANGE_DEFAULT[0], to: p($('to').value) || RANGE_DEFAULT[1] }; normalizeRange(); $('from').value = ym(range.from); $('to').value = ym(range.to); render(); };
+  $('from').addEventListener('change', onRange); $('to').addEventListener('change', onRange);
   $('tog-pre').addEventListener('change', e => { showPre = e.target.checked; render(); });
-  $('tog-static').addEventListener('change', e => { showStatic = e.target.checked; renderStatic(); });
+  $('tog-static').addEventListener('change', e => { showStatic = e.target.checked; renderStatic(); if (A) history.replaceState(null, '', '#' + encodeSel(A.sel)); if (showStatic) $('static-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
   $('dl-csv').addEventListener('click', downloadCSV); $('dl-png').addEventListener('click', downloadPNG);
   $('cal').addEventListener('mousemove', calTip); $('cal').addEventListener('mouseleave', () => { $('tip').hidden = true; });
-  $('lang').addEventListener('click', () => { lang = lang === 'en' ? 'es' : 'en'; applyI18n(); if (A) { location.hash = encodeSel(A.sel); render(); } });
+  $('lang').addEventListener('click', () => { lang = lang === 'en' ? 'es' : 'en'; applyI18n(); applyDrawLocale(); if (A) { location.hash = encodeSel(A.sel); render(); } });
   window.addEventListener('resize', () => { if (A) renderSeries(); });
   window.addEventListener('hashchange', () => { if (A && location.hash === '#' + encodeSel(A.sel)) return; const h = new URLSearchParams(location.hash.replace(/^#/, '')); if (h.get('lang') && h.get('lang') !== lang) { lang = h.get('lang') === 'es' ? 'es' : 'en'; applyI18n(); } fromHash(); });
 }
@@ -555,5 +613,6 @@ function initUI() {
   try { await load(); } catch (e) { $('empty').innerHTML = `<p>Data could not be loaded (${e.message}).</p>`; return; }
   initMap(); initUI(); if (fromHash() === undefined && !A) selectCountry();
   window.__ready = { cells: Object.keys(D.cells).length, live: L26 ? L26.data_through : null };
+  window.__rectToCells = rectToCells; // test hook (QA scripts drive the rectangle tool without pointer gestures)
 })();
 })();

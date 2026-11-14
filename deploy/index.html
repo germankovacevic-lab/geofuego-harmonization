@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>GeoFuego Harmonization — a 25-year fire-hotspot calendar for any area of Argentina</title>
+<title>GeoFuego Harmonization — a 26-year fire-hotspot calendar for any area of Argentina</title>
 <meta name="description" content="MODIS and VIIRS active-fire hotspots harmonized into one monthly calendar, Nov 2000 → today, for any area of interest in Argentina. NASA Space Apps Challenge 2026.">
 <link rel="icon" href="assets/geofuego-icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
 <link rel="stylesheet" href="vendor/leaflet-draw-1.0.4/leaflet.draw.css">
 <link rel="stylesheet" href="vendor/uplot-1.6.31/uPlot.min.css">
-<link rel="stylesheet" href="app.css?v=202611142108">
+<link rel="stylesheet" href="app.css?v=202611142148">
 </head>
 <body>
 <header class="top">
@@ -24,8 +24,8 @@
   <div class="topright">
     <img class="globo" src="assets/geofuego-globo.png" alt="" width="545" height="423">
     <button id="lang" class="chip" type="button" aria-label="Cambiar a español">ES</button>
-    <a class="chip" href="https://github.com/germankovacevic-lab/geofuego-harmonization" rel="noopener" data-i18n="method">Method &amp; code</a>
-    <a class="chip" href="https://doi.org/10.5281/zenodo.24220107" rel="noopener">DOI</a>
+    <a class="chip" href="https://github.com/germankovacevic-lab/geofuego-harmonization" target="_blank" rel="noopener" data-i18n="method">Method &amp; code</a>
+    <a class="chip" href="https://doi.org/10.5281/zenodo.24220107" target="_blank" rel="noopener">DOI</a>
   </div>
 </header>
 
@@ -45,6 +45,7 @@
       </div>
       <button id="clear" class="btn" type="button" data-i18n="clear">Clear</button>
       <span class="hint" data-i18n="drawhint">On the map: click a province, or zoom in and click the cells you want (click again to remove); the rectangle tool selects many cells at once.</span>
+      <p id="msg" class="msg" role="status" hidden></p>
     </div>
     <div id="map" role="application" aria-label="Map of Argentina"></div>
   </section>
@@ -137,6 +138,6 @@
 <script src="vendor/leaflet-1.9.4/leaflet.js"></script>
 <script src="vendor/leaflet-draw-1.0.4/leaflet.draw.js"></script>
 <script src="vendor/uplot-1.6.31/uPlot.iife.min.js"></script>
-<script src="app.js?v=202611142108"></script>
+<script src="app.js?v=202611142148"></script>
 </body>
 </html>

@@ -22,7 +22,7 @@ const T = {
     v4l: 'Burned hectares per hotspot, after vs before 2012', v4d: 'harmonized (1 = continuous); the naive splice gives 3.12 — independent check with MODIS burned area (MCD64A1)',
     caseline: (name, months, y, x, rank, n, y0, y1) => `${name}, ${months} ${y}: <b>${x}</b> the median of ${months} ${y0}–${y1}${rank === 1 ? ` — the highest of ${n} years on record for this area` : ` — ${ord(rank)} highest of ${n} years`}.`,
     caselow: (name, months, y, v, med, rank, n) => `${name}, ${months} ${y}: <b>${v}</b> hotspots against a typical ${med}${rank === 1 ? ` — the highest of ${n} years on record for this area` : ` — ${ord(rank)} highest of ${n} years`}.`,
-    times: 'the median', fireslayer: 'Hotspots in the selected range',
+    times: 'the median', fireslayer: 'Hotspots · selected area and dates',
     steptitle: 'In 2012 the satellite changed. The record should not jump with it.', source: 'Source', harmonized: 'Harmonized', spliced: 'Spliced as recorded',
     stepmodisd2: 'the same sensor on both sides of 2012', stepharmd2: (m) => `no sensor step; MODIS alone gives ${m}`,
     stepnaive: 'Spliced as recorded', stepnaived: 'VIIRS 2012–14 vs MODIS 2009–11: the jump comes from the change of sensor',
@@ -88,7 +88,7 @@ const T = {
     v4l: 'Hectáreas quemadas por foco, después vs antes de 2012', v4d: 'armonizado (1 = continuo); el empalme ingenuo da 3,12 — control independiente con área quemada MODIS (MCD64A1)',
     caseline: (name, months, y, x, rank, n, y0, y1) => `${name}, ${months} ${y}: <b>${x}</b> la mediana de ${months} ${y0}–${y1}${rank === 1 ? ` — el más alto de ${n} años del registro para esta zona` : ` — ${rank}º más alto de ${n} años`}.`,
     caselow: (name, months, y, v, med, rank, n) => `${name}, ${months} ${y}: <b>${v}</b> focos contra un año típico de ${med}${rank === 1 ? ` — el más alto de ${n} años del registro para esta zona` : ` — ${rank}º más alto de ${n} años`}.`,
-    times: 'la mediana', fireslayer: 'Focos en el rango elegido',
+    times: 'la mediana', fireslayer: 'Focos · área y fechas elegidas',
     steptitle: 'En 2012 cambió el satélite. El registro no debería saltar con él.', source: 'Fuente', harmonized: 'Armonizado', spliced: 'Empalmado tal cual',
     stepmodisd2: 'el mismo sensor a ambos lados de 2012', stepharmd2: (m) => `sin escalón de sensor; MODIS solo da ${m}`,
     stepnaive: 'Empalmado tal cual', stepnaived: 'VIIRS 2012–14 contra MODIS 2009–11: el salto lo produce el cambio de sensor',
@@ -422,13 +422,18 @@ const fireCol = x => { x = Math.max(0, Math.min(1, x)); const i = Math.min(FIRE.
 function renderFireMap() {
   if (!map) return; const on = fireLayer && map.hasLayer(fireLayer); if (fireLayer) fireLayer.clearLayers(); else fireLayer = L.layerGroup();
   const tot = {}; let max = 0;
+  const only = A && A.sel.kind !== 'country' ? new Set(A.sel.cells.map(String)) : null; // the selected area only, coloured on its own scale
   for (const [id, c] of Object.entries(D.cells)) {
+    if (only && !only.has(id)) continue;
     let v = 0; for (let y = Math.max(range.from[0], 2000); y <= Math.min(range.to[0], 2025); y++) { const hy = c.h[y - Y0]; for (let m = 1; m <= 12; m++) if (hy[m - 1] > 0 && inRange(y, m)) v += hy[m - 1]; }
     if (L26 && range.to[0] >= YCUR) { const lc = L26.cells[id]; if (lc) for (let m = 1; m <= 12; m++) if (lc.h[m - 1] > 0 && inRange(YCUR, m)) v += lc.h[m - 1]; }
     if (v > 0) { tot[id] = v; if (v > max) max = v; }
   }
-  const lm = Math.log1p(max);
-  for (const [id, v] of Object.entries(tot)) { const x = Math.log1p(v) / lm; if (x < 0.25) continue; const [a, c, b, d] = cellBounds(+id); fireLayer.addLayer(L.rectangle([[a, c], [b, d]], { stroke: false, fillColor: RAMPS.fire ? (() => { const r0 = rampName; rampName = 'fire'; const c = ramp(0.3 + 0.7 * (x - 0.25) / 0.75).css; rampName = r0; return c; })() : fireCol((x - 0.25) / 0.75), fillOpacity: 0.15 + 0.45 * x, interactive: false })); }
+  // colour by percentile among the cells shown (full contrast in a province as in the whole country), Fire ramp
+  const sorted = Object.values(tot).sort((a, b) => a - b); const pr = v => { let lo = 0, hi = sorted.length; while (lo < hi) { const m = (lo + hi) >> 1; if (sorted[m] <= v) lo = m + 1; else hi = m; } return sorted.length > 1 ? (lo - 1) / (sorted.length - 1) : 1; };
+  const r0 = rampName; rampName = 'fire';
+  for (const [id, v] of Object.entries(tot)) { const x = pr(v); if (!only && x < 0.15) continue; const [a, c, b, d] = cellBounds(+id); fireLayer.addLayer(L.rectangle([[a, c], [b, d]], { stroke: false, fillColor: ramp(0.12 + 0.88 * x).css, fillOpacity: 0.3 + 0.5 * x, interactive: false })); }
+  rampName = r0;
   if (on || fireLayer._first !== false) { fireLayer.addTo(map); fireLayer._first = false; }
 }
 
@@ -743,12 +748,13 @@ function select(sel) {
   A = aggregate(sel);
   if (cellsLayer) { cellsLayer.remove(); cellsLayer = null; }
   const feats = sel.cells.map(id => { const [a, c, b, d] = cellBounds(id); return [[a, c], [b, d]]; });
-  if (sel.kind !== 'cells') { picked = new Set(); paintPicked(); cellsLayer = L.layerGroup(feats.length > 1500 ? [L.rectangle(L.latLngBounds(feats.map(f => f[0]).concat(feats.map(f => f[1]))), { color: '#f5a623', weight: 1.5, fill: false, dashArray: '4 3', interactive: false })] : feats.map(f => L.rectangle(f, { color: '#f5a623', weight: 1, fillOpacity: 0.12, interactive: false }))).addTo(map); }
+  if (sel.kind !== 'cells') { picked = new Set(); paintPicked(); cellsLayer = L.layerGroup(feats.length > 1500 ? [L.rectangle(L.latLngBounds(feats.map(f => f[0]).concat(feats.map(f => f[1]))), { color: '#f5a623', weight: 1.5, fill: false, dashArray: '4 3', interactive: false })] : feats.map(f => L.rectangle(f, { color: '#f5a623', weight: 0.6, opacity: 0.6, fillOpacity: 0, interactive: false }))).addTo(map); }
   if (sel.kind !== 'drawn') { if (drawn) drawn.clearLayers(); }
   highlightProvince(sel.kind === 'province' ? sel.label : null);
   $('empty').hidden = true;
   if (sel.kind === 'point' || sel.kind === 'province' || sel.kind === 'country') { map.invalidateSize(); map.fitBounds(L.latLngBounds(feats.flat()), { padding: [10, 10], maxZoom: sel.kind === 'point' ? 9 : 7, animate: false }); }
   location.hash = encodeSel(sel);
+  if (!pulseTimer) renderFireMap();
   render();
 }
 // cell ids are encoded as sorted runs "a-b.c.d-e" (a rectangle is a handful of runs, one per grid row), never truncated

@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-14T18:05:26.386Z",
+ "generated": "2026-11-14T18:11:40.817Z",
  "years": [
   2012,
   2013,
@@ -48,6 +48,15 @@
     }
    },
    "by_count": [
+    {
+     "P_min": 1,
+     "P_max": 5,
+     "n": 29201,
+     "p10_log": -2.0794,
+     "p50_log": -0.4025,
+     "p90_log": 0.9015,
+     "share_V_zero": 0.281
+    },
     {
      "P_min": 5,
      "P_max": 15,
@@ -115,6 +124,15 @@
    "by_region": {
     "litoral-nea": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 12424,
+      "p10_log": -2.0447,
+      "p50_log": -0.1568,
+      "p90_log": 1.0135,
+      "source": "region"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 15236,
@@ -179,6 +197,15 @@
      }
     ],
     "noa-chaco-seco": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 5525,
+      "p10_log": -1.9705,
+      "p50_log": -0.3907,
+      "p90_log": 0.9565,
+      "source": "region"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -245,6 +272,15 @@
     ],
     "monte-cuyo": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 2391,
+      "p10_log": -2.1146,
+      "p50_log": -0.6567,
+      "p90_log": 0.7493,
+      "source": "region"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 2104,
@@ -309,6 +345,15 @@
      }
     ],
     "pampa": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 7196,
+      "p10_log": -2.1158,
+      "p50_log": -0.7397,
+      "p90_log": 0.6716,
+      "source": "region"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -375,6 +420,15 @@
     ],
     "patagonia": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 1665,
+      "p10_log": -2.1818,
+      "p50_log": -0.6653,
+      "p90_log": 0.7447,
+      "source": "region"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 1601,
@@ -438,6 +492,908 @@
       "source": "pooled"
      }
     ]
+   },
+   "by_region_class": {
+    "litoral-nea": {
+     "cell": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 12423,
+       "p10_log": -2.0447,
+       "p50_log": -0.1573,
+       "p90_log": 1.0129,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 15229,
+       "p10_log": -1.6433,
+       "p50_log": -0.2279,
+       "p90_log": 0.7,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 10981,
+       "p10_log": -1.0741,
+       "p50_log": -0.1738,
+       "p90_log": 0.4659,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 5697,
+       "p10_log": -0.7136,
+       "p50_log": -0.1281,
+       "p90_log": 0.3585,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 2145,
+       "p10_log": -0.5416,
+       "p50_log": -0.0939,
+       "p90_log": 0.2919,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 241,
+       "p10_log": -0.4041,
+       "p50_log": -0.0383,
+       "p90_log": 0.3667,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 48,
+       "p10_log": -0.4647,
+       "p50_log": -0.0692,
+       "p90_log": 0.3001,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 125,
+       "p10_log": -0.1235,
+       "p50_log": -0.0067,
+       "p90_log": 0.1229,
+       "source": "region"
+      }
+     ],
+     "agg": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 92,
+       "p10_log": -0.4176,
+       "p50_log": 0.8049,
+       "p90_log": 1.7898,
+       "source": "national|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 253,
+       "p10_log": -0.707,
+       "p50_log": 0.3098,
+       "p90_log": 1.1225,
+       "source": "national|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 391,
+       "p10_log": -0.6615,
+       "p50_log": 0.1756,
+       "p90_log": 0.7522,
+       "source": "national|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 63,
+       "p10_log": -0.4657,
+       "p50_log": 0.2106,
+       "p90_log": 0.5694,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 195,
+       "p10_log": -0.4045,
+       "p50_log": 0.0039,
+       "p90_log": 0.2965,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 267,
+       "p10_log": -0.2428,
+       "p50_log": 0.0023,
+       "p90_log": 0.2311,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 188,
+       "p10_log": -0.2053,
+       "p50_log": 0.0051,
+       "p90_log": 0.1724,
+       "source": "region|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 125,
+       "p10_log": -0.1235,
+       "p50_log": -0.0067,
+       "p90_log": 0.1229,
+       "source": "region|class"
+      }
+     ]
+    },
+    "noa-chaco-seco": {
+     "cell": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 5509,
+       "p10_log": -1.9714,
+       "p50_log": -0.3943,
+       "p90_log": 0.9521,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 5579,
+       "p10_log": -2.0925,
+       "p50_log": -0.2818,
+       "p90_log": 0.6687,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 4096,
+       "p10_log": -1.0705,
+       "p50_log": -0.1716,
+       "p90_log": 0.4921,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 2156,
+       "p10_log": -0.749,
+       "p50_log": -0.1322,
+       "p90_log": 0.3609,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 687,
+       "p10_log": -0.5404,
+       "p50_log": -0.0984,
+       "p90_log": 0.3303,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 64,
+       "p10_log": -0.4948,
+       "p50_log": 0.0661,
+       "p90_log": 0.5967,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 48,
+       "p10_log": -0.4647,
+       "p50_log": -0.0692,
+       "p90_log": 0.3001,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 49,
+       "p10_log": -0.1606,
+       "p50_log": -0.0325,
+       "p90_log": 0.1477,
+       "source": "region"
+      }
+     ],
+     "agg": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 92,
+       "p10_log": -0.4176,
+       "p50_log": 0.8049,
+       "p90_log": 1.7898,
+       "source": "national|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 45,
+       "p10_log": -1.1778,
+       "p50_log": 0.2126,
+       "p90_log": 1.1206,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 67,
+       "p10_log": -0.8356,
+       "p50_log": 0.2216,
+       "p90_log": 0.7691,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 64,
+       "p10_log": -0.3697,
+       "p50_log": 0.0782,
+       "p90_log": 0.4489,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 115,
+       "p10_log": -0.4157,
+       "p50_log": -0.04,
+       "p90_log": 0.325,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 130,
+       "p10_log": -0.2595,
+       "p50_log": 0.0362,
+       "p90_log": 0.2496,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 75,
+       "p10_log": -0.17,
+       "p50_log": -0.0143,
+       "p90_log": 0.1499,
+       "source": "region|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 48,
+       "p10_log": -0.1606,
+       "p50_log": -0.0325,
+       "p90_log": 0.1323,
+       "source": "region|class"
+      }
+     ]
+    },
+    "monte-cuyo": {
+     "cell": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 2369,
+       "p10_log": -2.1149,
+       "p50_log": -0.6771,
+       "p90_log": 0.7332,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 2039,
+       "p10_log": -2.6238,
+       "p50_log": -0.5914,
+       "p90_log": 0.4583,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 841,
+       "p10_log": -1.5167,
+       "p50_log": -0.3053,
+       "p90_log": 0.5064,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 226,
+       "p10_log": -1.017,
+       "p50_log": -0.2357,
+       "p90_log": 0.3576,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 85,
+       "p10_log": -0.7647,
+       "p50_log": -0.1973,
+       "p90_log": 0.5741,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 430,
+       "p10_log": -0.4608,
+       "p50_log": -0.0276,
+       "p90_log": 0.4584,
+       "source": "national|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 48,
+       "p10_log": -0.4647,
+       "p50_log": -0.0692,
+       "p90_log": 0.3001,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 320,
+       "p10_log": -0.1177,
+       "p50_log": 0.0014,
+       "p90_log": 0.1274,
+       "source": "pooled"
+      }
+     ],
+     "agg": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 92,
+       "p10_log": -0.4176,
+       "p50_log": 0.8049,
+       "p90_log": 1.7898,
+       "source": "national|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 65,
+       "p10_log": -0.49,
+       "p50_log": 0.4998,
+       "p90_log": 1.1254,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 125,
+       "p10_log": -0.4639,
+       "p50_log": 0.1134,
+       "p90_log": 0.6979,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 136,
+       "p10_log": -0.58,
+       "p50_log": -0.006,
+       "p90_log": 0.3721,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 145,
+       "p10_log": -0.4253,
+       "p50_log": -0.0472,
+       "p90_log": 0.2445,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 59,
+       "p10_log": -0.3164,
+       "p50_log": 0.0319,
+       "p90_log": 0.3531,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 326,
+       "p10_log": -0.1936,
+       "p50_log": -0.0077,
+       "p90_log": 0.1724,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 319,
+       "p10_log": -0.1205,
+       "p50_log": 0.0011,
+       "p90_log": 0.1253,
+       "source": "national|class"
+      }
+     ]
+    },
+    "pampa": {
+     "cell": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 7181,
+       "p10_log": -2.1158,
+       "p50_log": -0.7397,
+       "p90_log": 0.6659,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 5952,
+       "p10_log": -2.7229,
+       "p50_log": -0.8269,
+       "p90_log": 0.3777,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 1934,
+       "p10_log": -1.9209,
+       "p50_log": -0.5006,
+       "p90_log": 0.4037,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 600,
+       "p10_log": -1.0094,
+       "p50_log": -0.1645,
+       "p90_log": 0.5612,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 309,
+       "p10_log": -0.7209,
+       "p50_log": -0.036,
+       "p90_log": 0.5749,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 78,
+       "p10_log": -0.6689,
+       "p50_log": -0.0672,
+       "p90_log": 0.4092,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 48,
+       "p10_log": -0.4647,
+       "p50_log": -0.0692,
+       "p90_log": 0.3001,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 320,
+       "p10_log": -0.1177,
+       "p50_log": 0.0014,
+       "p90_log": 0.1274,
+       "source": "pooled"
+      }
+     ],
+     "agg": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 92,
+       "p10_log": -0.4176,
+       "p50_log": 0.8049,
+       "p90_log": 1.7898,
+       "source": "national|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 253,
+       "p10_log": -0.707,
+       "p50_log": 0.3098,
+       "p90_log": 1.1225,
+       "source": "national|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 45,
+       "p10_log": -0.5651,
+       "p50_log": 0.2281,
+       "p90_log": 0.6653,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 97,
+       "p10_log": -0.4715,
+       "p50_log": -0.0698,
+       "p90_log": 0.3632,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 187,
+       "p10_log": -0.3188,
+       "p50_log": -0.0157,
+       "p90_log": 0.2911,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 168,
+       "p10_log": -0.2709,
+       "p50_log": -0.0218,
+       "p90_log": 0.2333,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 37,
+       "p10_log": -0.2638,
+       "p50_log": -0.0169,
+       "p90_log": 0.1479,
+       "source": "region|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 319,
+       "p10_log": -0.1205,
+       "p50_log": 0.0011,
+       "p90_log": 0.1253,
+       "source": "national|class"
+      }
+     ]
+    },
+    "patagonia": {
+     "cell": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 1627,
+       "p10_log": -2.1858,
+       "p50_log": -0.7114,
+       "p90_log": 0.6945,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 1487,
+       "p10_log": -2.7183,
+       "p50_log": -0.8451,
+       "p90_log": 0.3482,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 527,
+       "p10_log": -1.9117,
+       "p50_log": -0.5275,
+       "p90_log": 0.4007,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 151,
+       "p10_log": -1.2459,
+       "p50_log": -0.3773,
+       "p90_log": 0.5052,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 106,
+       "p10_log": -0.7846,
+       "p50_log": -0.0158,
+       "p90_log": 0.4971,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 30,
+       "p10_log": -0.4638,
+       "p50_log": -0.0715,
+       "p90_log": 0.6989,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 48,
+       "p10_log": -0.4647,
+       "p50_log": -0.0692,
+       "p90_log": 0.3001,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 320,
+       "p10_log": -0.1177,
+       "p50_log": 0.0014,
+       "p90_log": 0.1274,
+       "source": "pooled"
+      }
+     ],
+     "agg": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 38,
+       "p10_log": 0.1811,
+       "p50_log": 0.9166,
+       "p90_log": 2.0209,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 114,
+       "p10_log": -0.7623,
+       "p50_log": 0.3771,
+       "p90_log": 1.3098,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 137,
+       "p10_log": -0.8081,
+       "p50_log": 0.1351,
+       "p90_log": 0.7695,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 103,
+       "p10_log": -0.7141,
+       "p50_log": -0.0664,
+       "p90_log": 0.4905,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 93,
+       "p10_log": -0.5734,
+       "p50_log": -0.0837,
+       "p90_log": 0.283,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 42,
+       "p10_log": -0.3672,
+       "p50_log": 0.0133,
+       "p90_log": 0.4628,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 326,
+       "p10_log": -0.1936,
+       "p50_log": -0.0077,
+       "p90_log": 0.1724,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 319,
+       "p10_log": -0.1205,
+       "p50_log": 0.0011,
+       "p90_log": 0.1253,
+       "source": "national|class"
+      }
+     ]
+    },
+    "national": {
+     "cell": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 29109,
+       "p10_log": -2.0802,
+       "p50_log": -0.4059,
+       "p90_log": 0.8974,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 30286,
+       "p10_log": -2.4498,
+       "p50_log": -0.3918,
+       "p90_log": 0.6211,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 18379,
+       "p10_log": -1.2004,
+       "p50_log": -0.2127,
+       "p90_log": 0.4661,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 8830,
+       "p10_log": -0.7574,
+       "p50_log": -0.1357,
+       "p90_log": 0.3743,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 3332,
+       "p10_log": -0.5683,
+       "p50_log": -0.0896,
+       "p90_log": 0.3446,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 430,
+       "p10_log": -0.4608,
+       "p50_log": -0.0276,
+       "p90_log": 0.4584,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 48,
+       "p10_log": -0.4647,
+       "p50_log": -0.0692,
+       "p90_log": 0.3001,
+       "source": "region|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 320,
+       "p10_log": -0.1177,
+       "p50_log": 0.0014,
+       "p90_log": 0.1274,
+       "source": "pooled"
+      }
+     ],
+     "agg": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 92,
+       "p10_log": -0.4176,
+       "p50_log": 0.8049,
+       "p90_log": 1.7898,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 253,
+       "p10_log": -0.707,
+       "p50_log": 0.3098,
+       "p90_log": 1.1225,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 391,
+       "p10_log": -0.6615,
+       "p50_log": 0.1756,
+       "p90_log": 0.7522,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 463,
+       "p10_log": -0.5383,
+       "p50_log": -0.0002,
+       "p90_log": 0.4692,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 735,
+       "p10_log": -0.4126,
+       "p50_log": -0.0256,
+       "p90_log": 0.2918,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 669,
+       "p10_log": -0.2647,
+       "p50_log": 0.0026,
+       "p90_log": 0.2569,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 326,
+       "p10_log": -0.1936,
+       "p50_log": -0.0077,
+       "p90_log": 0.1724,
+       "source": "region|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 319,
+       "p10_log": -0.1205,
+       "p50_log": 0.0011,
+       "p90_log": 0.1253,
+       "source": "region|class"
+      }
+     ]
+    }
    }
   },
   "T": {
@@ -471,6 +1427,15 @@
     }
    },
    "by_count": [
+    {
+     "P_min": 1,
+     "P_max": 5,
+     "n": 2105,
+     "p10_log": -2.3101,
+     "p50_log": -0.904,
+     "p90_log": 1.0583,
+     "share_V_zero": 0.403
+    },
     {
      "P_min": 5,
      "P_max": 15,
@@ -538,6 +1503,15 @@
    "by_region": {
     "litoral-nea": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 630,
+      "p10_log": -2.241,
+      "p50_log": -0.1677,
+      "p90_log": 1.306,
+      "source": "region"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 10452,
@@ -602,6 +1576,15 @@
      }
     ],
     "noa-chaco-seco": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 1123,
+      "p10_log": -2.3332,
+      "p50_log": -1.3788,
+      "p90_log": 0.8373,
+      "source": "region"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -668,6 +1651,15 @@
     ],
     "monte-cuyo": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 174,
+      "p10_log": -2.3162,
+      "p50_log": -0.7663,
+      "p90_log": 0.7525,
+      "source": "region"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 1657,
@@ -732,6 +1724,15 @@
      }
     ],
     "pampa": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 157,
+      "p10_log": -2.2896,
+      "p50_log": -0.6449,
+      "p90_log": 1.3847,
+      "source": "region"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -798,6 +1799,15 @@
     ],
     "patagonia": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 2105,
+      "p10_log": -2.3101,
+      "p50_log": -0.904,
+      "p90_log": 1.0583,
+      "source": "pooled"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 927,
@@ -861,6 +1871,908 @@
       "source": "pooled"
      }
     ]
+   },
+   "by_region_class": {
+    "litoral-nea": {
+     "cell": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 629,
+       "p10_log": -2.2434,
+       "p50_log": -0.1776,
+       "p90_log": 1.2989,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 10445,
+       "p10_log": -2.7637,
+       "p50_log": -0.3939,
+       "p90_log": 0.9783,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 10075,
+       "p10_log": -2.134,
+       "p50_log": -0.4677,
+       "p90_log": 0.6624,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 5789,
+       "p10_log": -1.6129,
+       "p50_log": -0.4018,
+       "p90_log": 0.4555,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 2267,
+       "p10_log": -1.1434,
+       "p50_log": -0.3506,
+       "p90_log": 0.3378,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 293,
+       "p10_log": -0.9994,
+       "p50_log": -0.2933,
+       "p90_log": 0.3211,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 52,
+       "p10_log": -0.7004,
+       "p50_log": -0.1185,
+       "p90_log": 0.3047,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 121,
+       "p10_log": -0.261,
+       "p50_log": -0.0247,
+       "p90_log": 0.2662,
+       "source": "region"
+      }
+     ],
+     "agg": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 630,
+       "p10_log": -2.241,
+       "p50_log": -0.1677,
+       "p90_log": 1.306,
+       "source": "region"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 173,
+       "p10_log": -0.645,
+       "p50_log": 0.5876,
+       "p90_log": 1.6279,
+       "source": "national|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 371,
+       "p10_log": -0.9635,
+       "p50_log": 0.2084,
+       "p90_log": 1.0568,
+       "source": "national|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 71,
+       "p10_log": -0.3977,
+       "p50_log": 0.366,
+       "p90_log": 1.1033,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 190,
+       "p10_log": -0.5236,
+       "p50_log": 0.1075,
+       "p90_log": 0.7302,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 260,
+       "p10_log": -0.5227,
+       "p50_log": -0.0174,
+       "p90_log": 0.5393,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 182,
+       "p10_log": -0.3125,
+       "p50_log": 0.0294,
+       "p90_log": 0.3714,
+       "source": "region|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 121,
+       "p10_log": -0.261,
+       "p50_log": -0.0247,
+       "p90_log": 0.2662,
+       "source": "region|class"
+      }
+     ]
+    },
+    "noa-chaco-seco": {
+     "cell": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 1113,
+       "p10_log": -2.3332,
+       "p50_log": -1.4219,
+       "p90_log": 0.8176,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 4236,
+       "p10_log": -2.8472,
+       "p50_log": -0.4791,
+       "p90_log": 1.0052,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 3640,
+       "p10_log": -2.2122,
+       "p50_log": -0.4097,
+       "p90_log": 0.656,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 2126,
+       "p10_log": -1.4934,
+       "p50_log": -0.3837,
+       "p90_log": 0.4149,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 815,
+       "p10_log": -1.2425,
+       "p50_log": -0.3903,
+       "p90_log": 0.2808,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 103,
+       "p10_log": -0.9758,
+       "p50_log": -0.4719,
+       "p90_log": 0.5974,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 52,
+       "p10_log": -0.7004,
+       "p50_log": -0.1185,
+       "p90_log": 0.3047,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 47,
+       "p10_log": -0.2919,
+       "p50_log": 0.0036,
+       "p90_log": 0.2116,
+       "source": "region"
+      }
+     ],
+     "agg": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 1123,
+       "p10_log": -2.3332,
+       "p50_log": -1.3788,
+       "p90_log": 0.8373,
+       "source": "region"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 173,
+       "p10_log": -0.645,
+       "p50_log": 0.5876,
+       "p90_log": 1.6279,
+       "source": "national|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 66,
+       "p10_log": -1.021,
+       "p50_log": 0.3619,
+       "p90_log": 1.1012,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 67,
+       "p10_log": -0.5194,
+       "p50_log": 0.1138,
+       "p90_log": 0.7305,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 116,
+       "p10_log": -0.6541,
+       "p50_log": 0.0069,
+       "p90_log": 0.5112,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 132,
+       "p10_log": -0.5085,
+       "p50_log": 0.053,
+       "p90_log": 0.3777,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 69,
+       "p10_log": -0.3077,
+       "p50_log": 0.0042,
+       "p90_log": 0.2962,
+       "source": "region|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 47,
+       "p10_log": -0.2919,
+       "p50_log": 0.0036,
+       "p90_log": 0.2116,
+       "source": "region|class"
+      }
+     ]
+    },
+    "monte-cuyo": {
+     "cell": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 168,
+       "p10_log": -2.3326,
+       "p50_log": -1.0005,
+       "p90_log": 0.6296,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 1595,
+       "p10_log": -2.9816,
+       "p50_log": -1.2614,
+       "p90_log": 0.4858,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 961,
+       "p10_log": -3.578,
+       "p50_log": -0.9841,
+       "p90_log": 0.4276,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 295,
+       "p10_log": -2.2029,
+       "p50_log": -0.6482,
+       "p90_log": 0.3943,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 91,
+       "p10_log": -1.6273,
+       "p50_log": -0.4151,
+       "p90_log": 0.5287,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 552,
+       "p10_log": -0.9996,
+       "p50_log": -0.3221,
+       "p90_log": 0.3998,
+       "source": "national|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 52,
+       "p10_log": -0.7004,
+       "p50_log": -0.1185,
+       "p90_log": 0.3047,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 313,
+       "p10_log": -0.2248,
+       "p50_log": -0.0195,
+       "p90_log": 0.2804,
+       "source": "pooled"
+      }
+     ],
+     "agg": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 174,
+       "p10_log": -2.3162,
+       "p50_log": -0.7663,
+       "p90_log": 0.7525,
+       "source": "region"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 62,
+       "p10_log": -0.8258,
+       "p50_log": 0.5761,
+       "p90_log": 1.3816,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 116,
+       "p10_log": -0.6906,
+       "p50_log": 0.1752,
+       "p90_log": 1.089,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 142,
+       "p10_log": -0.8613,
+       "p50_log": -0.0951,
+       "p90_log": 0.5162,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 138,
+       "p10_log": -0.5466,
+       "p50_log": -0.0495,
+       "p90_log": 0.391,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 58,
+       "p10_log": -0.5016,
+       "p50_log": -0.0544,
+       "p90_log": 0.4173,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 310,
+       "p10_log": -0.3133,
+       "p50_log": 0.0249,
+       "p90_log": 0.3374,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 313,
+       "p10_log": -0.2248,
+       "p50_log": -0.0195,
+       "p90_log": 0.2804,
+       "source": "national|class"
+      }
+     ]
+    },
+    "pampa": {
+     "cell": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 155,
+       "p10_log": -2.2896,
+       "p50_log": -0.6646,
+       "p90_log": 1.2197,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 3516,
+       "p10_log": -3.084,
+       "p50_log": -1.5381,
+       "p90_log": 0.2948,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 2374,
+       "p10_log": -3.8009,
+       "p50_log": -1.6,
+       "p90_log": 0.2288,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 833,
+       "p10_log": -4.395,
+       "p50_log": -0.9295,
+       "p90_log": 0.4825,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 344,
+       "p10_log": -1.3895,
+       "p50_log": -0.2847,
+       "p90_log": 0.4948,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 93,
+       "p10_log": -1.0229,
+       "p50_log": -0.2974,
+       "p90_log": 0.4255,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 52,
+       "p10_log": -0.7004,
+       "p50_log": -0.1185,
+       "p90_log": 0.3047,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 313,
+       "p10_log": -0.2248,
+       "p50_log": -0.0195,
+       "p90_log": 0.2804,
+       "source": "pooled"
+      }
+     ],
+     "agg": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 157,
+       "p10_log": -2.2896,
+       "p50_log": -0.6449,
+       "p90_log": 1.3847,
+       "source": "region"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 173,
+       "p10_log": -0.645,
+       "p50_log": 0.5876,
+       "p90_log": 1.6279,
+       "source": "national|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 44,
+       "p10_log": -0.4006,
+       "p50_log": 0.3761,
+       "p90_log": 1.1588,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 99,
+       "p10_log": -0.5579,
+       "p50_log": 0.2012,
+       "p90_log": 0.8266,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 166,
+       "p10_log": -0.4572,
+       "p50_log": 0.0368,
+       "p90_log": 0.5484,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 177,
+       "p10_log": -0.4513,
+       "p50_log": -0.066,
+       "p90_log": 0.354,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 33,
+       "p10_log": -0.4209,
+       "p50_log": -0.0522,
+       "p90_log": 0.2881,
+       "source": "region|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 313,
+       "p10_log": -0.2248,
+       "p50_log": -0.0195,
+       "p90_log": 0.2804,
+       "source": "national|class"
+      }
+     ]
+    },
+    "patagonia": {
+     "cell": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 2086,
+       "p10_log": -2.3103,
+       "p50_log": -0.9136,
+       "p90_log": 1.0422,
+       "source": "national|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 868,
+       "p10_log": -3.1655,
+       "p50_log": -1.4975,
+       "p90_log": 0.3758,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 667,
+       "p10_log": -3.7705,
+       "p50_log": -1.6648,
+       "p90_log": 0.1825,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 184,
+       "p10_log": -2.993,
+       "p50_log": -0.851,
+       "p90_log": 0.5275,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 105,
+       "p10_log": -1.5244,
+       "p50_log": -0.2768,
+       "p90_log": 0.6113,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 40,
+       "p10_log": -1.0686,
+       "p50_log": -0.2888,
+       "p90_log": 0.6012,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 52,
+       "p10_log": -0.7004,
+       "p50_log": -0.1185,
+       "p90_log": 0.3047,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 313,
+       "p10_log": -0.2248,
+       "p50_log": -0.0195,
+       "p90_log": 0.2804,
+       "source": "pooled"
+      }
+     ],
+     "agg": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 2105,
+       "p10_log": -2.3101,
+       "p50_log": -0.904,
+       "p90_log": 1.0583,
+       "source": "pooled"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 59,
+       "p10_log": -0.392,
+       "p50_log": 0.7124,
+       "p90_log": 1.7617,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 120,
+       "p10_log": -1.1505,
+       "p50_log": 0.0731,
+       "p90_log": 0.9547,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 104,
+       "p10_log": -1.1575,
+       "p50_log": -0.0721,
+       "p90_log": 0.6271,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 88,
+       "p10_log": -0.9797,
+       "p50_log": -0.1189,
+       "p90_log": 0.5251,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 47,
+       "p10_log": -0.9129,
+       "p50_log": -0.1688,
+       "p90_log": 0.5701,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 310,
+       "p10_log": -0.3133,
+       "p50_log": 0.0249,
+       "p90_log": 0.3374,
+       "source": "national|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 313,
+       "p10_log": -0.2248,
+       "p50_log": -0.0195,
+       "p90_log": 0.2804,
+       "source": "national|class"
+      }
+     ]
+    },
+    "national": {
+     "cell": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 2086,
+       "p10_log": -2.3103,
+       "p50_log": -0.9136,
+       "p90_log": 1.0422,
+       "source": "region|class"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 20660,
+       "p10_log": -2.9451,
+       "p50_log": -0.6795,
+       "p90_log": 0.8813,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 17717,
+       "p10_log": -2.7234,
+       "p50_log": -0.6177,
+       "p90_log": 0.6026,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 9227,
+       "p10_log": -1.7769,
+       "p50_log": -0.4397,
+       "p90_log": 0.4494,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 3622,
+       "p10_log": -1.2057,
+       "p50_log": -0.3509,
+       "p90_log": 0.3584,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 552,
+       "p10_log": -0.9996,
+       "p50_log": -0.3221,
+       "p90_log": 0.3998,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 52,
+       "p10_log": -0.7004,
+       "p50_log": -0.1185,
+       "p90_log": 0.3047,
+       "source": "region|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 313,
+       "p10_log": -0.2248,
+       "p50_log": -0.0195,
+       "p90_log": 0.2804,
+       "source": "pooled"
+      }
+     ],
+     "agg": [
+      {
+       "P_min": 1,
+       "P_max": 5,
+       "n": 2105,
+       "p10_log": -2.3101,
+       "p50_log": -0.904,
+       "p90_log": 1.0583,
+       "source": "pooled"
+      },
+      {
+       "P_min": 5,
+       "P_max": 15,
+       "n": 173,
+       "p10_log": -0.645,
+       "p50_log": 0.5876,
+       "p90_log": 1.6279,
+       "source": "region|class"
+      },
+      {
+       "P_min": 15,
+       "P_max": 40,
+       "n": 371,
+       "p10_log": -0.9635,
+       "p50_log": 0.2084,
+       "p90_log": 1.0568,
+       "source": "region|class"
+      },
+      {
+       "P_min": 40,
+       "P_max": 100,
+       "n": 483,
+       "p10_log": -0.8521,
+       "p50_log": 0.0719,
+       "p90_log": 0.7587,
+       "source": "region|class"
+      },
+      {
+       "P_min": 100,
+       "P_max": 300,
+       "n": 698,
+       "p10_log": -0.59,
+       "p50_log": 0.0176,
+       "p90_log": 0.5387,
+       "source": "region|class"
+      },
+      {
+       "P_min": 300,
+       "P_max": 1000,
+       "n": 678,
+       "p10_log": -0.5227,
+       "p50_log": -0.0245,
+       "p90_log": 0.4253,
+       "source": "region|class"
+      },
+      {
+       "P_min": 1000,
+       "P_max": 3000,
+       "n": 310,
+       "p10_log": -0.3133,
+       "p50_log": 0.0249,
+       "p90_log": 0.3374,
+       "source": "region|class"
+      },
+      {
+       "P_min": 3000,
+       "P_max": null,
+       "n": 313,
+       "p10_log": -0.2248,
+       "p50_log": -0.0195,
+       "p90_log": 0.2804,
+       "source": "region|class"
+      }
+     ]
+    }
    }
   }
  },
@@ -868,7 +2780,7 @@
   "TA": {
    "by_level": {
     "country": 0.91,
-    "prov": 0.817,
+    "prov": 0.81,
     "cell": 0.799
    },
    "by_province": {
@@ -901,8 +2813,8 @@
   "T": {
    "by_level": {
     "country": 0.854,
-    "prov": 0.788,
-    "cell": 0.801
+    "prov": 0.787,
+    "cell": 0.8
    },
    "by_province": {
     "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.5,
@@ -937,6 +2849,15 @@
    "min_bin": 30,
    "bins_regional": {
     "litoral-nea": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 12424,
+      "p10_log": -2.0447,
+      "p50_log": -0.1568,
+      "p90_log": 1.0135,
+      "source": "region"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -1003,6 +2924,15 @@
     ],
     "noa-chaco-seco": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 5525,
+      "p10_log": -1.9705,
+      "p50_log": -0.3907,
+      "p90_log": 0.9565,
+      "source": "region"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 5624,
@@ -1068,6 +2998,15 @@
     ],
     "monte-cuyo": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 2391,
+      "p10_log": -2.1146,
+      "p50_log": -0.6567,
+      "p90_log": 0.7493,
+      "source": "region"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 2104,
@@ -1124,6 +3063,15 @@
      }
     ],
     "pampa": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 7196,
+      "p10_log": -2.1158,
+      "p50_log": -0.7397,
+      "p90_log": 0.6716,
+      "source": "region"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -1186,6 +3134,15 @@
     ],
     "patagonia": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 1665,
+      "p10_log": -2.1818,
+      "p50_log": -0.6653,
+      "p90_log": 0.7447,
+      "source": "region"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 1601,
@@ -1245,6 +3202,11 @@
    "bins_regional_level": {
     "litoral-nea|prov": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "source": "fallback (n < 30)"
@@ -1302,6 +3264,15 @@
     ],
     "litoral-nea|cell": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 12423,
+      "p10_log": -2.0447,
+      "p50_log": -0.1573,
+      "p90_log": 1.0129,
+      "source": "region|level"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 15229,
@@ -1358,6 +3329,11 @@
      }
     ],
     "noa-chaco-seco|prov": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -1424,6 +3400,15 @@
     ],
     "noa-chaco-seco|cell": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 5509,
+      "p10_log": -1.9714,
+      "p50_log": -0.3943,
+      "p90_log": 0.9521,
+      "source": "region|level"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 5579,
@@ -1480,6 +3465,11 @@
      }
     ],
     "monte-cuyo|prov": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -1538,6 +3528,15 @@
     ],
     "monte-cuyo|cell": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 2369,
+      "p10_log": -2.1149,
+      "p50_log": -0.6771,
+      "p90_log": 0.7332,
+      "source": "region|level"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 2039,
@@ -1590,6 +3589,11 @@
      }
     ],
     "pampa|prov": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -1648,6 +3652,15 @@
     ],
     "pampa|cell": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 7181,
+      "p10_log": -2.1158,
+      "p50_log": -0.7397,
+      "p90_log": 0.6659,
+      "source": "region|level"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 5952,
@@ -1704,6 +3717,15 @@
      }
     ],
     "patagonia|prov": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 38,
+      "p10_log": 0.1811,
+      "p50_log": 0.9166,
+      "p90_log": 2.0209,
+      "source": "region|level"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -1762,6 +3784,15 @@
     ],
     "patagonia|cell": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 1627,
+      "p10_log": -2.1858,
+      "p50_log": -0.7114,
+      "p90_log": 0.6945,
+      "source": "region|level"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 1487,
@@ -1818,7 +3849,809 @@
      }
     ]
    },
+   "bins_region_class": {
+    "national|cell": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 29109,
+      "p10_log": -2.0802,
+      "p50_log": -0.4059,
+      "p90_log": 0.8974,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 30286,
+      "p10_log": -2.4498,
+      "p50_log": -0.3918,
+      "p90_log": 0.6211,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 18379,
+      "p10_log": -1.2004,
+      "p50_log": -0.2127,
+      "p90_log": 0.4661,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 8830,
+      "p10_log": -0.7574,
+      "p50_log": -0.1357,
+      "p90_log": 0.3743,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 3332,
+      "p10_log": -0.5683,
+      "p50_log": -0.0896,
+      "p90_log": 0.3446,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 430,
+      "p10_log": -0.4608,
+      "p50_log": -0.0276,
+      "p90_log": 0.4584,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "n": 48,
+      "p10_log": -0.4647,
+      "p50_log": -0.0692,
+      "p90_log": 0.3001,
+      "source": "region|class"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "litoral-nea|cell": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 12423,
+      "p10_log": -2.0447,
+      "p50_log": -0.1573,
+      "p90_log": 1.0129,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 15229,
+      "p10_log": -1.6433,
+      "p50_log": -0.2279,
+      "p90_log": 0.7,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 10981,
+      "p10_log": -1.0741,
+      "p50_log": -0.1738,
+      "p90_log": 0.4659,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 5697,
+      "p10_log": -0.7136,
+      "p50_log": -0.1281,
+      "p90_log": 0.3585,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 2145,
+      "p10_log": -0.5416,
+      "p50_log": -0.0939,
+      "p90_log": 0.2919,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 241,
+      "p10_log": -0.4041,
+      "p50_log": -0.0383,
+      "p90_log": 0.3667,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "noa-chaco-seco|cell": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 5509,
+      "p10_log": -1.9714,
+      "p50_log": -0.3943,
+      "p90_log": 0.9521,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 5579,
+      "p10_log": -2.0925,
+      "p50_log": -0.2818,
+      "p90_log": 0.6687,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 4096,
+      "p10_log": -1.0705,
+      "p50_log": -0.1716,
+      "p90_log": 0.4921,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 2156,
+      "p10_log": -0.749,
+      "p50_log": -0.1322,
+      "p90_log": 0.3609,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 687,
+      "p10_log": -0.5404,
+      "p50_log": -0.0984,
+      "p90_log": 0.3303,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 64,
+      "p10_log": -0.4948,
+      "p50_log": 0.0661,
+      "p90_log": 0.5967,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "monte-cuyo|cell": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 2369,
+      "p10_log": -2.1149,
+      "p50_log": -0.6771,
+      "p90_log": 0.7332,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 2039,
+      "p10_log": -2.6238,
+      "p50_log": -0.5914,
+      "p90_log": 0.4583,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 841,
+      "p10_log": -1.5167,
+      "p50_log": -0.3053,
+      "p90_log": 0.5064,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 226,
+      "p10_log": -1.017,
+      "p50_log": -0.2357,
+      "p90_log": 0.3576,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 85,
+      "p10_log": -0.7647,
+      "p50_log": -0.1973,
+      "p90_log": 0.5741,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "pampa|cell": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 7181,
+      "p10_log": -2.1158,
+      "p50_log": -0.7397,
+      "p90_log": 0.6659,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 5952,
+      "p10_log": -2.7229,
+      "p50_log": -0.8269,
+      "p90_log": 0.3777,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 1934,
+      "p10_log": -1.9209,
+      "p50_log": -0.5006,
+      "p90_log": 0.4037,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 600,
+      "p10_log": -1.0094,
+      "p50_log": -0.1645,
+      "p90_log": 0.5612,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 309,
+      "p10_log": -0.7209,
+      "p50_log": -0.036,
+      "p90_log": 0.5749,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 78,
+      "p10_log": -0.6689,
+      "p50_log": -0.0672,
+      "p90_log": 0.4092,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "patagonia|cell": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 1627,
+      "p10_log": -2.1858,
+      "p50_log": -0.7114,
+      "p90_log": 0.6945,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 1487,
+      "p10_log": -2.7183,
+      "p50_log": -0.8451,
+      "p90_log": 0.3482,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 527,
+      "p10_log": -1.9117,
+      "p50_log": -0.5275,
+      "p90_log": 0.4007,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 151,
+      "p10_log": -1.2459,
+      "p50_log": -0.3773,
+      "p90_log": 0.5052,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 106,
+      "p10_log": -0.7846,
+      "p50_log": -0.0158,
+      "p90_log": 0.4971,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 30,
+      "p10_log": -0.4638,
+      "p50_log": -0.0715,
+      "p90_log": 0.6989,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "national|agg": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 92,
+      "p10_log": -0.4176,
+      "p50_log": 0.8049,
+      "p90_log": 1.7898,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 253,
+      "p10_log": -0.707,
+      "p50_log": 0.3098,
+      "p90_log": 1.1225,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 391,
+      "p10_log": -0.6615,
+      "p50_log": 0.1756,
+      "p90_log": 0.7522,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 463,
+      "p10_log": -0.5383,
+      "p50_log": -0.0002,
+      "p90_log": 0.4692,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 735,
+      "p10_log": -0.4126,
+      "p50_log": -0.0256,
+      "p90_log": 0.2918,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 669,
+      "p10_log": -0.2647,
+      "p50_log": 0.0026,
+      "p90_log": 0.2569,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "n": 326,
+      "p10_log": -0.1936,
+      "p50_log": -0.0077,
+      "p90_log": 0.1724,
+      "source": "region|class"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "n": 319,
+      "p10_log": -0.1205,
+      "p50_log": 0.0011,
+      "p90_log": 0.1253,
+      "source": "region|class"
+     }
+    ],
+    "litoral-nea|agg": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 63,
+      "p10_log": -0.4657,
+      "p50_log": 0.2106,
+      "p90_log": 0.5694,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 195,
+      "p10_log": -0.4045,
+      "p50_log": 0.0039,
+      "p90_log": 0.2965,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 267,
+      "p10_log": -0.2428,
+      "p50_log": 0.0023,
+      "p90_log": 0.2311,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "n": 188,
+      "p10_log": -0.2053,
+      "p50_log": 0.0051,
+      "p90_log": 0.1724,
+      "source": "region|class"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "n": 125,
+      "p10_log": -0.1235,
+      "p50_log": -0.0067,
+      "p90_log": 0.1229,
+      "source": "region|class"
+     }
+    ],
+    "noa-chaco-seco|agg": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 45,
+      "p10_log": -1.1778,
+      "p50_log": 0.2126,
+      "p90_log": 1.1206,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 67,
+      "p10_log": -0.8356,
+      "p50_log": 0.2216,
+      "p90_log": 0.7691,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 64,
+      "p10_log": -0.3697,
+      "p50_log": 0.0782,
+      "p90_log": 0.4489,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 115,
+      "p10_log": -0.4157,
+      "p50_log": -0.04,
+      "p90_log": 0.325,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 130,
+      "p10_log": -0.2595,
+      "p50_log": 0.0362,
+      "p90_log": 0.2496,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "n": 75,
+      "p10_log": -0.17,
+      "p50_log": -0.0143,
+      "p90_log": 0.1499,
+      "source": "region|class"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "n": 48,
+      "p10_log": -0.1606,
+      "p50_log": -0.0325,
+      "p90_log": 0.1323,
+      "source": "region|class"
+     }
+    ],
+    "monte-cuyo|agg": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 65,
+      "p10_log": -0.49,
+      "p50_log": 0.4998,
+      "p90_log": 1.1254,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 125,
+      "p10_log": -0.4639,
+      "p50_log": 0.1134,
+      "p90_log": 0.6979,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 136,
+      "p10_log": -0.58,
+      "p50_log": -0.006,
+      "p90_log": 0.3721,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 145,
+      "p10_log": -0.4253,
+      "p50_log": -0.0472,
+      "p90_log": 0.2445,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 59,
+      "p10_log": -0.3164,
+      "p50_log": 0.0319,
+      "p90_log": 0.3531,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "pampa|agg": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 45,
+      "p10_log": -0.5651,
+      "p50_log": 0.2281,
+      "p90_log": 0.6653,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 97,
+      "p10_log": -0.4715,
+      "p50_log": -0.0698,
+      "p90_log": 0.3632,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 187,
+      "p10_log": -0.3188,
+      "p50_log": -0.0157,
+      "p90_log": 0.2911,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 168,
+      "p10_log": -0.2709,
+      "p50_log": -0.0218,
+      "p90_log": 0.2333,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "n": 37,
+      "p10_log": -0.2638,
+      "p50_log": -0.0169,
+      "p90_log": 0.1479,
+      "source": "region|class"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "patagonia|agg": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 38,
+      "p10_log": 0.1811,
+      "p50_log": 0.9166,
+      "p90_log": 2.0209,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 114,
+      "p10_log": -0.7623,
+      "p50_log": 0.3771,
+      "p90_log": 1.3098,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 137,
+      "p10_log": -0.8081,
+      "p50_log": 0.1351,
+      "p90_log": 0.7695,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 103,
+      "p10_log": -0.7141,
+      "p50_log": -0.0664,
+      "p90_log": 0.4905,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 93,
+      "p10_log": -0.5734,
+      "p50_log": -0.0837,
+      "p90_log": 0.283,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 42,
+      "p10_log": -0.3672,
+      "p50_log": 0.0133,
+      "p90_log": 0.4628,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ]
+   },
    "bins_pooled": [
+    {
+     "P_min": 1,
+     "P_max": 5,
+     "n": 29201,
+     "p10_log": -2.0794,
+     "p50_log": -0.4025,
+     "p90_log": 0.9015
+    },
     {
      "P_min": 5,
      "P_max": 15,
@@ -1882,81 +4715,94 @@
       "n": 144,
       "pooled": 0.903,
       "regional": 0.903,
-      "regional_level": 0.903
+      "regional_level": 0.903,
+      "region_class": 0.889
      },
      "prov": {
-      "n": 3012,
-      "pooled": 0.816,
-      "regional": 0.827,
-      "regional_level": 0.788
+      "n": 2504,
+      "pooled": 0.844,
+      "regional": 0.859,
+      "regional_level": 0.796,
+      "region_class": 0.795
      },
      "cell": {
-      "n": 61306,
-      "pooled": 0.799,
-      "regional": 0.798,
-      "regional_level": 0.799
+      "n": 41294,
+      "pooled": 0.814,
+      "regional": 0.806,
+      "regional_level": 0.808,
+      "region_class": 0.809
      }
     },
     "by_region_level": {
      "patagonia|prov": {
-      "n": 500,
-      "pooled": 0.72,
-      "regional": 0.78,
-      "regional_level": 0.792
+      "n": 291,
+      "pooled": 0.763,
+      "regional": 0.859,
+      "regional_level": 0.801,
+      "region_class": 0.801
      },
      "pampa|prov": {
-      "n": 567,
-      "pooled": 0.857,
-      "regional": 0.877,
-      "regional_level": 0.774
+      "n": 520,
+      "pooled": 0.873,
+      "regional": 0.902,
+      "regional_level": 0.783,
+      "region_class": 0.781
      },
      "monte-cuyo|prov": {
-      "n": 539,
-      "pooled": 0.813,
-      "regional": 0.813,
-      "regional_level": 0.79
+      "n": 395,
+      "pooled": 0.856,
+      "regional": 0.868,
+      "regional_level": 0.803,
+      "region_class": 0.803
      },
      "litoral-nea|prov": {
-      "n": 862,
-      "pooled": 0.84,
-      "regional": 0.827,
-      "regional_level": 0.794
+      "n": 845,
+      "pooled": 0.847,
+      "regional": 0.834,
+      "regional_level": 0.8,
+      "region_class": 0.799
      },
      "noa-chaco-seco|prov": {
-      "n": 544,
-      "pooled": 0.825,
-      "regional": 0.831,
-      "regional_level": 0.785
+      "n": 453,
+      "pooled": 0.845,
+      "regional": 0.848,
+      "regional_level": 0.792,
+      "region_class": 0.792
      },
      "patagonia|cell": {
-      "n": 2305,
-      "pooled": 0.729,
-      "regional": 0.799,
-      "regional_level": 0.795
+      "n": 1256,
+      "pooled": 0.717,
+      "regional": 0.786,
+      "regional_level": 0.791,
+      "region_class": 0.795
      },
      "pampa|cell": {
-      "n": 8881,
-      "pooled": 0.73,
-      "regional": 0.793,
-      "regional_level": 0.799
+      "n": 4564,
+      "pooled": 0.725,
+      "regional": 0.774,
+      "regional_level": 0.786,
+      "region_class": 0.787
      },
      "monte-cuyo|cell": {
-      "n": 3209,
-      "pooled": 0.776,
+      "n": 1750,
+      "pooled": 0.773,
       "regional": 0.795,
-      "regional_level": 0.798
+      "regional_level": 0.807,
+      "region_class": 0.809
      },
      "litoral-nea|cell": {
-      "n": 34319,
-      "pooled": 0.821,
-      "regional": 0.799,
-      "regional_level": 0.799
+      "n": 24737,
+      "pooled": 0.835,
+      "regional": 0.811,
+      "regional_level": 0.811,
+      "region_class": 0.811
      },
      "noa-chaco-seco|cell": {
-      "n": 12592,
-      "pooled": 0.807,
-      "regional": 0.798,
-      "regional_level": 0.799
+      "n": 8987,
+      "pooled": 0.824,
+      "regional": 0.813,
+      "regional_level": 0.815,
+      "region_class": 0.815
      }
     },
     "by_province": {
@@ -1964,139 +4810,192 @@
       "n": 3,
       "pooled": 0.333,
       "regional": 0.333,
-      "regional_level": 0.333
+      "regional_level": 0.333,
+      "region_class": 0.333
      },
      "Santa Cruz": {
       "n": 43,
       "pooled": 0.837,
       "regional": 0.907,
-      "regional_level": 0.814
+      "regional_level": 0.814,
+      "region_class": 0.814
      },
      "Río Negro": {
       "n": 122,
       "pooled": 0.811,
       "regional": 0.902,
-      "regional_level": 0.852
+      "regional_level": 0.852,
+      "region_class": 0.852
      },
      "Neuquén": {
       "n": 88,
       "pooled": 0.716,
       "regional": 0.818,
-      "regional_level": 0.773
+      "regional_level": 0.773,
+      "region_class": 0.773
      },
      "Buenos Aires": {
       "n": 142,
       "pooled": 0.894,
       "regional": 0.923,
-      "regional_level": 0.859
+      "regional_level": 0.859,
+      "region_class": 0.852
      },
      "La Pampa": {
       "n": 116,
       "pooled": 0.828,
       "regional": 0.871,
-      "regional_level": 0.69
+      "regional_level": 0.69,
+      "region_class": 0.69
      },
      "Mendoza": {
       "n": 132,
       "pooled": 0.902,
       "regional": 0.902,
-      "regional_level": 0.841
+      "regional_level": 0.841,
+      "region_class": 0.841
      },
      "San Luis": {
       "n": 122,
       "pooled": 0.869,
       "regional": 0.869,
-      "regional_level": 0.746
+      "regional_level": 0.746,
+      "region_class": 0.746
      },
      "Córdoba": {
       "n": 140,
       "pooled": 0.893,
       "regional": 0.936,
-      "regional_level": 0.814
+      "regional_level": 0.814,
+      "region_class": 0.814
      },
      "Santa Fe": {
       "n": 144,
       "pooled": 0.896,
       "regional": 0.889,
-      "regional_level": 0.861
+      "regional_level": 0.861,
+      "region_class": 0.861
      },
      "Entre Ríos": {
       "n": 139,
       "pooled": 0.799,
       "regional": 0.791,
-      "regional_level": 0.777
+      "regional_level": 0.777,
+      "region_class": 0.77
      },
      "San Juan": {
       "n": 101,
       "pooled": 0.891,
       "regional": 0.921,
-      "regional_level": 0.842
+      "regional_level": 0.842,
+      "region_class": 0.842
      },
      "La Rioja": {
       "n": 81,
       "pooled": 0.778,
       "regional": 0.79,
-      "regional_level": 0.691
+      "regional_level": 0.691,
+      "region_class": 0.691
      },
      "Corrientes": {
       "n": 144,
       "pooled": 0.826,
       "regional": 0.806,
-      "regional_level": 0.715
+      "regional_level": 0.715,
+      "region_class": 0.715
      },
      "Santiago del Estero": {
       "n": 141,
       "pooled": 0.858,
       "regional": 0.894,
-      "regional_level": 0.83
+      "regional_level": 0.83,
+      "region_class": 0.83
      },
      "Catamarca": {
       "n": 81,
       "pooled": 0.815,
       "regional": 0.827,
-      "regional_level": 0.802
+      "regional_level": 0.802,
+      "region_class": 0.802
      },
      "Misiones": {
       "n": 139,
       "pooled": 0.827,
       "regional": 0.813,
-      "regional_level": 0.791
+      "regional_level": 0.791,
+      "region_class": 0.791
      },
      "Tucumán": {
       "n": 91,
       "pooled": 0.923,
       "regional": 0.912,
-      "regional_level": 0.868
+      "regional_level": 0.868,
+      "region_class": 0.868
      },
      "Chaco": {
       "n": 140,
       "pooled": 0.886,
       "regional": 0.879,
-      "regional_level": 0.85
+      "regional_level": 0.85,
+      "region_class": 0.85
      },
      "Formosa": {
       "n": 139,
       "pooled": 0.849,
       "regional": 0.827,
-      "regional_level": 0.806
+      "regional_level": 0.806,
+      "region_class": 0.806
      },
      "Salta": {
       "n": 132,
       "pooled": 0.788,
       "regional": 0.788,
-      "regional_level": 0.72
+      "regional_level": 0.72,
+      "region_class": 0.72
      },
      "Jujuy": {
       "n": 89,
       "pooled": 0.831,
       "regional": 0.798,
-      "regional_level": 0.764
+      "regional_level": 0.764,
+      "region_class": 0.764
      },
      "Chubut": {
       "n": 35,
       "pooled": 0.657,
       "regional": 0.8,
-      "regional_level": 0.714
+      "regional_level": 0.714,
+      "region_class": 0.714
+     }
+    },
+    "low_count": {
+     "prov P 5-30": {
+      "n": 508,
+      "pooled": 0.677,
+      "regional": 0.667,
+      "regional_level": 0.748,
+      "region_class": 0.768
+     },
+     "prov all P>=1": {
+      "n": 3104,
+      "pooled": 0.808,
+      "regional": 0.817,
+      "regional_level": 0.784,
+      "region_class": 0.789
+     },
+     "cell P 5-15": {
+      "n": 30286,
+      "pooled": 0.801,
+      "regional": 0.801,
+      "regional_level": 0.8,
+      "region_class": 0.8
+     },
+     "cell P 1-5": {
+      "n": 29109,
+      "pooled": 0.8,
+      "regional": 0.801,
+      "regional_level": 0.799,
+      "region_class": 0.799
      }
     }
    }
@@ -2105,6 +5004,15 @@
    "min_bin": 30,
    "bins_regional": {
     "litoral-nea": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 630,
+      "p10_log": -2.241,
+      "p50_log": -0.1677,
+      "p90_log": 1.306,
+      "source": "region"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -2171,6 +5079,15 @@
     ],
     "noa-chaco-seco": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 1123,
+      "p10_log": -2.3332,
+      "p50_log": -1.3788,
+      "p90_log": 0.8373,
+      "source": "region"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 4265,
@@ -2236,6 +5153,15 @@
     ],
     "monte-cuyo": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 174,
+      "p10_log": -2.3162,
+      "p50_log": -0.7663,
+      "p90_log": 0.7525,
+      "source": "region"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 1657,
@@ -2292,6 +5218,15 @@
      }
     ],
     "pampa": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 157,
+      "p10_log": -2.2896,
+      "p50_log": -0.6449,
+      "p90_log": 1.3847,
+      "source": "region"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -2354,6 +5289,11 @@
     ],
     "patagonia": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 927,
@@ -2413,6 +5353,11 @@
    "bins_regional_level": {
     "litoral-nea|prov": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "source": "fallback (n < 30)"
@@ -2470,6 +5415,15 @@
     ],
     "litoral-nea|cell": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 629,
+      "p10_log": -2.2434,
+      "p50_log": -0.1776,
+      "p90_log": 1.2989,
+      "source": "region|level"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 10445,
@@ -2526,6 +5480,11 @@
      }
     ],
     "noa-chaco-seco|prov": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -2588,6 +5547,15 @@
     ],
     "noa-chaco-seco|cell": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 1113,
+      "p10_log": -2.3332,
+      "p50_log": -1.4219,
+      "p90_log": 0.8176,
+      "source": "region|level"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 4236,
@@ -2644,6 +5612,11 @@
      }
     ],
     "monte-cuyo|prov": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -2702,6 +5675,15 @@
     ],
     "monte-cuyo|cell": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 168,
+      "p10_log": -2.3326,
+      "p50_log": -1.0005,
+      "p90_log": 0.6296,
+      "source": "region|level"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 1595,
@@ -2754,6 +5736,11 @@
      }
     ],
     "pampa|prov": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -2812,6 +5799,15 @@
     ],
     "pampa|cell": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 155,
+      "p10_log": -2.2896,
+      "p50_log": -0.6646,
+      "p90_log": 1.2197,
+      "source": "region|level"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 3516,
@@ -2868,6 +5864,11 @@
      }
     ],
     "patagonia|prov": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
      {
       "P_min": 5,
       "P_max": 15,
@@ -2926,6 +5927,11 @@
     ],
     "patagonia|cell": [
      {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
       "P_min": 5,
       "P_max": 15,
       "n": 868,
@@ -2982,7 +5988,793 @@
      }
     ]
    },
+   "bins_region_class": {
+    "national|cell": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 2086,
+      "p10_log": -2.3103,
+      "p50_log": -0.9136,
+      "p90_log": 1.0422,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 20660,
+      "p10_log": -2.9451,
+      "p50_log": -0.6795,
+      "p90_log": 0.8813,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 17717,
+      "p10_log": -2.7234,
+      "p50_log": -0.6177,
+      "p90_log": 0.6026,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 9227,
+      "p10_log": -1.7769,
+      "p50_log": -0.4397,
+      "p90_log": 0.4494,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 3622,
+      "p10_log": -1.2057,
+      "p50_log": -0.3509,
+      "p90_log": 0.3584,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 552,
+      "p10_log": -0.9996,
+      "p50_log": -0.3221,
+      "p90_log": 0.3998,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "n": 52,
+      "p10_log": -0.7004,
+      "p50_log": -0.1185,
+      "p90_log": 0.3047,
+      "source": "region|class"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "litoral-nea|cell": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 629,
+      "p10_log": -2.2434,
+      "p50_log": -0.1776,
+      "p90_log": 1.2989,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 10445,
+      "p10_log": -2.7637,
+      "p50_log": -0.3939,
+      "p90_log": 0.9783,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 10075,
+      "p10_log": -2.134,
+      "p50_log": -0.4677,
+      "p90_log": 0.6624,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 5789,
+      "p10_log": -1.6129,
+      "p50_log": -0.4018,
+      "p90_log": 0.4555,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 2267,
+      "p10_log": -1.1434,
+      "p50_log": -0.3506,
+      "p90_log": 0.3378,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 293,
+      "p10_log": -0.9994,
+      "p50_log": -0.2933,
+      "p90_log": 0.3211,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "noa-chaco-seco|cell": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 1113,
+      "p10_log": -2.3332,
+      "p50_log": -1.4219,
+      "p90_log": 0.8176,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 4236,
+      "p10_log": -2.8472,
+      "p50_log": -0.4791,
+      "p90_log": 1.0052,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 3640,
+      "p10_log": -2.2122,
+      "p50_log": -0.4097,
+      "p90_log": 0.656,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 2126,
+      "p10_log": -1.4934,
+      "p50_log": -0.3837,
+      "p90_log": 0.4149,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 815,
+      "p10_log": -1.2425,
+      "p50_log": -0.3903,
+      "p90_log": 0.2808,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 103,
+      "p10_log": -0.9758,
+      "p50_log": -0.4719,
+      "p90_log": 0.5974,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "monte-cuyo|cell": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 168,
+      "p10_log": -2.3326,
+      "p50_log": -1.0005,
+      "p90_log": 0.6296,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 1595,
+      "p10_log": -2.9816,
+      "p50_log": -1.2614,
+      "p90_log": 0.4858,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 961,
+      "p10_log": -3.578,
+      "p50_log": -0.9841,
+      "p90_log": 0.4276,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 295,
+      "p10_log": -2.2029,
+      "p50_log": -0.6482,
+      "p90_log": 0.3943,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 91,
+      "p10_log": -1.6273,
+      "p50_log": -0.4151,
+      "p90_log": 0.5287,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "pampa|cell": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "n": 155,
+      "p10_log": -2.2896,
+      "p50_log": -0.6646,
+      "p90_log": 1.2197,
+      "source": "region|class"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 3516,
+      "p10_log": -3.084,
+      "p50_log": -1.5381,
+      "p90_log": 0.2948,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 2374,
+      "p10_log": -3.8009,
+      "p50_log": -1.6,
+      "p90_log": 0.2288,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 833,
+      "p10_log": -4.395,
+      "p50_log": -0.9295,
+      "p90_log": 0.4825,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 344,
+      "p10_log": -1.3895,
+      "p50_log": -0.2847,
+      "p90_log": 0.4948,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 93,
+      "p10_log": -1.0229,
+      "p50_log": -0.2974,
+      "p90_log": 0.4255,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "patagonia|cell": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 868,
+      "p10_log": -3.1655,
+      "p50_log": -1.4975,
+      "p90_log": 0.3758,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 667,
+      "p10_log": -3.7705,
+      "p50_log": -1.6648,
+      "p90_log": 0.1825,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 184,
+      "p10_log": -2.993,
+      "p50_log": -0.851,
+      "p90_log": 0.5275,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 105,
+      "p10_log": -1.5244,
+      "p50_log": -0.2768,
+      "p90_log": 0.6113,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 40,
+      "p10_log": -1.0686,
+      "p50_log": -0.2888,
+      "p90_log": 0.6012,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "national|agg": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 173,
+      "p10_log": -0.645,
+      "p50_log": 0.5876,
+      "p90_log": 1.6279,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 371,
+      "p10_log": -0.9635,
+      "p50_log": 0.2084,
+      "p90_log": 1.0568,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 483,
+      "p10_log": -0.8521,
+      "p50_log": 0.0719,
+      "p90_log": 0.7587,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 698,
+      "p10_log": -0.59,
+      "p50_log": 0.0176,
+      "p90_log": 0.5387,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 678,
+      "p10_log": -0.5227,
+      "p50_log": -0.0245,
+      "p90_log": 0.4253,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "n": 310,
+      "p10_log": -0.3133,
+      "p50_log": 0.0249,
+      "p90_log": 0.3374,
+      "source": "region|class"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "n": 313,
+      "p10_log": -0.2248,
+      "p50_log": -0.0195,
+      "p90_log": 0.2804,
+      "source": "region|class"
+     }
+    ],
+    "litoral-nea|agg": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 71,
+      "p10_log": -0.3977,
+      "p50_log": 0.366,
+      "p90_log": 1.1033,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 190,
+      "p10_log": -0.5236,
+      "p50_log": 0.1075,
+      "p90_log": 0.7302,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 260,
+      "p10_log": -0.5227,
+      "p50_log": -0.0174,
+      "p90_log": 0.5393,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "n": 182,
+      "p10_log": -0.3125,
+      "p50_log": 0.0294,
+      "p90_log": 0.3714,
+      "source": "region|class"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "n": 121,
+      "p10_log": -0.261,
+      "p50_log": -0.0247,
+      "p90_log": 0.2662,
+      "source": "region|class"
+     }
+    ],
+    "noa-chaco-seco|agg": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 66,
+      "p10_log": -1.021,
+      "p50_log": 0.3619,
+      "p90_log": 1.1012,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 67,
+      "p10_log": -0.5194,
+      "p50_log": 0.1138,
+      "p90_log": 0.7305,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 116,
+      "p10_log": -0.6541,
+      "p50_log": 0.0069,
+      "p90_log": 0.5112,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 132,
+      "p10_log": -0.5085,
+      "p50_log": 0.053,
+      "p90_log": 0.3777,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "n": 69,
+      "p10_log": -0.3077,
+      "p50_log": 0.0042,
+      "p90_log": 0.2962,
+      "source": "region|class"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "n": 47,
+      "p10_log": -0.2919,
+      "p50_log": 0.0036,
+      "p90_log": 0.2116,
+      "source": "region|class"
+     }
+    ],
+    "monte-cuyo|agg": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 62,
+      "p10_log": -0.8258,
+      "p50_log": 0.5761,
+      "p90_log": 1.3816,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 116,
+      "p10_log": -0.6906,
+      "p50_log": 0.1752,
+      "p90_log": 1.089,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 142,
+      "p10_log": -0.8613,
+      "p50_log": -0.0951,
+      "p90_log": 0.5162,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 138,
+      "p10_log": -0.5466,
+      "p50_log": -0.0495,
+      "p90_log": 0.391,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 58,
+      "p10_log": -0.5016,
+      "p50_log": -0.0544,
+      "p90_log": 0.4173,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "pampa|agg": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 44,
+      "p10_log": -0.4006,
+      "p50_log": 0.3761,
+      "p90_log": 1.1588,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 99,
+      "p10_log": -0.5579,
+      "p50_log": 0.2012,
+      "p90_log": 0.8266,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 166,
+      "p10_log": -0.4572,
+      "p50_log": 0.0368,
+      "p90_log": 0.5484,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 177,
+      "p10_log": -0.4513,
+      "p50_log": -0.066,
+      "p90_log": 0.354,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "n": 33,
+      "p10_log": -0.4209,
+      "p50_log": -0.0522,
+      "p90_log": 0.2881,
+      "source": "region|class"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ],
+    "patagonia|agg": [
+     {
+      "P_min": 1,
+      "P_max": 5,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 5,
+      "P_max": 15,
+      "n": 59,
+      "p10_log": -0.392,
+      "p50_log": 0.7124,
+      "p90_log": 1.7617,
+      "source": "region|class"
+     },
+     {
+      "P_min": 15,
+      "P_max": 40,
+      "n": 120,
+      "p10_log": -1.1505,
+      "p50_log": 0.0731,
+      "p90_log": 0.9547,
+      "source": "region|class"
+     },
+     {
+      "P_min": 40,
+      "P_max": 100,
+      "n": 104,
+      "p10_log": -1.1575,
+      "p50_log": -0.0721,
+      "p90_log": 0.6271,
+      "source": "region|class"
+     },
+     {
+      "P_min": 100,
+      "P_max": 300,
+      "n": 88,
+      "p10_log": -0.9797,
+      "p50_log": -0.1189,
+      "p90_log": 0.5251,
+      "source": "region|class"
+     },
+     {
+      "P_min": 300,
+      "P_max": 1000,
+      "n": 47,
+      "p10_log": -0.9129,
+      "p50_log": -0.1688,
+      "p90_log": 0.5701,
+      "source": "region|class"
+     },
+     {
+      "P_min": 1000,
+      "P_max": 3000,
+      "source": "fallback (n < 30)"
+     },
+     {
+      "P_min": 3000,
+      "P_max": null,
+      "source": "fallback (n < 30)"
+     }
+    ]
+   },
    "bins_pooled": [
+    {
+     "P_min": 1,
+     "P_max": 5,
+     "n": 2105,
+     "p10_log": -2.3101,
+     "p50_log": -0.904,
+     "p90_log": 1.0583
+    },
     {
      "P_min": 5,
      "P_max": 15,
@@ -3046,81 +6838,94 @@
       "n": 144,
       "pooled": 0.868,
       "regional": 0.868,
-      "regional_level": 0.868
+      "regional_level": 0.868,
+      "region_class": 0.868
      },
      "prov": {
-      "n": 2882,
-      "pooled": 0.784,
-      "regional": 0.771,
-      "regional_level": 0.783
+      "n": 2460,
+      "pooled": 0.804,
+      "regional": 0.803,
+      "regional_level": 0.793,
+      "region_class": 0.792
      },
      "cell": {
-      "n": 51830,
-      "pooled": 0.799,
-      "regional": 0.799,
-      "regional_level": 0.798
+      "n": 39090,
+      "pooled": 0.788,
+      "regional": 0.791,
+      "regional_level": 0.791,
+      "region_class": 0.791
      }
     },
     "by_region_level": {
      "patagonia|prov": {
-      "n": 428,
-      "pooled": 0.729,
-      "regional": 0.734,
-      "regional_level": 0.785
+      "n": 294,
+      "pooled": 0.779,
+      "regional": 0.823,
+      "regional_level": 0.796,
+      "region_class": 0.793
      },
      "pampa|prov": {
-      "n": 547,
-      "pooled": 0.804,
-      "regional": 0.793,
-      "regional_level": 0.768
+      "n": 502,
+      "pooled": 0.819,
+      "regional": 0.827,
+      "regional_level": 0.787,
+      "region_class": 0.783
      },
      "monte-cuyo|prov": {
-      "n": 525,
-      "pooled": 0.827,
-      "regional": 0.781,
-      "regional_level": 0.8
+      "n": 384,
+      "pooled": 0.867,
+      "regional": 0.846,
+      "regional_level": 0.81,
+      "region_class": 0.81
      },
      "litoral-nea|prov": {
-      "n": 856,
-      "pooled": 0.743,
-      "regional": 0.748,
-      "regional_level": 0.777
+      "n": 835,
+      "pooled": 0.752,
+      "regional": 0.757,
+      "regional_level": 0.787,
+      "region_class": 0.789
      },
      "noa-chaco-seco|prov": {
-      "n": 526,
-      "pooled": 0.833,
-      "regional": 0.806,
-      "regional_level": 0.793
+      "n": 445,
+      "pooled": 0.845,
+      "regional": 0.811,
+      "regional_level": 0.793,
+      "region_class": 0.793
      },
      "patagonia|cell": {
-      "n": 1869,
-      "pooled": 0.663,
-      "regional": 0.806,
-      "regional_level": 0.792
+      "n": 1454,
+      "pooled": 0.639,
+      "regional": 0.779,
+      "regional_level": 0.772,
+      "region_class": 0.772
      },
      "pampa|cell": {
-      "n": 7171,
-      "pooled": 0.713,
-      "regional": 0.797,
-      "regional_level": 0.798
+      "n": 4880,
+      "pooled": 0.647,
+      "regional": 0.749,
+      "regional_level": 0.751,
+      "region_class": 0.752
      },
      "monte-cuyo|cell": {
-      "n": 2966,
-      "pooled": 0.801,
-      "regional": 0.801,
-      "regional_level": 0.799
+      "n": 1855,
+      "pooled": 0.764,
+      "regional": 0.764,
+      "regional_level": 0.765,
+      "region_class": 0.768
      },
      "litoral-nea|cell": {
-      "n": 28894,
-      "pooled": 0.822,
-      "regional": 0.8,
-      "regional_level": 0.798
+      "n": 22698,
+      "pooled": 0.821,
+      "regional": 0.803,
+      "regional_level": 0.801,
+      "region_class": 0.802
      },
      "noa-chaco-seco|cell": {
-      "n": 10930,
-      "pooled": 0.819,
-      "regional": 0.798,
-      "regional_level": 0.798
+      "n": 8203,
+      "pooled": 0.813,
+      "regional": 0.793,
+      "regional_level": 0.793,
+      "region_class": 0.793
      }
     },
     "by_province": {
@@ -3128,139 +6933,192 @@
       "n": 2,
       "pooled": 0.5,
       "regional": 0.5,
-      "regional_level": 0.5
+      "regional_level": 0.5,
+      "region_class": 0.5
      },
      "Santa Cruz": {
       "n": 46,
       "pooled": 0.935,
       "regional": 0.935,
-      "regional_level": 0.761
+      "regional_level": 0.761,
+      "region_class": 0.761
      },
      "Río Negro": {
       "n": 122,
       "pooled": 0.795,
       "regional": 0.828,
-      "regional_level": 0.828
+      "regional_level": 0.828,
+      "region_class": 0.82
      },
      "Neuquén": {
       "n": 88,
       "pooled": 0.727,
       "regional": 0.83,
-      "regional_level": 0.83
+      "regional_level": 0.83,
+      "region_class": 0.83
      },
      "Buenos Aires": {
       "n": 143,
       "pooled": 0.832,
       "regional": 0.839,
-      "regional_level": 0.86
+      "regional_level": 0.86,
+      "region_class": 0.853
      },
      "La Pampa": {
       "n": 106,
       "pooled": 0.774,
       "regional": 0.792,
-      "regional_level": 0.679
+      "regional_level": 0.679,
+      "region_class": 0.679
      },
      "Mendoza": {
       "n": 124,
       "pooled": 0.847,
       "regional": 0.839,
-      "regional_level": 0.823
+      "regional_level": 0.823,
+      "region_class": 0.823
      },
      "San Luis": {
       "n": 119,
       "pooled": 0.849,
       "regional": 0.832,
-      "regional_level": 0.731
+      "regional_level": 0.731,
+      "region_class": 0.731
      },
      "Córdoba": {
       "n": 134,
       "pooled": 0.813,
       "regional": 0.836,
-      "regional_level": 0.843
+      "regional_level": 0.843,
+      "region_class": 0.836
      },
      "Santa Fe": {
       "n": 144,
       "pooled": 0.757,
       "regional": 0.75,
-      "regional_level": 0.743
+      "regional_level": 0.743,
+      "region_class": 0.75
      },
      "Entre Ríos": {
       "n": 138,
       "pooled": 0.717,
       "regional": 0.717,
-      "regional_level": 0.761
+      "regional_level": 0.761,
+      "region_class": 0.761
      },
      "San Juan": {
       "n": 98,
       "pooled": 0.888,
       "regional": 0.847,
-      "regional_level": 0.816
+      "regional_level": 0.816,
+      "region_class": 0.816
      },
      "La Rioja": {
       "n": 83,
       "pooled": 0.88,
       "regional": 0.843,
-      "regional_level": 0.795
+      "regional_level": 0.795,
+      "region_class": 0.795
      },
      "Corrientes": {
       "n": 143,
       "pooled": 0.748,
       "regional": 0.762,
-      "regional_level": 0.762
+      "regional_level": 0.762,
+      "region_class": 0.762
      },
      "Santiago del Estero": {
       "n": 141,
       "pooled": 0.879,
       "regional": 0.879,
-      "regional_level": 0.83
+      "regional_level": 0.83,
+      "region_class": 0.83
      },
      "Catamarca": {
       "n": 79,
       "pooled": 0.861,
       "regional": 0.861,
-      "regional_level": 0.797
+      "regional_level": 0.797,
+      "region_class": 0.797
      },
      "Misiones": {
       "n": 130,
       "pooled": 0.623,
       "regional": 0.623,
-      "regional_level": 0.769
+      "regional_level": 0.769,
+      "region_class": 0.777
      },
      "Tucumán": {
       "n": 88,
       "pooled": 0.864,
       "regional": 0.818,
-      "regional_level": 0.807
+      "regional_level": 0.807,
+      "region_class": 0.807
      },
      "Chaco": {
       "n": 140,
       "pooled": 0.879,
       "regional": 0.864,
-      "regional_level": 0.864
+      "regional_level": 0.864,
+      "region_class": 0.864
      },
      "Formosa": {
       "n": 140,
       "pooled": 0.779,
       "regional": 0.814,
-      "regional_level": 0.821
+      "regional_level": 0.821,
+      "region_class": 0.821
      },
      "Salta": {
       "n": 131,
       "pooled": 0.771,
       "regional": 0.733,
-      "regional_level": 0.756
+      "regional_level": 0.756,
+      "region_class": 0.756
      },
      "Jujuy": {
       "n": 85,
       "pooled": 0.882,
       "regional": 0.812,
-      "regional_level": 0.776
+      "regional_level": 0.776,
+      "region_class": 0.776
      },
      "Chubut": {
       "n": 36,
       "pooled": 0.667,
       "regional": 0.667,
-      "regional_level": 0.667
+      "regional_level": 0.667,
+      "region_class": 0.667
+     }
+    },
+    "low_count": {
+     "prov P 5-30": {
+      "n": 422,
+      "pooled": 0.671,
+      "regional": 0.585,
+      "regional_level": 0.73,
+      "region_class": 0.754
+     },
+     "prov all P>=1": {
+      "n": 2901,
+      "pooled": 0.783,
+      "regional": 0.768,
+      "regional_level": 0.781,
+      "region_class": 0.784
+     },
+     "cell P 5-15": {
+      "n": 20660,
+      "pooled": 0.801,
+      "regional": 0.801,
+      "regional_level": 0.799,
+      "region_class": 0.799
+     },
+     "cell P 1-5": {
+      "n": 2086,
+      "pooled": 0.799,
+      "regional": 0.8,
+      "regional_level": 0.796,
+      "region_class": 0.796
      }
     }
    }

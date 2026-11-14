@@ -9,9 +9,11 @@
 //   2000-01 .. 2000-10   : no data (MODIS archive starts 2000-11-01)         H = null
 // 80 % PREDICTION INTERVAL, calibrated on out-of-sample LOYO residuals (05_loyo → band_calibration.json), per satellite set:
 //   [H·exp(p10), H·exp(p90)] where p10/p90 are the signed 10th/90th percentiles of log(V/P) in the bin of PREDICTED count that
-//   contains H (bins 5–15, 15–40, …, 3000+), fitted PER FIRE-REGIME REGION (lib/regions.js) over the cell- and province-level
-//   unit-months of that region; the country uses the nationally pooled bins; regional bins with < 30 residuals fall back to the
-//   pooled ones. The interval is asymmetric (low counts are biased high by the multiplicative model: median residual −0.4 at
+//   contains H (bins 1–5, 5–15, …, 3000+), fitted PER FIRE-REGIME REGION (lib/regions.js) AND PER CLASS: 'cell' (one 0.25° cell,
+//   from cell-level residuals) or 'agg' (any aggregate of cells, from province- and country-level residuals). Cell and aggregate
+//   residuals have opposite signs at low counts (a cell with P ≥ 1 is a selected over-prediction; a small aggregate is
+//   under-predicted by the structural zeros of its other cells), so pooling them covered 67 % of province-months with P < 30.
+//   The country uses the national 'agg' bins; bins with < 30 residuals fall back to national|class → region → pooled (resolved in 05). The interval is asymmetric (low counts are biased high by the multiplicative model: median residual −0.4 at
 //   5–15; −0.76 in Patagonia) and depends on the count and the region, not on the number of cells. Measured coverage, out-of-
 //   sample for the band itself (TA): country 90 %, province 82 %, cell 80 %; Patagonia cells 80 % (74 % with pooled bins),
 //   Neuquén 82 %, Chubut 80 %; Pampa/Cuyo provinces conservative (85–94 %); Tierra del Fuego not verifiable (3 months).
@@ -45,10 +47,12 @@ const Y0 = 2000, Y1 = 2025, YEARS = []; for (let y = Y0; y <= Y1; y++) YEARS.pus
 const Z = 1.2816; // 80 % two-sided
 const BANDCAL = JSON.parse(await readFile(path.join(ROOT, 'data', 'validation', 'band_calibration.json'), 'utf8'));
 const BINSET = { TA: BANDCAL.band.TA.by_count, T: BANDCAL.band.T.by_count };
-const REGBINS = { TA: BANDCAL.band.TA.by_region, T: BANDCAL.band.T.by_region }; // adopted 14/11 (regional band test in 05_loyo)
-if (!REGBINS.TA || !REGBINS.T) throw new Error('band_calibration.json has no by_region bins: run 05_loyo.mjs');
+const REGBINS = { TA: BANDCAL.band.TA.by_region, T: BANDCAL.band.T.by_region }; // variant A (14:25), kept for reference
+const RC = { TA: BANDCAL.band.TA.by_region_class, T: BANDCAL.band.T.by_region_class }; // variant D (adopted 16:40): [region|'national'][cell|agg][bin], fallback chain already resolved in 05_loyo
+if (!RC.TA || !RC.T) throw new Error('band_calibration.json has no by_region_class bins: run 05_loyo.mjs');
 /** signed log offsets [p10, p90] of the 80 % interval for a predicted count P under satellite set s, in region reg (null = pooled/country) */
-function bandLog(P, s, reg = null) { const bins = (reg && REGBINS[s]?.[reg]) || BINSET[s] || BINSET.TA; let b = bins[0]; for (const x of bins) if (P >= x.P_min) b = x; return [b.p10_log, b.p90_log]; }
+/** cls = 'cell' (one 0.25° cell) or 'agg' (any aggregate: province, country, user AOI); reg = fire-regime region or null for the whole country */
+function bandLog(P, s, reg = null, cls = 'agg') { const bins = RC[s]?.[reg || 'national']?.[cls] || RC[s]?.national?.[cls] || BINSET[s] || BINSET.TA; let b = bins[0]; for (const x of bins) if (P >= x.P_min) b = x; return [b.p10_log, b.p90_log]; }
 const regionOf = prov => REGION_OF[prov] || null;
 const N_CELLS_TOTAL = Object.keys(agg.cells).length;
 // Empirical relative σ for an aggregate of n cells: the AOI-size error curve measured by LOYO on random contiguous blocks
@@ -92,7 +96,7 @@ const era = (y, m) => y >= 2012 ? 'VIIRS' : (y > 2002 || (y === 2002 && m >= 7))
 
 let cellsCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval calibrated out-of-sample by predicted count, satellite set and fire-regime region of the cell's province (band_calibration.json by_region); empty for observed VIIRS months\ncell,prov,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,V,T,A,sensor,terra_only,gap_fill,additive,cloud_anom,cloud_underdetection,static_viirs,static_modis\n`;
 let fillTotal = { snpp: 0, terra: 0, aqua: 0, terra_only: 0, additive: 0 };
-const compact = { grid: index.grid, years: YEARS, terra_only_until: '2002-06', band_by_count: BINSET, band_by_region: REGBINS, region_of_prov: REGION_OF, band: '80% prediction interval [H*exp(p10), H*exp(p90)] with p10/p90 from the bin containing the predicted count H in band_by_region[set][region] (region of the AOI = region of the cells carrying the largest share of H; band_by_count[set] = national pooled bins, used for the whole country); set T before 2002-07, TA until 2011-12, none for observed VIIRS months; widen by |0.025*ONI| per side in reconstructed months', sigma_curve_by_cells_diagnostic: CURVES, note: SI_NOTE.slice(2), cells: {} };
+const compact = { grid: index.grid, years: YEARS, terra_only_until: '2002-06', band_by_count: BINSET, band_by_region_class: RC, region_of_prov: REGION_OF, band: '80% prediction interval [H*exp(p10), H*exp(p90)] with p10/p90 from the bin containing the predicted count H in band_by_region_class[set][region][class]; class = cell for an AOI of one 0.25° cell, agg for any aggregate of 2+ cells; region = region of the cells carrying the largest share of H, national for the whole country; set T before 2002-07, TA until 2011-12, none for observed VIIRS months; widen by |0.025*ONI| per side in reconstructed months. band_by_count = national pooled bins (reference only)', sigma_curve_by_cells_diagnostic: CURVES, note: SI_NOTE.slice(2), cells: {} };
 const provSeries = {}; // prov -> { H:[y][m], var:[y][m], obs:[y][m], static:[y][m] }
 const provAcc = p => (provSeries[p] ??= { n: 0, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)), ca: YEARS.map(() => Array(12).fill(0)), caw: YEARS.map(() => Array(12).fill(0)) });
 
@@ -110,7 +114,7 @@ for (const [cid, yrs] of Object.entries(agg.cells)) {
       const r = yrs[y]?.[m] || Array(12).fill(0);
       const V = r[0], T = r[1], A = r[2], Vs = r[3], Ms = r[4] + r[5], Mso = r[9] || 0, Ato = r[10] || 0, Tao = r[11] || 0;
       let H, sig = 0, terra = 0, gf = 0, lo, hi, b10 = 0, b90 = 0, additive = 0;
-      if (e === 'VIIRS') { H = V; lo = hi = H; if (Mso) { gf = fTA[m - 1][0] * Mso; H += gf; fillTotal.snpp += gf; const [q1, q9] = bandLog(gf, 'TA', reg); lo = V + gf * Math.exp(q1); hi = V + gf * Math.exp(q9); b10 = Math.log(lo / H); b90 = Math.log(hi / H); sig = 1; } }
+      if (e === 'VIIRS') { H = V; lo = hi = H; if (Mso) { gf = fTA[m - 1][0] * Mso; H += gf; fillTotal.snpp += gf; const [q1, q9] = bandLog(gf, 'TA', reg, 'cell'); lo = V + gf * Math.exp(q1); hi = V + gf * Math.exp(q9); b10 = Math.log(lo / H); b90 = Math.log(hi / H); sig = 1; } }
       else if (e === 'MODIS->VIIRS-eq') {
         const k = rTA[prov]?.[m] ?? 0.55; const fillT = Ato * k, fillA = Tao / Math.max(k, 0.05);
         const adj = ensoAdj(y, m);
@@ -124,7 +128,7 @@ for (const [cid, yrs] of Object.entries(agg.cells)) {
       }
       const ca = cloudAnom(cell, y, m, e); const under = ca !== null && ca > CLOUD_FLAG ? +(1 - Math.exp(-CLOUD_SLOPE * ca)).toFixed(3) : 0;
       if (under) { (cld[y] ??= Array(12).fill(0))[m - 1] = Math.round(100 * ca); cloudFlagged++; }
-      if (e !== 'VIIRS') { const es = ensoSig(y, m); [b10, b90] = bandLog(H, terra ? 'T' : 'TA', reg); b10 -= es; b90 += es; if (under) b90 += CLOUD_SLOPE * ca; lo = H * Math.exp(b10); hi = H * Math.exp(b90); }
+      if (e !== 'VIIRS') { const es = ensoSig(y, m); [b10, b90] = bandLog(H, terra ? 'T' : 'TA', reg, 'cell'); b10 -= es; b90 += es; if (under) b90 += CLOUD_SLOPE * ca; lo = H * Math.exp(b10); hi = H * Math.exp(b90); }
       hy[m - 1] = Math.round(H); sy[m - 1] = e === 'VIIRS' && !gf ? 0 : 1;
       if (Vs || Ms) (st[y] ??= Array(12).fill(0))[m - 1] = e === 'VIIRS' ? Vs : Ms;
       if (gf > 0.5) (gfc[y] ??= Array(12).fill(0))[m - 1] = Math.round(gf);
@@ -146,8 +150,8 @@ for (const [p, P] of Object.entries(provSeries)) for (let yi = 0; yi < YEARS.len
   const yy = YEARS[yi], mm = m + 1, H = P.H[yi][m], gf = P.gf[yi][m], reg = p === 'Argentina' ? null : regionOf(p);
   let lo = '', hi = '', b10 = '', b90 = '';
   const caP = P.caw[yi][m] ? P.ca[yi][m] / P.caw[yi][m] : null, underP = caP !== null && caP > CLOUD_FLAG ? +(1 - Math.exp(-CLOUD_SLOPE * caP)).toFixed(3) : 0;
-  if (yy < 2012 && H > 0) { const es = ensoSig(yy, mm); let [q1, q9] = bandLog(H, setOf(yy, mm), reg); q1 -= es; q9 += es; if (underP) q9 += CLOUD_SLOPE * caP; lo = (H * Math.exp(q1)).toFixed(1); hi = (H * Math.exp(q9)).toFixed(1); b10 = q1.toFixed(3); b90 = q9.toFixed(3); }
-  else if (gf > 0 && H > 0) { const [q1, q9] = bandLog(gf, 'TA', reg); const l = H - gf + gf * Math.exp(q1), h = H - gf + gf * Math.exp(q9); lo = l.toFixed(1); hi = h.toFixed(1); b10 = Math.log(l / H).toFixed(3); b90 = Math.log(h / H).toFixed(3); }
+  if (yy < 2012 && H > 0) { const es = ensoSig(yy, mm); let [q1, q9] = bandLog(H, setOf(yy, mm), reg, 'agg'); q1 -= es; q9 += es; if (underP) q9 += CLOUD_SLOPE * caP; lo = (H * Math.exp(q1)).toFixed(1); hi = (H * Math.exp(q9)).toFixed(1); b10 = q1.toFixed(3); b90 = q9.toFixed(3); }
+  else if (gf > 0 && H > 0) { const [q1, q9] = bandLog(gf, 'TA', reg, 'agg'); const l = H - gf + gf * Math.exp(q1), h = H - gf + gf * Math.exp(q9); lo = l.toFixed(1); hi = h.toFixed(1); b10 = Math.log(l / H).toFixed(3); b90 = Math.log(h / H).toFixed(3); }
   provCsv += `"${p}",${P.n},${yy},${mm},${H.toFixed(1)},${lo},${hi},${b10},${b90},${era(yy, mm)},${gf ? gf.toFixed(1) : 0},${outDays('Terra', yy, mm)},${yy > 2002 || (yy === 2002 && mm >= 7) ? outDays('Aqua', yy, mm) : ''},${yy >= 2012 ? outDays('SNPP', yy, mm) : ''},${caP === null ? '' : caP.toFixed(3)},${underP || 0},${P.st[yi][m]}\n`;
 }
 await writeFile(path.join(OUT, 'harmonized_cells.csv'), cellsCsv);
@@ -161,10 +165,11 @@ console.log(`cells: ${Object.keys(compact.cells).length} · cells.json ${(json.l
 if (BETA) console.log(`ENSO conditioning applied to 2000–2011: beta=${BETA} (H *= exp(beta*ONI))`);
 if (CLOUD) console.log(`cloud obscuration flag: ${cloudFlagged} cell-months with cloud anomaly > +${CLOUD_FLAG} at the overpass (estimated under-detection 1 − exp(−3·Δ); upper bound widened in reconstructed months)`);
 console.log(`gap fill (VIIRS-eq hotspots added): S-NPP outages ${Math.round(fillTotal.snpp)} · Terra outages ${Math.round(fillTotal.terra)} · Aqua outages ${Math.round(fillTotal.aqua)} · Terra-only era ${Math.round(fillTotal.terra_only)} · additive term (MODIS = 0 months) ${Math.round(fillTotal.additive)}`);
-for (const set of ['TA', 'T']) { console.log(`80% interval by predicted count, national pooled (${set}): ` + BINSET[set].map(b => `${b.P_min}+:[${(100 * (Math.exp(b.p10_log) - 1)).toFixed(0)}%,+${(100 * (Math.exp(b.p90_log) - 1)).toFixed(0)}%]`).join(' ')); for (const [reg, bins] of Object.entries(REGBINS[set])) console.log(`   ${reg.padEnd(15)} ` + bins.map(b => `${b.P_min}+:[${(100 * (Math.exp(b.p10_log) - 1)).toFixed(0)}%,+${(100 * (Math.exp(b.p90_log) - 1)).toFixed(0)}%]${b.source === 'pooled' ? '*' : ''}`).join(' ')); }
+for (const set of ['TA', 'T']) for (const cls of ['cell', 'agg']) console.log(`80% interval national ${cls} (${set}): ` + RC[set].national[cls].map(b => `${b.P_min}+:[${(100 * (Math.exp(b.p10_log) - 1)).toFixed(0)}%,+${(100 * (Math.exp(b.p90_log) - 1)).toFixed(0)}%]`).join(' '));
+for (const set of ['TA', 'T']) { console.log(`80% interval by predicted count, national pooled reference (${set}): ` + BINSET[set].map(b => `${b.P_min}+:[${(100 * (Math.exp(b.p10_log) - 1)).toFixed(0)}%,+${(100 * (Math.exp(b.p90_log) - 1)).toFixed(0)}%]`).join(' ')); for (const [reg, bins] of Object.entries(REGBINS[set])) console.log(`   ${reg.padEnd(15)} ` + bins.map(b => `${b.P_min}+:[${(100 * (Math.exp(b.p10_log) - 1)).toFixed(0)}%,+${(100 * (Math.exp(b.p90_log) - 1)).toFixed(0)}%]${b.source === 'pooled' ? '*' : ''}`).join(' ')); }
 console.log('\nArgentina, annual VIIRS-equivalent hotspots (vegetation class); interval = sum of monthly 80% intervals (conservative):');
 for (let yi = 0; yi < YEARS.length; yi++) {
   let H = 0, lo = 0, hi = 0, st = 0; const yy = YEARS[yi];
-  for (let m = 0; m < 12; m++) { const h = AR.H[yi][m]; H += h; st += AR.st[yi][m]; if (yy < 2012 && h > 0) { const es = ensoSig(yy, m + 1); const [q1, q9] = bandLog(h, setOf(yy, m + 1)); lo += h * Math.exp(q1 - es); hi += h * Math.exp(q9 + es); } else { lo += h; hi += h; } }
+  for (let m = 0; m < 12; m++) { const h = AR.H[yi][m]; H += h; st += AR.st[yi][m]; if (yy < 2012 && h > 0) { const es = ensoSig(yy, m + 1); const [q1, q9] = bandLog(h, setOf(yy, m + 1), null, 'agg'); lo += h * Math.exp(q1 - es); hi += h * Math.exp(q9 + es); } else { lo += h; hi += h; } }
   console.log(`  ${yy}  ${String(Math.round(H)).padStart(7)}  [${Math.round(lo)}–${Math.round(hi)}]  ${era(yy, 12).padEnd(22)} static ${st}`);
 }

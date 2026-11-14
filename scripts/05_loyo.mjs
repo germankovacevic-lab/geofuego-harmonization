@@ -83,7 +83,7 @@ function predict(fit, set, yStar) { // -> { units: {cell,prov,country: Map(unit 
 function metrics(units, level, resid, year) {
   const ape = [], apeS = [], monthly = [], monthlyS = []; let sumV = 0, sumP = 0, sumS = 0; const perUnit = {};
   for (const [name, u] of units[level]) {
-    if (resid) for (let m = 1; m <= 12; m++) if (u.P[m] >= 5) resid.push({ P: u.P[m], r: Math.log((u.V[m] + 0.5) / (u.P[m] + 0.5)), unit: name, level, y: year });
+    if (resid) for (let m = 1; m <= 12; m++) if (u.P[m] >= 1) resid.push({ P: u.P[m], r: Math.log((u.V[m] + 0.5) / (u.P[m] + 0.5)), unit: name, level, y: year });
     const sV = SEASON.reduce((a, m) => a + u.V[m], 0), sP = SEASON.reduce((a, m) => a + u.P[m], 0), sS = SEASON.reduce((a, m) => a + u.S[m], 0);
     if (sV >= THR[level].season) { ape.push(Math.abs(sP - sV) / sV); apeS.push(Math.abs(sS - sV) / sV); perUnit[name] = Math.abs(sP - sV) / sV; }
     if (level === 'prov' && OWN_SEASON[name]) { const oV = OWN_SEASON[name].reduce((a, m) => a + u.V[m], 0), oP = OWN_SEASON[name].reduce((a, m) => a + u.P[m], 0); if (oV >= THR.prov.season) perUnit[name + '|own'] = Math.abs(oP - oV) / oV; }
@@ -121,7 +121,7 @@ for (const cfg of configs) for (const set of EVAL_SETS) for (const level of ['co
 }
 // band calibration from out-of-sample residuals (base config): per set, (a) per level: quantiles of |log| (reference),
 // (b) BINNED BY PREDICTED COUNT, pooled over levels: signed p10 / p50 / p90 → the band used by 06_harmonize and the app.
-const BINS = [5, 15, 40, 100, 300, 1000, 3000, 1e12];
+const BINS = [1, 5, 15, 40, 100, 300, 1000, 3000, 1e12]; // 1–5 added (round 3): reconstructed cell-months with H < 5 were borrowing the 5–15 bin
 const binOf = P => { for (let i = 0; i < BINS.length - 1; i++) if (P < BINS[i + 1]) return i; return BINS.length - 2; };
 const band = {}, coverage = {};
 for (const [set, recs] of Object.entries(resid)) {
@@ -152,30 +152,42 @@ const fitRegional = recs => Object.fromEntries(Object.values(REGION_OF).filter((
 // variant: region × level (province residuals separate from cell residuals), falling back to region (any level), then pooled
 const fitRegionalLevel = recs => Object.fromEntries(Object.values(REGION_OF).filter((v, i, a) => a.indexOf(v) === i).flatMap(reg => ['prov', 'cell'].map(l => [`${reg}|${l}`, fitBins(recs.filter(x => regionOfRec(x) === reg && x.level === l))])));
 const inside = (x, b) => b ? (x.r >= b.p10_log && x.r <= b.p90_log ? 1 : 0) : null;
+// variant D (round 3, low-count aggregates): region × CLASS, class = 'cell' (one 0.25° cell) or 'agg' (any aggregate of cells:
+// province, country, user AOI). A cell with P >= 1 is a selected over-prediction (median residual −0.4 at 5–15); an aggregate
+// with a small total is under-predicted (the structural zeros of its other cells add VIIRS to V but nothing to P). Pooling
+// the two gave 65 % coverage for province-months with P < 30. Fallback chain: region|class → national|class → region → pooled.
+const classOf = x => x.level === 'cell' ? 'cell' : 'agg';
+const fitClass = recs => { const out = {}; for (const cls of ['cell', 'agg']) { out[`national|${cls}`] = fitBins(recs.filter(x => classOf(x) === cls)); for (const reg of Object.values(REGION_OF).filter((v, i, a) => a.indexOf(v) === i)) out[`${reg}|${cls}`] = fitBins(recs.filter(x => classOf(x) === cls && regionOfRec(x) === reg)); } return out; };
+const pickClass = (C, R, Pl, x, i) => { const reg = regionOfRec(x), cls = classOf(x); return (reg && C[`${reg}|${cls}`]?.[i]) || C[`national|${cls}`]?.[i] || (reg && R[reg]?.[i]) || Pl[i]; };
 const regionalTest = {};
 for (const [set, recs] of Object.entries(resid)) {
-  const pooledAll = fitBins(recs), regionalAll = fitRegional(recs), regionalLevelAll = fitRegionalLevel(recs);
-  // coverage accumulators: key -> [inside_pooled, inside_regional, inside_regional_level, n]
-  const acc = {}; const add = (key, ip, ir, il) => { if (ip === null || ir === null || il === null) return; const a = (acc[key] ??= [0, 0, 0, 0]); a[0] += ip; a[1] += ir; a[2] += il; a[3]++; };
+  const pooledAll = fitBins(recs), regionalAll = fitRegional(recs), regionalLevelAll = fitRegionalLevel(recs), classAll = fitClass(recs);
+  // coverage accumulators: key -> [inside_pooled, inside_regional, inside_regional_level, inside_class, n]
+  const acc = {}; const add = (key, ip, ir, il, ic) => { if (ip === null || ir === null || il === null || ic === null) return; const a = (acc[key] ??= [0, 0, 0, 0, 0]); a[0] += ip; a[1] += ir; a[2] += il; a[3] += ic; a[4]++; };
   for (const y of YEARS) {
     const train = recs.filter(x => x.y !== y), test = recs.filter(x => x.y === y);
-    const pooled = fitBins(train), regional = fitRegional(train), regionalLevel = fitRegionalLevel(train);
+    const pooled = fitBins(train), regional = fitRegional(train), regionalLevel = fitRegionalLevel(train), cls = fitClass(train);
     for (const x of test) {
-      const i = binOf(x.P), reg = regionOfRec(x); const bp = pooled[i], br = (reg && regional[reg][i]) || pooled[i], bl = (reg && regionalLevel[`${reg}|${x.level}`]?.[i]) || br;
-      const ip = inside(x, bp), ir = inside(x, br), il = inside(x, bl);
-      add(`level|${x.level}`, ip, ir, il);
-      if (reg) add(`region|${reg}|${x.level}`, ip, ir, il);
-      if (x.level === 'prov' && x.P >= 30) add(`prov|${x.unit}`, ip, ir, il);
+      const i = binOf(x.P), reg = regionOfRec(x); const bp = pooled[i], br = (reg && regional[reg][i]) || pooled[i], bl = (reg && regionalLevel[`${reg}|${x.level}`]?.[i]) || br, bc = pickClass(cls, regional, pooled, x, i);
+      const ip = inside(x, bp), ir = inside(x, br), il = inside(x, bl), ic = inside(x, bc);
+      if (x.P >= (x.level === 'cell' ? 10 : 30)) { add(`level|${x.level}`, ip, ir, il, ic); if (reg) add(`region|${reg}|${x.level}`, ip, ir, il, ic); }
+      if (x.level === 'prov' && x.P >= 30) add(`prov|${x.unit}`, ip, ir, il, ic);
+      if (x.level === 'prov' && x.P < 30 && x.P >= 5) add(`lowcount|prov P 5-30`, ip, ir, il, ic);
+      if (x.level === 'cell' && x.P < 5) add(`lowcount|cell P 1-5`, ip, ir, il, ic);
+      if (x.level === 'cell' && x.P >= 5 && x.P < 15) add(`lowcount|cell P 5-15`, ip, ir, il, ic);
+      if (x.level === 'prov') add(`lowcount|prov all P>=1`, ip, ir, il, ic);
     }
   }
-  const fmt = a => ({ n: a[3], pooled: +(a[0] / a[3]).toFixed(3), regional: +(a[1] / a[3]).toFixed(3), regional_level: +(a[2] / a[3]).toFixed(3) });
+  const fmt = a => ({ n: a[4], pooled: +(a[0] / a[4]).toFixed(3), regional: +(a[1] / a[4]).toFixed(3), regional_level: +(a[2] / a[4]).toFixed(3), region_class: +(a[3] / a[4]).toFixed(3) });
   const pick = pre => Object.fromEntries(Object.entries(acc).filter(([k]) => k.startsWith(pre)).map(([k, a]) => [k.slice(pre.length), fmt(a)]));
   const withSource = (obj, src) => Object.fromEntries(Object.entries(obj).map(([k, bins]) => [k, bins.map((b, i) => b ? { ...b, source: src } : { P_min: BINS[i], P_max: BINS[i + 1] === 1e12 ? null : BINS[i + 1], source: 'fallback (n < ' + MIN_BIN + ')' })]));
-  regionalTest[set] = { min_bin: MIN_BIN, bins_regional: withSource(regionalAll, 'region'), bins_regional_level: withSource(regionalLevelAll, 'region|level'), bins_pooled: pooledAll.filter(Boolean),
-    coverage_oos: { by_level: pick('level|'), by_region_level: pick('region|'), by_province: pick('prov|') } };
-  // ADOPTED (variant A): the regional bins are the band used by 06_harmonize and the app for cells and provinces; the country
-  // keeps the pooled bins. Bins with n < MIN_BIN residuals carry the pooled values (source 'pooled').
+  regionalTest[set] = { min_bin: MIN_BIN, bins_regional: withSource(regionalAll, 'region'), bins_regional_level: withSource(regionalLevelAll, 'region|level'), bins_region_class: withSource(classAll, 'region|class'), bins_pooled: pooledAll.filter(Boolean),
+    coverage_oos: { by_level: pick('level|'), by_region_level: pick('region|'), by_province: pick('prov|'), low_count: pick('lowcount|') } };
+  // Variant A (adopted 14:25): regional bins, any level. Bins with n < MIN_BIN residuals carry the pooled values (source 'pooled').
   band[set].by_region = Object.fromEntries(Object.entries(regionalAll).map(([reg, bins]) => [reg, bins.map((b, i) => { const q = band[set].by_count.find(x => x.P_min === BINS[i]); return b ? { ...b, source: 'region' } : { P_min: q.P_min, P_max: q.P_max, n: q.n, p10_log: q.p10_log, p50_log: q.p50_log, p90_log: q.p90_log, source: 'pooled' }; })]));
+  // Variant D (round 3): region × class bins with the fallback chain resolved, so that 06 and the app only look up [region][class][bin]
+  band[set].by_region_class = {}; const resolveD = (key, reg, cls) => Array.from({ length: BINS.length - 1 }, (_, i) => { const own = classAll[key]?.[i]; if (own) return { ...own, source: 'region|class' }; const nat = classAll[`national|${cls}`]?.[i]; if (nat) return { ...nat, source: 'national|class' }; const rg = reg && regionalAll[reg]?.[i]; if (rg) return { ...rg, source: 'region' }; const q = band[set].by_count.find(x => x.P_min === BINS[i]); return { P_min: q.P_min, P_max: q.P_max, n: q.n, p10_log: q.p10_log, p50_log: q.p50_log, p90_log: q.p90_log, source: 'pooled' }; });
+  for (const reg of [...Object.values(REGION_OF).filter((v, i, a) => a.indexOf(v) === i), 'national']) band[set].by_region_class[reg] = { cell: resolveD(`${reg}|cell`, reg === 'national' ? null : reg, 'cell'), agg: resolveD(`${reg}|agg`, reg === 'national' ? null : reg, 'agg') };
 }
 // split-window tests: extrapolation in time (base config)
 const half = Math.floor(YEARS.length / 2), W1 = YEARS.slice(0, half), W2 = YEARS.slice(half);
@@ -223,7 +235,8 @@ if (Object.keys(band).length) {
   for (const set of Object.keys(coverage)) { const c = coverage[set]; const pv = Object.entries(c.by_province).filter(([, v]) => v !== null).sort((a, b) => a[1] - b[1]); console.log(`  ${set.padEnd(3)} ${pct(c.by_level.country)}  ${pct(c.by_level.prov)}  ${pct(c.by_level.cell)}  | ${pv[0]?.[0].split(',')[0]} ${pct(pv[0]?.[1])} … ${pv.at(-1)?.[0].split(',')[0]} ${pct(pv.at(-1)?.[1])}`); }
   console.log('\nregional band test — coverage measured out-of-sample for the band itself (quantiles from 11 years, coverage on the 12th):');
   for (const [set, t] of Object.entries(regionalTest)) {
-    const tri = v => `pooled ${pct(v.pooled)} → region ${pct(v.regional)} → region×level ${pct(v.regional_level)}`;
+    const tri = v => `pooled ${pct(v.pooled)} → region ${pct(v.regional)} → region×level ${pct(v.regional_level)} → region×class ${pct(v.region_class)}`;
+    console.log(`  ${set}  LOW COUNTS (the round-3 defect):`); for (const [k, v] of Object.entries(t.coverage_oos.low_count)) console.log(`     ${k.padEnd(16)} ${tri(v)}  (n ${v.n})`);
     console.log(`  ${set}  by level: ` + Object.entries(t.coverage_oos.by_level).map(([l, v]) => `${l}: ${tri(v)} (n ${v.n})`).join(' · '));
     console.log(`  ${set}  by region (prov-months | cell-months):`);
     for (const reg of Object.keys(t.bins_regional)) { const p = t.coverage_oos.by_region_level[`${reg}|prov`], c = t.coverage_oos.by_region_level[`${reg}|cell`]; console.log(`     ${reg.padEnd(15)} prov ${p ? tri(p) : '-'} (n ${p?.n ?? 0}) | cell ${c ? tri(c) : '-'} (n ${c?.n ?? 0})`); }

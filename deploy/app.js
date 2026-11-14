@@ -398,9 +398,10 @@ const CASES = [
   { id: 'delta-2020', en: 'Paraná Delta', es: 'Delta del Paraná', bbox: [-34.0, -60.75, -32.5, -58.5], y: 2020, m: [6, 7, 8, 9] },
   { id: 'comarca-2021', en: 'Andean Patagonia (El Hoyo – Epuyén)', es: 'Comarca Andina (El Hoyo – Epuyén)', bbox: [-42.5, -71.75, -41.75, -71.25], y: 2021, m: [1, 2, 3] },
   { id: 'cholila-2015', en: 'Cholila – Los Alerces', es: 'Cholila – Los Alerces', bbox: [-43.0, -72.0, -42.25, -71.25], y: 2015, m: [1, 2, 3] },
+  { id: 'chilecito-2026', en: 'Chilecito – Famatina', es: 'Chilecito – Famatina', bbox: [-29.25, -68.0, -29.0, -67.25], y: 2026, m: [7] }, // preliminary current year (NRT), the example of the challenge video
 ];
 let activeCase = null;
-function renderCaseBtns() { $('case-btns').innerHTML = CASES.map(c => `<button type="button" class="pill${activeCase === c.id ? ' on' : ''}" data-case="${c.id}">${c[lang]} ${c.y}</button>`).join(''); $('case-btns').querySelectorAll('button').forEach(b => b.addEventListener('click', () => goCase(b.dataset.case))); }
+function renderCaseBtns() { $('case-btns').innerHTML = CASES.map(c => `<button type="button" class="pill${activeCase === c.id ? ' on' : ''}" data-case="${c.id}">${c[lang]} ${c.y}${c.y === YCUR ? '*' : ''}</button>`).join(''); $('case-btns').querySelectorAll('button').forEach(b => b.addEventListener('click', () => goCase(b.dataset.case))); }
 function goCase(id) {
   const c = CASES.find(x => x.id === id); if (!c) return;
   if (c.prov) { $('prov').value = c.prov; selectProvince(c.prov); }
@@ -410,14 +411,16 @@ function goCase(id) {
 function renderCase() {
   renderCaseBtns(); requestAnimationFrame(() => { const e = $('case-line'); if (e) e.title = e.textContent; }); const el = $('case-line'); const c = CASES.find(x => x.id === activeCase); if (!c || !A) { el.hidden = true; return; }
   const mn = c.m.length > 1 ? `${t('months')[c.m[0] - 1]}–${t('months')[c.m[c.m.length - 1] - 1]}` : t('months')[c.m[0] - 1];
-  const sum = y => c.m.reduce((a, m) => a + A.H[y - Y0][m - 1], 0);
+  // the current year comes from the preliminary near-real-time layer (A.cur), compared with the harmonized record of the same months
+  const sum = y => y === YCUR ? c.m.reduce((a, m) => a + (A.cur?.months[m - 1]?.h || 0), 0) : c.m.reduce((a, m) => a + A.H[y - Y0][m - 1], 0);
   const ys = baselineYears().filter(y => c.m.every(m => usable(y, m)));
   const v = sum(c.y), hist = ys.filter(y => y !== c.y).map(sum), med = median(hist);
   el.hidden = false;
   if (med == null) { el.hidden = true; return; }
-  const rank = ys.map(sum).filter(x => x > v).length + 1;
-  if (med < 10) { el.innerHTML = t('caselow', c[lang], mn, c.y, fmt(v), fmt(med), rank, ys.length); return; }
-  el.innerHTML = t('caseline', c[lang], mn, c.y, (v / med).toFixed(1).replace('.', lang === 'es' ? ',' : '.') + '×', rank, ys.length, ys[0], ys[ys.length - 1]);
+  const all = ys.includes(c.y) ? ys.map(sum) : hist.concat([v]); const rank = all.filter(x => x > v).length + 1, n = all.length;
+  const yl = c.y === YCUR ? `${c.y}*` : c.y; const y0 = ys[0], y1 = ys[ys.length - 1];
+  if (med < 10) { el.innerHTML = t('caselow', c[lang], mn, yl, fmt(v), fmt(med), rank, n) + (c.y === YCUR ? ` <span class="note">* ${lang === 'es' ? 'preliminar' : 'preliminary'}</span>` : ''); return; }
+  el.innerHTML = t('caseline', c[lang], mn, yl, (v / med).toFixed(1).replace('.', lang === 'es' ? ',' : '.') + '×', rank, n, y0, y1) + (c.y === YCUR ? ` <span class="note">* ${lang === 'es' ? 'preliminar' : 'preliminary'}</span>` : '');
 }
 
 // ---------- hotspots on the map: cells coloured by the harmonized count in the selected range ----------

@@ -445,7 +445,11 @@ function downloadPNG() {
   out.toBlob(b => save(b, `geofuego-calendar_${slug()}.png`));
 }
 const slug = () => (A.sel.label || A.sel.kind || 'aoi').toString().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/gi, '-').toLowerCase().replace(/^-|-$/g, '');
-function save(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
+async function save(blob, name) {
+  // Chrome/Edge: native save dialog (File System Access API); elsewhere, or if it fails, a classic download link
+  if (window.showSaveFilePicker) { try { const ext = name.slice(name.lastIndexOf('.')); const fh = await window.showSaveFilePicker({ suggestedName: name, types: [{ description: ext === '.csv' ? 'CSV' : 'PNG image', accept: ext === '.csv' ? { 'text/csv': ['.csv'] } : { 'image/png': ['.png'] } }] }); const w = await fh.createWritable(); await w.write(blob); await w.close(); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.rel = 'noopener'; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+}
 
 // ---------- map & selection ----------
 let map, drawn, cellsLayer, provLayers = {}, gridLayer = null, gridRects = {}, picked = new Set(), lastDrawTs = 0;

@@ -39,11 +39,16 @@ const LOYO = JSON.parse(await readFile(path.join(ROOT, 'data', 'validation', 'lo
 const base = LOYO.summary.filter(s => s.K === 20 && s.CAP === 200);
 const EMP = { cell: base.find(s => s.level === 'cell').monthly_median_ape, prov: base.find(s => s.level === 'prov').monthly_median_ape, country: base.find(s => s.level === 'country').monthly_median_ape };
 const N_CELLS_TOTAL = Object.keys(agg.cells).length, N_CELLS_PROV = N_CELLS_TOTAL / 24;
-/** empirical relative σ floor for an aggregate of n cells (piecewise-linear in log10 n through the three LOYO levels) */
+// Empirical relative σ for an aggregate of n cells: the AOI-size error curve measured by LOYO on random contiguous blocks
+// (05c_aoi_error.mjs: monthly median |rel. error| for 1, 4, 9, 21, 64, 111 cells) plus the province and country references,
+// interpolated piecewise-linearly in log10(n).
+const AOI = JSON.parse(await readFile(path.join(ROOT, 'data', 'validation', 'aoi_error_curve.json'), 'utf8'));
+const CURVE = [...AOI.curve.map(c => [c.n_cells_median, c.monthly_median_abs_rel_err]), ...AOI.reference.map(c => [c.n_cells_nominal, c.monthly_median_abs_rel_err])].sort((a, b) => a[0] - b[0]);
 export function empSigma(n) {
-  const x = Math.log10(Math.max(1, n)), x1 = Math.log10(N_CELLS_PROV), x2 = Math.log10(N_CELLS_TOTAL);
-  if (x <= 0) return EMP.cell; if (x >= x2) return EMP.country;
-  return x <= x1 ? EMP.cell + (EMP.prov - EMP.cell) * x / x1 : EMP.prov + (EMP.country - EMP.prov) * (x - x1) / (x2 - x1);
+  const x = Math.log10(Math.max(1, n));
+  if (x <= Math.log10(CURVE[0][0])) return CURVE[0][1];
+  for (let i = 1; i < CURVE.length; i++) { const [n1, s1] = CURVE[i - 1], [n2, s2] = CURVE[i]; const x1 = Math.log10(n1), x2 = Math.log10(n2); if (x <= x2) return s1 + (s2 - s1) * (x - x1) / (x2 - x1); }
+  return CURVE.at(-1)[1];
 }
 const SI_NOTE = '# Produced by scripts written with SI assistance (Claude, Anthropic); all values computed from NASA FIRMS archives (MODIS C6.1, VIIRS S-NPP). License CC BY 4.0. GeoFuego Harmonization, NASA Space Apps 2026.';
 
@@ -56,7 +61,7 @@ const era = (y, m) => y >= 2012 ? 'VIIRS' : (y > 2002 || (y === 2002 && m >= 7))
 
 let cellsCsv = `${SI_NOTE}\ncell,prov,year,month,H,H_lo,H_hi,sigma_log,V,T,A,sensor,terra_only,gap_fill,static_viirs,static_modis\n`;
 let fillTotal = { snpp: 0, terra: 0, aqua: 0, terra_only: 0 };
-const compact = { grid: index.grid, years: YEARS, z: Z, emp: { ...EMP, n_prov: Math.round(N_CELLS_PROV), n_total: N_CELLS_TOTAL }, note: SI_NOTE.slice(2), cells: {} };
+const compact = { grid: index.grid, years: YEARS, z: Z, emp: { ...EMP, n_prov: Math.round(N_CELLS_PROV), n_total: N_CELLS_TOTAL }, sigma_curve: CURVE, note: SI_NOTE.slice(2), cells: {} };
 const provSeries = {}; // prov -> { H:[y][m], var:[y][m], obs:[y][m], static:[y][m] }
 const provAcc = p => (provSeries[p] ??= { n: 0, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)) });
 
@@ -112,7 +117,7 @@ await writeFile(path.join(OUT, 'cells.json.gz'), gzipSync(json, { level: 9 }));
 // report: country annual totals with band
 console.log(`cells: ${Object.keys(compact.cells).length} · cells.json ${(json.length / 1e6).toFixed(1)} MB (gz ${(gzipSync(json, { level: 9 }).length / 1e6).toFixed(2)} MB) · cells.csv ${(cellsCsv.length / 1e6).toFixed(1)} MB`);
 console.log(`gap fill (VIIRS-eq hotspots added): S-NPP outages ${Math.round(fillTotal.snpp)} · Terra outages ${Math.round(fillTotal.terra)} · Aqua outages ${Math.round(fillTotal.aqua)} · Terra-only era ${Math.round(fillTotal.terra_only)}`);
-console.log(`empirical σ floor (LOYO monthly median |err|): cell ${EMP.cell} · prov ${EMP.prov} · country ${EMP.country}`);
+console.log(`empirical σ curve (LOYO, monthly median |err| vs n cells): ` + CURVE.map(([n, s]) => `${n}:${(100 * s).toFixed(0)}%`).join(' '));
 console.log('\nArgentina, annual VIIRS-equivalent hotspots (vegetation class), band = IC80 (max of RSS and LOYO floor):');
 for (let yi = 0; yi < YEARS.length; yi++) {
   let H = 0, v = 0, st = 0; for (let m = 0; m < 12; m++) { H += AR.H[yi][m]; v += AR.var[yi][m]; st += AR.st[yi][m]; }

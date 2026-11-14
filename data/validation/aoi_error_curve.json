@@ -1,0 +1,89 @@
+{
+ "generated": "2026-11-14T14:50:24.374Z",
+ "method": "LOYO 2012-2023, random contiguous blocks, paired days, vegetation class",
+ "sizes": [
+  1,
+  2,
+  3,
+  5,
+  10,
+  15
+ ],
+ "samples_per_fold": 400,
+ "curve": [
+  {
+   "block": "1x1",
+   "n_cells_nominal": 1,
+   "n_cells_median": 1,
+   "samples": 4800,
+   "monthly_median_abs_rel_err": 0.3434,
+   "monthly_p75": 0.602,
+   "season_mape_mean": 0.2619,
+   "season_mape_median": 0.2052
+  },
+  {
+   "block": "2x2",
+   "n_cells_nominal": 4,
+   "n_cells_median": 4,
+   "samples": 4800,
+   "monthly_median_abs_rel_err": 0.3129,
+   "monthly_p75": 0.5649,
+   "season_mape_mean": 0.2373,
+   "season_mape_median": 0.1714
+  },
+  {
+   "block": "3x3",
+   "n_cells_nominal": 9,
+   "n_cells_median": 9,
+   "samples": 4800,
+   "monthly_median_abs_rel_err": 0.2912,
+   "monthly_p75": 0.5445,
+   "season_mape_mean": 0.2371,
+   "season_mape_median": 0.1643
+  },
+  {
+   "block": "5x5",
+   "n_cells_nominal": 25,
+   "n_cells_median": 21,
+   "samples": 4800,
+   "monthly_median_abs_rel_err": 0.2781,
+   "monthly_p75": 0.531,
+   "season_mape_mean": 0.2187,
+   "season_mape_median": 0.1406
+  },
+  {
+   "block": "10x10",
+   "n_cells_nominal": 100,
+   "n_cells_median": 64,
+   "samples": 4800,
+   "monthly_median_abs_rel_err": 0.2307,
+   "monthly_p75": 0.4677,
+   "season_mape_mean": 0.1888,
+   "season_mape_median": 0.114
+  },
+  {
+   "block": "15x15",
+   "n_cells_nominal": 225,
+   "n_cells_median": 111,
+   "samples": 4800,
+   "monthly_median_abs_rel_err": 0.1978,
+   "monthly_p75": 0.4099,
+   "season_mape_mean": 0.1774,
+   "season_mape_median": 0.1
+  }
+ ],
+ "reference": [
+  {
+   "block": "province (avg)",
+   "n_cells_nominal": 175,
+   "monthly_median_abs_rel_err": 0.1716,
+   "season_mape_mean": 0.1056
+  },
+  {
+   "block": "country",
+   "n_cells_nominal": 4193,
+   "monthly_median_abs_rel_err": 0.0585,
+   "season_mape_mean": 0.0354
+  }
+ ]
+}

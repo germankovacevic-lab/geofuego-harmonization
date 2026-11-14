@@ -1,0 +1,382 @@
+{
+ "generated": "2026-11-14T18:28:41.759Z",
+ "rule": "start year = first year with >= 4 distinct months and >= 50 % night detections in the cell (any sensor); fallback >= 4 months; never = no such year",
+ "cells_by_province_and_start": {
+  "Salta": {
+   "2004-08": 5,
+   "2012-15": 17,
+   "2016+": 16,
+   "never": 23,
+   "2009-11": 8
+  },
+  "Buenos Aires": {
+   "<=2003": 3,
+   "2016+": 18,
+   "2012-15": 32,
+   "never": 4
+  },
+  "Tierra del Fuego": {
+   "2012-15": 8,
+   "2016+": 4
+  },
+  "Neuquén": {
+   "2016+": 147,
+   "2004-08": 5,
+   "2012-15": 42,
+   "never": 25,
+   "2009-11": 1
+  },
+  "Mendoza": {
+   "2012-15": 15,
+   "never": 2,
+   "2016+": 16
+  },
+  "Santa Fe": {
+   "<=2003": 1,
+   "never": 3,
+   "2012-15": 4,
+   "2016+": 6
+  },
+  "Santiago del Estero": {
+   "never": 9,
+   "2016+": 12,
+   "2012-15": 3,
+   "2009-11": 2,
+   "2004-08": 1
+  },
+  "Corrientes": {
+   "2004-08": 2,
+   "2012-15": 12,
+   "never": 3,
+   "2016+": 2
+  },
+  "Misiones": {
+   "<=2003": 1,
+   "2012-15": 6,
+   "2016+": 2,
+   "2004-08": 1,
+   "never": 2,
+   "2009-11": 1
+  },
+  "Entre Ríos": {
+   "never": 7,
+   "2012-15": 14,
+   "2016+": 10
+  },
+  "Santa Cruz": {
+   "2012-15": 10,
+   "2009-11": 2,
+   "never": 5,
+   "2016+": 5
+  },
+  "Chaco": {
+   "2012-15": 9,
+   "2016+": 26,
+   "<=2003": 2,
+   "never": 18,
+   "2004-08": 3
+  },
+  "Córdoba": {
+   "never": 1,
+   "2012-15": 3,
+   "2016+": 1
+  },
+  "Formosa": {
+   "never": 4,
+   "2009-11": 3,
+   "2016+": 3,
+   "2004-08": 2,
+   "2012-15": 1
+  },
+  "Río Negro": {
+   "2012-15": 4,
+   "2016+": 7,
+   "never": 5
+  },
+  "Catamarca": {
+   "never": 2,
+   "2012-15": 4,
+   "2016+": 2
+  },
+  "La Rioja": {
+   "2012-15": 5,
+   "never": 8,
+   "2016+": 7
+  },
+  "Tucumán": {
+   "2012-15": 3,
+   "never": 1,
+   "2016+": 1
+  },
+  "San Luis": {
+   "2016+": 2,
+   "never": 1,
+   "2012-15": 1
+  },
+  "Chubut": {
+   "2012-15": 5,
+   "never": 1,
+   "2016+": 1
+  },
+  "La Pampa": {
+   "2016+": 3,
+   "2012-15": 3
+  },
+  "Jujuy": {
+   "never": 1,
+   "2016+": 1,
+   "2012-15": 2
+  },
+  "San Juan": {
+   "2012-15": 2,
+   "2016+": 1,
+   "never": 1
+  },
+  "?": {
+   "2012-15": 6
+  }
+ },
+ "modis_2003_2011_inside_flare_cells": {
+  "Santa Cruz": {
+   "before_start": {
+    "n": 42,
+    "night_share": 0.24,
+    "top_months": "1,10,3",
+    "share_of_province_modis": 0.0428
+   },
+   "after_start": {
+    "n": 23,
+    "night_share": 0.09,
+    "top_months": "4,3,10"
+   }
+  },
+  "Neuquén": {
+   "before_start": {
+    "n": 222,
+    "night_share": 0.36,
+    "top_months": "1,3,4",
+    "share_of_province_modis": 0.0641
+   },
+   "after_start": {
+    "n": 312,
+    "night_share": 0.39,
+    "top_months": "1,9,3"
+   }
+  },
+  "Entre Ríos": {
+   "before_start": {
+    "n": 127,
+    "night_share": 0.14,
+    "top_months": "3,11,4",
+    "share_of_province_modis": 0.0037
+   },
+   "after_start": null
+  },
+  "Buenos Aires": {
+   "before_start": {
+    "n": 108,
+    "night_share": 0.31,
+    "top_months": "12,9,1",
+    "share_of_province_modis": 0.0036
+   },
+   "after_start": {
+    "n": 255,
+    "night_share": 0.58,
+    "top_months": "4,2,3"
+   }
+  },
+  "Santa Fe": {
+   "before_start": {
+    "n": 52,
+    "night_share": 0.19,
+    "top_months": "9,6,8",
+    "share_of_province_modis": 0.0007
+   },
+   "after_start": {
+    "n": 15,
+    "night_share": 1,
+    "top_months": "12,1,2"
+   }
+  },
+  "Tierra del Fuego": {
+   "before_start": {
+    "n": 57,
+    "night_share": 0.3,
+    "top_months": "2,1,3",
+    "share_of_province_modis": 0.4385
+   },
+   "after_start": null
+  },
+  "Corrientes": {
+   "before_start": {
+    "n": 257,
+    "night_share": 0.16,
+    "top_months": "9,8,4",
+    "share_of_province_modis": 0.0038
+   },
+   "after_start": {
+    "n": 48,
+    "night_share": 0.4,
+    "top_months": "8,9,4"
+   }
+  },
+  "Chaco": {
+   "before_start": {
+    "n": 505,
+    "night_share": 0.21,
+    "top_months": "8,9,7",
+    "share_of_province_modis": 0.006
+   },
+   "after_start": {
+    "n": 115,
+    "night_share": 0.38,
+    "top_months": "9,8,3"
+   }
+  },
+  "Mendoza": {
+   "before_start": {
+    "n": 121,
+    "night_share": 0.26,
+    "top_months": "5,1,6",
+    "share_of_province_modis": 0.0115
+   },
+   "after_start": null
+  },
+  "Santiago del Estero": {
+   "before_start": {
+    "n": 176,
+    "night_share": 0.1,
+    "top_months": "9,8,7",
+    "share_of_province_modis": 0.0014
+   },
+   "after_start": {
+    "n": 43,
+    "night_share": 0.09,
+    "top_months": "8,9,7"
+   }
+  },
+  "Catamarca": {
+   "before_start": {
+    "n": 11,
+    "night_share": 0.09,
+    "top_months": "8,6,9",
+    "share_of_province_modis": 0.0016
+   },
+   "after_start": null
+  },
+  "Misiones": {
+   "before_start": {
+    "n": 39,
+    "night_share": 0.03,
+    "top_months": "8,3,7",
+    "share_of_province_modis": 0.0015
+   },
+   "after_start": {
+    "n": 27,
+    "night_share": 0.26,
+    "top_months": "12,4,6"
+   }
+  },
+  "Salta": {
+   "before_start": {
+    "n": 620,
+    "night_share": 0.42,
+    "top_months": "11,9,8",
+    "share_of_province_modis": 0.0068
+   },
+   "after_start": {
+    "n": 390,
+    "night_share": 0.51,
+    "top_months": "9,10,11"
+   }
+  },
+  "Formosa": {
+   "before_start": {
+    "n": 74,
+    "night_share": 0.27,
+    "top_months": "8,9,10",
+    "share_of_province_modis": 0.001
+   },
+   "after_start": {
+    "n": 144,
+    "night_share": 0.28,
+    "top_months": "8,11,7"
+   }
+  },
+  "La Rioja": {
+   "before_start": {
+    "n": 58,
+    "night_share": 0.1,
+    "top_months": "8,5,9",
+    "share_of_province_modis": 0.0181
+   },
+   "after_start": null
+  },
+  "Tucumán": {
+   "before_start": {
+    "n": 28,
+    "night_share": 0.07,
+    "top_months": "7,8,9",
+    "share_of_province_modis": 0.0013
+   },
+   "after_start": null
+  },
+  "Córdoba": {
+   "before_start": {
+    "n": 5,
+    "night_share": 0,
+    "top_months": "7,6,8",
+    "share_of_province_modis": 0.0002
+   },
+   "after_start": null
+  },
+  "Río Negro": {
+   "before_start": {
+    "n": 16,
+    "night_share": 0.13,
+    "top_months": "8,4,1",
+    "share_of_province_modis": 0.0023
+   },
+   "after_start": null
+  },
+  "San Luis": {
+   "before_start": {
+    "n": 6,
+    "night_share": 0.17,
+    "top_months": "9,1,3",
+    "share_of_province_modis": 0.0003
+   },
+   "after_start": null
+  },
+  "Chubut": {
+   "before_start": {
+    "n": 7,
+    "night_share": 0,
+    "top_months": "2,4,9",
+    "share_of_province_modis": 0.0071
+   },
+   "after_start": null
+  },
+  "La Pampa": {
+   "before_start": {
+    "n": 1,
+    "night_share": 0,
+    "top_months": "4,1,2",
+    "share_of_province_modis": 0.0001
+   },
+   "after_start": null
+  },
+  "Jujuy": {
+   "before_start": {
+    "n": 21,
+    "night_share": 0.48,
+    "top_months": "11,10,12",
+    "share_of_province_modis": 0.0024
+   },
+   "after_start": null
+  }
+ },
+ "total_before_start": 2262,
+ "total_after_start": 1322,
+ "national_modis_2003_2011": 736191
+}

@@ -242,7 +242,7 @@ if (Object.keys(band).length) {
     for (const reg of Object.keys(t.bins_regional)) { const p = t.coverage_oos.by_region_level[`${reg}|prov`], c = t.coverage_oos.by_region_level[`${reg}|cell`]; console.log(`     ${reg.padEnd(15)} prov ${p ? tri(p) : '-'} (n ${p?.n ?? 0}) | cell ${c ? tri(c) : '-'} (n ${c?.n ?? 0})`); }
     console.log(`  ${set}  by province (province-months with P ≥ 30), sorted by pooled coverage:`);
     for (const [p, v] of Object.entries(t.coverage_oos.by_province).sort((a, b) => a[1].pooled - b[1].pooled)) console.log(`     ${p.split(',')[0].slice(0, 22).padEnd(22)} ${tri(v)}  (n ${v.n})`);
-    const pat = t.bins_regional['patagonia'];
+    const pat = t.bins_regional['Patagonia'];
     console.log(`  ${set}  patagonia bins vs pooled (p10 / p50 / p90 in log):`);
     for (let i = 0; i < pat.length; i++) { const b = pat[i], q = t.bins_pooled.find(x => x.P_min === BINS[i]); console.log(`     ${String(BINS[i]).padStart(5)}+  pooled ${q ? `${q.p10_log.toFixed(2)} / ${q.p50_log.toFixed(2)} / ${q.p90_log.toFixed(2)} (n ${q.n})` : '-'.padEnd(28)}  | patagonia ${b.source === 'region' ? `${b.p10_log.toFixed(2)} / ${b.p50_log.toFixed(2)} / ${b.p90_log.toFixed(2)} (n ${b.n})` : b.source}`); }
   }

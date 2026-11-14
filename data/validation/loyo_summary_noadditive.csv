@@ -1,0 +1,7 @@
+set,K,CAP,depth,level,season_mape,season_mape_scalar,monthly_median_ape,monthly_median_ape_scalar,annual_ratio_min,annual_ratio_max,annual_ratio_rms_dev
+TA,10,200,cell,country,0.0326,0.0869,0.0575,0.0855,0.912,1.014,0.0336
+TA,10,200,cell,prov,0.1018,0.157,0.1696,0.1921,0.912,1.014,0.0336
+TA,10,200,cell,cell,0.2969,0.3384,0.36,0.372,0.912,1.014,0.0336
+T,10,200,cell,country,0.0578,0.0743,0.1344,0.2598,0.786,1.051,0.0751
+T,10,200,cell,prov,0.1755,0.23,0.278,0.3716,0.786,1.051,0.0751
+T,10,200,cell,cell,0.5376,0.5536,0.6998,0.7298,0.786,1.051,0.0751

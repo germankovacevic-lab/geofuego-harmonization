@@ -76,8 +76,8 @@ const ensoAdj = (y, m) => BETA && y < 2012 ? Math.exp(BETA * (ONI[`${y}-${m}`] ?
 const ensoSig = (y, m) => y < 2012 ? Math.abs(ENSO_SIGMA_BETA * (ONI[`${y}-${m}`] ?? 0)) : 0;
 const era = (y, m) => y >= 2012 ? 'VIIRS' : (y > 2002 || (y === 2002 && m >= 7)) ? 'MODIS->VIIRS-eq' : (y > 2000 || m >= 11) ? 'MODIS-Terra->VIIRS-eq' : null;
 
-let cellsCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval calibrated out-of-sample by predicted count and satellite set (see band_calibration.json); empty for observed VIIRS months\ncell,prov,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,V,T,A,sensor,terra_only,gap_fill,static_viirs,static_modis\n`;
-let fillTotal = { snpp: 0, terra: 0, aqua: 0, terra_only: 0 };
+let cellsCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval calibrated out-of-sample by predicted count and satellite set (see band_calibration.json); empty for observed VIIRS months\ncell,prov,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,V,T,A,sensor,terra_only,gap_fill,additive,static_viirs,static_modis\n`;
+let fillTotal = { snpp: 0, terra: 0, aqua: 0, terra_only: 0, additive: 0 };
 const compact = { grid: index.grid, years: YEARS, terra_only_until: '2002-06', band_by_count: BINSET, band: '80% prediction interval [H*exp(p10), H*exp(p90)] with p10/p90 from band_by_count[set] bin containing the predicted count H (set T before 2002-07, TA until 2011-12, none for observed VIIRS months); widen by |0.025*ONI| per side in reconstructed months', sigma_curve_by_cells_diagnostic: CURVES, note: SI_NOTE.slice(2), cells: {} };
 const provSeries = {}; // prov -> { H:[y][m], var:[y][m], obs:[y][m], static:[y][m] }
 const provAcc = p => (provSeries[p] ??= { n: 0, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)) });
@@ -85,6 +85,7 @@ const provAcc = p => (provSeries[p] ??= { n: 0, H: YEARS.map(() => Array(12).fil
 for (const [cid, yrs] of Object.entries(agg.cells)) {
   const cell = +cid, prov = provOf.get(cell); if (!prov) continue;
   const fTA = F.cell.TA[cell], fT = F.cell.T[cell]; if (!fTA || !fT) continue;
+  const aTA = F.add?.TA?.cell?.[cell], aT = F.add?.T?.cell?.[cell]; // additive term: expected VIIRS count when MODIS saw nothing
   const h = [], s = [], st = {}, gfc = {};
   provAcc(prov).n++;
   for (const y of YEARS) {
@@ -93,22 +94,24 @@ for (const [cid, yrs] of Object.entries(agg.cells)) {
       const e = era(y, m); if (!e) continue;
       const r = yrs[y]?.[m] || Array(12).fill(0);
       const V = r[0], T = r[1], A = r[2], Vs = r[3], Ms = r[4] + r[5], Mso = r[9] || 0, Ato = r[10] || 0, Tao = r[11] || 0;
-      let H, sig = 0, terra = 0, gf = 0, lo, hi, b10 = 0, b90 = 0;
+      let H, sig = 0, terra = 0, gf = 0, lo, hi, b10 = 0, b90 = 0, additive = 0;
       if (e === 'VIIRS') { H = V; lo = hi = H; if (Mso) { gf = fTA[m - 1][0] * Mso; H += gf; fillTotal.snpp += gf; const [q1, q9] = bandLog(gf, 'TA'); lo = V + gf * Math.exp(q1); hi = V + gf * Math.exp(q9); b10 = Math.log(lo / H); b90 = Math.log(hi / H); sig = 1; } }
       else if (e === 'MODIS->VIIRS-eq') {
         const k = rTA[prov]?.[m] ?? 0.55; const fillT = Ato * k, fillA = Tao / Math.max(k, 0.05);
         const adj = ensoAdj(y, m);
         H = fTA[m - 1][0] * (T + A + fillT + fillA) * adj; gf = fTA[m - 1][0] * (fillT + fillA) * adj; fillTotal.terra += fTA[m - 1][0] * fillT; fillTotal.aqua += fTA[m - 1][0] * fillA; sig = 1;
+        if (T + A + fillT + fillA === 0 && aTA) { H = aTA[m - 1] * adj; additive = 1; fillTotal.additive += H; }
       } else {
         const od = outDays('Terra', y, m), scale = od ? dim(y, m) / Math.max(1, dim(y, m) - od) : 1;
         const adj = ensoAdj(y, m);
         H = fT[m - 1][0] * T * scale * adj; gf = fT[m - 1][0] * T * (scale - 1) * adj; fillTotal.terra_only += gf; sig = 1; terra = 1;
+        if (T === 0 && aT) { H = aT[m - 1] * adj; additive = 1; fillTotal.additive += H; }
       }
       if (e !== 'VIIRS') { const es = ensoSig(y, m); [b10, b90] = bandLog(H, terra ? 'T' : 'TA'); b10 -= es; b90 += es; lo = H * Math.exp(b10); hi = H * Math.exp(b90); }
       hy[m - 1] = Math.round(H); sy[m - 1] = e === 'VIIRS' && !gf ? 0 : 1;
       if (Vs || Ms) (st[y] ??= Array(12).fill(0))[m - 1] = e === 'VIIRS' ? Vs : Ms;
       if (gf > 0.5) (gfc[y] ??= Array(12).fill(0))[m - 1] = Math.round(gf);
-      if (H > 0 || V || T || A || Vs || Ms) cellsCsv += `${cell},"${prov}",${y},${m},${H.toFixed(1)},${sig ? lo.toFixed(1) : ''},${sig ? hi.toFixed(1) : ''},${sig ? b10.toFixed(3) : ''},${sig ? b90.toFixed(3) : ''},${V},${T},${A},${e},${terra},${gf ? gf.toFixed(1) : 0},${e === 'VIIRS' ? Vs : ''},${Ms}\n`;
+      if (H > 0.5 || V || T || A || Vs || Ms) cellsCsv += `${cell},"${prov}",${y},${m},${H.toFixed(1)},${sig ? lo.toFixed(1) : ''},${sig ? hi.toFixed(1) : ''},${sig ? b10.toFixed(3) : ''},${sig ? b90.toFixed(3) : ''},${V},${T},${A},${e},${terra},${gf ? gf.toFixed(1) : 0},${additive},${e === 'VIIRS' ? Vs : ''},${Ms}\n`;
       const P = provAcc(prov), yi = y - Y0; P.H[yi][m - 1] += H; P.nodata[yi][m - 1] = false; P.st[yi][m - 1] += e === 'VIIRS' ? Vs : Ms; P.gf[yi][m - 1] += gf;
     }
     h.push(hy); s.push(sy);
@@ -138,7 +141,7 @@ await writeFile(path.join(OUT, 'cells.json.gz'), gzipSync(json, { level: 9 }));
 // report: country annual totals with band
 console.log(`cells: ${Object.keys(compact.cells).length} · cells.json ${(json.length / 1e6).toFixed(1)} MB (gz ${(gzipSync(json, { level: 9 }).length / 1e6).toFixed(2)} MB) · cells.csv ${(cellsCsv.length / 1e6).toFixed(1)} MB`);
 if (BETA) console.log(`ENSO conditioning applied to 2000–2011: beta=${BETA} (H *= exp(beta*ONI))`);
-console.log(`gap fill (VIIRS-eq hotspots added): S-NPP outages ${Math.round(fillTotal.snpp)} · Terra outages ${Math.round(fillTotal.terra)} · Aqua outages ${Math.round(fillTotal.aqua)} · Terra-only era ${Math.round(fillTotal.terra_only)}`);
+console.log(`gap fill (VIIRS-eq hotspots added): S-NPP outages ${Math.round(fillTotal.snpp)} · Terra outages ${Math.round(fillTotal.terra)} · Aqua outages ${Math.round(fillTotal.aqua)} · Terra-only era ${Math.round(fillTotal.terra_only)} · additive term (MODIS = 0 months) ${Math.round(fillTotal.additive)}`);
 for (const set of ['TA', 'T']) console.log(`80% interval by predicted count (${set}): ` + BINSET[set].map(b => `${b.P_min}+:[${(100 * (Math.exp(b.p10_log) - 1)).toFixed(0)}%,+${(100 * (Math.exp(b.p90_log) - 1)).toFixed(0)}%]`).join(' '));
 console.log('\nArgentina, annual VIIRS-equivalent hotspots (vegetation class); interval = sum of monthly 80% intervals (conservative):');
 for (let yi = 0; yi < YEARS.length; yi++) {

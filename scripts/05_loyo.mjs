@@ -28,7 +28,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'data', 'validation');
 await mkdir(OUT, { recursive: true });
 const arg = (n, d) => { const a = process.argv.find(x => x.startsWith(`--${n}=`)); return a ? a.split('=')[1] : d; };
-const SWEEP = process.argv.includes('--sweep'), ABLATION = process.argv.includes('--ablation'), useRegions = !process.argv.includes('--no-regions');
+const SWEEP = process.argv.includes('--sweep'), ABLATION = process.argv.includes('--ablation'), useRegions = !process.argv.includes('--no-regions'), ADDITIVE = process.argv.includes('--additive'); // additive term tested and not adopted (see lib/factors.js)
 const TAG = arg('tag', ''), K0 = +arg('k', 10);
 const [LY0, LY1] = arg('years', '2012-2023').split('-').map(Number);
 const YEARS = []; for (let y = LY0; y <= LY1; y++) YEARS.push(y);
@@ -44,6 +44,7 @@ const SETS = { TA: { V: r => r[6] ?? 0, M: r => (r[7] ?? 0) + (r[8] ?? 0) }, T: 
 { const clim = {}; for (const [cid, yrs] of Object.entries(agg.cells)) { const p = provOf.get(+cid); if (!p) continue; for (const y of YEARS) { const ym = yrs[y]; if (!ym) continue; for (const [m, r] of Object.entries(ym)) ((clim[p] ??= Array(13).fill(0)))[+m] += r[6] ?? 0; } }
   for (const [p, a] of Object.entries(clim)) OWN_SEASON[p] = a.map((v, m) => [v, m]).slice(1).sort((x, y) => y[0] - x[0]).slice(0, 5).map(x => x[1]).sort((x, y) => x - y); }
 const THR = { cell: { season: 20, month: 10 }, prov: { season: 50, month: 30 }, country: { season: 50, month: 30 } };
+const ZERO = Array(12).fill(0);
 const median = a => { const b = [...a].sort((x, y) => x - y); return b.length ? b[Math.floor(b.length / 2)] : null; };
 const quant = (a, q) => { const b = [...a].sort((x, y) => x - y); return b.length ? b[Math.min(b.length - 1, Math.floor(q * b.length))] : null; };
 
@@ -52,10 +53,14 @@ function predict(fit, set, yStar) { // -> { units: {cell,prov,country: Map(unit 
   const scalar = sV / sM;
   const units = { cell: new Map(), prov: new Map(), country: new Map([['AR', { V: Array(13).fill(0), P: Array(13).fill(0), S: Array(13).fill(0) }]]) };
   for (const [cid, yrs] of Object.entries(agg.cells)) {
-    const cell = +cid, prov = provOf.get(cell); if (!prov) continue; const ym = yrs[yStar]; if (!ym) continue; const fc = fit.cell[set][cell]; if (!fc) continue;
+    const cell = +cid, prov = provOf.get(cell); if (!prov) continue; const fc = fit.cell[set][cell]; if (!fc) continue;
+    const ym = yrs[yStar] || {}; const ac = fit.add?.[set]?.cell?.[cell];
+    if (!ac && !yrs[yStar]) continue;
     if (!units.cell.has(cell)) units.cell.set(cell, { V: Array(13).fill(0), P: Array(13).fill(0), S: Array(13).fill(0) });
     if (!units.prov.has(prov)) units.prov.set(prov, { V: Array(13).fill(0), P: Array(13).fill(0), S: Array(13).fill(0) });
-    for (const [m, r] of Object.entries(ym)) { const V = SETS[set].V(r), M = SETS[set].M(r), P = fc[m - 1][0] * M; for (const u of [units.cell.get(cell), units.prov.get(prov), units.country.get('AR')]) { u.V[m] += V; u.P[m] += P; u.S[m] += scalar * M; } }
+    // iterate ALL 12 months (absent entries = no detections by any sensor) so that the additive term is applied without
+    // conditioning on the outcome; without the additive term absent months contribute 0 to both V and P
+    for (let m = 1; m <= 12; m++) { const r = ym[m] || ZERO; const V = SETS[set].V(r), M = SETS[set].M(r), P = M > 0 ? fc[m - 1][0] * M : (ac ? ac[m - 1] : 0); if (!V && !P && !M) continue; for (const u of [units.cell.get(cell), units.prov.get(prov), units.country.get('AR')]) { u.V[m] += V; u.P[m] += P; u.S[m] += scalar * M; } }
   }
   return { units, scalar };
 }
@@ -76,7 +81,7 @@ const configs = SWEEP ? [10, 20, 50].flatMap(K => [100, 200, 500].map(CAP => ({ 
 const folds = [], provFolds = {}, resid = {}; const t0 = Date.now();
 for (const cfg of configs) for (const set of ['TA', 'T']) {
   for (const yStar of YEARS) {
-    const fit = fitFactors(agg.cells, provOf, { K: cfg.K, CAP: cfg.CAP, years: YEARS.filter(y => y !== yStar), useRegions, depth: cfg.depth });
+    const fit = fitFactors(agg.cells, provOf, { K: cfg.K, CAP: cfg.CAP, years: YEARS.filter(y => y !== yStar), useRegions, depth: cfg.depth, additive: ADDITIVE });
     const { units, scalar } = predict(fit, set, yStar);
     for (const level of ['country', 'prov', 'cell']) {
       const isBase = cfg.K === K0 && cfg.CAP === 200 && cfg.depth === 'cell';
@@ -121,7 +126,7 @@ for (const [set, recs] of Object.entries(resid)) {
 const half = Math.floor(YEARS.length / 2), W1 = YEARS.slice(0, half), W2 = YEARS.slice(half);
 const split = {};
 for (const [name, train, test] of [['train_early_test_late', W1, W2], ['train_late_test_early', W2, W1]]) {
-  const fit = fitFactors(agg.cells, provOf, { K: K0, CAP: 200, years: train, useRegions });
+  const fit = fitFactors(agg.cells, provOf, { K: K0, CAP: 200, years: train, useRegions, additive: ADDITIVE });
   split[name] = { train: [train[0], train.at(-1)], test: {} };
   for (const set of ['TA', 'T']) { const ys = {}; for (const y of test) { const { units } = predict(fit, set, y); ys[y] = { country_pred_over_obs: +metrics(units, 'country').annual_ratio.toFixed(3), prov_season_mape: +metrics(units, 'prov').season_mape.toFixed(4) }; } const vals = Object.values(ys); split[name].test[set] = { per_year: ys, country_pred_over_obs_mean: +(vals.reduce((a, v) => a + v.country_pred_over_obs, 0) / vals.length).toFixed(3), prov_season_mape_mean: +(vals.reduce((a, v) => a + v.prov_season_mape, 0) / vals.length).toFixed(4) }; }
 }
@@ -139,7 +144,7 @@ const backward = {};
 }
 // forward test: factors from the full window applied to 2024, 2025
 const forward = {};
-if (FORWARD.length) { const fit = fitFactors(agg.cells, provOf, { K: K0, CAP: 200, years: YEARS, useRegions }); for (const set of ['TA', 'T']) for (const y of FORWARD) { const { units } = predict(fit, set, y); const c = metrics(units, 'country'), p = metrics(units, 'prov'); (forward[set] ??= {})[y] = { country_pred_over_obs: +c.annual_ratio.toFixed(3), prov_season_mape: +p.season_mape.toFixed(4), country_monthly_median_ape: +c.monthly_median_ape.toFixed(4) }; } }
+if (FORWARD.length) { const fit = fitFactors(agg.cells, provOf, { K: K0, CAP: 200, years: YEARS, useRegions, additive: ADDITIVE }); for (const set of ['TA', 'T']) for (const y of FORWARD) { const { units } = predict(fit, set, y); const c = metrics(units, 'country'), p = metrics(units, 'prov'); (forward[set] ??= {})[y] = { country_pred_over_obs: +c.annual_ratio.toFixed(3), prov_season_mape: +p.season_mape.toFixed(4), country_monthly_median_ape: +c.monthly_median_ape.toFixed(4) }; } }
 const byProv = Object.entries(provFolds).filter(([k]) => !k.endsWith('|own')).map(([k, arr]) => { const [set, prov] = k.split('|'); const own = provFolds[`${set}|${prov}|own`] || []; return { set, prov, n_folds: arr.length, season_mape_mean: +(arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(4), season_mape_median: +median(arr).toFixed(4), own_season_months: (OWN_SEASON[prov] || []).join('-'), own_season_mape_mean: own.length ? +(own.reduce((a, b) => a + b, 0) / own.length).toFixed(4) : null, own_season_mape_median: own.length ? +median(own).toFixed(4) : null }; });
 const toCsv = rows => Object.keys(rows[0]).join(',') + '\n' + rows.map(r => Object.values(r).map(v => v === null ? '' : typeof v === 'string' && v.includes(',') ? `"${v}"` : v).join(',')).join('\n') + '\n';
 await writeFile(path.join(OUT, `loyo_folds${TAG}.csv`), toCsv(folds));
@@ -149,7 +154,7 @@ await writeFile(path.join(OUT, `loyo_summary${TAG}.json`), JSON.stringify({ gene
 if (!SWEEP && !ABLATION && !TAG) await writeFile(path.join(OUT, 'band_calibration.json'), JSON.stringify({ generated: new Date().toISOString(), years: YEARS, z: Z, note: 'by_count: signed p10/p90 of log(V/P) of out-of-sample unit-months binned by PREDICTED count P (pooled cell/province/country), per satellite set. 80% prediction interval = [P*exp(p10), P*exp(p90)]. by_level: reference quantiles. band_coverage: fraction of out-of-sample months inside that interval.', band, band_coverage: coverage, split_window: split, backward_test_2003_2011: backward, forward_test: forward }, null, 1));
 
 const pct = x => (100 * x).toFixed(1).padStart(5) + '%';
-console.log(`LOYO ${YEARS.length} folds (${YEARS[0]}–${YEARS.at(-1)}) · season Jul–Nov · K=${K0} · ${configs.length} config(s) · sets TA and T\n`);
+console.log(`LOYO ${YEARS.length} folds (${YEARS[0]}–${YEARS.at(-1)}) · season Jul–Nov · K=${K0} · additive=${ADDITIVE} · ${configs.length} config(s) · sets TA and T\n`);
 console.log('set K   CAP  depth    level     season MAPE  (scalar)   monthly med|err| (scalar)   annual pred/obs range  rms');
 for (const s of summary) console.log(`${s.set.padEnd(3)} ${String(s.K).padEnd(3)} ${String(s.CAP).padEnd(4)} ${s.depth.padEnd(8)} ${s.level.padEnd(8)}  ${pct(s.season_mape)}  (${pct(s.season_mape_scalar)})   ${pct(s.monthly_median_ape)}  (${pct(s.monthly_median_ape_scalar)})     ${s.annual_ratio_min}–${s.annual_ratio_max}   ${s.annual_ratio_rms_dev}`);
 if (Object.keys(band).length) {

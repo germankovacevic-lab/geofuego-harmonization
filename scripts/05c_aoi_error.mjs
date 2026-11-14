@@ -38,9 +38,9 @@ for (const yStar of YEARS) {
   // per-cell monthly observed V and predicted P for yStar
   const cellV = new Map(), cellP = new Map();
   for (const [cid, yrs] of Object.entries(agg.cells)) {
-    const ym = yrs[yStar]; if (!ym) continue; const fc = fit.cell[set][+cid]; if (!fc) continue;
+    const fc = fit.cell[set][+cid]; if (!fc) continue; const ym = yrs[yStar] || {}; const ac = fit.add?.[set]?.cell?.[+cid]; if (!ac && !yrs[yStar]) continue;
     const V = Array(13).fill(0), P = Array(13).fill(0);
-    for (const [m, r] of Object.entries(ym)) { V[m] = r[6] ?? 0; P[m] = fc[m - 1][0] * SETDEF[set](r); }
+    for (let m = 1; m <= 12; m++) { const r = ym[m]; V[m] = r ? (r[6] ?? 0) : 0; const M = r ? SETDEF[set](r) : 0; P[m] = M > 0 ? fc[m - 1][0] * M : (ac ? ac[m - 1] : 0); }
     cellV.set(+cid, V); cellP.set(+cid, P);
   }
   for (const s of SIZES) {

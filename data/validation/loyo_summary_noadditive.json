@@ -1,0 +1,2176 @@
+{
+ "generated": "2026-11-14T16:09:28.071Z",
+ "years": [
+  2012,
+  2013,
+  2014,
+  2015,
+  2016,
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022,
+  2023
+ ],
+ "season": [
+  7,
+  8,
+  9,
+  10,
+  11
+ ],
+ "K": 10,
+ "configs": [
+  {
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell"
+  }
+ ],
+ "useRegions": true,
+ "summary": [
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "level": "country",
+   "season_mape": 0.0326,
+   "season_mape_scalar": 0.0869,
+   "monthly_median_ape": 0.0575,
+   "monthly_median_ape_scalar": 0.0855,
+   "annual_ratio_min": 0.912,
+   "annual_ratio_max": 1.014,
+   "annual_ratio_rms_dev": 0.0336
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "level": "prov",
+   "season_mape": 0.1018,
+   "season_mape_scalar": 0.157,
+   "monthly_median_ape": 0.1696,
+   "monthly_median_ape_scalar": 0.1921,
+   "annual_ratio_min": 0.912,
+   "annual_ratio_max": 1.014,
+   "annual_ratio_rms_dev": 0.0336
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "level": "cell",
+   "season_mape": 0.2969,
+   "season_mape_scalar": 0.3384,
+   "monthly_median_ape": 0.36,
+   "monthly_median_ape_scalar": 0.372,
+   "annual_ratio_min": 0.912,
+   "annual_ratio_max": 1.014,
+   "annual_ratio_rms_dev": 0.0336
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "level": "country",
+   "season_mape": 0.0578,
+   "season_mape_scalar": 0.0743,
+   "monthly_median_ape": 0.1344,
+   "monthly_median_ape_scalar": 0.2598,
+   "annual_ratio_min": 0.786,
+   "annual_ratio_max": 1.051,
+   "annual_ratio_rms_dev": 0.0751
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "level": "prov",
+   "season_mape": 0.1755,
+   "season_mape_scalar": 0.23,
+   "monthly_median_ape": 0.278,
+   "monthly_median_ape_scalar": 0.3716,
+   "annual_ratio_min": 0.786,
+   "annual_ratio_max": 1.051,
+   "annual_ratio_rms_dev": 0.0751
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "level": "cell",
+   "season_mape": 0.5376,
+   "season_mape_scalar": 0.5536,
+   "monthly_median_ape": 0.6998,
+   "monthly_median_ape_scalar": 0.7298,
+   "annual_ratio_min": 0.786,
+   "annual_ratio_max": 1.051,
+   "annual_ratio_rms_dev": 0.0751
+  }
+ ],
+ "by_province": [
+  {
+   "set": "TA",
+   "prov": "Santa Cruz",
+   "n_folds": 10,
+   "season_mape_mean": 0.2367,
+   "season_mape_median": 0.2714,
+   "own_season_months": "1-2-3-5-10",
+   "own_season_mape_mean": 0.194,
+   "own_season_mape_median": 0.1558
+  },
+  {
+   "set": "TA",
+   "prov": "Chubut",
+   "n_folds": 9,
+   "season_mape_mean": 0.1637,
+   "season_mape_median": 0.0731,
+   "own_season_months": "1-2-3-10-12",
+   "own_season_mape_mean": 0.2513,
+   "own_season_mape_median": 0.2168
+  },
+  {
+   "set": "TA",
+   "prov": "Río Negro",
+   "n_folds": 12,
+   "season_mape_mean": 0.1145,
+   "season_mape_median": 0.0678,
+   "own_season_months": "1-2-3-9-12",
+   "own_season_mape_mean": 0.1234,
+   "own_season_mape_median": 0.1155
+  },
+  {
+   "set": "TA",
+   "prov": "Neuquén",
+   "n_folds": 12,
+   "season_mape_mean": 0.2746,
+   "season_mape_median": 0.2455,
+   "own_season_months": "1-2-4-8-12",
+   "own_season_mape_mean": 0.1743,
+   "own_season_mape_median": 0.1954
+  },
+  {
+   "set": "TA",
+   "prov": "Buenos Aires",
+   "n_folds": 12,
+   "season_mape_mean": 0.103,
+   "season_mape_median": 0.0786,
+   "own_season_months": "1-2-8-9-12",
+   "own_season_mape_mean": 0.1221,
+   "own_season_mape_median": 0.0934
+  },
+  {
+   "set": "TA",
+   "prov": "La Pampa",
+   "n_folds": 12,
+   "season_mape_mean": 0.084,
+   "season_mape_median": 0.0697,
+   "own_season_months": "1-2-8-9-12",
+   "own_season_mape_mean": 0.119,
+   "own_season_mape_median": 0.1161
+  },
+  {
+   "set": "TA",
+   "prov": "Mendoza",
+   "n_folds": 12,
+   "season_mape_mean": 0.0984,
+   "season_mape_median": 0.0987,
+   "own_season_months": "1-7-8-9-10",
+   "own_season_mape_mean": 0.1067,
+   "own_season_mape_median": 0.1117
+  },
+  {
+   "set": "TA",
+   "prov": "San Luis",
+   "n_folds": 12,
+   "season_mape_mean": 0.0902,
+   "season_mape_median": 0.0801,
+   "own_season_months": "1-8-9-10-12",
+   "own_season_mape_mean": 0.1018,
+   "own_season_mape_median": 0.0892
+  },
+  {
+   "set": "TA",
+   "prov": "Córdoba",
+   "n_folds": 12,
+   "season_mape_mean": 0.0773,
+   "season_mape_median": 0.0706,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.0773,
+   "own_season_mape_median": 0.0706
+  },
+  {
+   "set": "TA",
+   "prov": "Santa Fe",
+   "n_folds": 12,
+   "season_mape_mean": 0.0277,
+   "season_mape_median": 0.0196,
+   "own_season_months": "6-7-8-9-10",
+   "own_season_mape_mean": 0.0261,
+   "own_season_mape_median": 0.022
+  },
+  {
+   "set": "TA",
+   "prov": "Entre Ríos",
+   "n_folds": 12,
+   "season_mape_mean": 0.1147,
+   "season_mape_median": 0.1339,
+   "own_season_months": "1-7-8-9-10",
+   "own_season_mape_mean": 0.0992,
+   "own_season_mape_median": 0.1007
+  },
+  {
+   "set": "TA",
+   "prov": "San Juan",
+   "n_folds": 12,
+   "season_mape_mean": 0.1148,
+   "season_mape_median": 0.1207,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.1148,
+   "own_season_mape_median": 0.1207
+  },
+  {
+   "set": "TA",
+   "prov": "La Rioja",
+   "n_folds": 12,
+   "season_mape_mean": 0.07,
+   "season_mape_median": 0.0658,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.07,
+   "own_season_mape_median": 0.0658
+  },
+  {
+   "set": "TA",
+   "prov": "Corrientes",
+   "n_folds": 12,
+   "season_mape_mean": 0.0576,
+   "season_mape_median": 0.0431,
+   "own_season_months": "1-2-7-8-9",
+   "own_season_mape_mean": 0.0615,
+   "own_season_mape_median": 0.0522
+  },
+  {
+   "set": "TA",
+   "prov": "Santiago del Estero",
+   "n_folds": 12,
+   "season_mape_mean": 0.057,
+   "season_mape_median": 0.0686,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.057,
+   "own_season_mape_median": 0.0686
+  },
+  {
+   "set": "TA",
+   "prov": "Catamarca",
+   "n_folds": 12,
+   "season_mape_mean": 0.127,
+   "season_mape_median": 0.1109,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.127,
+   "own_season_mape_median": 0.1109
+  },
+  {
+   "set": "TA",
+   "prov": "Misiones",
+   "n_folds": 12,
+   "season_mape_mean": 0.076,
+   "season_mape_median": 0.0796,
+   "own_season_months": "3-4-7-8-9",
+   "own_season_mape_mean": 0.0747,
+   "own_season_mape_median": 0.0615
+  },
+  {
+   "set": "TA",
+   "prov": "Tucumán",
+   "n_folds": 12,
+   "season_mape_mean": 0.0513,
+   "season_mape_median": 0.0472,
+   "own_season_months": "6-7-8-9-10",
+   "own_season_mape_mean": 0.0509,
+   "own_season_mape_median": 0.0415
+  },
+  {
+   "set": "TA",
+   "prov": "Chaco",
+   "n_folds": 12,
+   "season_mape_mean": 0.0439,
+   "season_mape_median": 0.0475,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.0439,
+   "own_season_mape_median": 0.0475
+  },
+  {
+   "set": "TA",
+   "prov": "Formosa",
+   "n_folds": 12,
+   "season_mape_mean": 0.0465,
+   "season_mape_median": 0.0384,
+   "own_season_months": "1-7-8-9-10",
+   "own_season_mape_mean": 0.0406,
+   "own_season_mape_median": 0.0401
+  },
+  {
+   "set": "TA",
+   "prov": "Salta",
+   "n_folds": 12,
+   "season_mape_mean": 0.0777,
+   "season_mape_median": 0.0517,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.0777,
+   "own_season_mape_median": 0.0517
+  },
+  {
+   "set": "TA",
+   "prov": "Jujuy",
+   "n_folds": 12,
+   "season_mape_mean": 0.1685,
+   "season_mape_median": 0.1565,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.1685,
+   "own_season_mape_median": 0.1565
+  },
+  {
+   "set": "T",
+   "prov": "Santa Cruz",
+   "n_folds": 10,
+   "season_mape_mean": 0.3722,
+   "season_mape_median": 0.413,
+   "own_season_months": "1-2-3-5-10",
+   "own_season_mape_mean": 0.3235,
+   "own_season_mape_median": 0.2855
+  },
+  {
+   "set": "T",
+   "prov": "Chubut",
+   "n_folds": 9,
+   "season_mape_mean": 0.3792,
+   "season_mape_median": 0.415,
+   "own_season_months": "1-2-3-10-12",
+   "own_season_mape_mean": 0.4769,
+   "own_season_mape_median": 0.344
+  },
+  {
+   "set": "T",
+   "prov": "Río Negro",
+   "n_folds": 12,
+   "season_mape_mean": 0.2297,
+   "season_mape_median": 0.2694,
+   "own_season_months": "1-2-3-9-12",
+   "own_season_mape_mean": 0.211,
+   "own_season_mape_median": 0.2346
+  },
+  {
+   "set": "T",
+   "prov": "Neuquén",
+   "n_folds": 12,
+   "season_mape_mean": 0.3497,
+   "season_mape_median": 0.3269,
+   "own_season_months": "1-2-4-8-12",
+   "own_season_mape_mean": 0.2306,
+   "own_season_mape_median": 0.2748
+  },
+  {
+   "set": "T",
+   "prov": "Buenos Aires",
+   "n_folds": 12,
+   "season_mape_mean": 0.191,
+   "season_mape_median": 0.1902,
+   "own_season_months": "1-2-8-9-12",
+   "own_season_mape_mean": 0.164,
+   "own_season_mape_median": 0.175
+  },
+  {
+   "set": "T",
+   "prov": "La Pampa",
+   "n_folds": 12,
+   "season_mape_mean": 0.1763,
+   "season_mape_median": 0.1712,
+   "own_season_months": "1-2-8-9-12",
+   "own_season_mape_mean": 0.1426,
+   "own_season_mape_median": 0.1561
+  },
+  {
+   "set": "T",
+   "prov": "Mendoza",
+   "n_folds": 12,
+   "season_mape_mean": 0.1381,
+   "season_mape_median": 0.1299,
+   "own_season_months": "1-7-8-9-10",
+   "own_season_mape_mean": 0.1077,
+   "own_season_mape_median": 0.1178
+  },
+  {
+   "set": "T",
+   "prov": "San Luis",
+   "n_folds": 12,
+   "season_mape_mean": 0.1505,
+   "season_mape_median": 0.1535,
+   "own_season_months": "1-8-9-10-12",
+   "own_season_mape_mean": 0.1473,
+   "own_season_mape_median": 0.1377
+  },
+  {
+   "set": "T",
+   "prov": "Córdoba",
+   "n_folds": 12,
+   "season_mape_mean": 0.1122,
+   "season_mape_median": 0.1017,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.1122,
+   "own_season_mape_median": 0.1017
+  },
+  {
+   "set": "T",
+   "prov": "Santa Fe",
+   "n_folds": 12,
+   "season_mape_mean": 0.0747,
+   "season_mape_median": 0.0764,
+   "own_season_months": "6-7-8-9-10",
+   "own_season_mape_mean": 0.0779,
+   "own_season_mape_median": 0.0752
+  },
+  {
+   "set": "T",
+   "prov": "Entre Ríos",
+   "n_folds": 12,
+   "season_mape_mean": 0.2004,
+   "season_mape_median": 0.2077,
+   "own_season_months": "1-7-8-9-10",
+   "own_season_mape_mean": 0.1907,
+   "own_season_mape_median": 0.1956
+  },
+  {
+   "set": "T",
+   "prov": "San Juan",
+   "n_folds": 12,
+   "season_mape_mean": 0.1312,
+   "season_mape_median": 0.1591,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.1312,
+   "own_season_mape_median": 0.1591
+  },
+  {
+   "set": "T",
+   "prov": "La Rioja",
+   "n_folds": 12,
+   "season_mape_mean": 0.1373,
+   "season_mape_median": 0.1764,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.1373,
+   "own_season_mape_median": 0.1764
+  },
+  {
+   "set": "T",
+   "prov": "Corrientes",
+   "n_folds": 12,
+   "season_mape_mean": 0.1116,
+   "season_mape_median": 0.1013,
+   "own_season_months": "1-2-7-8-9",
+   "own_season_mape_mean": 0.0925,
+   "own_season_mape_median": 0.0933
+  },
+  {
+   "set": "T",
+   "prov": "Santiago del Estero",
+   "n_folds": 12,
+   "season_mape_mean": 0.085,
+   "season_mape_median": 0.0766,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.085,
+   "own_season_mape_median": 0.0766
+  },
+  {
+   "set": "T",
+   "prov": "Catamarca",
+   "n_folds": 12,
+   "season_mape_mean": 0.1573,
+   "season_mape_median": 0.1718,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.1573,
+   "own_season_mape_median": 0.1718
+  },
+  {
+   "set": "T",
+   "prov": "Misiones",
+   "n_folds": 12,
+   "season_mape_mean": 0.2238,
+   "season_mape_median": 0.2078,
+   "own_season_months": "3-4-7-8-9",
+   "own_season_mape_mean": 0.2204,
+   "own_season_mape_median": 0.2234
+  },
+  {
+   "set": "T",
+   "prov": "Tucumán",
+   "n_folds": 12,
+   "season_mape_mean": 0.1077,
+   "season_mape_median": 0.1289,
+   "own_season_months": "6-7-8-9-10",
+   "own_season_mape_mean": 0.0934,
+   "own_season_mape_median": 0.0958
+  },
+  {
+   "set": "T",
+   "prov": "Chaco",
+   "n_folds": 12,
+   "season_mape_mean": 0.0697,
+   "season_mape_median": 0.074,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.0697,
+   "own_season_mape_median": 0.074
+  },
+  {
+   "set": "T",
+   "prov": "Formosa",
+   "n_folds": 12,
+   "season_mape_mean": 0.1291,
+   "season_mape_median": 0.1303,
+   "own_season_months": "1-7-8-9-10",
+   "own_season_mape_mean": 0.1279,
+   "own_season_mape_median": 0.1207
+  },
+  {
+   "set": "T",
+   "prov": "Salta",
+   "n_folds": 12,
+   "season_mape_mean": 0.1358,
+   "season_mape_median": 0.0945,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.1358,
+   "own_season_mape_median": 0.0945
+  },
+  {
+   "set": "T",
+   "prov": "Jujuy",
+   "n_folds": 12,
+   "season_mape_mean": 0.278,
+   "season_mape_median": 0.2833,
+   "own_season_months": "7-8-9-10-11",
+   "own_season_mape_mean": 0.278,
+   "own_season_mape_median": 0.2833
+  }
+ ],
+ "band_calibration": {
+  "TA": {
+   "by_level": {
+    "country": {
+     "n": 144,
+     "median_abs_log": 0.0541,
+     "q80_abs_log": 0.1015,
+     "p10_log": -0.091,
+     "p90_log": 0.1038,
+     "bias_median_log": 0.0093,
+     "sigma_equiv_for_80pct": 0.0792
+    },
+    "prov": {
+     "n": 2527,
+     "median_abs_log": 0.164,
+     "q80_abs_log": 0.3515,
+     "p10_log": -0.3723,
+     "p90_log": 0.3296,
+     "bias_median_log": -0.0055,
+     "sigma_equiv_for_80pct": 0.2742
+    },
+    "cell": {
+     "n": 41294,
+     "median_abs_log": 0.3794,
+     "q80_abs_log": 0.831,
+     "p10_log": -1.1779,
+     "p90_log": 0.4577,
+     "bias_median_log": -0.1881,
+     "sigma_equiv_for_80pct": 0.6484
+    }
+   },
+   "by_count": [
+    {
+     "P_min": 5,
+     "P_max": 15,
+     "n": 30986,
+     "p10_log": -2.4839,
+     "p50_log": -0.391,
+     "p90_log": 0.6301,
+     "share_V_zero": 0.115
+    },
+    {
+     "P_min": 15,
+     "P_max": 40,
+     "n": 18731,
+     "p10_log": -1.1811,
+     "p50_log": -0.2004,
+     "p90_log": 0.4802,
+     "share_V_zero": 0.011
+    },
+    {
+     "P_min": 40,
+     "P_max": 100,
+     "n": 9317,
+     "p10_log": -0.7448,
+     "p50_log": -0.1272,
+     "p90_log": 0.3831,
+     "share_V_zero": 0
+    },
+    {
+     "P_min": 100,
+     "P_max": 300,
+     "n": 4070,
+     "p10_log": -0.5404,
+     "p50_log": -0.0749,
+     "p90_log": 0.3366,
+     "share_V_zero": 0
+    },
+    {
+     "P_min": 300,
+     "P_max": 1000,
+     "n": 1115,
+     "p10_log": -0.3521,
+     "p50_log": -0.0067,
+     "p90_log": 0.3378,
+     "share_V_zero": 0
+    },
+    {
+     "P_min": 1000,
+     "P_max": 3000,
+     "n": 376,
+     "p10_log": -0.2238,
+     "p50_log": -0.0055,
+     "p90_log": 0.1892,
+     "share_V_zero": 0
+    },
+    {
+     "P_min": 3000,
+     "P_max": null,
+     "n": 318,
+     "p10_log": -0.1207,
+     "p50_log": 0.0019,
+     "p90_log": 0.132,
+     "share_V_zero": 0
+    }
+   ]
+  },
+  "T": {
+   "by_level": {
+    "country": {
+     "n": 144,
+     "median_abs_log": 0.1032,
+     "q80_abs_log": 0.2016,
+     "p10_log": -0.1393,
+     "p90_log": 0.3281,
+     "bias_median_log": -0.0099,
+     "sigma_equiv_for_80pct": 0.1573
+    },
+    "prov": {
+     "n": 2481,
+     "median_abs_log": 0.2671,
+     "q80_abs_log": 0.5722,
+     "p10_log": -0.5885,
+     "p90_log": 0.5519,
+     "bias_median_log": 0.0126,
+     "sigma_equiv_for_80pct": 0.4465
+    },
+    "cell": {
+     "n": 39025,
+     "median_abs_log": 0.7064,
+     "q80_abs_log": 1.6398,
+     "p10_log": -2.5557,
+     "p90_log": 0.5735,
+     "bias_median_log": -0.5157,
+     "sigma_equiv_for_80pct": 1.2795
+    }
+   },
+   "by_count": [
+    {
+     "P_min": 5,
+     "P_max": 15,
+     "n": 22000,
+     "p10_log": -2.9226,
+     "p50_log": -0.7258,
+     "p90_log": 0.8787,
+     "share_V_zero": 0.231
+    },
+    {
+     "P_min": 15,
+     "P_max": 40,
+     "n": 17984,
+     "p10_log": -2.7245,
+     "p50_log": -0.5872,
+     "p90_log": 0.6321,
+     "share_V_zero": 0.083
+    },
+    {
+     "P_min": 40,
+     "P_max": 100,
+     "n": 9682,
+     "p10_log": -1.7265,
+     "p50_log": -0.4061,
+     "p90_log": 0.4816,
+     "share_V_zero": 0.014
+    },
+    {
+     "P_min": 100,
+     "P_max": 300,
+     "n": 4330,
+     "p10_log": -1.1296,
+     "p50_log": -0.2892,
+     "p90_log": 0.4191,
+     "share_V_zero": 0.001
+    },
+    {
+     "P_min": 300,
+     "P_max": 1000,
+     "n": 1229,
+     "p10_log": -0.8196,
+     "p50_log": -0.1187,
+     "p90_log": 0.4438,
+     "share_V_zero": 0
+    },
+    {
+     "P_min": 1000,
+     "P_max": 3000,
+     "n": 362,
+     "p10_log": -0.3567,
+     "p50_log": 0.02,
+     "p90_log": 0.3273,
+     "share_V_zero": 0
+    },
+    {
+     "P_min": 3000,
+     "P_max": null,
+     "n": 313,
+     "p10_log": -0.2243,
+     "p50_log": -0.0174,
+     "p90_log": 0.2836,
+     "share_V_zero": 0
+    }
+   ]
+  }
+ },
+ "band_coverage": {
+  "TA": {
+   "by_level": {
+    "country": 0.896,
+    "prov": 0.812,
+    "cell": 0.799
+   },
+   "by_province": {
+    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.333,
+    "Santa Cruz": 0.848,
+    "Chubut": 0.657,
+    "Río Negro": 0.821,
+    "Neuquén": 0.739,
+    "Buenos Aires": 0.796,
+    "La Pampa": 0.849,
+    "Mendoza": 0.815,
+    "San Luis": 0.885,
+    "Córdoba": 0.872,
+    "Ciudad Autónoma de Buenos Aires": null,
+    "Santa Fe": 0.847,
+    "Entre Ríos": 0.816,
+    "San Juan": 0.86,
+    "La Rioja": 0.85,
+    "Corrientes": 0.826,
+    "Santiago del Estero": 0.887,
+    "Catamarca": 0.841,
+    "Misiones": 0.835,
+    "Tucumán": 0.918,
+    "Chaco": 0.9,
+    "Formosa": 0.863,
+    "Salta": 0.802,
+    "Jujuy": 0.818
+   }
+  },
+  "T": {
+   "by_level": {
+    "country": 0.854,
+    "prov": 0.782,
+    "cell": 0.801
+   },
+   "by_province": {
+    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.5,
+    "Santa Cruz": 0.936,
+    "Chubut": 0.703,
+    "Río Negro": 0.787,
+    "Neuquén": 0.773,
+    "Buenos Aires": 0.713,
+    "La Pampa": 0.757,
+    "Mendoza": 0.803,
+    "San Luis": 0.866,
+    "Córdoba": 0.831,
+    "Santa Fe": 0.757,
+    "Entre Ríos": 0.738,
+    "San Juan": 0.857,
+    "La Rioja": 0.904,
+    "Corrientes": 0.769,
+    "Santiago del Estero": 0.915,
+    "Catamarca": 0.87,
+    "Misiones": 0.634,
+    "Tucumán": 0.862,
+    "Chaco": 0.864,
+    "Formosa": 0.8,
+    "Salta": 0.771,
+    "Jujuy": 0.855,
+    "Ciudad Autónoma de Buenos Aires": null
+   }
+  }
+ },
+ "split_window": {
+  "train_early_test_late": {
+   "train": [
+    2012,
+    2017
+   ],
+   "test": {
+    "TA": {
+     "per_year": {
+      "2018": {
+       "country_pred_over_obs": 0.96,
+       "prov_season_mape": 0.1287
+      },
+      "2019": {
+       "country_pred_over_obs": 1.002,
+       "prov_season_mape": 0.1295
+      },
+      "2020": {
+       "country_pred_over_obs": 0.915,
+       "prov_season_mape": 0.1041
+      },
+      "2021": {
+       "country_pred_over_obs": 0.957,
+       "prov_season_mape": 0.1027
+      },
+      "2022": {
+       "country_pred_over_obs": 0.846,
+       "prov_season_mape": 0.1522
+      },
+      "2023": {
+       "country_pred_over_obs": 0.945,
+       "prov_season_mape": 0.1114
+      }
+     },
+     "country_pred_over_obs_mean": 0.938,
+     "prov_season_mape_mean": 0.1214
+    },
+    "T": {
+     "per_year": {
+      "2018": {
+       "country_pred_over_obs": 0.91,
+       "prov_season_mape": 0.2172
+      },
+      "2019": {
+       "country_pred_over_obs": 0.938,
+       "prov_season_mape": 0.1904
+      },
+      "2020": {
+       "country_pred_over_obs": 0.876,
+       "prov_season_mape": 0.2073
+      },
+      "2021": {
+       "country_pred_over_obs": 0.956,
+       "prov_season_mape": 0.1409
+      },
+      "2022": {
+       "country_pred_over_obs": 0.734,
+       "prov_season_mape": 0.2153
+      },
+      "2023": {
+       "country_pred_over_obs": 0.936,
+       "prov_season_mape": 0.2242
+      }
+     },
+     "country_pred_over_obs_mean": 0.892,
+     "prov_season_mape_mean": 0.1992
+    }
+   }
+  },
+  "train_late_test_early": {
+   "train": [
+    2018,
+    2023
+   ],
+   "test": {
+    "TA": {
+     "per_year": {
+      "2012": {
+       "country_pred_over_obs": 1.041,
+       "prov_season_mape": 0.1356
+      },
+      "2013": {
+       "country_pred_over_obs": 0.981,
+       "prov_season_mape": 0.122
+      },
+      "2014": {
+       "country_pred_over_obs": 1.058,
+       "prov_season_mape": 0.1577
+      },
+      "2015": {
+       "country_pred_over_obs": 1.036,
+       "prov_season_mape": 0.1341
+      },
+      "2016": {
+       "country_pred_over_obs": 1.035,
+       "prov_season_mape": 0.1223
+      },
+      "2017": {
+       "country_pred_over_obs": 1.043,
+       "prov_season_mape": 0.165
+      }
+     },
+     "country_pred_over_obs_mean": 1.032,
+     "prov_season_mape_mean": 0.1394
+    },
+    "T": {
+     "per_year": {
+      "2012": {
+       "country_pred_over_obs": 1.094,
+       "prov_season_mape": 0.2958
+      },
+      "2013": {
+       "country_pred_over_obs": 1.034,
+       "prov_season_mape": 0.1387
+      },
+      "2014": {
+       "country_pred_over_obs": 1.122,
+       "prov_season_mape": 0.2949
+      },
+      "2015": {
+       "country_pred_over_obs": 1.035,
+       "prov_season_mape": 0.1938
+      },
+      "2016": {
+       "country_pred_over_obs": 1,
+       "prov_season_mape": 0.1957
+      },
+      "2017": {
+       "country_pred_over_obs": 1.063,
+       "prov_season_mape": 0.258
+      }
+     },
+     "country_pred_over_obs_mean": 1.058,
+     "prov_season_mape_mean": 0.2295
+    }
+   }
+  }
+ },
+ "backward_test_2003_2011": {
+  "2003": {
+   "terra_only_over_terra_aqua": 0.94
+  },
+  "2004": {
+   "terra_only_over_terra_aqua": 1.006
+  },
+  "2005": {
+   "terra_only_over_terra_aqua": 1.01
+  },
+  "2006": {
+   "terra_only_over_terra_aqua": 0.989
+  },
+  "2007": {
+   "terra_only_over_terra_aqua": 0.995
+  },
+  "2008": {
+   "terra_only_over_terra_aqua": 1.037
+  },
+  "2009": {
+   "terra_only_over_terra_aqua": 1.024
+  },
+  "2010": {
+   "terra_only_over_terra_aqua": 0.985
+  },
+  "2011": {
+   "terra_only_over_terra_aqua": 1.031
+  },
+  "summary": {
+   "country_min": 0.94,
+   "country_max": 1.037,
+   "province_year_q80_abs_log": 0.206,
+   "n_province_years": 200
+  }
+ },
+ "forward_test": {
+  "TA": {
+   "2024": {
+    "country_pred_over_obs": 1.038,
+    "prov_season_mape": 0.123,
+    "country_monthly_median_ape": 0.075
+   },
+   "2025": {
+    "country_pred_over_obs": 1.015,
+    "prov_season_mape": 0.2003,
+    "country_monthly_median_ape": 0.0766
+   }
+  },
+  "T": {
+   "2024": {
+    "country_pred_over_obs": 0.873,
+    "prov_season_mape": 0.1885,
+    "country_monthly_median_ape": 0.2646
+   },
+   "2025": {
+    "country_pred_over_obs": 0.741,
+    "prov_season_mape": 0.3545,
+    "country_monthly_median_ape": 0.2938
+   }
+  }
+ },
+ "folds": [
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2012,
+   "level": "country",
+   "scalar": 3.303,
+   "n_units": 1,
+   "season_mape": 0.002370218522731178,
+   "season_mape_scalar": 0.07302613286165247,
+   "monthly_median_ape": 0.05326636550308057,
+   "monthly_median_ape_scalar": 0.08711801232567198,
+   "annual_ratio": 1.0073609580845524,
+   "annual_ratio_scalar": 1.0615923339800664
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2012,
+   "level": "prov",
+   "scalar": 3.303,
+   "n_units": 22,
+   "season_mape": 0.10112693622254697,
+   "season_mape_scalar": 0.15345804779984598,
+   "monthly_median_ape": 0.17972272727272673,
+   "monthly_median_ape_scalar": 0.17888210066308066,
+   "annual_ratio": 1.0073609580845524,
+   "annual_ratio_scalar": 1.061592333980067
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2012,
+   "level": "cell",
+   "scalar": 3.303,
+   "n_units": 919,
+   "season_mape": 0.28203393113291503,
+   "season_mape_scalar": 0.3226366537132132,
+   "monthly_median_ape": 0.36529999999999996,
+   "monthly_median_ape_scalar": 0.36002739969485836,
+   "annual_ratio": 1.0073609580845522,
+   "annual_ratio_scalar": 1.0615923339800661
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2013,
+   "level": "country",
+   "scalar": 3.285,
+   "n_units": 1,
+   "season_mape": 0.049904236960246574,
+   "season_mape_scalar": 0.015170702140425676,
+   "monthly_median_ape": 0.04284579810181223,
+   "monthly_median_ape_scalar": 0.07870310872563403,
+   "annual_ratio": 0.9541996270585451,
+   "annual_ratio_scalar": 0.9919150756160193
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2013,
+   "level": "prov",
+   "scalar": 3.285,
+   "n_units": 22,
+   "season_mape": 0.10426252243308695,
+   "season_mape_scalar": 0.15637270709353177,
+   "monthly_median_ape": 0.17217906976744188,
+   "monthly_median_ape_scalar": 0.1787086957307623,
+   "annual_ratio": 0.9541996270585449,
+   "annual_ratio_scalar": 0.9919150756160221
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2013,
+   "level": "cell",
+   "scalar": 3.285,
+   "n_units": 1044,
+   "season_mape": 0.28734494397572613,
+   "season_mape_scalar": 0.31938817693166954,
+   "monthly_median_ape": 0.3523899999999999,
+   "monthly_median_ape_scalar": 0.36881884044872937,
+   "annual_ratio": 0.954199627058545,
+   "annual_ratio_scalar": 0.9919150756160213
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2014,
+   "level": "country",
+   "scalar": 3.299,
+   "n_units": 1,
+   "season_mape": 0.010094062922383051,
+   "season_mape_scalar": 0.11141445174521082,
+   "monthly_median_ape": 0.0742243423189339,
+   "monthly_median_ape_scalar": 0.08756304568875127,
+   "annual_ratio": 1.0112102952453992,
+   "annual_ratio_scalar": 1.0717339569145892
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2014,
+   "level": "prov",
+   "scalar": 3.299,
+   "n_units": 22,
+   "season_mape": 0.10746930840875858,
+   "season_mape_scalar": 0.19964125758432863,
+   "monthly_median_ape": 0.19846839080459755,
+   "monthly_median_ape_scalar": 0.19335654993651807,
+   "annual_ratio": 1.0112102952453987,
+   "annual_ratio_scalar": 1.0717339569145916
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2014,
+   "level": "cell",
+   "scalar": 3.299,
+   "n_units": 720,
+   "season_mape": 0.3055909964340456,
+   "season_mape_scalar": 0.3311209148092555,
+   "monthly_median_ape": 0.3768342105263158,
+   "monthly_median_ape_scalar": 0.3814730261640089,
+   "annual_ratio": 1.0112102952453976,
+   "annual_ratio_scalar": 1.0717339569145912
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2015,
+   "level": "country",
+   "scalar": 3.295,
+   "n_units": 1,
+   "season_mape": 0.023719193300860666,
+   "season_mape_scalar": 0.05033092094662137,
+   "monthly_median_ape": 0.041166011585728655,
+   "monthly_median_ape_scalar": 0.0968124472193483,
+   "annual_ratio": 0.9991298966753146,
+   "annual_ratio_scalar": 1.0386686586415232
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2015,
+   "level": "prov",
+   "scalar": 3.295,
+   "n_units": 22,
+   "season_mape": 0.09053644982625954,
+   "season_mape_scalar": 0.146839771732824,
+   "monthly_median_ape": 0.17442832023943122,
+   "monthly_median_ape_scalar": 0.1943823571536308,
+   "annual_ratio": 0.9991298966753144,
+   "annual_ratio_scalar": 1.0386686586415244
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2015,
+   "level": "cell",
+   "scalar": 3.295,
+   "n_units": 864,
+   "season_mape": 0.29451527938226946,
+   "season_mape_scalar": 0.30353931351984864,
+   "monthly_median_ape": 0.3538125000000001,
+   "monthly_median_ape_scalar": 0.3409311812332977,
+   "annual_ratio": 0.9991298966753144,
+   "annual_ratio_scalar": 1.0386686586415248
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2016,
+   "level": "country",
+   "scalar": 3.307,
+   "n_units": 1,
+   "season_mape": 0.03170759086818341,
+   "season_mape_scalar": 0.14513161375190975,
+   "monthly_median_ape": 0.07326005188067362,
+   "monthly_median_ape_scalar": 0.1387828984172173,
+   "annual_ratio": 0.9725313879272357,
+   "annual_ratio_scalar": 1.0829091725975912
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2016,
+   "level": "prov",
+   "scalar": 3.307,
+   "n_units": 22,
+   "season_mape": 0.09303335901752402,
+   "season_mape_scalar": 0.20325778532681102,
+   "monthly_median_ape": 0.1794520818630912,
+   "monthly_median_ape_scalar": 0.22485452918684545,
+   "annual_ratio": 0.972531387927236,
+   "annual_ratio_scalar": 1.08290917259759
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2016,
+   "level": "cell",
+   "scalar": 3.307,
+   "n_units": 915,
+   "season_mape": 0.2787935604631593,
+   "season_mape_scalar": 0.32815504489008246,
+   "monthly_median_ape": 0.35248823529411766,
+   "monthly_median_ape_scalar": 0.3780363925567191,
+   "annual_ratio": 0.972531387927238,
+   "annual_ratio_scalar": 1.0829091725975915
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2017,
+   "level": "country",
+   "scalar": 3.304,
+   "n_units": 1,
+   "season_mape": 0.03296097919532248,
+   "season_mape_scalar": 0.11402968879124205,
+   "monthly_median_ape": 0.044754204204204354,
+   "monthly_median_ape_scalar": 0.08926977489118751,
+   "annual_ratio": 1.0140117663677606,
+   "annual_ratio_scalar": 1.0620626400163908
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2017,
+   "level": "prov",
+   "scalar": 3.304,
+   "n_units": 21,
+   "season_mape": 0.12602482062040707,
+   "season_mape_scalar": 0.21671887963522746,
+   "monthly_median_ape": 0.13634597989949743,
+   "monthly_median_ape_scalar": 0.20236025881453115,
+   "annual_ratio": 1.0140117663677612,
+   "annual_ratio_scalar": 1.0620626400163982
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2017,
+   "level": "cell",
+   "scalar": 3.304,
+   "n_units": 929,
+   "season_mape": 0.2965451573201228,
+   "season_mape_scalar": 0.3382803389708115,
+   "monthly_median_ape": 0.3510461538461538,
+   "monthly_median_ape_scalar": 0.3604816477208296,
+   "annual_ratio": 1.0140117663677606,
+   "annual_ratio_scalar": 1.0620626400163966
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2018,
+   "level": "country",
+   "scalar": 3.29,
+   "n_units": 1,
+   "season_mape": 0.03485598589377097,
+   "season_mape_scalar": 0.04494164773603352,
+   "monthly_median_ape": 0.03891929250891771,
+   "monthly_median_ape_scalar": 0.06665114256930868,
+   "annual_ratio": 0.9912412406726809,
+   "annual_ratio_scalar": 1.0090667025740654
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2018,
+   "level": "prov",
+   "scalar": 3.29,
+   "n_units": 21,
+   "season_mape": 0.10184361918459399,
+   "season_mape_scalar": 0.14159501625539517,
+   "monthly_median_ape": 0.1528670658682634,
+   "monthly_median_ape_scalar": 0.16061623271691935,
+   "annual_ratio": 0.9912412406726808,
+   "annual_ratio_scalar": 1.0090667025740636
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2018,
+   "level": "cell",
+   "scalar": 3.29,
+   "n_units": 922,
+   "season_mape": 0.2828759231907952,
+   "season_mape_scalar": 0.32571957937583873,
+   "monthly_median_ape": 0.36109375,
+   "monthly_median_ape_scalar": 0.37076784576470817,
+   "annual_ratio": 0.9912412406726792,
+   "annual_ratio_scalar": 1.0090667025740685
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2019,
+   "level": "country",
+   "scalar": 3.305,
+   "n_units": 1,
+   "season_mape": 0.022514458417545843,
+   "season_mape_scalar": 0.12075562138947656,
+   "monthly_median_ape": 0.06514314851485126,
+   "monthly_median_ape_scalar": 0.10918120021850548,
+   "annual_ratio": 1.0111712469395018,
+   "annual_ratio_scalar": 1.086443143383663
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2019,
+   "level": "prov",
+   "scalar": 3.305,
+   "n_units": 22,
+   "season_mape": 0.10666844746956708,
+   "season_mape_scalar": 0.12984120739171584,
+   "monthly_median_ape": 0.17286956521739127,
+   "monthly_median_ape_scalar": 0.18049620523159401,
+   "annual_ratio": 1.011171246939502,
+   "annual_ratio_scalar": 1.0864431433836657
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2019,
+   "level": "cell",
+   "scalar": 3.305,
+   "n_units": 954,
+   "season_mape": 0.30619601299344534,
+   "season_mape_scalar": 0.3555134941025423,
+   "monthly_median_ape": 0.35113283582089555,
+   "monthly_median_ape_scalar": 0.37052730168350917,
+   "annual_ratio": 1.0111712469395016,
+   "annual_ratio_scalar": 1.0864431433836665
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2020,
+   "level": "country",
+   "scalar": 3.249,
+   "n_units": 1,
+   "season_mape": 0.046866101219052214,
+   "season_mape_scalar": 0.0598971945149427,
+   "monthly_median_ape": 0.052689316679544906,
+   "monthly_median_ape_scalar": 0.05616656975239451,
+   "annual_ratio": 0.9575560181949857,
+   "annual_ratio_scalar": 0.9341243458208873
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2020,
+   "level": "prov",
+   "scalar": 3.249,
+   "n_units": 21,
+   "season_mape": 0.07132331146318492,
+   "season_mape_scalar": 0.10133129092067872,
+   "monthly_median_ape": 0.1451111888111888,
+   "monthly_median_ape_scalar": 0.15991819301016535,
+   "annual_ratio": 0.9575560181949861,
+   "annual_ratio_scalar": 0.9341243458208867
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2020,
+   "level": "cell",
+   "scalar": 3.249,
+   "n_units": 1142,
+   "season_mape": 0.2719560963923693,
+   "season_mape_scalar": 0.31562937365634225,
+   "monthly_median_ape": 0.3327698113207546,
+   "monthly_median_ape_scalar": 0.3501941117639257,
+   "annual_ratio": 0.9575560181949865,
+   "annual_ratio_scalar": 0.9341243458208847
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2021,
+   "level": "country",
+   "scalar": 3.292,
+   "n_units": 1,
+   "season_mape": 0.026290309988519275,
+   "season_mape_scalar": 0.0654962618426521,
+   "monthly_median_ape": 0.056817863013698636,
+   "monthly_median_ape_scalar": 0.06203430314418891,
+   "annual_ratio": 1.0016515175559206,
+   "annual_ratio_scalar": 1.0172324517439488
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2021,
+   "level": "prov",
+   "scalar": 3.292,
+   "n_units": 22,
+   "season_mape": 0.07243943862771836,
+   "season_mape_scalar": 0.12492109768271796,
+   "monthly_median_ape": 0.16818752025931913,
+   "monthly_median_ape_scalar": 0.19746716413931728,
+   "annual_ratio": 1.0016515175559202,
+   "annual_ratio_scalar": 1.0172324517439497
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2021,
+   "level": "cell",
+   "scalar": 3.292,
+   "n_units": 947,
+   "season_mape": 0.30719255480911134,
+   "season_mape_scalar": 0.3637065005998644,
+   "monthly_median_ape": 0.36927567567567565,
+   "monthly_median_ape_scalar": 0.39656314421130623,
+   "annual_ratio": 1.001651517555921,
+   "annual_ratio_scalar": 1.0172324517439504
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2022,
+   "level": "country",
+   "scalar": 3.228,
+   "n_units": 1,
+   "season_mape": 0.08812601877423913,
+   "season_mape_scalar": 0.13264916168170857,
+   "monthly_median_ape": 0.0745634647537894,
+   "monthly_median_ape_scalar": 0.07588650130407133,
+   "annual_ratio": 0.9123789367517925,
+   "annual_ratio_scalar": 0.8455353664554434
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2022,
+   "level": "prov",
+   "scalar": 3.228,
+   "n_units": 21,
+   "season_mape": 0.1249499419438358,
+   "season_mape_scalar": 0.16015257732415122,
+   "monthly_median_ape": 0.1706707865168539,
+   "monthly_median_ape_scalar": 0.1977118734949043,
+   "annual_ratio": 0.9123789367517926,
+   "annual_ratio_scalar": 0.8455353664554431
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2022,
+   "level": "cell",
+   "scalar": 3.228,
+   "n_units": 944,
+   "season_mape": 0.31735750576444477,
+   "season_mape_scalar": 0.3751121367458856,
+   "monthly_median_ape": 0.37244444444444436,
+   "monthly_median_ape_scalar": 0.3835176217268145,
+   "annual_ratio": 0.912378936751794,
+   "annual_ratio_scalar": 0.8455353664554436
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2023,
+   "level": "country",
+   "scalar": 3.288,
+   "n_units": 1,
+   "season_mape": 0.02160430252339028,
+   "season_mape_scalar": 0.10971479685674208,
+   "monthly_median_ape": 0.07217141827170659,
+   "monthly_median_ape_scalar": 0.07745523037276025,
+   "annual_ratio": 0.9752379071504874,
+   "annual_ratio_scalar": 1.0021798948053608
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2023,
+   "level": "prov",
+   "scalar": 3.288,
+   "n_units": 21,
+   "season_mape": 0.12221501956586794,
+   "season_mape_scalar": 0.15013689631977647,
+   "monthly_median_ape": 0.18501496402877704,
+   "monthly_median_ape_scalar": 0.23652576249981663,
+   "annual_ratio": 0.9752379071504876,
+   "annual_ratio_scalar": 1.0021798948053628
+  },
+  {
+   "set": "TA",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2023,
+   "level": "cell",
+   "scalar": 3.288,
+   "n_units": 764,
+   "season_mape": 0.3329732164442527,
+   "season_mape_scalar": 0.38193865180033976,
+   "monthly_median_ape": 0.38112142857142856,
+   "monthly_median_ape_scalar": 0.4021591983126092,
+   "annual_ratio": 0.9752379071504864,
+   "annual_ratio_scalar": 1.0021798948053637
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2012,
+   "level": "country",
+   "scalar": 9.24,
+   "n_units": 1,
+   "season_mape": 0.026792608485850675,
+   "season_mape_scalar": 0.0047078929391613285,
+   "monthly_median_ape": 0.07802376876666144,
+   "monthly_median_ape_scalar": 0.2600763006427765,
+   "annual_ratio": 1.0420592973405243,
+   "annual_ratio_scalar": 1.046885539263526
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2012,
+   "level": "prov",
+   "scalar": 9.24,
+   "n_units": 22,
+   "season_mape": 0.2418237845282116,
+   "season_mape_scalar": 0.21886475694432092,
+   "monthly_median_ape": 0.29955718749999993,
+   "monthly_median_ape_scalar": 0.39288795216847583,
+   "annual_ratio": 1.0420592973405247,
+   "annual_ratio_scalar": 1.0468855392635283
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2012,
+   "level": "cell",
+   "scalar": 9.24,
+   "n_units": 919,
+   "season_mape": 0.5654461908972283,
+   "season_mape_scalar": 0.5284428426342567,
+   "monthly_median_ape": 0.7242031250000001,
+   "monthly_median_ape_scalar": 0.7191537058027869,
+   "annual_ratio": 1.0420592973405243,
+   "annual_ratio_scalar": 1.046885539263526
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2013,
+   "level": "country",
+   "scalar": 9.231,
+   "n_units": 1,
+   "season_mape": 0.019533195560987184,
+   "season_mape_scalar": 0.02293646079307233,
+   "monthly_median_ape": 0.04782229731226875,
+   "monthly_median_ape_scalar": 0.15598615034717006,
+   "annual_ratio": 0.9820060361444038,
+   "annual_ratio_scalar": 1.0272146324681795
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2013,
+   "level": "prov",
+   "scalar": 9.231,
+   "n_units": 22,
+   "season_mape": 0.10145917665484318,
+   "season_mape_scalar": 0.19053747559892534,
+   "monthly_median_ape": 0.2513039577836411,
+   "monthly_median_ape_scalar": 0.394328946335562,
+   "annual_ratio": 0.9820060361444037,
+   "annual_ratio_scalar": 1.0272146324681821
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2013,
+   "level": "cell",
+   "scalar": 9.231,
+   "n_units": 1044,
+   "season_mape": 0.5213523801801013,
+   "season_mape_scalar": 0.5491203913908351,
+   "monthly_median_ape": 0.6927000000000001,
+   "monthly_median_ape_scalar": 0.7174733452858245,
+   "annual_ratio": 0.982006036144403,
+   "annual_ratio_scalar": 1.027214632468179
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2014,
+   "level": "country",
+   "scalar": 9.295,
+   "n_units": 1,
+   "season_mape": 0.07544849883530351,
+   "season_mape_scalar": 0.17894248029036633,
+   "monthly_median_ape": 0.1135835931091052,
+   "monthly_median_ape_scalar": 0.3169529780614968,
+   "annual_ratio": 1.051053172929448,
+   "annual_ratio_scalar": 1.1999143096884428
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2014,
+   "level": "prov",
+   "scalar": 9.295,
+   "n_units": 22,
+   "season_mape": 0.21333505800648941,
+   "season_mape_scalar": 0.37366040104520165,
+   "monthly_median_ape": 0.2968545611015491,
+   "monthly_median_ape_scalar": 0.4566709094983222,
+   "annual_ratio": 1.0510531729294479,
+   "annual_ratio_scalar": 1.1999143096884417
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2014,
+   "level": "cell",
+   "scalar": 9.295,
+   "n_units": 720,
+   "season_mape": 0.5484251499694018,
+   "season_mape_scalar": 0.5830295736574338,
+   "monthly_median_ape": 0.7277285714285714,
+   "monthly_median_ape_scalar": 0.7838384253900609,
+   "annual_ratio": 1.0510531729294492,
+   "annual_ratio_scalar": 1.19991430968844
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2015,
+   "level": "country",
+   "scalar": 9.226,
+   "n_units": 1,
+   "season_mape": 0.006202239718867123,
+   "season_mape_scalar": 0.031860796721084154,
+   "monthly_median_ape": 0.27047925999257555,
+   "monthly_median_ape_scalar": 0.46060265390377386,
+   "annual_ratio": 0.9834835257861824,
+   "annual_ratio_scalar": 1.0327022445440868
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2015,
+   "level": "prov",
+   "scalar": 9.226,
+   "n_units": 22,
+   "season_mape": 0.17419261058294297,
+   "season_mape_scalar": 0.2575508316181534,
+   "monthly_median_ape": 0.28634,
+   "monthly_median_ape_scalar": 0.4064191814394712,
+   "annual_ratio": 0.9834835257861824,
+   "annual_ratio_scalar": 1.032702244544085
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2015,
+   "level": "cell",
+   "scalar": 9.226,
+   "n_units": 864,
+   "season_mape": 0.5423937880892234,
+   "season_mape_scalar": 0.5559419488337478,
+   "monthly_median_ape": 0.7876233333333335,
+   "monthly_median_ape_scalar": 0.8259224560331522,
+   "annual_ratio": 0.9834835257861815,
+   "annual_ratio_scalar": 1.0327022445440837
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2016,
+   "level": "country",
+   "scalar": 9.24,
+   "n_units": 1,
+   "season_mape": 0.019199842966554564,
+   "season_mape_scalar": 0.037618166370713434,
+   "monthly_median_ape": 0.2605622377622373,
+   "monthly_median_ape_scalar": 0.3603392104021654,
+   "annual_ratio": 0.903470767294014,
+   "annual_ratio_scalar": 1.0477144738875628
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2016,
+   "level": "prov",
+   "scalar": 9.24,
+   "n_units": 22,
+   "season_mape": 0.14131788880405283,
+   "season_mape_scalar": 0.23379222634687025,
+   "monthly_median_ape": 0.32164220623501183,
+   "monthly_median_ape_scalar": 0.4450472813979523,
+   "annual_ratio": 0.903470767294014,
+   "annual_ratio_scalar": 1.0477144738875592
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2016,
+   "level": "cell",
+   "scalar": 9.24,
+   "n_units": 915,
+   "season_mape": 0.5000776965300432,
+   "season_mape_scalar": 0.5220846095163184,
+   "monthly_median_ape": 0.6974500000000001,
+   "monthly_median_ape_scalar": 0.7324146384941357,
+   "annual_ratio": 0.9034707672940153,
+   "annual_ratio_scalar": 1.047714473887565
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2017,
+   "level": "country",
+   "scalar": 9.291,
+   "n_units": 1,
+   "season_mape": 0.03385379126547474,
+   "season_mape_scalar": 0.05105736555553156,
+   "monthly_median_ape": 0.09918242862648642,
+   "monthly_median_ape_scalar": 0.2802765009472167,
+   "annual_ratio": 1.0162075726498623,
+   "annual_ratio_scalar": 1.112363297136708
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2017,
+   "level": "prov",
+   "scalar": 9.291,
+   "n_units": 21,
+   "season_mape": 0.16966794878250088,
+   "season_mape_scalar": 0.24574166027474473,
+   "monthly_median_ape": 0.27324195121951234,
+   "monthly_median_ape_scalar": 0.39770149280856315,
+   "annual_ratio": 1.0162075726498625,
+   "annual_ratio_scalar": 1.1123632971367123
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2017,
+   "level": "cell",
+   "scalar": 9.291,
+   "n_units": 929,
+   "season_mape": 0.547450897423904,
+   "season_mape_scalar": 0.5448418898063752,
+   "monthly_median_ape": 0.6732125,
+   "monthly_median_ape_scalar": 0.6978568125523663,
+   "annual_ratio": 1.0162075726498625,
+   "annual_ratio_scalar": 1.1123632971366981
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2018,
+   "level": "country",
+   "scalar": 9.205,
+   "n_units": 1,
+   "season_mape": 0.13961736855092494,
+   "season_mape_scalar": 0.11497112117476073,
+   "monthly_median_ape": 0.12543687158931788,
+   "monthly_median_ape_scalar": 0.2031952245530166,
+   "annual_ratio": 0.9607765922956032,
+   "annual_ratio_scalar": 0.9962803688298295
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2018,
+   "level": "prov",
+   "scalar": 9.205,
+   "n_units": 21,
+   "season_mape": 0.18988553780117232,
+   "season_mape_scalar": 0.2503126446037151,
+   "monthly_median_ape": 0.2721055961070558,
+   "monthly_median_ape_scalar": 0.34743859123549636,
+   "annual_ratio": 0.9607765922956034,
+   "annual_ratio_scalar": 0.9962803688298275
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2018,
+   "level": "cell",
+   "scalar": 9.205,
+   "n_units": 922,
+   "season_mape": 0.5135534887107714,
+   "season_mape_scalar": 0.5313637019397798,
+   "monthly_median_ape": 0.685190243902439,
+   "monthly_median_ape_scalar": 0.6931533924631939,
+   "annual_ratio": 0.9607765922956025,
+   "annual_ratio_scalar": 0.9962803688298292
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2019,
+   "level": "country",
+   "scalar": 9.238,
+   "n_units": 1,
+   "season_mape": 0.014288384235346554,
+   "season_mape_scalar": 0.03895799843052746,
+   "monthly_median_ape": 0.17737733874938455,
+   "monthly_median_ape_scalar": 0.28553229156301,
+   "annual_ratio": 0.9733980674363021,
+   "annual_ratio_scalar": 1.0529635895023208
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2019,
+   "level": "prov",
+   "scalar": 9.238,
+   "n_units": 22,
+   "season_mape": 0.17070245174885537,
+   "season_mape_scalar": 0.20160613980675446,
+   "monthly_median_ape": 0.2588711578947371,
+   "monthly_median_ape_scalar": 0.32147839851145443,
+   "annual_ratio": 0.9733980674363016,
+   "annual_ratio_scalar": 1.052963589502322
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2019,
+   "level": "cell",
+   "scalar": 9.238,
+   "n_units": 954,
+   "season_mape": 0.5233785857212643,
+   "season_mape_scalar": 0.5440801273616352,
+   "monthly_median_ape": 0.6761577777777776,
+   "monthly_median_ape_scalar": 0.7321873576462392,
+   "annual_ratio": 0.9733980674363012,
+   "annual_ratio_scalar": 1.0529635895023162
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2020,
+   "level": "country",
+   "scalar": 9.017,
+   "n_units": 1,
+   "season_mape": 0.06399590610842906,
+   "season_mape_scalar": 0.12340066897012976,
+   "monthly_median_ape": 0.1188091209244734,
+   "monthly_median_ape_scalar": 0.20620025489121593,
+   "annual_ratio": 0.9320601646697072,
+   "annual_ratio_scalar": 0.883798787360556
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2020,
+   "level": "prov",
+   "scalar": 9.017,
+   "n_units": 21,
+   "season_mape": 0.14774255703628936,
+   "season_mape_scalar": 0.16273263468970423,
+   "monthly_median_ape": 0.24913592814371258,
+   "monthly_median_ape_scalar": 0.2957044641349962,
+   "annual_ratio": 0.9320601646697076,
+   "annual_ratio_scalar": 0.8837987873605575
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2020,
+   "level": "cell",
+   "scalar": 9.017,
+   "n_units": 1142,
+   "season_mape": 0.46646301300650006,
+   "season_mape_scalar": 0.4886793967964266,
+   "monthly_median_ape": 0.6085318181818182,
+   "monthly_median_ape_scalar": 0.624289084988128,
+   "annual_ratio": 0.9320601646697085,
+   "annual_ratio_scalar": 0.8837987873605571
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2021,
+   "level": "country",
+   "scalar": 9.208,
+   "n_units": 1,
+   "season_mape": 0.07715080494961159,
+   "season_mape_scalar": 0.0005312570898371073,
+   "monthly_median_ape": 0.061608712837257176,
+   "monthly_median_ape_scalar": 0.21218273350702754,
+   "annual_ratio": 1.0178945039702976,
+   "annual_ratio_scalar": 1.0008229091979466
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2021,
+   "level": "prov",
+   "scalar": 9.208,
+   "n_units": 22,
+   "season_mape": 0.14295750730557058,
+   "season_mape_scalar": 0.15271578816658496,
+   "monthly_median_ape": 0.24097435897435887,
+   "monthly_median_ape_scalar": 0.3285858466287697,
+   "annual_ratio": 1.0178945039702971,
+   "annual_ratio_scalar": 1.0008229091979506
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2021,
+   "level": "cell",
+   "scalar": 9.208,
+   "n_units": 947,
+   "season_mape": 0.5636678001558603,
+   "season_mape_scalar": 0.5657206563340469,
+   "monthly_median_ape": 0.7127492537313432,
+   "monthly_median_ape_scalar": 0.7291625201091454,
+   "annual_ratio": 1.0178945039702973,
+   "annual_ratio_scalar": 1.0008229091979481
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2022,
+   "level": "country",
+   "scalar": 9.043,
+   "n_units": 1,
+   "season_mape": 0.2136998736631805,
+   "season_mape_scalar": 0.2161626077868042,
+   "monthly_median_ape": 0.16546726827629274,
+   "monthly_median_ape_scalar": 0.18402829034129925,
+   "annual_ratio": 0.785723831518793,
+   "annual_ratio_scalar": 0.8468882045838392
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2022,
+   "level": "prov",
+   "scalar": 9.043,
+   "n_units": 21,
+   "season_mape": 0.20211727663713283,
+   "season_mape_scalar": 0.21822122944389008,
+   "monthly_median_ape": 0.30815242881072025,
+   "monthly_median_ape_scalar": 0.31132311822335,
+   "annual_ratio": 0.7857238315187932,
+   "annual_ratio_scalar": 0.8468882045838394
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2022,
+   "level": "cell",
+   "scalar": 9.043,
+   "n_units": 944,
+   "season_mape": 0.5627978445613284,
+   "season_mape_scalar": 0.595511975238655,
+   "monthly_median_ape": 0.661795,
+   "monthly_median_ape_scalar": 0.6881773376146575,
+   "annual_ratio": 0.7857238315187937,
+   "annual_ratio_scalar": 0.8468882045838375
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2023,
+   "level": "country",
+   "scalar": 9.236,
+   "n_units": 1,
+   "season_mape": 0.004172307674132598,
+   "season_mape_scalar": 0.0698703174601436,
+   "monthly_median_ape": 0.09500754969615835,
+   "monthly_median_ape_scalar": 0.19162943000630087,
+   "annual_ratio": 0.996159224555058,
+   "annual_ratio_scalar": 1.047578366026269
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2023,
+   "level": "prov",
+   "scalar": 9.236,
+   "n_units": 21,
+   "season_mape": 0.2104038814798437,
+   "season_mape_scalar": 0.25464889583925215,
+   "monthly_median_ape": 0.27826635514018694,
+   "monthly_median_ape_scalar": 0.361145878153599,
+   "annual_ratio": 0.9961592245550585,
+   "annual_ratio_scalar": 1.047578366026267
+  },
+  {
+   "set": "T",
+   "K": 10,
+   "CAP": 200,
+   "depth": "cell",
+   "year": 2023,
+   "level": "cell",
+   "scalar": 9.236,
+   "n_units": 764,
+   "season_mape": 0.5962486084835213,
+   "season_mape_scalar": 0.6343053491559716,
+   "monthly_median_ape": 0.7500517241379311,
+   "monthly_median_ape_scalar": 0.8142824523858556,
+   "annual_ratio": 0.9961592245550587,
+   "annual_ratio_scalar": 1.0475783660262565
+  }
+ ]
+}

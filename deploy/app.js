@@ -396,7 +396,7 @@ const CASES = [
   { id: 'corrientes-2022', short: 'Corrientes', en: 'Corrientes', es: 'Corrientes', prov: 'Corrientes', y: 2022, m: [1, 2] },
   { id: 'cordoba-2020', short: 'Córdoba', en: 'Córdoba', es: 'Córdoba', prov: 'Córdoba', y: 2020, m: [8, 9, 10] },
   { id: 'delta-2020', short: 'Delta', en: 'Paraná Delta', es: 'Delta del Paraná', bbox: [-34.0, -60.75, -32.5, -58.5], y: 2020, m: [6, 7, 8, 9] },
-  { id: 'comarca-2021', short: 'Comarca Andina', en: 'Andean Patagonia (El Hoyo – Epuyén)', es: 'Comarca Andina (El Hoyo – Epuyén)', bbox: [-42.5, -71.75, -41.75, -71.25], y: 2021, m: [1, 2, 3] },
+  { id: 'comarca-2021', short: 'Comarca Andina', en: 'Comarca Andina', es: 'Comarca Andina', bbox: [-42.5, -71.75, -41.75, -71.25], y: 2021, m: [1, 2, 3] },
   { id: 'cholila-2015', short: 'Cholila', en: 'Cholila – Los Alerces', es: 'Cholila – Los Alerces', bbox: [-43.0, -72.0, -42.25, -71.25], y: 2015, m: [1, 2, 3] },
   { id: 'chilecito-2026', short: 'Chilecito', en: 'Chilecito – Famatina', es: 'Chilecito – Famatina', bbox: [-29.25, -68.0, -29.0, -67.25], y: 2026, m: [7] }, // preliminary current year (NRT), the example of the challenge video
 ];

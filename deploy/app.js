@@ -405,8 +405,10 @@ function renderCaseBtns() { $('case-btns').innerHTML = CASES.map(c => `<button t
 function goCase(id) {
   const c = CASES.find(x => x.id === id); if (!c) return;
   if (c.prov) { $('prov').value = c.prov; selectProvince(c.prov); }
-  else { if (drawn) drawn.clearLayers(); const r = L.rectangle([[c.bbox[0], c.bbox[1]], [c.bbox[2], c.bbox[3]]], DRAW_STYLE); drawn.addLayer(r); selectLayer(r); map.fitBounds(r.getBounds(), { padding: [20, 20], animate: false }); }
-  activeCase = id; history.replaceState(null, '', '#' + encodeSel(A.sel)); renderCase();
+  else { $('prov').value = ''; if (drawn) drawn.clearLayers(); const r = L.rectangle([[c.bbox[0], c.bbox[1]], [c.bbox[2], c.bbox[3]]], DRAW_STYLE); drawn.addLayer(r); selectLayer(r); map.fitBounds(r.getBounds(), { padding: [20, 20], animate: false }); }
+  activeCase = id; history.replaceState(null, '', '#' + encodeSel(A.sel)); renderCase(); renderCalendar();
+  // bring the framed row into view
+  requestAnimationFrame(() => { if (calCaseY == null) return; const cv = $('cal'), r = cv.getBoundingClientRect(), y = r.top + calCaseY * (r.height / cv.height); const main = document.querySelector('main'); const sc = main.scrollHeight > main.clientHeight + 4 ? main : null; const box = sc ? sc.getBoundingClientRect() : { top: 0, height: window.innerHeight }; const dy = y - (box.top + box.height * 0.55); if (Math.abs(dy) > 40) (sc || window).scrollBy({ top: dy, behavior: 'smooth' }); });
 }
 function renderCase() {
   renderCaseBtns(); requestAnimationFrame(() => { const e = $('case-line'); if (e) e.title = e.textContent; }); const el = $('case-line'); const c = CASES.find(x => x.id === activeCase); if (!c || !A) { el.hidden = true; return; }
@@ -530,7 +532,7 @@ function buildMovieBar() {
 const startPulse = moviePlay, stopPulse = movieOff;
 
 // ---------- calendar heatmap ----------
-let calCells = []; // for hit testing
+let calCells = [], calCaseY = null; // for hit testing
 function calendarRows() {
   const rows = []; for (let y = Math.max(range.from[0], 2000); y <= Math.min(range.to[0], 2026); y++) rows.push(y); return rows;
 }
@@ -584,6 +586,15 @@ function renderCalendar() {
     // year total: bar + value
     if (tot[y] != null) { const bw = (totW - 44) * Math.min(1, tot[y] / tmax); ctx.fillStyle = y === YCUR ? 'rgba(255,255,255,.35)' : ramp(0.55 + 0.45 * tot[y] / tmax).css; ctx.fillRect(tx, yy + 6, Math.max(2, bw), ch - 12); ctx.font = '11px system-ui, sans-serif'; ctx.fillStyle = '#c9cfdb'; ctx.textAlign = 'left'; ctx.fillText(kfmt(tot[y]) + (y === YCUR ? '*' : ''), tx + Math.max(2, bw) + 4, yy + ch / 2); }
   }
+  // known season selected: frame its months in the calendar (white frame + orange glow), year label in orange, a tag in the year-total column
+  const kc = activeCase && CASES.find(x => x.id === activeCase); calCaseY = null;
+  if (kc) { const r = rows.indexOf(kc.y); if (r >= 0) {
+    const yy = top + r * ch, x0 = left + (kc.m[0] - 1) * cw, x1 = left + kc.m[kc.m.length - 1] * cw; calCaseY = yy;
+    // dim everything else (cells and totals) so the season stands out; the numbers stay readable
+    ctx.save(); ctx.fillStyle = 'rgba(15,17,21,.42)'; ctx.beginPath(); ctx.rect(left, top, W - left, rows.length * ch); ctx.rect(x1, yy, x0 - x1, ch); ctx.fill('evenodd'); ctx.restore();
+    ctx.save(); ctx.shadowColor = 'rgba(255,140,40,.95)'; ctx.shadowBlur = 10; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 3; ctx.strokeRect(x0 - 0.5, yy - 0.5, x1 - x0 + 1, ch + 1); ctx.restore();
+    ctx.fillStyle = '#1e2230'; ctx.fillRect(0, yy, left - 2, ch); ctx.font = '700 12px system-ui, sans-serif'; ctx.fillStyle = '#ff8a3d'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.fillText('▶ ' + kc.y, left - 6, yy + ch / 2);
+  } }
   // median row (baseline years, usable months)
   const yy = top + rows.length * ch + 6; const ys = baselineYears();
   ctx.font = '12px system-ui, sans-serif'; ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'right'; ctx.fillText(lang === 'es' ? 'Mediana' : 'Median', left - 6, yy + ch / 2);

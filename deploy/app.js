@@ -408,7 +408,7 @@ function goCase(id) {
   activeCase = id; history.replaceState(null, '', '#' + encodeSel(A.sel)); renderCase();
 }
 function renderCase() {
-  renderCaseBtns(); const el = $('case-line'); const c = CASES.find(x => x.id === activeCase); if (!c || !A) { el.hidden = true; return; }
+  renderCaseBtns(); requestAnimationFrame(() => { const e = $('case-line'); if (e) e.title = e.textContent; }); const el = $('case-line'); const c = CASES.find(x => x.id === activeCase); if (!c || !A) { el.hidden = true; return; }
   const mn = c.m.length > 1 ? `${t('months')[c.m[0] - 1]}–${t('months')[c.m[c.m.length - 1] - 1]}` : t('months')[c.m[0] - 1];
   const sum = y => c.m.reduce((a, m) => a + A.H[y - Y0][m - 1], 0);
   const ys = baselineYears().filter(y => c.m.every(m => usable(y, m)));

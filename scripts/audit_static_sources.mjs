@@ -91,7 +91,9 @@ await writeFile(path.join(ROOT, 'data', 'agg', 'audit_static.json'), JSON.string
 // ---- KML for Google Earth ----
 const kml = `<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>GeoFuego Harmonization — persistent thermal sources (${S.n} cells, 0.02°)</name>
 <Style id="s"><IconStyle><scale>0.7</scale><color>ff00d7ff</color></IconStyle></Style>
-${Object.entries(S.cells).map(([k, c]) => `<Placemark><styleUrl>#s</styleUrl><name>${provinceOf(c.lat, c.lon) || '?'} · V${c.viirs_months}/M${c.modis_months}</name><description>${c.sensors.join('+')} · max months in 12: VIIRS ${c.viirs_months}, MODIS ${c.modis_months}</description><Point><coordinates>${c.lon},${c.lat},0</coordinates></Point></Placemark>`).join('\n')}
+<Style id="cell"><LineStyle><color>ff00d7ff</color><width>1.5</width></LineStyle><PolyStyle><color>2000d7ff</color></PolyStyle></Style>
+${Object.entries(S.cells).map(([k, c]) => { const [la0, lo0, la1, lo1] = c.bbox; const [plat, plon] = c.centroid || [c.lat, c.lon]; const name = `${provinceOf(c.lat, c.lon) || '?'} · V${c.viirs_months}/M${c.modis_months} · night ${Math.round(c.night_frac * 100)}%`; const desc = `${c.sensors.join('+')} · max months in 12: VIIRS ${c.viirs_months}, MODIS ${c.modis_months} · night fraction ${c.night_frac} · hotspots ${c.hotspots} · pin = hotspot centroid, box = 0.02° cell`;
+  return `<Placemark><styleUrl>#s</styleUrl><name>${name}</name><description>${desc}</description><Point><coordinates>${plon},${plat},0</coordinates></Point></Placemark>\n<Placemark><styleUrl>#cell</styleUrl><name>cell ${k}</name><Polygon><outerBoundaryIs><LinearRing><coordinates>${lo0},${la0},0 ${lo1},${la0},0 ${lo1},${la1},0 ${lo0},${la1},0 ${lo0},${la0},0</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>`; }).join('\n')}
 </Document></kml>`;
 await writeFile(path.join(ROOT, 'data', 'agg', 'static_cells.kml'), kml);
 console.log(JSON.stringify(report, null, 1));

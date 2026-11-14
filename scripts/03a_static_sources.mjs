@@ -28,6 +28,7 @@ export const staticKey = (lat, lon) => Math.floor(lat / CEL) + ':' + Math.floor(
 const manifest = JSON.parse(await readFile(path.join(RAW, 'MANIFEST.json'), 'utf8'));
 const months = { viirs: new Map(), modis: new Map() }; // key -> Set(yyyy-mm)
 const dn = { viirs: new Map(), modis: new Map() };     // key -> [n, night]
+const pos = { viirs: new Map(), modis: new Map() };    // key -> [sumLat, sumLon, n] (hotspot centroid inside the cell)
 
 const t0 = Date.now();
 for (const [file, meta] of Object.entries(manifest)) {
@@ -44,6 +45,7 @@ for (const [file, meta] of Object.entries(manifest)) {
     s.add(f[5].slice(0, 7));
     const d = dn[isModis ? 'modis' : 'viirs']; let c = d.get(k); if (!c) d.set(k, c = [0, 0]);
     c[0]++; if (f[13] === 'N') c[1]++;
+    const P = pos[isModis ? 'modis' : 'viirs']; let q = P.get(k); if (!q) P.set(k, q = [0, 0, 0]); q[0] += +f[0]; q[1] += +f[1]; q[2]++;
   }
 }
 const idx = m => (+m.slice(0, 4)) * 12 + (+m.slice(5)) - 1;
@@ -60,7 +62,10 @@ for (const sensor of ['viirs', 'modis']) for (const [k, s] of months[sensor]) {
   // night fraction: prefer VIIRS (375 m, 2012+), fall back to MODIS for MODIS-only cells
   const dv = dn.viirs.get(k), dm = dn.modis.get(k);
   const nf = dv && dv[0] >= 10 ? dv[1] / dv[0] : dm ? dm[1] / dm[0] : 0;
-  const base = { lat: +((i + 0.5) * CEL).toFixed(3), lon: +((j + 0.5) * CEL).toFixed(3), viirs_months: 0, modis_months: 0, night_frac: +nf.toFixed(3), sensors: [] };
+  const q = pos.viirs.get(k) || pos.modis.get(k);
+  const base = { lat: +((i + 0.5) * CEL).toFixed(3), lon: +((j + 0.5) * CEL).toFixed(3), bbox: [+(i * CEL).toFixed(3), +(j * CEL).toFixed(3), +((i + 1) * CEL).toFixed(3), +((j + 1) * CEL).toFixed(3)],
+    centroid: q ? [+(q[0] / q[2]).toFixed(4), +(q[1] / q[2]).toFixed(4)] : null, hotspots: (pos.viirs.get(k)?.[2] || 0) + (pos.modis.get(k)?.[2] || 0),
+    viirs_months: 0, modis_months: 0, night_frac: +nf.toFixed(3), sensors: [] };
   if (nf < MIN_NIGHT_FRAC) { const r = (rejected[k] ??= base); r[sensor + '_months'] = mw; r.sensors.push(sensor); continue; }
   const c = (cells[k] ??= base);
   c[sensor + '_months'] = mw; c.sensors.push(sensor);

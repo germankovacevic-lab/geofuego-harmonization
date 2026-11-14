@@ -37,8 +37,8 @@ for i, (set_, title) in enumerate([("TA", "Terra+Aqua → VIIRS (used 2002–201
 fw = B.get("forward_test", {})
 txt = "Leave-one-year-out, 2012–2023 (12 folds, paired days). Whiskers: inter-quartile range across folds."
 if fw: txt += "  Forward test on years never used (Terra+Aqua, country predicted/observed): " + ", ".join(f"{y}: {v['country_pred_over_obs']:.3f}" for y, v in fw.get("TA", {}).items())
-fig.text(0.01, 0.01, txt, fontsize=7.5)
-fig.text(0.99, 0.01, "NASA FIRMS MODIS C6.1 + VIIRS S-NPP · GeoFuego Harmonization · NASA Space Apps 2026", fontsize=6, alpha=0.7, ha="right")
+fig.text(0.01, 0.035, txt, fontsize=7.5)
+fig.text(0.01, 0.008, "Data: NASA FIRMS MODIS C6.1 + VIIRS S-NPP · GeoFuego Harmonization · NASA Space Apps 2026", fontsize=6, alpha=0.7)
 fig.suptitle("What each level of the hierarchy adds: LOYO error of the MODIS→VIIRS-equivalent prediction", fontsize=11)
-fig.tight_layout(rect=(0, 0.05, 1, 0.95))
+fig.tight_layout(rect=(0, 0.07, 1, 0.95))
 out = ROOT / "figures" / "validation_ablation_ladder.png"; fig.savefig(out); print(out)

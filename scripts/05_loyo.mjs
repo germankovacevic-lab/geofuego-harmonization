@@ -22,7 +22,8 @@ const SWEEP = process.argv.includes('--sweep');
 const agg = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'counts.json'), 'utf8'));
 const index = JSON.parse(await readFile(path.join(ROOT, 'data', 'grid', 'cells_index.json'), 'utf8'));
 const provOf = new Map(index.cells.map(c => [c.id, c.prov]));
-const YEARS = []; for (let y = 2012; y <= 2025; y++) YEARS.push(y);
+const [LY0, LY1] = (process.argv.find(a => a.startsWith("--years=")) || "--years=2012-2023").split("=")[1].split("-").map(Number); // same calibration window as 04 (orbit drift)
+const YEARS = []; for (let y = LY0; y <= LY1; y++) YEARS.push(y);
 const SEASON = [7, 8, 9, 10, 11];
 const configs = SWEEP ? [10, 20, 50].flatMap(K => [100, 200, 500].map(CAP => ({ K, CAP }))) : [{ K: 20, CAP: 200 }];
 
@@ -38,7 +39,7 @@ function evaluate(fit, scalar, yStar) {
     if (!units.cell.has(cell)) units.cell.set(cell, { V: Array(13).fill(0), P: Array(13).fill(0), S: Array(13).fill(0) });
     if (!units.prov.has(prov)) units.prov.set(prov, { V: Array(13).fill(0), P: Array(13).fill(0), S: Array(13).fill(0) });
     for (const [m, r] of Object.entries(ym)) {
-      const V = r[0], M = r[1] + r[2], P = fc[m - 1][0] * M, S = scalar * M;
+      const V = r[6] ?? 0, M = (r[7] ?? 0) + (r[8] ?? 0), P = fc[m - 1][0] * M, S = scalar * M; // paired days: test what was fitted
       for (const u of [units.cell.get(cell), units.prov.get(prov), units.country.get('AR')]) { u.V[m] += V; u.P[m] += P; u.S[m] += S; }
     }
   }

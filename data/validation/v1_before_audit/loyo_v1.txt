@@ -1,0 +1,4 @@
+K   CAP  level     season MAPE  (scalar)   monthly med|err| (scalar)   annual pred/obs range
+20  200  country     4.2%  (  8.8%)     7.3%  (  9.4%)     0.88–1.089
+20  200  prov       11.7%  ( 17.5%)    17.8%  ( 20.6%)     0.88–1.089
+20  200  cell       30.9%  ( 35.8%)    36.3%  ( 38.3%)     0.88–1.089

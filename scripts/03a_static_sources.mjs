@@ -32,6 +32,7 @@ const pos = { viirs: new Map(), modis: new Map() };    // key -> [sumLat, sumLon
 
 const t0 = Date.now();
 for (const [file, meta] of Object.entries(manifest)) {
+  if (!['modis', 'viirs-snpp'].includes(meta.sensor)) continue; // exclude the VIIRS SP files used only for the NOAA-20/21 bridge
   const isModis = meta.sensor === 'modis', bag = months[isModis ? 'modis' : 'viirs'];
   const rl = readline.createInterface({ input: createReadStream(path.join(RAW, file)) });
   let header = true;

@@ -1,0 +1,679 @@
+{
+ "generated": "2026-11-14T14:18:21.333Z",
+ "source": "GWIS/JRC MCD64A1_burned_area_full_dataset_2002_2025.csv (sha256 of zip 279a356d…6349f8), ha summed over land-cover classes",
+ "gadm_regions_seen": [
+  "Jujuy",
+  "La Pampa",
+  "La Rioja",
+  "Mendoza",
+  "Misiones",
+  "Neuquén",
+  "Río Negro",
+  "Salta",
+  "San Juan",
+  "San Luis",
+  "Buenos Aires",
+  "Santa Cruz",
+  "Santa Fe",
+  "Santiago del Estero",
+  "Tierra del Fuego",
+  "Tucumán",
+  "Catamarca",
+  "Chaco",
+  "Chubut",
+  "Ciudad de Buenos Aires",
+  "Córdoba",
+  "Corrientes",
+  "Entre Ríos",
+  "Formosa"
+ ],
+ "years": [
+  2002,
+  2003,
+  2004,
+  2005,
+  2006,
+  2007,
+  2008,
+  2009,
+  2010,
+  2011,
+  2012,
+  2013,
+  2014,
+  2015,
+  2016,
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025
+ ],
+ "results": [
+  {
+   "region": "Argentina",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 15.79,
+     "post2012": 16.21,
+     "ratio_pre_over_post": 0.974
+    },
+    "naive_concat": {
+     "pre2012": 50.34,
+     "post2012": 16.21,
+     "ratio_pre_over_post": 3.105
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 50.34,
+     "post2012": 51.21,
+     "ratio_pre_over_post": 0.983
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.855,
+    "spearman_all": 0.837,
+    "pearson_log_pre2012": 0.834,
+    "pearson_log_post2012": 0.811
+   }
+  },
+  {
+   "region": "Santa Fe",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 22.28,
+     "post2012": 18.86,
+     "ratio_pre_over_post": 1.182
+    },
+    "naive_concat": {
+     "pre2012": 83.41,
+     "post2012": 18.86,
+     "ratio_pre_over_post": 4.424
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 83.41,
+     "post2012": 67.3,
+     "ratio_pre_over_post": 1.239
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.906,
+    "spearman_all": 0.891,
+    "pearson_log_pre2012": 0.862,
+    "pearson_log_post2012": 0.928
+   }
+  },
+  {
+   "region": "Formosa",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 18.61,
+     "post2012": 17.08,
+     "ratio_pre_over_post": 1.089
+    },
+    "naive_concat": {
+     "pre2012": 57.06,
+     "post2012": 17.08,
+     "ratio_pre_over_post": 3.34
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 57.06,
+     "post2012": 53.45,
+     "ratio_pre_over_post": 1.067
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.815,
+    "spearman_all": 0.748,
+    "pearson_log_pre2012": 0.824,
+    "pearson_log_post2012": 0.812
+   }
+  },
+  {
+   "region": "Santiago del Estero",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 16.18,
+     "post2012": 18.3,
+     "ratio_pre_over_post": 0.884
+    },
+    "naive_concat": {
+     "pre2012": 45.53,
+     "post2012": 18.3,
+     "ratio_pre_over_post": 2.488
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 45.53,
+     "post2012": 52.01,
+     "ratio_pre_over_post": 0.875
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.891,
+    "spearman_all": 0.89,
+    "pearson_log_pre2012": 0.816,
+    "pearson_log_post2012": 0.799
+   }
+  },
+  {
+   "region": "Corrientes",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 17.88,
+     "post2012": 12.5,
+     "ratio_pre_over_post": 1.43
+    },
+    "naive_concat": {
+     "pre2012": 55.72,
+     "post2012": 12.5,
+     "ratio_pre_over_post": 4.456
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 55.72,
+     "post2012": 38.44,
+     "ratio_pre_over_post": 1.449
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.903,
+    "spearman_all": 0.888,
+    "pearson_log_pre2012": 0.708,
+    "pearson_log_post2012": 0.954
+   }
+  },
+  {
+   "region": "Chaco",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 12.74,
+     "post2012": 12.88,
+     "ratio_pre_over_post": 0.989
+    },
+    "naive_concat": {
+     "pre2012": 36.86,
+     "post2012": 12.88,
+     "ratio_pre_over_post": 2.861
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 36.86,
+     "post2012": 39.15,
+     "ratio_pre_over_post": 0.941
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.816,
+    "spearman_all": 0.826,
+    "pearson_log_pre2012": 0.886,
+    "pearson_log_post2012": 0.728
+   }
+  },
+  {
+   "region": "La Pampa",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 38.31,
+     "post2012": 42.64,
+     "ratio_pre_over_post": 0.898
+    },
+    "naive_concat": {
+     "pre2012": 125.4,
+     "post2012": 42.64,
+     "ratio_pre_over_post": 2.941
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 125.4,
+     "post2012": 128.65,
+     "ratio_pre_over_post": 0.975
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.943,
+    "spearman_all": 0.945,
+    "pearson_log_pre2012": 0.917,
+    "pearson_log_post2012": 0.967
+   }
+  },
+  {
+   "region": "Salta",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 8.82,
+     "post2012": 13.74,
+     "ratio_pre_over_post": 0.642
+    },
+    "naive_concat": {
+     "pre2012": 28.67,
+     "post2012": 13.74,
+     "ratio_pre_over_post": 2.087
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 28.67,
+     "post2012": 45.27,
+     "ratio_pre_over_post": 0.633
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.878,
+    "spearman_all": 0.903,
+    "pearson_log_pre2012": 0.64,
+    "pearson_log_post2012": 0.832
+   }
+  },
+  {
+   "region": "San Luis",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 28.17,
+     "post2012": 37.56,
+     "ratio_pre_over_post": 0.75
+    },
+    "naive_concat": {
+     "pre2012": 86.83,
+     "post2012": 37.56,
+     "ratio_pre_over_post": 2.312
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 86.83,
+     "post2012": 125.95,
+     "ratio_pre_over_post": 0.689
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.913,
+    "spearman_all": 0.868,
+    "pearson_log_pre2012": 0.983,
+    "pearson_log_post2012": 0.87
+   }
+  },
+  {
+   "region": "Tucumán",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 21.47,
+     "post2012": 18.82,
+     "ratio_pre_over_post": 1.141
+    },
+    "naive_concat": {
+     "pre2012": 60.3,
+     "post2012": 18.82,
+     "ratio_pre_over_post": 3.204
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 60.3,
+     "post2012": 57.73,
+     "ratio_pre_over_post": 1.045
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.834,
+    "spearman_all": 0.803,
+    "pearson_log_pre2012": 0.56,
+    "pearson_log_post2012": 0.72
+   }
+  },
+  {
+   "region": "Córdoba",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 12.31,
+     "post2012": 14.83,
+     "ratio_pre_over_post": 0.83
+    },
+    "naive_concat": {
+     "pre2012": 40.72,
+     "post2012": 14.83,
+     "ratio_pre_over_post": 2.745
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 40.72,
+     "post2012": 46.21,
+     "ratio_pre_over_post": 0.881
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.903,
+    "spearman_all": 0.897,
+    "pearson_log_pre2012": 0.823,
+    "pearson_log_post2012": 0.964
+   }
+  },
+  {
+   "region": "Buenos Aires",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 8.75,
+     "post2012": 11.69,
+     "ratio_pre_over_post": 0.749
+    },
+    "naive_concat": {
+     "pre2012": 24.55,
+     "post2012": 11.69,
+     "ratio_pre_over_post": 2.099
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 24.55,
+     "post2012": 29.7,
+     "ratio_pre_over_post": 0.826
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.656,
+    "spearman_all": 0.559,
+    "pearson_log_pre2012": 0.937,
+    "pearson_log_post2012": 0.522
+   }
+  },
+  {
+   "region": "Río Negro",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 7.54,
+     "post2012": 14.14,
+     "ratio_pre_over_post": 0.533
+    },
+    "naive_concat": {
+     "pre2012": 27.19,
+     "post2012": 14.14,
+     "ratio_pre_over_post": 1.923
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 27.19,
+     "post2012": 47.35,
+     "ratio_pre_over_post": 0.574
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.915,
+    "spearman_all": 0.91,
+    "pearson_log_pre2012": 0.97,
+    "pearson_log_post2012": 0.886
+   }
+  },
+  {
+   "region": "Entre Ríos",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 5.31,
+     "post2012": 5.02,
+     "ratio_pre_over_post": 1.059
+    },
+    "naive_concat": {
+     "pre2012": 21.47,
+     "post2012": 5.02,
+     "ratio_pre_over_post": 4.28
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 21.47,
+     "post2012": 17.49,
+     "ratio_pre_over_post": 1.228
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.947,
+    "spearman_all": 0.903,
+    "pearson_log_pre2012": 0.965,
+    "pearson_log_post2012": 0.932
+   }
+  },
+  {
+   "region": "Mendoza",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 12.59,
+     "post2012": 17.54,
+     "ratio_pre_over_post": 0.718
+    },
+    "naive_concat": {
+     "pre2012": 37.55,
+     "post2012": 17.54,
+     "ratio_pre_over_post": 2.141
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 37.55,
+     "post2012": 55.5,
+     "ratio_pre_over_post": 0.677
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.798,
+    "spearman_all": 0.669,
+    "pearson_log_pre2012": 0.813,
+    "pearson_log_post2012": 0.822
+   }
+  },
+  {
+   "region": "Jujuy",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 25.48,
+     "post2012": 24.96,
+     "ratio_pre_over_post": 1.021
+    },
+    "naive_concat": {
+     "pre2012": 77.8,
+     "post2012": 24.96,
+     "ratio_pre_over_post": 3.117
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 77.8,
+     "post2012": 72.78,
+     "ratio_pre_over_post": 1.069
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.7,
+    "spearman_all": 0.754,
+    "pearson_log_pre2012": 0.327,
+    "pearson_log_post2012": 0.623
+   }
+  },
+  {
+   "region": "Catamarca",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 14.24,
+     "post2012": 15.29,
+     "ratio_pre_over_post": 0.931
+    },
+    "naive_concat": {
+     "pre2012": 52.63,
+     "post2012": 15.29,
+     "ratio_pre_over_post": 3.442
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 52.63,
+     "post2012": 56.78,
+     "ratio_pre_over_post": 0.927
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.912,
+    "spearman_all": 0.884,
+    "pearson_log_pre2012": 0.933,
+    "pearson_log_post2012": 0.877
+   }
+  },
+  {
+   "region": "La Rioja",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 10.55,
+     "post2012": 11.55,
+     "ratio_pre_over_post": 0.913
+    },
+    "naive_concat": {
+     "pre2012": 33.24,
+     "post2012": 11.55,
+     "ratio_pre_over_post": 2.877
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 33.24,
+     "post2012": 39,
+     "ratio_pre_over_post": 0.852
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.895,
+    "spearman_all": 0.897,
+    "pearson_log_pre2012": 0.914,
+    "pearson_log_post2012": 0.888
+   }
+  },
+  {
+   "region": "Chubut",
+   "n_years": 22,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 15.25,
+     "post2012": 14.32,
+     "ratio_pre_over_post": 1.065
+    },
+    "naive_concat": {
+     "pre2012": 55.73,
+     "post2012": 14.32,
+     "ratio_pre_over_post": 3.892
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 55.73,
+     "post2012": 63.71,
+     "ratio_pre_over_post": 0.875
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.607,
+    "spearman_all": 0.805,
+    "pearson_log_pre2012": 0.661,
+    "pearson_log_post2012": 0.623
+   }
+  },
+  {
+   "region": "Neuquén",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 9.13,
+     "post2012": 5.78,
+     "ratio_pre_over_post": 1.579
+    },
+    "naive_concat": {
+     "pre2012": 43.79,
+     "post2012": 5.78,
+     "ratio_pre_over_post": 7.573
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 43.79,
+     "post2012": 33.39,
+     "ratio_pre_over_post": 1.312
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.652,
+    "spearman_all": 0.699,
+    "pearson_log_pre2012": 0.646,
+    "pearson_log_post2012": 0.653
+   }
+  },
+  {
+   "region": "San Juan",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 3.23,
+     "post2012": 2.95,
+     "ratio_pre_over_post": 1.095
+    },
+    "naive_concat": {
+     "pre2012": 9.6,
+     "post2012": 2.95,
+     "ratio_pre_over_post": 3.259
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 9.6,
+     "post2012": 9.02,
+     "ratio_pre_over_post": 1.064
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.775,
+    "spearman_all": 0.677,
+    "pearson_log_pre2012": 0.691,
+    "pearson_log_post2012": 0.859
+   }
+  },
+  {
+   "region": "Misiones",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 0.33,
+     "post2012": 0.26,
+     "ratio_pre_over_post": 1.249
+    },
+    "naive_concat": {
+     "pre2012": 1.19,
+     "post2012": 0.26,
+     "ratio_pre_over_post": 4.509
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 1.19,
+     "post2012": 0.99,
+     "ratio_pre_over_post": 1.195
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.523,
+    "spearman_all": 0.479,
+    "pearson_log_pre2012": 0.437,
+    "pearson_log_post2012": 0.753
+   }
+  },
+  {
+   "region": "Santa Cruz",
+   "n_years": 24,
+   "ha_per_hotspot": {
+    "harmonized": {
+     "pre2012": 8.26,
+     "post2012": 3.36,
+     "ratio_pre_over_post": 2.455
+    },
+    "naive_concat": {
+     "pre2012": 34.13,
+     "post2012": 3.36,
+     "ratio_pre_over_post": 10.147
+    },
+    "raw_modis_both_sides": {
+     "pre2012": 34.13,
+     "post2012": 20.61,
+     "ratio_pre_over_post": 1.656
+    }
+   },
+   "correlation_annual": {
+    "pearson_log_all": 0.327,
+    "spearman_all": 0.312,
+    "pearson_log_pre2012": 0.104,
+    "pearson_log_post2012": 0.356
+   }
+  }
+ ]
+}

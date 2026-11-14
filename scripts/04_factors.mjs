@@ -20,7 +20,10 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (n, d) => { const a = process.argv.find(x => x.startsWith(`--${n}=`)); return a ? a.split('=')[1] : d; };
 const K = +arg('k', 20), CAP = +arg('cap', 200), K_MIN = 5;
-const [Y0, Y1] = arg('years', '2012-2025').split('-').map(Number);
+// Calibration window 2012–2023: Terra's equator-crossing time has been drifting earlier since 2020 and Aqua's later since
+// 2022; the effect is visible in 2024–2025 (Aqua/Terra 2.2–2.5 vs 1.7–1.9 before, VIIRS/Terra 11.6 in 2025 vs ~9).
+// Factors fitted with those years would be applied to 2000–2011, when both satellites were at nominal crossing times.
+const [Y0, Y1] = arg('years', '2012-2023').split('-').map(Number);
 const EXCLUDE = new Set((arg('exclude', '') || '').split(',').filter(Boolean).map(Number));
 const OUT = path.join(ROOT, arg('out', 'data/factors'));
 const YEARS = []; for (let y = Y0; y <= Y1; y++) if (!EXCLUDE.has(y)) YEARS.push(y);
@@ -28,7 +31,8 @@ const YEARS = []; for (let y = Y0; y <= Y1; y++) if (!EXCLUDE.has(y)) YEARS.push
 const agg = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'counts.json'), 'utf8'));
 const index = JSON.parse(await readFile(path.join(ROOT, 'data', 'grid', 'cells_index.json'), 'utf8'));
 const provOf = new Map(index.cells.map(c => [c.id, c.prov]));
-const SETS = { TA: r => r[1] + r[2], T: r => r[1] };
+const SETS = { TA: r => (r[7] ?? 0) + (r[8] ?? 0), T: r => r[7] ?? 0 }; // paired-day columns (see lib/factors.js)
+const VCOL = 6;
 
 // ---- accumulate sums per level ----
 // acc[set][level][key][month] = { V, M, neff, logs: [] }
@@ -48,7 +52,7 @@ for (const [cid, years] of Object.entries(agg.cells)) {
     for (const y of YEARS) {
       const ym = years[y]; if (!ym) continue;
       for (const [m, r] of Object.entries(ym)) {
-        const V = r[0], M = Mof(r);
+        const V = r[VCOL] ?? 0, M = Mof(r);
         for (const a of A) { a[m].V += V; a[m].M += M; }
         A[0][m].neff += Math.min(M, CAP);
         if (M > 0) A[0][m].logs.push(Math.log((V + 0.5) / (M + 0.5)));
@@ -67,7 +71,7 @@ for (const s of Object.keys(SETS)) {
       for (const [m, r] of Object.entries(ym)) {
         for (const [lvl, key] of [['prov', prov], ['country', 'AR']]) {
           const P = perYear[lvl]; if (!P.has(key)) P.set(key, Array.from({ length: 13 }, () => ({})));
-          const slot = (P.get(key)[m][y] ??= [0, 0]); slot[0] += r[0]; slot[1] += Mof(r);
+          const slot = (P.get(key)[m][y] ??= [0, 0]); slot[0] += r[VCOL] ?? 0; slot[1] += Mof(r);
         }
       }
     }

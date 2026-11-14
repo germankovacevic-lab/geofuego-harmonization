@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-14T13:02:04.632Z",
+  "generated": "2026-11-14T14:38:53.322Z",
   "signatures": {
     "static": {
       "hotspots": 29717,
@@ -115,30 +115,30 @@
     }
   ],
   "by_province_viirs_share_static": {
-    "Neuquén": 0.435,
-    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.083,
-    "Santa Cruz": 0.051,
+    "Neuquén": 0.455,
+    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.087,
+    "Santa Cruz": 0.049,
     "Mendoza": 0.044,
     "Buenos Aires": 0.024,
-    "(outside)": 0.024,
+    "(outside)": 0.022,
     "La Rioja": 0.012,
     "Entre Ríos": 0.008,
+    "Catamarca": 0.007,
     "Corrientes": 0.006,
-    "Catamarca": 0.006,
     "Chubut": 0.005,
     "San Luis": 0.003,
     "Jujuy": 0.003,
-    "Salta": 0.002,
     "Chaco": 0.002,
     "Córdoba": 0.002,
     "Misiones": 0.002,
-    "Santa Fe": 0.001,
+    "Salta": 0.002,
     "Santiago del Estero": 0.001,
+    "Santa Fe": 0.001,
     "Río Negro": 0.001,
     "Formosa": 0,
-    "La Pampa": 0,
-    "San Juan": 0,
     "Tucumán": 0,
+    "San Juan": 0,
+    "La Pampa": 0,
     "Ciudad Autónoma de Buenos Aires": 0
   }
 }

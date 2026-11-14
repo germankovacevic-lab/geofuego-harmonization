@@ -25,7 +25,7 @@ const months03 = new Map(); // for sensitivity: key(0.03) -> Set(yyyy-mm), VIIRS
 const months02 = new Map(); // key(0.02) -> Set(yyyy-mm), VIIRS
 const provTot = {};         // prov -> {veg, static} VIIRS counts
 for (const [file, meta] of Object.entries(manifest)) {
-  if (meta.sensor === 'modis') continue;
+  if (meta.sensor !== 'viirs-snpp') continue;
   const rl = readline.createInterface({ input: createReadStream(path.join(RAW, file)) });
   let header = true;
   for await (const line of rl) {
@@ -61,7 +61,7 @@ for (const [cel, bag] of [[0.02, months02], [0.03, months03]]) for (const thr of
 const NQN = { latMin: -41.1, latMax: -36.2, lonMin: -71.2, lonMax: -68.0 };
 const nq = sens.map(() => ({ tot: 0, st: 0 }));
 for (const [file, meta] of Object.entries(manifest)) {
-  if (meta.sensor === 'modis') continue;
+  if (meta.sensor !== 'viirs-snpp') continue;
   const rl = readline.createInterface({ input: createReadStream(path.join(RAW, file)) });
   let header = true;
   for await (const line of rl) {

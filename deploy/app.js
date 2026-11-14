@@ -8,6 +8,23 @@
 // ---------- i18n ----------
 const T = {
   en: {
+    casestitle: 'Known fire seasons — one click', validtitle: 'How well it works — tested on years the model never saw',
+    validnote: 'Country-level tests, out of sample. Factors fitted on 2012–2023 only; 2024 and 2025 were used neither for the factors nor for the range. Details and every script: Method &amp; code.',
+    v1l: 'Years never used: 2024 · 2025', v1d: 'reconstruction vs what VIIRS observed, country (predicted / observed 1.044 · 1.024)',
+    v2l: 'Fire-season error, leave-one-year-out 2012–23', v2d: 'country · province · single cell is 30 % (one national factor: 8.9 / 15.0 / 34 %)',
+    v3l: 'The 80 % range, checked on 2024 · 2025', v3d: 'share of single cells inside it; provinces 76 % · 73 %',
+    v4l: 'Burned hectares per hotspot, after vs before 2012', v4d: 'harmonized (1 = continuous); the naive splice gives 3.12 — independent check with MODIS burned area (MCD64A1)',
+    caseline: (name, months, y, x, rank, n, y0, y1) => `${name}, ${months} ${y}: <b>${x}</b> the median of ${months} ${y0}–${y1}${rank === 1 ? ` — the highest of ${n} years on record for this area` : ` — ${ord(rank)} highest of ${n} years`}.`,
+    caselow: (name, months, y, v, med, rank, n) => `${name}, ${months} ${y}: <b>${v}</b> hotspots against a typical ${med}${rank === 1 ? ` — the highest of ${n} years on record for this area` : ` — ${ord(rank)} highest of ${n} years`}.`,
+    times: 'the median', fireslayer: 'Hotspots in the selected range',
+    steptitle: 'In 2012 the satellite changed. The record should not jump with it.', source: 'Source', harmonized: 'Harmonized', spliced: 'Spliced as recorded',
+    stepmodisd2: 'the same sensor on both sides of 2012', stepharmd2: (m) => `no sensor step; MODIS alone gives ${m}`,
+    stepnaive: 'Spliced as recorded', stepnaived: 'VIIRS 2012–14 vs MODIS 2009–11: the jump comes from the change of sensor',
+    stepmodis: 'MODIS alone, before and after', stepmodisd: 'MODIS kept flying after 2012: the same sensor on both sides shows no jump',
+    stepharm: 'Harmonized record', stepharmd: 'follows the trend MODIS sees on its own: the step is gone',
+    stepharmna: 'Before 2012 the harmonized record is not shown for an area this size.', steplow: 'Too few detections in this area for a stable before/after ratio; read the chart, not the ratios.',
+    stepnote: 'Annual totals 2001–2025, whole record (the date range above does not apply). MODIS and VIIRS in each sensor’s own units: Terra + Aqua hotspots (Terra only until mid-2002, hence the rise to 2003) and VIIRS S-NPP hotspots. Harmonized = VIIRS-equivalent: reconstructed from MODIS until 2011, with its 80 % range (sum of the monthly bounds, conservative), observed by VIIRS from 2012. Spliced as recorded = raw MODIS until 2011, raw VIIRS from 2012, what you get by joining the two archives as they are. Ratios: mean of 2012–14 over mean of 2009–11. Vegetation class; fixed heat sources excluded.',
+    viirsstarts: 'VIIRS starts', peryear: 'hotspots per year',
     tagline: 'One fire-hotspot calendar for any area of Argentina, November 2000 → today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month.',
     h1sub: 'MODIS + VIIRS fire calendar', method: 'Method & code', province: 'Province', country: 'Whole country', latlon: 'Lat / Lon', go: 'Go', clear: 'Clear', drawhint: 'On the map: click a province, or zoom in and click the cells you want (click again to remove); the rectangle tool selects many cells at once.', cellsel: 'Selected cells', home: 'Centre on Argentina',
     attrib: 'Basemaps: Esri World Imagery (Esri, Maxar, Earthstar Geographics), World Boundaries & Places, World Topo, Light Gray Canvas (Esri, HERE, Garmin, OpenStreetMap contributors). Grid: 0.25°. Data: NASA FIRMS (MODIS, VIIRS).',
@@ -51,6 +68,23 @@ const T = {
     csvhdr: 'GeoFuego Harmonization — CC BY 4.0 — produced by scripts written with SI assistance (Claude, Anthropic) from NASA FIRMS data',
   },
   es: {
+    casestitle: 'Temporadas de fuego conocidas — un click', validtitle: 'Qué tan bien funciona — probado en años que el modelo nunca vio',
+    validnote: 'Pruebas a nivel país, fuera de muestra. Factores ajustados solo con 2012–2023; 2024 y 2025 no se usaron ni para los factores ni para el rango. Detalle y cada script: Método y código.',
+    v1l: 'Años nunca usados: 2024 · 2025', v1d: 'reconstrucción contra lo que observó VIIRS, país (predicho / observado 1,044 · 1,024)',
+    v2l: 'Error de temporada, dejando un año afuera 2012–23', v2d: 'país · provincia · celda suelta 30 % (un factor nacional único: 8,9 / 15,0 / 34 %)',
+    v3l: 'El rango del 80 %, verificado en 2024 · 2025', v3d: 'proporción de celdas sueltas adentro; provincias 76 % · 73 %',
+    v4l: 'Hectáreas quemadas por foco, después vs antes de 2012', v4d: 'armonizado (1 = continuo); el empalme ingenuo da 3,12 — control independiente con área quemada MODIS (MCD64A1)',
+    caseline: (name, months, y, x, rank, n, y0, y1) => `${name}, ${months} ${y}: <b>${x}</b> la mediana de ${months} ${y0}–${y1}${rank === 1 ? ` — el más alto de ${n} años del registro para esta zona` : ` — ${rank}º más alto de ${n} años`}.`,
+    caselow: (name, months, y, v, med, rank, n) => `${name}, ${months} ${y}: <b>${v}</b> focos contra un año típico de ${med}${rank === 1 ? ` — el más alto de ${n} años del registro para esta zona` : ` — ${rank}º más alto de ${n} años`}.`,
+    times: 'la mediana', fireslayer: 'Focos en el rango elegido',
+    steptitle: 'En 2012 cambió el satélite. El registro no debería saltar con él.', source: 'Fuente', harmonized: 'Armonizado', spliced: 'Empalmado tal cual',
+    stepmodisd2: 'el mismo sensor a ambos lados de 2012', stepharmd2: (m) => `sin escalón de sensor; MODIS solo da ${m}`,
+    stepnaive: 'Empalmado tal cual', stepnaived: 'VIIRS 2012–14 contra MODIS 2009–11: el salto lo produce el cambio de sensor',
+    stepmodis: 'MODIS solo, antes y después', stepmodisd: 'MODIS siguió volando después de 2012: el mismo sensor a ambos lados no muestra salto',
+    stepharm: 'Registro armonizado', stepharmd: 'sigue la tendencia que MODIS ve por su cuenta: el escalón desaparece',
+    stepharmna: 'Antes de 2012 el registro armonizado no se muestra para un área de este tamaño.', steplow: 'Muy pocas detecciones en esta área para un cociente antes/después estable; leer el gráfico, no los cocientes.',
+    stepnote: 'Totales anuales 2001–2025, registro completo (el rango de fechas de arriba no se aplica). MODIS y VIIRS en las unidades de cada sensor: focos Terra + Aqua (solo Terra hasta mediados de 2002, de ahí la subida hasta 2003) y focos VIIRS S-NPP. Armonizado = equivalente VIIRS: reconstruido desde MODIS hasta 2011, con su rango del 80 % (suma de las cotas mensuales, conservadora), observado por VIIRS desde 2012. Empalmado tal cual = MODIS crudo hasta 2011, VIIRS crudo desde 2012: lo que sale de pegar los dos archivos como vienen. Cocientes: media 2012–14 sobre media 2009–11. Clase vegetación; fuentes fijas de calor excluidas.',
+    viirsstarts: 'empieza VIIRS', peryear: 'focos por año',
     tagline: 'Un calendario de focos de calor para cualquier área de Argentina, noviembre 2000 → hoy. MODIS convertido a conteos equivalentes VIIRS, con un rango del 80 % calibrado en cada mes reconstruido.',
     h1sub: 'calendario de fuego MODIS + VIIRS', method: 'Método y código', province: 'Provincia', country: 'Todo el país', latlon: 'Lat / Lon', go: 'Ir', clear: 'Limpiar', drawhint: 'En el mapa: click en una provincia, o acercá y hacé click en las celdas que quieras (otro click las saca); la herramienta rectángulo marca muchas celdas de una.', cellsel: 'Celdas seleccionadas', home: 'Centrar en Argentina',
     attrib: 'Mapas base: Esri World Imagery (Esri, Maxar, Earthstar Geographics), World Boundaries & Places, World Topo, Light Gray Canvas (Esri, HERE, Garmin, colaboradores de OpenStreetMap). Grilla: 0,25°. Datos: NASA FIRMS (MODIS, VIIRS).',
@@ -104,7 +138,7 @@ function applyI18n() {
 }
 
 // ---------- data ----------
-let D = null, L26 = null, ONI = {}, PROV = null;
+let D = null, L26 = null, ONI = {}, PROV = null, RAW = null;
 const Y0 = 2000, YEARS = 26, YCUR = 2026;
 const grid = { latMin: -55, latMax: -21, lonMin: -74, lonMax: -53, step: 0.25, nCols: 84 };
 const cellOf = (lat, lon) => (lat < grid.latMin || lat >= grid.latMax || lon < grid.lonMin || lon >= grid.lonMax) ? null : Math.floor((lat - grid.latMin) / grid.step) * grid.nCols + Math.floor((lon - grid.lonMin) / grid.step);
@@ -118,6 +152,7 @@ const SIZE = n => n === 1 ? '1' : n <= 9 ? '2-9' : n <= 49 ? '10-49' : n <= 199 
 async function load() {
   const [a, b, c, p] = await Promise.all([fetch('data/cells.json').then(r => r.json()), fetch('data/cells_2026.json').then(r => r.json()).catch(() => null), fetch('data/oni.json').then(r => r.json()).catch(() => ({ oni: {} })), fetch('data/provincias.json').then(r => r.json()).catch(() => null)]);
   D = a; L26 = b; ONI = c.oni || {}; PROV = p;
+  RAW = await fetch('data/raw.json').then(r => r.json()).catch(() => null);
   Object.assign(grid, D.grid);
 }
 
@@ -130,8 +165,10 @@ function aggregate(sel) {
   const st = Array.from({ length: YEARS }, () => Array(12).fill(0));
   const provH = {}, provN = {}, regionH = {}; const provHY = {}; const provCur = {};
   let km2 = 0;
+  const rawM = RAW ? Array(RAW.y1 - RAW.y0 + 1).fill(0) : null, rawV = RAW ? Array(RAW.y1 - RAW.y0 + 1).fill(0) : null;
   for (const id of ids) {
     const c = D.cells[id]; if (!c) continue; km2 += cellKm2(id);
+    const r = RAW?.cells[id]; if (r) for (let k = 0; k < rawM.length; k++) { rawM[k] += r.m[k]; rawV[k] += r.v[k]; }
     provN[c.p] = (provN[c.p] || 0) + 1;
     for (let y = 0; y < YEARS; y++) {
       const hy = c.h[y], sy = c.s[y]; const Y = Y0 + y;
@@ -186,7 +223,7 @@ function aggregate(sel) {
     const months = L26.months.map(M => ({ ...M, h: M.days ? h[M.m - 1] : null, st: M.days ? s[M.m - 1] : null, partial: M.days > 0 && (M.d0 > 0 || M.d1 > 0 || M.d2 > 0) }));
     cur = { year: L26.year, through: L26.data_through, months, bridge: L26.bridge };
   }
-  return { sel, n, km2, dominant, shareDom, region, tier, stricter, lowered, tdf, borrowed, fromYear, baselineFrom, H, has, recon, gap, cloudFlag, st, lo, hi, staticShare, cur, provHY, provCur, provN };
+  return { rawM, rawV, sel, n, km2, dominant, shareDom, region, tier, stricter, lowered, tdf, borrowed, fromYear, baselineFrom, H, has, recon, gap, cloudFlag, st, lo, hi, staticShare, cur, provHY, provCur, provN };
 }
 
 // ---------- state & UI ----------
@@ -221,7 +258,7 @@ const viridis = x => { x = Math.max(0, Math.min(1, x)); const i = Math.min(VIR.l
 function render() {
   if (!A) return;
   $('empty').hidden = true; $('out').hidden = false;
-  renderSummary(); renderNow(); renderCalendar(); renderSeries(); renderYears(); renderSeason(); renderWhere(); renderStatic();
+  renderSummary(); renderStep(); renderCase(); renderValid(); renderNow(); renderCalendar(); renderSeries(); renderYears(); renderSeason(); renderWhere(); renderStatic();
   $('small-note').hidden = !(A.tier === 'C' || A.tier === 'D');
   $('tog-pre').disabled = A.tier !== 'D'; $('tog-pre').parentElement.style.opacity = A.tier !== 'D' ? '.45' : '';
   if (location.hash !== '#' + encodeSel(A.sel)) history.replaceState(null, '', '#' + encodeSel(A.sel));
@@ -272,6 +309,105 @@ function renderNow() {
   const ytdMed = median(ytdHist);
   cards.push(`<div class="kpi ${ytdMed && ytd / ytdMed >= 1.5 ? 'up' : ytdMed && ytd / ytdMed <= 0.67 ? 'down' : ''}"><div class="l">${t('months')[0]}–${t('months')[last.m - 1]} ${cur.year}${frac(last) < 1 ? ` (${t('through')} ${cur.through})` : ''}</div><div class="v">${fmt(ytd)}</div><div class="d">${ytdMed != null ? `${t(frac(last) < 1 ? 'vspace' : 'vsmedian', ytd / ytdMed)} · ${t('median')} ${fmt(ytdMed)} (${ytdHist.length} ${t('years')})` : '—'}</div></div>`);
   el.innerHTML = `<div class="now-grid">${cards.join('')}</div><p class="note">${t('nowpre')} ${t('through')} ${cur.through}. ${t('snppeq')} (NOAA-20 ÷ ${cur.bridge['NOAA-20']}, NOAA-21 ÷ ${cur.bridge['NOAA-21']}). ${t('baseline')}: ${ys[0]}–${ys[ys.length - 1]}.${monthsWithData.some(M => M.partial) ? ' ⚠ ' + t('partial') : ''}</p>`;
+}
+
+
+// ---------- before / after harmonization (the 2012 step) ----------
+let stepPlot = null; const stepShow = { 1: true, 4: true, 5: false, 6: true };
+const ratioFmt = x => '×' + (x >= 10 ? x.toFixed(0) : x.toFixed(2)).replace('.', lang === 'es' ? ',' : '.');
+function applyStepShow() { if (!stepPlot) return; stepPlot.setSeries(1, { show: stepShow[1] }); stepPlot.setSeries(2, { show: stepShow[1] }); stepPlot.setSeries(3, { show: stepShow[1] }); stepPlot.setSeries(4, { show: stepShow[4] }); stepPlot.setSeries(5, { show: stepShow[5] }); stepPlot.setSeries(6, { show: stepShow[6] }); }
+function renderStep() {
+  const card = $('step-card'); if (!A.rawM) { card.hidden = true; return; } card.hidden = false;
+  const y0 = RAW.y0, y1 = RAW.y1, xs = [], hv = [], hlo = [], hhi = [], mv = [], vv = [], sp = [];
+  for (let y = y0; y <= y1; y++) {
+    xs.push(y); const k = y - y0; mv.push(A.rawM[k]); vv.push(y >= 2012 ? A.rawV[k] : null); sp.push(y >= 2012 ? A.rawV[k] : A.rawM[k]);
+    let tot = 0, lo = 0, hi = 0, ok = true;
+    for (let m = 1; m <= 12; m++) { if (!usable(y, m)) { ok = false; break; } const h = A.H[y - Y0][m - 1]; tot += h; lo += A.lo[y - Y0][m - 1] ?? h; hi += A.hi[y - Y0][m - 1] ?? h; }
+    hv.push(ok ? tot : null); hlo.push(ok && y < 2012 ? lo : null); hhi.push(ok && y < 2012 ? hi : null);
+  }
+  const mean = (arr, a, b) => { const v = []; for (let y = a; y <= b; y++) { const x = arr[y - y0]; if (x == null) return null; v.push(x); } return v.reduce((p, q) => p + q, 0) / v.length; };
+  const mB = mean(mv, 2009, 2011), mA = mean(mv, 2012, 2014), vA = mean(vv, 2012, 2014), hB = mean(hv, 2009, 2011), hA = mean(hv, 2012, 2014);
+  const kp = [];
+  if (mB != null && mB >= 20) {
+    kp.push(`<div class="kpi bad"><div class="l">${t('stepnaive')}</div><div class="v">${ratioFmt(vA / mB)}</div><div class="d">${t('stepnaived')}</div></div>`);
+    kp.push(`<div class="kpi ref"><div class="l">${t('stepmodis')}</div><div class="v">${ratioFmt(mA / mB)}</div><div class="d">${mA / mB > 0.67 && mA / mB < 1.5 ? t('stepmodisd') : t('stepmodisd2')}</div></div>`);
+    kp.push(hB ? `<div class="kpi good"><div class="l">${t('stepharm')}</div><div class="v">${ratioFmt(hA / hB)}</div><div class="d">${Math.abs(Math.log((hA / hB) / (mA / mB))) < Math.log(1.25) ? t('stepharmd') : t('stepharmd2', ratioFmt(mA / mB))}</div></div>` : `<div class="kpi"><div class="l">${t('stepharm')}</div><div class="v">—</div><div class="d">${t('stepharmna')}</div></div>`);
+  } else kp.push(`<p class="note warn">${t('steplow')}</p>`);
+  $('step-kpis').innerHTML = kp.join('');
+  $('step-note').textContent = t('stepnote');
+  const el = $('step-chart'); el.innerHTML = ''; if (stepPlot) { stepPlot.destroy(); stepPlot = null; }
+  const width = Math.min(900, el.clientWidth || 900);
+  const seam = u => { const x = Math.round(u.valToPos(2011.5, 'x', true)); const c = u.ctx; c.save(); c.strokeStyle = 'rgba(255,255,255,.45)'; c.setLineDash([4, 4]); c.lineWidth = 1; c.beginPath(); c.moveTo(x, u.bbox.top); c.lineTo(x, u.bbox.top + u.bbox.height); c.stroke(); c.setLineDash([]); c.fillStyle = 'rgba(255,255,255,.7)'; c.font = `${11 * devicePixelRatio}px system-ui, sans-serif`; c.fillText(t('viirsstarts') + ' →', x + 6 * devicePixelRatio, u.bbox.top + 14 * devicePixelRatio); c.restore(); };
+  stepPlot = new uPlot({
+    width, height: 260, cursor: { drag: { x: false } }, scales: { x: { time: false } }, hooks: { draw: [seam] },
+    axes: [{ stroke: '#9aa3b5', grid: { stroke: '#2a3040' }, ticks: { stroke: '#2a3040' }, values: (u, vs) => vs.map(v => String(v)) }, { stroke: '#9aa3b5', grid: { stroke: '#2a3040' }, ticks: { stroke: '#2a3040' }, size: 64, values: (u, vs) => vs.map(v => fmt(v)) }],
+    series: [
+      { label: lang === 'es' ? 'año' : 'year', value: (u, v) => v == null ? '—' : String(v) },
+      { label: t('harmonized'), stroke: '#f5a623', width: 2.5, points: { show: true, size: 5 }, value: (u, v) => fmt(v) },
+      { label: t('rangehi'), stroke: 'rgba(245,166,35,0)', value: (u, v) => fmt(v) },
+      { label: t('rangelo'), stroke: 'rgba(245,166,35,0)', value: (u, v) => fmt(v) },
+      { label: 'MODIS (Terra + Aqua)', stroke: '#b0b7c6', width: 1.5, dash: [5, 3], points: { show: true, size: 4 }, value: (u, v) => fmt(v) },
+      { label: 'VIIRS (S-NPP)', stroke: '#4fa3e0', width: 1.5, dash: [5, 3], points: { show: true, size: 4 }, value: (u, v) => fmt(v) },
+      { label: t('spliced'), stroke: '#e5484d', width: 2, points: { show: true, size: 4 }, value: (u, v) => fmt(v) },
+    ],
+    bands: [{ series: [2, 3], fill: 'rgba(245,166,35,0.20)' }],
+    legend: { show: false },
+  }, [xs, hv, hhi, hlo, mv, vv, sp], el);
+  applyStepShow();
+}
+
+
+// ---------- validation card (canonical numbers from README / data/validation) ----------
+function renderValid() {
+  const es = lang === 'es';
+  const k = (v, l, d) => `<div class="kpi"><div class="l">${t(l)}</div><div class="v">${v}</div><div class="d">${t(d)}</div></div>`;
+  $('valid-kpis').innerHTML = [k(es ? '+4,4 % · +2,4 %' : '+4.4 % · +2.4 %', 'v1l', 'v1d'), k(es ? '3,2 % · 9,8 %' : '3.2 % · 9.8 %', 'v2l', 'v2d'), k('80 % · 77 %', 'v3l', 'v3d'), k(es ? '0,98' : '0.98', 'v4l', 'v4d')].join('');
+}
+
+// ---------- known fire seasons (permalinks; the figure is computed live with the app's own rules) ----------
+const CASES = [
+  { id: 'corrientes-2022', en: 'Corrientes', es: 'Corrientes', prov: 'Corrientes', y: 2022, m: [1, 2] },
+  { id: 'cordoba-2020', en: 'Córdoba', es: 'Córdoba', prov: 'Córdoba', y: 2020, m: [8, 9, 10] },
+  { id: 'delta-2020', en: 'Paraná Delta', es: 'Delta del Paraná', bbox: [-34.0, -60.75, -32.5, -58.5], y: 2020, m: [6, 7, 8, 9] },
+  { id: 'comarca-2021', en: 'Andean Patagonia (El Hoyo – Epuyén)', es: 'Comarca Andina (El Hoyo – Epuyén)', bbox: [-42.5, -71.75, -41.75, -71.25], y: 2021, m: [1, 2, 3] },
+  { id: 'cholila-2015', en: 'Cholila – Los Alerces', es: 'Cholila – Los Alerces', bbox: [-43.0, -72.0, -42.25, -71.25], y: 2015, m: [1, 2, 3] },
+];
+let activeCase = null;
+function renderCaseBtns() { $('case-btns').innerHTML = CASES.map(c => `<button type="button" class="pill${activeCase === c.id ? ' on' : ''}" data-case="${c.id}">${c[lang]} ${c.y}</button>`).join(''); $('case-btns').querySelectorAll('button').forEach(b => b.addEventListener('click', () => goCase(b.dataset.case))); }
+function goCase(id) {
+  const c = CASES.find(x => x.id === id); if (!c) return;
+  if (c.prov) { $('prov').value = c.prov; selectProvince(c.prov); }
+  else { if (drawn) drawn.clearLayers(); const r = L.rectangle([[c.bbox[0], c.bbox[1]], [c.bbox[2], c.bbox[3]]], DRAW_STYLE); drawn.addLayer(r); selectLayer(r); map.fitBounds(r.getBounds(), { padding: [20, 20], animate: false }); }
+  activeCase = id; history.replaceState(null, '', '#' + encodeSel(A.sel)); renderCase();
+}
+function renderCase() {
+  renderCaseBtns(); const el = $('case-line'); const c = CASES.find(x => x.id === activeCase); if (!c || !A) { el.hidden = true; return; }
+  const mn = c.m.length > 1 ? `${t('months')[c.m[0] - 1]}–${t('months')[c.m[c.m.length - 1] - 1]}` : t('months')[c.m[0] - 1];
+  const sum = y => c.m.reduce((a, m) => a + A.H[y - Y0][m - 1], 0);
+  const ys = baselineYears().filter(y => c.m.every(m => usable(y, m)));
+  const v = sum(c.y), hist = ys.filter(y => y !== c.y).map(sum), med = median(hist);
+  el.hidden = false;
+  if (med == null) { el.hidden = true; return; }
+  const rank = ys.map(sum).filter(x => x > v).length + 1;
+  if (med < 10) { el.innerHTML = t('caselow', c[lang], mn, c.y, fmt(v), fmt(med), rank, ys.length); return; }
+  el.innerHTML = t('caseline', c[lang], mn, c.y, (v / med).toFixed(1).replace('.', lang === 'es' ? ',' : '.') + '×', rank, ys.length, ys[0], ys[ys.length - 1]);
+}
+
+// ---------- hotspots on the map: cells coloured by the harmonized count in the selected range ----------
+let fireLayer = null;
+const FIRE = [[60, 20, 10], [140, 30, 10], [215, 70, 15], [245, 140, 30], [255, 220, 90]];
+const fireCol = x => { x = Math.max(0, Math.min(1, x)); const i = Math.min(FIRE.length - 2, Math.floor(x * (FIRE.length - 1))), f = x * (FIRE.length - 1) - i; const c = FIRE[i].map((v, k) => Math.round(v + (FIRE[i + 1][k] - v) * f)); return `rgb(${c[0]},${c[1]},${c[2]})`; };
+function renderFireMap() {
+  if (!map) return; const on = fireLayer && map.hasLayer(fireLayer); if (fireLayer) fireLayer.clearLayers(); else fireLayer = L.layerGroup();
+  const tot = {}; let max = 0;
+  for (const [id, c] of Object.entries(D.cells)) {
+    let v = 0; for (let y = Math.max(range.from[0], 2000); y <= Math.min(range.to[0], 2025); y++) { const hy = c.h[y - Y0]; for (let m = 1; m <= 12; m++) if (hy[m - 1] > 0 && inRange(y, m)) v += hy[m - 1]; }
+    if (L26 && range.to[0] >= YCUR) { const lc = L26.cells[id]; if (lc) for (let m = 1; m <= 12; m++) if (lc.h[m - 1] > 0 && inRange(YCUR, m)) v += lc.h[m - 1]; }
+    if (v > 0) { tot[id] = v; if (v > max) max = v; }
+  }
+  const lm = Math.log1p(max);
+  for (const [id, v] of Object.entries(tot)) { const x = Math.log1p(v) / lm; if (x < 0.25) continue; const [a, c, b, d] = cellBounds(+id); fireLayer.addLayer(L.rectangle([[a, c], [b, d]], { stroke: false, fillColor: fireCol((x - 0.25) / 0.75), fillOpacity: 0.15 + 0.45 * x, interactive: false })); }
+  if (on || fireLayer._first !== false) { fireLayer.addTo(map); fireLayer._first = false; }
 }
 
 // ---------- calendar heatmap ----------
@@ -509,6 +645,7 @@ function cellsForLayer(layer) {
 }
 function select(sel) {
   if (!sel.cells.length) return;
+  activeCase = null;
   A = aggregate(sel);
   if (cellsLayer) { cellsLayer.remove(); cellsLayer = null; }
   const feats = sel.cells.map(id => { const [a, c, b, d] = cellBounds(id); return [[a, c], [b, d]]; });
@@ -526,7 +663,7 @@ function decodeIds(s) { const ids = []; for (const part of s.split('.')) { if (!
 function encodeSel(sel) {
   const p = [`lang=${lang}`]; if (sel.kind === 'country') p.push('aoi=ar'); else if (sel.kind === 'province') p.push('prov=' + encodeURIComponent(sel.label)); else if (sel.kind === 'point') p.push('pt=' + sel.label.replace(/\s/g, '')); else if (sel.kind === 'drawn' && sel.bbox) p.push('bbox=' + sel.bbox.map(v => v.toFixed(3)).join(',')); else if (sel.kind === 'cells') p.push('cells=' + encodeIds(sel.cells));
   if (!rangeIsDefault()) p.push(`from=${ym(range.from)}`, `to=${ym(range.to)}`);
-  if (showPre) p.push('pre=1'); if (showStatic) p.push('st=1');
+  if (showPre) p.push('pre=1'); if (showStatic) p.push('st=1'); if (activeCase) p.push('case=' + activeCase);
   return p.join('&');
 }
 function readRangeFromHash(h) {
@@ -538,6 +675,7 @@ function readRangeFromHash(h) {
 function fromHash() {
   const h = new URLSearchParams(location.hash.replace(/^#/, ''));
   readRangeFromHash(h);
+  if (h.get('case') && CASES.some(c => c.id === h.get('case'))) { goCase(h.get('case')); return true; }
   if (h.get('aoi') === 'ar') { selectCountry(); return true; }
   if (h.get('prov')) { const p = h.get('prov'); $('prov').value = p; selectProvince(p); return true; }
   if (h.get('pt')) { const [lat, lon] = h.get('pt').split(',').map(Number); $('lat').value = lat; $('lon').value = lon; selectPoint(lat, lon); return true; }
@@ -578,6 +716,8 @@ function initMap() {
   const Home = L.Control.extend({ onAdd() { const d = L.DomUtil.create('div', 'leaflet-bar leaflet-control-home'); const a = L.DomUtil.create('a', '', d); a.href = '#'; a.title = t('home'); a.setAttribute('aria-label', t('home')); a.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="2"/></svg>'; L.DomEvent.on(a, 'click', ev => { L.DomEvent.preventDefault(ev); L.DomEvent.stopPropagation(ev); map.setView([-38.5, -63.5], 4); }); return d; } });
   map.addControl(new Home({ position: 'topleft' }));
   buildGrid();
+  renderFireMap();
+  L.control.layers(null, { [t('fireslayer')]: fireLayer }, { position: 'bottomright', collapsed: false }).addTo(map);
 }
 
 // Leaflet.draw strings (B7-i): the toolbar reads L.drawLocal when the button is built and when a drawing starts
@@ -597,14 +737,15 @@ function initUI() {
   $('country').addEventListener('click', () => { $('prov').value = ''; selectCountry(); });
   $('clear').addEventListener('click', clearSelection);
   $('go').addEventListener('click', () => { const lat = +$('lat').value, lon = +$('lon').value; if (!isFinite(lat) || !isFinite(lon) || !$('lat').value || !$('lon').value) { msg(t('needpt')); return; } selectPoint(lat, lon); });
-  const onRange = () => { const p = s => { const [y, m] = s.split('-').map(Number); return y && m ? [y, m] : null; }; range = { from: p($('from').value) || RANGE_DEFAULT[0], to: p($('to').value) || RANGE_DEFAULT[1] }; normalizeRange(); $('from').value = ym(range.from); $('to').value = ym(range.to); render(); };
+  const onRange = () => { const p = s => { const [y, m] = s.split('-').map(Number); return y && m ? [y, m] : null; }; range = { from: p($('from').value) || RANGE_DEFAULT[0], to: p($('to').value) || RANGE_DEFAULT[1] }; normalizeRange(); $('from').value = ym(range.from); $('to').value = ym(range.to); render(); renderFireMap(); };
   $('from').addEventListener('change', onRange); $('to').addEventListener('change', onRange);
   $('tog-pre').addEventListener('change', e => { showPre = e.target.checked; render(); });
   $('tog-static').addEventListener('change', e => { showStatic = e.target.checked; renderStatic(); if (A) history.replaceState(null, '', '#' + encodeSel(A.sel)); if (showStatic) $('static-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
   $('dl-csv').addEventListener('click', downloadCSV); $('dl-png').addEventListener('click', downloadPNG);
   $('cal').addEventListener('mousemove', calTip); $('cal').addEventListener('mouseleave', () => { $('tip').hidden = true; });
   $('lang').addEventListener('click', () => { lang = lang === 'en' ? 'es' : 'en'; applyI18n(); applyDrawLocale(); if (A) { location.hash = encodeSel(A.sel); render(); } });
-  window.addEventListener('resize', () => { if (A) renderSeries(); });
+  window.addEventListener('resize', () => { if (A) { renderSeries(); renderStep(); } });
+  document.querySelectorAll('#step-card .pill').forEach(b => b.addEventListener('click', () => { const on = !b.classList.contains('on'); b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); stepShow[b.dataset.s] = on; applyStepShow(); }));
   window.addEventListener('hashchange', () => { if (A && location.hash === '#' + encodeSel(A.sel)) return; const h = new URLSearchParams(location.hash.replace(/^#/, '')); if (h.get('lang') && h.get('lang') !== lang) { lang = h.get('lang') === 'es' ? 'es' : 'en'; applyI18n(); } fromHash(); });
 }
 

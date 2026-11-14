@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
 <link rel="stylesheet" href="vendor/leaflet-draw-1.0.4/leaflet.draw.css">
 <link rel="stylesheet" href="vendor/uplot-1.6.31/uPlot.min.css">
-<link rel="stylesheet" href="app.css?v=202611142148">
+<link rel="stylesheet" href="app.css?v=202611142208">
 </head>
 <body>
 <header class="top">
@@ -64,6 +64,34 @@
           <label for="to" data-i18n="to">to</label> <input id="to" type="month" min="2000-11" max="2026-12" value="2026-12">
         </div>
         <div id="banners"></div>
+      </div>
+
+      <div class="card step" id="step-card" hidden>
+        <div class="cardhead">
+          <h3 data-i18n="steptitle">In 2012 the satellite changed. The record should not jump with it.</h3>
+          <div class="seg" role="group" aria-label="Source">
+            <span class="seg-l" data-i18n="source">Source</span>
+            <button type="button" class="pill on" data-s="1" aria-pressed="true" data-i18n="harmonized">Harmonized</button>
+            <button type="button" class="pill on" data-s="6" aria-pressed="true" data-i18n="spliced">Spliced as recorded</button>
+            <button type="button" class="pill on" data-s="4" aria-pressed="true">MODIS</button>
+            <button type="button" class="pill" data-s="5" aria-pressed="false">VIIRS</button>
+          </div>
+        </div>
+        <div id="step-kpis" class="step-kpis"></div>
+        <div id="step-chart"></div>
+        <p class="note" id="step-note"></p>
+      </div>
+
+      <div class="card cases" id="cases-card">
+        <h3 data-i18n="casestitle">Known fire seasons — one click</h3>
+        <div class="case-btns" id="case-btns"></div>
+        <p class="case-line" id="case-line" hidden></p>
+      </div>
+
+      <div class="card valid" id="valid-card">
+        <h3 data-i18n="validtitle">How well it works — tested on years the model never saw</h3>
+        <div class="step-kpis" id="valid-kpis"></div>
+        <p class="note" data-i18n="validnote">Country-level tests, out of sample. Factors fitted on 2012–2023 only; 2024 and 2025 were used neither for the factors nor for the range. Details and every script: Method &amp; code.</p>
       </div>
 
       <div class="card now" id="now-card">
@@ -138,6 +166,6 @@
 <script src="vendor/leaflet-1.9.4/leaflet.js"></script>
 <script src="vendor/leaflet-draw-1.0.4/leaflet.draw.js"></script>
 <script src="vendor/uplot-1.6.31/uPlot.iife.min.js"></script>
-<script src="app.js?v=202611142148"></script>
+<script src="app.js?v=202611142208"></script>
 </body>
 </html>

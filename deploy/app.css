@@ -83,3 +83,23 @@ footer p { margin:0; }
 .u-legend { font-size:12px; }
 .map-globo { position:absolute; right:12px; top:12px; z-index:790; height:46px; width:auto; pointer-events:none; filter:drop-shadow(0 1px 3px rgba(0,0,0,.6)); }
 .leaflet-container .leaflet-control-attribution, .leaflet-control-attribution { background:transparent; color:rgba(190,196,208,.45); font-size:9px; text-shadow:none; padding:0 4px 1px; }
+/* before / after harmonization panel */
+.card.step { border-color:#4a3a1a; }
+.seg { display:flex; flex-wrap:wrap; align-items:center; gap:6px; background:#151821; border:1px solid var(--line); border-radius:12px; padding:5px 8px; }
+.seg-l { font-size:11px; letter-spacing:.8px; text-transform:uppercase; color:var(--muted); margin-right:4px; }
+.pill { background:transparent; color:#c9cfdb; border:1px solid transparent; border-radius:8px; padding:5px 12px; font-size:13px; cursor:pointer; font-family:var(--font); }
+.pill:hover { color:var(--text); }
+.pill.on { border-color:#c2410c; background:#3a1d0e; color:#ffd2b3; box-shadow:0 0 0 1px rgba(194,65,12,.25) inset; }
+.pill[data-s="4"].on { border-color:#8b93a5; background:#262a35; color:#e3e6ee; box-shadow:none; }
+.pill[data-s="6"].on { border-color:#e5484d; background:#3a1214; color:#ffc9c9; box-shadow:none; }
+.pill[data-s="5"].on { border-color:#3b82c4; background:#11263a; color:#bfe0ff; box-shadow:none; }
+.step-kpis { display:grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap:10px; margin:4px 0 10px; }
+.step-kpis .kpi .v { font-size:26px; }
+.step-kpis .kpi.bad .v { color:#ff8a65; } .step-kpis .kpi.good .v { color:var(--accent); } .step-kpis .kpi.ref .v { color:#c9cfdb; }
+#step-chart { min-height:260px; }
+.step-key { display:inline-block; width:14px; height:0; border-top:2px solid; vertical-align:middle; margin-right:6px; }
+.case-btns { display:flex; flex-wrap:wrap; gap:8px; }
+.case-btns .pill { border-color:var(--line); background:#151821; }
+.case-btns .pill.on { border-color:#c2410c; background:#3a1d0e; color:#ffd2b3; }
+.case-line { margin:10px 0 0; font-size:15px; } .case-line b { color:#ff8a65; font-size:18px; }
+.card.valid .kpi .v { color:var(--ok); }

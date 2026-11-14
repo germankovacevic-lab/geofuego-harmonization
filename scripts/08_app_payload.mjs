@@ -27,6 +27,20 @@ for (const line of (await readFile(path.join(ROOT, 'data', 'external', 'oni', 'o
   const f = line.trim().split(/\s+/); const mi = SEAS.indexOf(f[0]) + 1; const y = +f[1];
   if (mi && y >= 2000 && y <= 2011) oni[`${y}-${mi}`] = +f[3];
 }
+// raw.json: annual raw counts per 0.25° cell, 2001–2025, in each sensor's own units (vegetation class, static sources excluded:
+// the same filters as the harmonized record) — MODIS = Terra + Aqua hotspots, VIIRS = S-NPP hotspots. Feeds the before/after
+// panel of the app (the naive splice versus the harmonized series). Source: data/agg/counts.json (03_aggregate).
+{
+  const C = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'counts.json'), 'utf8'));
+  const iV = C.columns.indexOf('V'), iT = C.columns.indexOf('T'), iA = C.columns.indexOf('A');
+  const RY0 = 2001, RY1 = 2025, cells = {};
+  for (const [id, byYear] of Object.entries(C.cells)) {
+    const m = Array(RY1 - RY0 + 1).fill(0), v = Array(RY1 - RY0 + 1).fill(0); let any = false;
+    for (const [y, byMonth] of Object.entries(byYear)) { const k = +y - RY0; if (k < 0 || k > RY1 - RY0) continue; for (const r of Object.values(byMonth)) { m[k] += r[iT] + r[iA]; v[k] += r[iV]; any = true; } }
+    if (any) cells[id] = { m, v };
+  }
+  await writeFile(path.join(OUT, 'raw.json'), JSON.stringify({ source: 'NASA FIRMS country archives, annual raw hotspot counts per 0.25° cell (vegetation class, static sources excluded); m = MODIS Terra+Aqua, v = VIIRS S-NPP; produced by 08_app_payload.mjs from data/agg/counts.json', y0: RY0, y1: RY1, cells }));
+}
 await writeFile(path.join(OUT, 'provincias.json'), JSON.stringify({ source: 'IGN Argentina, WFS ign:provincia, simplified with mapshaper (reused from GeoFuego, pre-existing work)', provincias: PROVINCIAS.map(p => ({ n: p.n, rings: p.rings })) }));
 await writeFile(path.join(OUT, 'oni.json'), JSON.stringify({ source: 'NOAA CPC Oceanic Niño Index (ONI v5), 3-month running mean centred on the month', oni }));
 
@@ -38,7 +52,7 @@ for (const line of (await readFile(path.join(VEND, 'SHA256SUMS.txt'), 'utf8')).s
   if (h !== m[1]) { bad++; console.error('vendor checksum mismatch:', m[2]); }
 }
 if (bad) { console.error(`08_app_payload: ${bad} vendored file(s) do not match SHA256SUMS.txt`); process.exit(1); }
-for (const f of ['cells.json', 'cells_2026.json', 'oni.json', 'provincias.json']) console.log(f, ((await stat(path.join(OUT, f))).size / 1e6).toFixed(2), 'MB');
+for (const f of ['cells.json', 'cells_2026.json', 'oni.json', 'provincias.json', 'raw.json']) console.log(f, ((await stat(path.join(OUT, f))).size / 1e6).toFixed(2), 'MB');
 console.log(`vendor: ${nv} files verified against SHA256SUMS.txt`);
 
 // cache-busting: stamp the version of app.css / app.js in index.html (browsers and the edge cache them for hours)

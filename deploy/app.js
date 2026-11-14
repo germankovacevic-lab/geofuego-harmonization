@@ -9,7 +9,7 @@
 const T = {
   en: {
     tagline: 'One fire-hotspot calendar for any area of Argentina, November 2000 → today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month.',
-    h1sub: 'MODIS + VIIRS fire calendar', method: 'Method & code', province: 'Province', country: 'Whole country', latlon: 'Lat / Lon', go: 'Go', clear: 'Clear', drawhint: 'or draw a rectangle / polygon on the map, or click a province',
+    h1sub: 'MODIS + VIIRS fire calendar', method: 'Method & code', province: 'Province', country: 'Whole country', latlon: 'Lat / Lon', go: 'Go', clear: 'Clear', drawhint: 'On the map: click a province, or zoom in and click the cells you want (click again to remove); the rectangle tool selects many cells at once.', cellsel: 'Selected cells', home: 'Centre on Argentina',
     attrib: 'Basemaps: Esri World Imagery (Esri, Maxar, Earthstar Geographics), World Boundaries & Places, World Topo, Light Gray Canvas (Esri, HERE, Garmin, OpenStreetMap contributors). Grid: 0.25°. Data: NASA FIRMS (MODIS, VIIRS).',
     empty: 'Pick a province, enter a point, or draw an area. The calendar snaps to whole 0.25° cells (about 25 × 25 km).',
     from: 'From', to: 'to', nowtitle: 'This month vs the historical median', caltitle: 'Burning-activity calendar', togpre: 'show greyed years', togstatic: 'fixed heat sources',
@@ -50,7 +50,7 @@ const T = {
   },
   es: {
     tagline: 'Un calendario de focos de calor para cualquier área de Argentina, noviembre 2000 → hoy. MODIS convertido a conteos equivalentes VIIRS, con un rango del 80 % calibrado en cada mes reconstruido.',
-    h1sub: 'calendario de fuego MODIS + VIIRS', method: 'Método y código', province: 'Provincia', country: 'Todo el país', latlon: 'Lat / Lon', go: 'Ir', clear: 'Limpiar', drawhint: 'o dibujá un rectángulo / polígono en el mapa, o hacé click en una provincia',
+    h1sub: 'calendario de fuego MODIS + VIIRS', method: 'Método y código', province: 'Provincia', country: 'Todo el país', latlon: 'Lat / Lon', go: 'Ir', clear: 'Limpiar', drawhint: 'En el mapa: click en una provincia, o acercá y hacé click en las celdas que quieras (otro click las saca); la herramienta rectángulo marca muchas celdas de una.', cellsel: 'Celdas seleccionadas', home: 'Centrar en Argentina',
     attrib: 'Mapas base: Esri World Imagery (Esri, Maxar, Earthstar Geographics), World Boundaries & Places, World Topo, Light Gray Canvas (Esri, HERE, Garmin, colaboradores de OpenStreetMap). Grilla: 0,25°. Datos: NASA FIRMS (MODIS, VIIRS).',
     empty: 'Elegí una provincia, ingresá un punto o dibujá un área. El calendario se ajusta a celdas enteras de 0,25° (unos 25 × 25 km).',
     from: 'Desde', to: 'hasta', nowtitle: 'Este mes contra la mediana histórica', caltitle: 'Calendario de actividad de fuego', togpre: 'mostrar años grises', togstatic: 'fuentes fijas de calor',
@@ -215,7 +215,7 @@ function render() {
 }
 
 function renderSummary() {
-  const s = A.sel; const title = s.kind === 'country' ? t('argentina') : s.kind === 'province' ? s.label : s.kind === 'point' ? `${t('point')} ${s.label}` : t('drawn');
+  const s = A.sel; const title = s.kind === 'country' ? t('argentina') : s.kind === 'province' ? s.label : s.kind === 'point' ? `${t('point')} ${s.label}` : s.kind === 'cells' ? `${t('cellsel')} (${A.n})` : t('drawn');
   $('aoi-title').textContent = title;
   const parts = [`${A.n} ${t('cells')} · ~${fmt(A.km2)} ${t('km2')} · ${t('tier')} ${A.tier}`];
   if (s.kind !== 'country' && s.kind !== 'province') parts.push(`${t('dominant')} ${A.dominant} (${Math.round(100 * A.shareDom)} %)`);
@@ -436,10 +436,28 @@ const slug = () => (A.sel.label || A.sel.kind || 'aoi').toString().normalize('NF
 function save(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
 
 // ---------- map & selection ----------
-let map, drawn, cellsLayer, provLayers = {};
+let map, drawn, cellsLayer, provLayers = {}, gridLayer = null, gridRects = {}, picked = new Set(), lastDrawTs = 0;
+const drawing = () => Date.now() - lastDrawTs < 500 || !!document.querySelector('.leaflet-draw-toolbar .leaflet-draw-toolbar-button-enabled');
+const GRID_MIN_ZOOM = 6;
+const CELL_STYLE = { color: '#ffffff', opacity: 0.35, weight: 0.6, fill: true, fillColor: '#f5a623', fillOpacity: 0, interactive: true, bubblingMouseEvents: true };
+const CELL_ON = { color: '#f5a623', opacity: 1, weight: 1.2, fillOpacity: 0.35 };
+function buildGrid() {
+  gridLayer = L.layerGroup();
+  for (const id of Object.keys(D.cells)) { const [a, c, b, d] = cellBounds(+id); const r = L.rectangle([[a, c], [b, d]], CELL_STYLE); r.on('click', () => toggleCell(+id)); r.on('mouseover', () => { if (!picked.has(+id)) r.setStyle({ fillOpacity: 0.15 }); }); r.on('mouseout', () => { if (!picked.has(+id)) r.setStyle({ fillOpacity: 0 }); }); gridRects[id] = r; gridLayer.addLayer(r); }
+  const sync = () => { const on = map.getZoom() >= GRID_MIN_ZOOM; if (on && !map.hasLayer(gridLayer)) gridLayer.addTo(map); if (!on && map.hasLayer(gridLayer)) gridLayer.remove(); };
+  map.on('zoomend', sync); sync();
+}
+function toggleCell(id) {
+  if (drawing()) return;
+  if (!(A && A.sel.kind === 'cells')) { picked = new Set(); for (const r of Object.values(gridRects)) r.setStyle({ color: '#ffffff', opacity: 0.35, weight: 0.6, fillOpacity: 0 }); }
+  if (picked.has(id)) { picked.delete(id); gridRects[id].setStyle({ color: '#ffffff', opacity: 0.35, weight: 0.6, fillOpacity: 0 }); } else { picked.add(id); gridRects[id].setStyle(CELL_ON); }
+  if (!picked.size) { clearSelection(); return; }
+  select({ kind: 'cells', label: `${t('cellsel')} (${picked.size})`, cells: [...picked] });
+}
+function paintPicked() { for (const r of Object.values(gridRects)) r.setStyle({ color: '#ffffff', opacity: 0.35, weight: 0.6, fillOpacity: 0 }); for (const id of picked) gridRects[id]?.setStyle(CELL_ON); }
 const DRAW_STYLE = { color: '#d9480f', weight: 2, fillColor: '#f5a623', fillOpacity: 0.15 };
 function highlightProvince(name) { for (const [n, l] of Object.entries(provLayers)) l.setStyle(n === name ? { color: '#f5a623', opacity: 1, weight: 3, fillOpacity: 0 } : { color: '#ffffff', opacity: 0.7, weight: 1, fillOpacity: 0 }); }
-function clearSelection() { if (drawn) drawn.clearLayers(); if (cellsLayer) { cellsLayer.remove(); cellsLayer = null; } A = null; highlightProvince(null); $('prov').value = ''; $('out').hidden = true; $('empty').hidden = false; history.replaceState(null, '', location.pathname + (lang === 'es' ? '#lang=es' : '')); map.setView([-38.5, -63.5], 4); }
+function clearSelection() { if (drawn) drawn.clearLayers(); if (cellsLayer) { cellsLayer.remove(); cellsLayer = null; } A = null; highlightProvince(null); picked = new Set(); paintPicked(); $('prov').value = ''; $('out').hidden = true; $('empty').hidden = false; history.replaceState(null, '', location.pathname + (lang === 'es' ? '#lang=es' : '')); map.setView([-38.5, -63.5], 4); }
 function pointInRing(lat, lon, ring) { let inside = false; for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) { const yi = ring[i].lat, xi = ring[i].lng, yj = ring[j].lat, xj = ring[j].lng; if ((yi > lat) !== (yj > lat) && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside; } return inside; }
 function cellsForLayer(layer) {
   const b = layer.getBounds(); const ring = layer instanceof L.Rectangle ? null : layer.getLatLngs()[0];
@@ -452,9 +470,9 @@ function cellsForLayer(layer) {
 function select(sel) {
   if (!sel.cells.length) return;
   A = aggregate(sel);
-  if (cellsLayer) cellsLayer.remove();
+  if (cellsLayer) { cellsLayer.remove(); cellsLayer = null; }
   const feats = sel.cells.map(id => { const [a, c, b, d] = cellBounds(id); return [[a, c], [b, d]]; });
-  cellsLayer = L.layerGroup(feats.length > 1500 ? [L.rectangle(L.latLngBounds(feats.map(f => f[0]).concat(feats.map(f => f[1]))), { color: '#f5a623', weight: 1.5, fill: false, dashArray: '4 3' })] : feats.map(f => L.rectangle(f, { color: '#f5a623', weight: 1, fillOpacity: 0.12, interactive: false }))).addTo(map);
+  if (sel.kind !== 'cells') { picked = new Set(); paintPicked(); cellsLayer = L.layerGroup(feats.length > 1500 ? [L.rectangle(L.latLngBounds(feats.map(f => f[0]).concat(feats.map(f => f[1]))), { color: '#f5a623', weight: 1.5, fill: false, dashArray: '4 3' })] : feats.map(f => L.rectangle(f, { color: '#f5a623', weight: 1, fillOpacity: 0.12, interactive: false }))).addTo(map); }
   if (sel.kind !== 'drawn') { if (drawn) drawn.clearLayers(); }
   highlightProvince(sel.kind === 'province' ? sel.label : null);
   $('empty').hidden = true;
@@ -462,18 +480,21 @@ function select(sel) {
   location.hash = encodeSel(sel);
   render();
 }
-function encodeSel(sel) { const p = [`lang=${lang}`]; if (sel.kind === 'country') p.push('aoi=ar'); else if (sel.kind === 'province') p.push('prov=' + encodeURIComponent(sel.label)); else if (sel.kind === 'point') p.push('pt=' + sel.label.replace(/\s/g, '')); else if (sel.kind === 'drawn' && sel.bbox) p.push('bbox=' + sel.bbox.map(v => v.toFixed(3)).join(',')); return p.join('&'); }
+function encodeSel(sel) { const p = [`lang=${lang}`]; if (sel.kind === 'country') p.push('aoi=ar'); else if (sel.kind === 'province') p.push('prov=' + encodeURIComponent(sel.label)); else if (sel.kind === 'point') p.push('pt=' + sel.label.replace(/\s/g, '')); else if (sel.kind === 'drawn' && sel.bbox) p.push('bbox=' + sel.bbox.map(v => v.toFixed(3)).join(',')); else if (sel.kind === 'cells') p.push('cells=' + sel.cells.slice(0, 400).join('.')); return p.join('&'); }
 function fromHash() {
   const h = new URLSearchParams(location.hash.replace(/^#/, ''));
   if (h.get('aoi') === 'ar') return selectCountry();
   if (h.get('prov')) { const p = h.get('prov'); $('prov').value = p; return selectProvince(p); }
   if (h.get('pt')) { const [lat, lon] = h.get('pt').split(',').map(Number); $('lat').value = lat; $('lon').value = lon; return selectPoint(lat, lon); }
+  if (h.get('cells')) { picked = new Set(h.get('cells').split('.').map(Number).filter(id => D.cells[id])); if (picked.size) { paintPicked(); A = null; select({ kind: 'cells', label: `${t('cellsel')} (${picked.size})`, cells: [...picked] }); map.fitBounds(L.latLngBounds([...picked].map(id => { const [a, c, b, d] = cellBounds(id); return [[a, c], [b, d]]; }).flat()), { padding: [20, 20], maxZoom: 8, animate: false }); } return; }
   if (h.get('bbox')) { const [s, w, n, e] = h.get('bbox').split(',').map(Number); const r = L.rectangle([[s, w], [n, e]], DRAW_STYLE); drawn.addLayer(r); return selectLayer(r); }
 }
 function selectCountry() { $('prov').value = ''; select({ kind: 'country', label: 'Argentina', cells: Object.keys(D.cells).map(Number) }); }
 function selectProvince(p) { if (!p) return; select({ kind: 'province', label: p, cells: Object.keys(D.cells).filter(id => D.cells[id].p === p).map(Number) }); }
 function selectPoint(lat, lon) { $('prov').value = ''; const id = cellOf(lat, lon); if (id == null || !D.cells[id]) { alert(lang === 'es' ? 'Punto fuera de la grilla de Argentina.' : 'Point outside the Argentina grid.'); return; } select({ kind: 'point', label: `${lat.toFixed(2)}, ${lon.toFixed(2)}`, cells: [id] }); }
 function selectLayer(layer) { const { ids, snapped1 } = cellsForLayer(layer); const b = layer.getBounds(); select({ kind: 'drawn', label: 'drawn', cells: ids, snapped1, bbox: [b.getSouth(), b.getWest(), b.getNorth(), b.getEast()] }); }
+// rectangle tool → the cells become an editable cell selection (click to add/remove)
+function rectToCells(layer) { const { ids } = cellsForLayer(layer); drawn.clearLayers(); if (!ids.length) return; picked = new Set(ids); paintPicked(); A = null; select({ kind: 'cells', label: `${t('cellsel')} (${picked.size})`, cells: [...picked] }); }
 
 function initMap() {
   map = L.map('map', { preferCanvas: true, zoomControl: true, attributionControl: false }).setView([-38.5, -63.5], 4);
@@ -483,12 +504,14 @@ function initMap() {
   const topo = L.tileLayer(esri + 'World_Topo_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3 });
   sat.addTo(map);
   L.control.layers({ [lang === 'es' ? 'Satelital' : 'Satellite']: sat, [lang === 'es' ? 'Topográfico' : 'Topographic']: topo, [lang === 'es' ? 'Gris' : 'Light grey']: grey }, null, { position: 'topright', collapsed: true }).addTo(map);
-  if (PROV) for (const p of PROV.provincias) { const l = L.polygon(p.rings.map(r => [r]), { color: '#ffffff', opacity: 0.7, weight: 1, fillOpacity: 0, fillColor: '#f5a623', interactive: true, bubblingMouseEvents: false }).addTo(map); l.bindTooltip(p.n === TDF ? 'Tierra del Fuego' : p.n, { sticky: true, direction: 'top', opacity: 0.9 }); l.on('click', () => { if (document.querySelector('.leaflet-draw-toolbar .leaflet-draw-toolbar-button-enabled')) return; $('prov').value = p.n; selectProvince(p.n); }); l.on('mouseover', () => { if (!(A && A.sel.kind === 'province' && A.sel.label === p.n)) l.setStyle({ fillOpacity: 0.12 }); }); l.on('mouseout', () => l.setStyle({ fillOpacity: 0 })); provLayers[p.n] = l; }
+  if (PROV) for (const p of PROV.provincias) { const l = L.polygon(p.rings.map(r => [r]), { color: '#ffffff', opacity: 0.7, weight: 1, fillOpacity: 0, fillColor: '#f5a623', interactive: true, bubblingMouseEvents: true }).addTo(map); l.bindTooltip(p.n === TDF ? 'Tierra del Fuego' : p.n, { sticky: true, direction: 'top', opacity: 0.9 }); l.on('click', () => { if (drawing()) return; $('prov').value = p.n; selectProvince(p.n); }); l.on('mouseover', () => { if (!(A && A.sel.kind === 'province' && A.sel.label === p.n)) l.setStyle({ fillOpacity: 0.12 }); }); l.on('mouseout', () => l.setStyle({ fillOpacity: 0 })); provLayers[p.n] = l; }
   drawn = new L.FeatureGroup().addTo(map);
-  const ctl = new L.Control.Draw({ position: 'topleft', draw: { polyline: false, circle: false, circlemarker: false, marker: false, rectangle: { shapeOptions: DRAW_STYLE, showArea: false }, polygon: { allowIntersection: false, shapeOptions: DRAW_STYLE, showArea: false } }, edit: { featureGroup: drawn, edit: false } });
+  const ctl = new L.Control.Draw({ position: 'topleft', draw: { polyline: false, circle: false, circlemarker: false, marker: false, polygon: false, rectangle: { shapeOptions: DRAW_STYLE, showArea: false } }, edit: false });
   map.addControl(ctl);
-  map.on(L.Draw.Event.CREATED, e => { drawn.clearLayers(); drawn.addLayer(e.layer); $('prov').value = ''; selectLayer(e.layer); });
-  map.on(L.Draw.Event.DELETED, () => clearSelection());
+  map.on(L.Draw.Event.CREATED, e => { lastDrawTs = Date.now(); $('prov').value = ''; rectToCells(e.layer); });
+  const Home = L.Control.extend({ onAdd() { const d = L.DomUtil.create('div', 'leaflet-bar leaflet-control-home'); const a = L.DomUtil.create('a', '', d); a.href = '#'; a.title = t('home'); a.setAttribute('aria-label', t('home')); a.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="2"/></svg>'; L.DomEvent.on(a, 'click', ev => { L.DomEvent.preventDefault(ev); L.DomEvent.stopPropagation(ev); map.setView([-38.5, -63.5], 4); }); return d; } });
+  map.addControl(new Home({ position: 'topleft' }));
+  buildGrid();
 }
 
 function initUI() {

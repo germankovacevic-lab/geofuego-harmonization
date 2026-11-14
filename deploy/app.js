@@ -139,7 +139,7 @@ const T = {
     csvhdr: 'GeoFuego Harmonization — CC BY 4.0 — producido por scripts escritos con asistencia de SI (Claude, Anthropic) a partir de datos NASA FIRMS',
   }
 };
-let lang = (location.hash.includes('lang=es') || (navigator.language || '').startsWith('es')) ? 'es' : 'en';
+let lang = location.hash.includes('lang=es') ? 'es' : 'en'; // English by default (submission rule); ES only by the button or #lang=es
 const t = (k, ...a) => { const v = T[lang][k] ?? T.en[k] ?? k; return typeof v === 'function' ? v(...a) : v; };
 const ord = n => n + (n % 10 === 1 && n !== 11 ? 'st' : n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th');
 function applyI18n() {

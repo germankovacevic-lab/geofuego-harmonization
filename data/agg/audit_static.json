@@ -1,34 +1,34 @@
 {
-  "generated": "2026-11-14T16:02:13.637Z",
+  "generated": "2026-11-14T17:58:35.149Z",
   "signatures": {
     "static": {
-      "hotspots": 49115,
-      "night_fraction": 0.835,
-      "frp_median_MW": 1.35,
-      "firms_type2_dropped_here": 74728,
+      "hotspots": 63895,
+      "night_fraction": 0.689,
+      "frp_median_MW": 1.72,
+      "firms_type2_dropped_here": 76009,
       "seasonality": {
         "monthly_share": [
-          0.092,
-          0.082,
-          0.091,
-          0.062,
-          0.055,
-          0.057,
+          0.08,
+          0.073,
+          0.08,
+          0.053,
+          0.048,
           0.06,
-          0.096,
-          0.105,
-          0.101,
-          0.096,
-          0.102
+          0.081,
+          0.134,
+          0.124,
+          0.098,
+          0.084,
+          0.086
         ],
-        "max_over_min": 1.9
+        "max_over_min": 2.8
       }
     },
     "vegetation": {
-      "hotspots": 2501352,
+      "hotspots": 2486572,
       "night_fraction": 0.263,
       "frp_median_MW": 5.36,
-      "firms_type2_dropped_here": 3732,
+      "firms_type2_dropped_here": 2451,
       "seasonality": {
         "monthly_share": [
           0.078,
@@ -37,20 +37,20 @@
           0.029,
           0.024,
           0.034,
-          0.087,
-          0.218,
+          0.086,
+          0.217,
           0.193,
           0.115,
           0.061,
           0.052
         ],
-        "max_over_min": 9.1
+        "max_over_min": 9
       }
     }
   },
   "type2_concentration": {
-    "share_of_all_type2_inside_static_cells": 0.952,
-    "share_of_all_type0_inside_static_cells": 0.0193
+    "share_of_all_type2_inside_static_cells": 0.969,
+    "share_of_all_type0_inside_static_cells": 0.0251
   },
   "sensitivity": [
     {
@@ -115,29 +115,30 @@
     }
   ],
   "by_province_viirs_share_static": {
-    "Neuquén": 0.563,
-    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.26,
-    "Santa Cruz": 0.246,
-    "Mendoza": 0.062,
-    "La Rioja": 0.048,
-    "(outside)": 0.045,
-    "Buenos Aires": 0.04,
-    "Chubut": 0.019,
-    "Catamarca": 0.014,
-    "Salta": 0.013,
+    "Neuquén": 0.585,
+    "Santa Cruz": 0.277,
+    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.248,
+    "Mendoza": 0.113,
+    "Buenos Aires": 0.054,
+    "Tucumán": 0.054,
+    "(outside)": 0.05,
+    "San Juan": 0.05,
+    "La Rioja": 0.049,
+    "Chubut": 0.028,
+    "Jujuy": 0.02,
+    "Córdoba": 0.017,
+    "Salta": 0.017,
+    "Río Negro": 0.017,
+    "Catamarca": 0.017,
+    "Ciudad Autónoma de Buenos Aires": 0.016,
+    "Chaco": 0.013,
     "Entre Ríos": 0.012,
-    "Río Negro": 0.011,
-    "Chaco": 0.01,
-    "Corrientes": 0.007,
-    "Jujuy": 0.007,
-    "Misiones": 0.006,
-    "Santiago del Estero": 0.006,
-    "Córdoba": 0.005,
-    "Tucumán": 0.005,
-    "San Luis": 0.005,
-    "San Juan": 0.004,
-    "La Pampa": 0.003,
-    "Santa Fe": 0.002,
-    "Formosa": 0.001
+    "Santiago del Estero": 0.01,
+    "Misiones": 0.009,
+    "Corrientes": 0.009,
+    "San Luis": 0.007,
+    "Formosa": 0.004,
+    "Santa Fe": 0.004,
+    "La Pampa": 0.004
   }
 }

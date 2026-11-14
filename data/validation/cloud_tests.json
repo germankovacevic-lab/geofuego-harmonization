@@ -1,11 +1,11 @@
 {
- "generated": "2026-11-14T16:32:19.139Z",
+ "generated": "2026-11-14T17:58:29.183Z",
  "source": "ERA5 monthly averaged reanalysis by hour of day, total_cloud_cover, 0.25deg (Copernicus CDS)",
  "testA_ratio_residual_vs_cloud": {
   "differential_anomaly": {
-   "r": 0.018356009986284758,
-   "slope": 0.20330515783947445,
-   "n": 2246,
+   "r": 0.022323240738433656,
+   "slope": 0.24132829100080463,
+   "n": 2242,
    "bins": [
     {
      "anomaly_from": -1,
@@ -16,32 +16,32 @@
     {
      "anomaly_from": -0.15,
      "anomaly_to": -0.08,
-     "n": 10,
-     "median_log_ratio": -0.235
+     "n": 11,
+     "median_log_ratio": -0.29
     },
     {
      "anomaly_from": -0.08,
      "anomaly_to": -0.03,
-     "n": 386,
-     "median_log_ratio": -0.2
+     "n": 388,
+     "median_log_ratio": -0.195
     },
     {
      "anomaly_from": -0.03,
      "anomaly_to": 0.03,
-     "n": 1535,
-     "median_log_ratio": -0.168
+     "n": 1528,
+     "median_log_ratio": -0.179
     },
     {
      "anomaly_from": 0.03,
      "anomaly_to": 0.08,
      "n": 302,
-     "median_log_ratio": -0.219
+     "median_log_ratio": -0.216
     },
     {
      "anomaly_from": 0.08,
      "anomaly_to": 0.15,
      "n": 13,
-     "median_log_ratio": -0.116
+     "median_log_ratio": -0.117
     },
     {
      "anomaly_from": 0.15,
@@ -52,9 +52,9 @@
    ]
   },
   "day13_anomaly": {
-   "r": -0.13221116231004723,
-   "slope": -0.4742565971170443,
-   "n": 2246,
+   "r": -0.11409499234208817,
+   "slope": -0.401114524394401,
+   "n": 2242,
    "bins": [
     {
      "anomaly_from": -1,
@@ -65,236 +65,236 @@
     {
      "anomaly_from": -0.15,
      "anomaly_to": -0.08,
-     "n": 381,
-     "median_log_ratio": -0.125
+     "n": 382,
+     "median_log_ratio": -0.139
     },
     {
      "anomaly_from": -0.08,
      "anomaly_to": -0.03,
-     "n": 493,
-     "median_log_ratio": -0.139
+     "n": 491,
+     "median_log_ratio": -0.161
     },
     {
      "anomaly_from": -0.03,
      "anomaly_to": 0.03,
-     "n": 548,
-     "median_log_ratio": -0.223
+     "n": 547,
+     "median_log_ratio": -0.237
     },
     {
      "anomaly_from": 0.03,
      "anomaly_to": 0.08,
      "n": 308,
-     "median_log_ratio": -0.21
+     "median_log_ratio": -0.208
     },
     {
      "anomaly_from": 0.08,
      "anomaly_to": 0.15,
-     "n": 228,
-     "median_log_ratio": -0.27
+     "n": 227,
+     "median_log_ratio": -0.25
     },
     {
      "anomaly_from": 0.15,
      "anomaly_to": 1,
-     "n": 98,
-     "median_log_ratio": -0.256
+     "n": 97,
+     "median_log_ratio": -0.248
     }
    ]
   }
  },
  "testB_count_level_vs_cloud": {
   "viirs_vs_day13_cloud": {
-   "r": -0.4629116834333433,
-   "slope": -4.616888281533786,
-   "n": 2716,
+   "r": -0.4645325239857683,
+   "slope": -4.6486998655811025,
+   "n": 2692,
    "bins": [
     {
      "anomaly_from": -1,
      "anomaly_to": -0.15,
-     "n": 195,
-     "median_log_ratio": 0.387
+     "n": 193,
+     "median_log_ratio": 0.39
     },
     {
      "anomaly_from": -0.15,
      "anomaly_to": -0.08,
-     "n": 419,
-     "median_log_ratio": 0.149
+     "n": 420,
+     "median_log_ratio": 0.153
     },
     {
      "anomaly_from": -0.08,
      "anomaly_to": -0.03,
-     "n": 560,
-     "median_log_ratio": -0.103
+     "n": 550,
+     "median_log_ratio": -0.094
     },
     {
      "anomaly_from": -0.03,
      "anomaly_to": 0.03,
-     "n": 672,
-     "median_log_ratio": -0.396
+     "n": 662,
+     "median_log_ratio": -0.391
     },
     {
      "anomaly_from": 0.03,
      "anomaly_to": 0.08,
-     "n": 410,
-     "median_log_ratio": -0.581
+     "n": 411,
+     "median_log_ratio": -0.598
     },
     {
      "anomaly_from": 0.08,
      "anomaly_to": 0.15,
-     "n": 314,
-     "median_log_ratio": -0.781
+     "n": 308,
+     "median_log_ratio": -0.766
     },
     {
      "anomaly_from": 0.15,
      "anomaly_to": 1,
-     "n": 146,
-     "median_log_ratio": -1.136
+     "n": 148,
+     "median_log_ratio": -1.155
     }
    ]
   },
   "viirs_vs_night_cloud": {
-   "r": -0.4081825850541549,
-   "slope": -4.191058377379776,
-   "n": 2716,
+   "r": -0.4102757636346738,
+   "slope": -4.227876947036717,
+   "n": 2692,
    "bins": [
     {
      "anomaly_from": -1,
      "anomaly_to": -0.15,
      "n": 157,
-     "median_log_ratio": 0.323
+     "median_log_ratio": 0.328
     },
     {
      "anomaly_from": -0.15,
      "anomaly_to": -0.08,
-     "n": 469,
-     "median_log_ratio": 0.122
+     "n": 463,
+     "median_log_ratio": 0.126
     },
     {
      "anomaly_from": -0.08,
      "anomaly_to": -0.03,
-     "n": 518,
-     "median_log_ratio": -0.174
+     "n": 516,
+     "median_log_ratio": -0.171
     },
     {
      "anomaly_from": -0.03,
      "anomaly_to": 0.03,
-     "n": 700,
-     "median_log_ratio": -0.375
+     "n": 690,
+     "median_log_ratio": -0.373
     },
     {
      "anomaly_from": 0.03,
      "anomaly_to": 0.08,
-     "n": 412,
-     "median_log_ratio": -0.554
+     "n": 411,
+     "median_log_ratio": -0.566
     },
     {
      "anomaly_from": 0.08,
      "anomaly_to": 0.15,
-     "n": 321,
-     "median_log_ratio": -0.729
+     "n": 317,
+     "median_log_ratio": -0.743
     },
     {
      "anomaly_from": 0.15,
      "anomaly_to": 1,
-     "n": 139,
-     "median_log_ratio": -1.197
+     "n": 138,
+     "median_log_ratio": -1.192
     }
    ]
   },
   "modis_TA_vs_day13_cloud": {
-   "r": -0.4155524182012011,
-   "slope": -4.1213934848083165,
-   "n": 4107,
+   "r": -0.42309203895456104,
+   "slope": -4.3347760519241545,
+   "n": 4085,
    "bins": [
     {
      "anomaly_from": -1,
      "anomaly_to": -0.15,
-     "n": 273,
-     "median_log_ratio": 0.278
+     "n": 272,
+     "median_log_ratio": 0.29
     },
     {
      "anomaly_from": -0.15,
      "anomaly_to": -0.08,
-     "n": 620,
-     "median_log_ratio": 0.127
+     "n": 617,
+     "median_log_ratio": 0.135
     },
     {
      "anomaly_from": -0.08,
      "anomaly_to": -0.03,
-     "n": 872,
-     "median_log_ratio": -0.121
+     "n": 864,
+     "median_log_ratio": -0.117
     },
     {
      "anomaly_from": -0.03,
      "anomaly_to": 0.03,
-     "n": 1029,
-     "median_log_ratio": -0.294
+     "n": 1023,
+     "median_log_ratio": -0.329
     },
     {
      "anomaly_from": 0.03,
      "anomaly_to": 0.08,
-     "n": 635,
-     "median_log_ratio": -0.614
+     "n": 629,
+     "median_log_ratio": -0.629
     },
     {
      "anomaly_from": 0.08,
      "anomaly_to": 0.15,
      "n": 468,
-     "median_log_ratio": -0.843
+     "median_log_ratio": -0.865
     },
     {
      "anomaly_from": 0.15,
      "anomaly_to": 1,
-     "n": 210,
-     "median_log_ratio": -1.117
+     "n": 212,
+     "median_log_ratio": -1.176
     }
    ]
   },
   "modis_T_vs_terra_cloud": {
-   "r": -0.4220475016763619,
-   "slope": -4.180610763561347,
-   "n": 3011,
+   "r": -0.4331149015689677,
+   "slope": -4.444233834728391,
+   "n": 2969,
    "bins": [
     {
      "anomaly_from": -1,
      "anomaly_to": -0.15,
-     "n": 184,
-     "median_log_ratio": 0.332
+     "n": 185,
+     "median_log_ratio": 0.289
     },
     {
      "anomaly_from": -0.15,
      "anomaly_to": -0.08,
-     "n": 522,
-     "median_log_ratio": 0.103
+     "n": 515,
+     "median_log_ratio": 0.127
     },
     {
      "anomaly_from": -0.08,
      "anomaly_to": -0.03,
-     "n": 584,
-     "median_log_ratio": -0.086
+     "n": 572,
+     "median_log_ratio": -0.1
     },
     {
      "anomaly_from": -0.03,
      "anomaly_to": 0.03,
-     "n": 743,
-     "median_log_ratio": -0.306
+     "n": 730,
+     "median_log_ratio": -0.336
     },
     {
      "anomaly_from": 0.03,
      "anomaly_to": 0.08,
-     "n": 471,
-     "median_log_ratio": -0.575
+     "n": 466,
+     "median_log_ratio": -0.573
     },
     {
      "anomaly_from": 0.08,
      "anomaly_to": 0.15,
-     "n": 350,
-     "median_log_ratio": -0.872
+     "n": 347,
+     "median_log_ratio": -0.947
     },
     {
      "anomaly_from": 0.15,
      "anomaly_to": 1,
-     "n": 157,
-     "median_log_ratio": -1.065
+     "n": 154,
+     "median_log_ratio": -1.204
     }
    ]
   }
@@ -302,56 +302,56 @@
  "testC_cloud_conditional_on_precip": {
   "viirs_day13": {
    "cloud_only": {
-    "r": -0.463,
-    "slope": -4.62
+    "r": -0.465,
+    "slope": -4.65
    },
    "precip_only": {
-    "r": -0.449,
-    "slope_per_mm_day": -0.314
+    "r": -0.448,
+    "slope_per_mm_day": -0.316
    },
-   "cloud_vs_precip_r": 0.559,
+   "cloud_vs_precip_r": 0.56,
    "joint": {
-    "n": 2716,
-    "intercept": -0.469,
-    "slope_cloud": -3.08,
+    "n": 2692,
+    "intercept": -0.472,
+    "slope_cloud": -3.11,
     "slope_precip_per_mm_day": -0.193,
     "r2": 0.267
    }
   },
   "modis_TA_day13": {
    "cloud_only": {
-    "r": -0.416,
-    "slope": -4.12
+    "r": -0.423,
+    "slope": -4.33
    },
    "precip_only": {
-    "r": -0.393,
-    "slope_per_mm_day": -0.266
+    "r": -0.408,
+    "slope_per_mm_day": -0.286
    },
    "cloud_vs_precip_r": 0.547,
    "joint": {
-    "n": 4107,
-    "intercept": -0.435,
-    "slope_cloud": -2.84,
-    "slope_precip_per_mm_day": -0.16,
-    "r2": 0.212
+    "n": 4085,
+    "intercept": -0.459,
+    "slope_cloud": -2.92,
+    "slope_precip_per_mm_day": -0.176,
+    "r2": 0.223
    }
   },
   "modis_T_terra": {
    "cloud_only": {
-    "r": -0.422,
-    "slope": -4.18
+    "r": -0.433,
+    "slope": -4.44
    },
    "precip_only": {
-    "r": -0.401,
-    "slope_per_mm_day": -0.265
+    "r": -0.421,
+    "slope_per_mm_day": -0.288
    },
-   "cloud_vs_precip_r": 0.587,
+   "cloud_vs_precip_r": 0.586,
    "joint": {
-    "n": 3011,
-    "intercept": -0.43,
-    "slope_cloud": -2.82,
-    "slope_precip_per_mm_day": -0.155,
-    "r2": 0.214
+    "n": 2969,
+    "intercept": -0.459,
+    "slope_cloud": -2.91,
+    "slope_precip_per_mm_day": -0.174,
+    "r2": 0.23
    }
   }
  }

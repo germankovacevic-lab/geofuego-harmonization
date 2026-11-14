@@ -3,7 +3,8 @@
 // Written with SI assistance (Claude, Anthropic); reviewed and validated by the team.
 //
 // Equivalent filters (declared in METHOD_DESIGN §1.2):
-//   MODIS : type == 0 (vegetation fire) AND confidence >= 30
+//   MODIS : type == 0 (vegetation fire) AND confidence >= 30; type == 2 (static land source) is counted in the STATIC columns
+//           (never in vegetation) because the flag is not homogeneous across archive versions (03a rule 3); types 1/3 dropped
 //   VIIRS : type == 0 AND confidence != 'l'
 // Satellite sets: V = VIIRS S-NPP · T = MODIS Terra · A = MODIS Aqua
 // Persistent thermal sources (03a_static_sources.mjs) are counted SEPARATELY, never dropped. Satellite outage days
@@ -69,13 +70,14 @@ for (const [file, meta] of Object.entries(manifest)) {
     if (f.length < 15) { drops.bad_row++; continue; }
     read++; n++;
     // columns: 0 lat,1 lon,...,5 acq_date,7 satellite,9 confidence,14 type
-    if (f[14] !== '0') { drops.filtered_type++; continue; }
     let k;
     if (isModis) {
+      if (f[14] !== '0' && f[14] !== '2') { drops.filtered_type++; continue; }
       if (+f[9] < 30) { drops.filtered_conf++; continue; }
       k = f[7] === 'Terra' ? 1 : f[7] === 'Aqua' ? 2 : -1;
       if (k < 0) { drops.bad_row++; continue; }
     } else {
+      if (f[14] !== '0') { drops.filtered_type++; continue; }
       if (f[9] === 'l') { drops.filtered_conf++; continue; }
       k = 0;
     }
@@ -84,7 +86,7 @@ for (const [file, meta] of Object.entries(manifest)) {
     if (!landCell.has(cell)) { drops.no_land_cell++; continue; }
     const d = f[5], y = +d.slice(0, 4), m = +d.slice(5, 7);
     const extra = [];
-    if (staticSet.has(staticKey(+f[0], +f[1]))) { k += 3; staticN++; }
+    if (staticSet.has(staticKey(+f[0], +f[1])) || (isModis && f[14] === '2')) { k += 3; staticN++; }
     else {
       if (pairedDay(d)) { extra.push(6 + k); extra.push(12 + 2 * k + (f[13] === 'N' ? 1 : 0)); pairedN++; }
       if (k > 0 && activeV(d) && OUT_V.has(d)) { extra.push(9); gapN++; }          // MODIS on a VIIRS-outage day
@@ -100,6 +102,6 @@ const years = Object.keys(country).map(Number).sort();
 let csv = 'year,V,T,A,Vs,Ts,As,Vp,Tp,Ap,M_snppOut,A_terraOut,T_aquaOut,Vpd,Vpn,Tpd,Tpn,Apd,Apn,ratio_V_over_TA,ratio_paired,ratio_static,ratio_day,ratio_night\n';
 for (const y of years) { const [V, T, A, Vs, Ts, As, Vp, Tp, Ap, g1, g2, g3, Vd, Vn, Td, Tn, Ad, An] = country[y]; csv += `${y},${V},${T},${A},${Vs},${Ts},${As},${Vp},${Tp},${Ap},${g1},${g2},${g3},${Vd},${Vn},${Td},${Tn},${Ad},${An},${T + A ? (V / (T + A)).toFixed(3) : ''},${Tp + Ap ? (Vp / (Tp + Ap)).toFixed(3) : ''},${Ts + As ? (Vs / (Ts + As)).toFixed(3) : ''},${Td + Ad ? (Vd / (Td + Ad)).toFixed(3) : ''},${Tn + An ? (Vn / (Tn + An)).toFixed(3) : ''}\n`; }
 await writeFile(path.join(OUT, 'country_year.csv'), csv);
-await writeFile(path.join(OUT, 'counts.json'), JSON.stringify({ generated: new Date().toISOString(), filters: { modis: 'type==0 && confidence>=30', viirs: 'type==0 && confidence!=l' }, columns: ['V', 'T', 'A', 'Vs', 'Ts', 'As', 'Vp', 'Tp', 'Ap', 'M_snppOut', 'A_terraOut', 'T_aquaOut', 'Vpd', 'Vpn', 'Tpd', 'Tpn', 'Apd', 'Apn'], static_rule: STATIC.rule, coverage_rule: COV.rule, read, kept, static: staticN, paired: pairedN, on_outage_days: gapN, drops, cells }));
+await writeFile(path.join(OUT, 'counts.json'), JSON.stringify({ generated: new Date().toISOString(), filters: { modis: 'vegetation: type==0 && confidence>=30 && not in a static cell; static columns: type==2 (conf>=30) or any detection in a static cell', viirs: 'type==0 && confidence!=l' }, columns: ['V', 'T', 'A', 'Vs', 'Ts', 'As', 'Vp', 'Tp', 'Ap', 'M_snppOut', 'A_terraOut', 'T_aquaOut', 'Vpd', 'Vpn', 'Tpd', 'Tpn', 'Apd', 'Apn'], static_rule: STATIC.rule, coverage_rule: COV.rule, read, kept, static: staticN, paired: pairedN, on_outage_days: gapN, drops, cells }));
 console.log(`\nread=${read} kept=${kept} static=${staticN} (${(100 * staticN / kept).toFixed(2)}%) paired=${pairedN} on_outage_days=${gapN} drops=${JSON.stringify(drops)} cells_with_data=${Object.keys(cells).length} in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
 console.log(csv);

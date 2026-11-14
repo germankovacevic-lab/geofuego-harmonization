@@ -384,7 +384,8 @@ function renderStep() {
 // ---------- validation card (canonical numbers from README / data/validation) ----------
 function renderValid() {
   const es = lang === 'es';
-  const k = (v, l, d) => `<div class="kpi"><div class="l">${t(l)}</div><div class="v">${v}</div><div class="d">${t(d)}</div></div>`;
+  const nb = x => x.replace(/ %/g, '\u00a0%'); // number and % never split across lines
+  const k = (v, l, d) => `<div class="kpi"><div class="l">${t(l)}</div><div class="v">${nb(v)}</div><div class="d">${nb(t(d))}</div></div>`;
   $('valid-kpis').innerHTML = [k(es ? '+4,4 % · +2,4 %' : '+4.4 % · +2.4 %', 'v1l', 'v1d'), k(es ? '3,2 % · 9,8 %' : '3.2 % · 9.8 %', 'v2l', 'v2d'), k('80 % · 77 %', 'v3l', 'v3d'), k(es ? '0,98' : '0.98', 'v4l', 'v4d')].join('');
 }
 

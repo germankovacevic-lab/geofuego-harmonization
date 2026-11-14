@@ -102,7 +102,7 @@ footer p { margin:0; }
 .case-btns .pill { border-color:var(--line); background:#151821; }
 .case-btns .pill.on { border-color:#c2410c; background:#3a1d0e; color:#ffd2b3; }
 .case-line { margin:10px 0 0; font-size:15px; } .case-line b { color:#ff8a65; font-size:18px; }
-.card.valid .kpi .v { color:#ffb347; }
+.card.valid .kpi .v { color:#ffb347; font-size:22px; white-space:nowrap; }
 #ramp { padding:3px 6px; font-size:12px; max-width:96px; }
 .cardhead .tools { gap:8px; } .cardhead .tools .tog { font-size:12px; }
 .sum-kpis { display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap:8px; margin-top:8px; }
@@ -138,3 +138,4 @@ footer p { margin:0; }
 #map .leaflet-bottom { bottom:96px; }
 .pulse-label { display:none; }
 .warnline { color:var(--warn); }
+.step-kpis .kpi .v, .sum-kpis .kpi .v { white-space:nowrap; }

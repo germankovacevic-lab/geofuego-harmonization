@@ -439,5 +439,83 @@
     "sha256": "61f151ce6ffd2dbd3113e9923c379a2fda047a88ed1d3a49eb30ee18d32479ba",
     "rows": 266607,
     "fetched_at": "2026-11-14T14:04:58.432Z"
+  },
+  "viirs-live_VIIRS_SNPP_SP_2026_2026-01-01_2026-07-31.csv": {
+    "sensor": "viirs_snpp_sp",
+    "year": 2026,
+    "range": [
+      "2026-01-01",
+      "2026-07-31"
+    ],
+    "url": "https://firms.modaps.eosdis.nasa.gov/api/area/csv/<MAP_KEY>/VIIRS_SNPP_SP/-74,-55,-53,-21/5/<date>",
+    "bytes": 7837902,
+    "sha256": "e157bdfa80bb6fce678842aabb7de584829247fc25c2c420a8d4b1f12c180576",
+    "rows": 98014,
+    "fetched_at": "2026-11-14T19:42:09.928Z"
+  },
+  "viirs-live_VIIRS_SNPP_NRT_2026_2026-08-01_2026-11-02.csv": {
+    "sensor": "viirs_snpp_nrt",
+    "year": 2026,
+    "range": [
+      "2026-08-01",
+      "2026-11-02"
+    ],
+    "url": "https://firms.modaps.eosdis.nasa.gov/api/area/csv/<MAP_KEY>/VIIRS_SNPP_NRT/-74,-55,-53,-21/5/<date>",
+    "bytes": 5552924,
+    "sha256": "b6b1fc32794a15fb6c03158273837ba36bd112802390c170323dfb01b210b615",
+    "rows": 66838,
+    "fetched_at": "2026-11-14T19:42:24.752Z"
+  },
+  "viirs-live_VIIRS_NOAA20_SP_2026_2026-01-01_2026-07-31.csv": {
+    "sensor": "viirs_noaa20_sp",
+    "year": 2026,
+    "range": [
+      "2026-01-01",
+      "2026-07-31"
+    ],
+    "url": "https://firms.modaps.eosdis.nasa.gov/api/area/csv/<MAP_KEY>/VIIRS_NOAA20_SP/-74,-55,-53,-21/5/<date>",
+    "bytes": 8623598,
+    "sha256": "769750b80e76a2d7902ab6f69919f1208186ba4941cf3832e26efbb2a5d25a05",
+    "rows": 105147,
+    "fetched_at": "2026-11-14T19:43:00.444Z"
+  },
+  "viirs-live_VIIRS_NOAA20_NRT_2026_2026-08-01_2026-11-14.csv": {
+    "sensor": "viirs_noaa20_nrt",
+    "year": 2026,
+    "range": [
+      "2026-08-01",
+      "2026-11-14"
+    ],
+    "url": "https://firms.modaps.eosdis.nasa.gov/api/area/csv/<MAP_KEY>/VIIRS_NOAA20_NRT/-74,-55,-53,-21/5/<date>",
+    "bytes": 6320468,
+    "sha256": "6a8151255ea1ff7d11afa0eb425608357102d2bf366bff822fa8fcc92160a36a",
+    "rows": 74312,
+    "fetched_at": "2026-11-14T19:43:17.520Z"
+  },
+  "viirs-live_VIIRS_NOAA21_SP_2026_2026-01-01_2026-07-31.csv": {
+    "sensor": "viirs_noaa21_sp",
+    "year": 2026,
+    "range": [
+      "2026-01-01",
+      "2026-07-31"
+    ],
+    "url": "https://firms.modaps.eosdis.nasa.gov/api/area/csv/<MAP_KEY>/VIIRS_NOAA21_SP/-74,-55,-53,-21/5/<date>",
+    "bytes": 8268919,
+    "sha256": "568e1b95e2115e429f86959f7340f4501c2fc1564b61e5340c1fd0296939ba09",
+    "rows": 100809,
+    "fetched_at": "2026-11-14T19:44:07.810Z"
+  },
+  "viirs-live_VIIRS_NOAA21_NRT_2026_2026-08-01_2026-11-14.csv": {
+    "sensor": "viirs_noaa21_nrt",
+    "year": 2026,
+    "range": [
+      "2026-08-01",
+      "2026-11-14"
+    ],
+    "url": "https://firms.modaps.eosdis.nasa.gov/api/area/csv/<MAP_KEY>/VIIRS_NOAA21_NRT/-74,-55,-53,-21/5/<date>",
+    "bytes": 5946975,
+    "sha256": "ee2e8d078d2777bad6f5fbdaabd9672ebce1dcd100bed2761bbf4fe6920caa09",
+    "rows": 69904,
+    "fetched_at": "2026-11-14T19:44:19.607Z"
   }
 }

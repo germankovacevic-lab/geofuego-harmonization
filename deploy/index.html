@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>GeoFuego Harmonization — a 25-year fire-hotspot calendar for any area of Argentina</title>
+<meta name="description" content="MODIS and VIIRS active-fire hotspots harmonized into one monthly calendar, Nov 2000 → today, for any area of interest in Argentina. NASA Space Apps Challenge 2026.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230f1115'/%3E%3Cpath d='M16 5c3 5 7 7 7 13a7 7 0 0 1-14 0c0-3 1-5 3-7 0 3 1 4 2 4 0-4 1-7 2-10z' fill='%23f5a623'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
+<link rel="stylesheet" href="vendor/leaflet-draw-1.0.4/leaflet.draw.css">
+<link rel="stylesheet" href="vendor/uplot-1.6.31/uPlot.min.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <h1>GeoFuego <span>Harmonization</span></h1>
+    <p data-i18n="tagline">One fire-hotspot calendar for any area of Argentina, November 2000 → today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month.</p>
+  </div>
+  <div class="topright">
+    <button id="lang" class="chip" type="button" aria-label="Cambiar a español">ES</button>
+    <a class="chip" href="https://github.com/germankovacevic-lab/geofuego-harmonization" rel="noopener" data-i18n="method">Method &amp; code</a>
+    <a class="chip" href="https://doi.org/10.5281/zenodo.24220107" rel="noopener">DOI</a>
+  </div>
+</header>
+
+<main>
+  <section class="panel map-panel" aria-label="Area of interest">
+    <div class="controls">
+      <div class="ctl">
+        <label for="prov" data-i18n="province">Province</label>
+        <select id="prov"><option value="">—</option></select>
+      </div>
+      <button id="country" class="btn" type="button" data-i18n="country">Whole country</button>
+      <div class="ctl latlon">
+        <label for="lat" data-i18n="latlon">Lat / Lon</label>
+        <input id="lat" type="number" step="0.01" min="-55" max="-21" placeholder="-34.60" aria-label="Latitude">
+        <input id="lon" type="number" step="0.01" min="-74" max="-53" placeholder="-58.38" aria-label="Longitude">
+        <button id="go" class="btn" type="button" data-i18n="go">Go</button>
+      </div>
+      <span class="hint" data-i18n="drawhint">or draw a rectangle / polygon on the map</span>
+    </div>
+    <div id="map" role="application" aria-label="Map of Argentina"></div>
+    <p class="attrib" data-i18n="attrib">Basemap: Esri World Light Gray Canvas (Esri, HERE, Garmin, OpenStreetMap contributors). Grid: 0.25°. Data: NASA FIRMS (MODIS, VIIRS).</p>
+  </section>
+
+  <section class="panel results" id="results" aria-live="polite">
+    <div id="empty" class="empty">
+      <p data-i18n="empty">Pick a province, enter a point, or draw an area. The calendar snaps to whole 0.25° cells (about 25 × 25 km).</p>
+    </div>
+
+    <div id="out" hidden>
+      <div class="summary">
+        <h2 id="aoi-title">—</h2>
+        <p id="aoi-sub" class="sub">—</p>
+        <div class="range">
+          <label for="from" data-i18n="from">From</label> <input id="from" type="month" min="2000-11" max="2026-12" value="2000-11">
+          <label for="to" data-i18n="to">to</label> <input id="to" type="month" min="2000-11" max="2026-12" value="2026-12">
+        </div>
+        <div id="banners"></div>
+      </div>
+
+      <div class="card now" id="now-card">
+        <h3 data-i18n="nowtitle">This month vs the historical median</h3>
+        <div id="now"></div>
+      </div>
+
+      <div class="card">
+        <div class="cardhead">
+          <h3 data-i18n="caltitle">Burning-activity calendar</h3>
+          <div class="tools">
+            <label class="tog"><input id="tog-pre" type="checkbox"> <span data-i18n="togpre">show greyed years</span></label>
+            <label class="tog"><input id="tog-static" type="checkbox"> <span data-i18n="togstatic">fixed heat sources</span></label>
+            <button id="dl-png" class="btn small" type="button">PNG</button>
+            <button id="dl-csv" class="btn small" type="button">CSV</button>
+          </div>
+        </div>
+        <div class="calwrap"><canvas id="cal" width="900" height="560" role="img" aria-label="Calendar heatmap of monthly hotspots by year"></canvas><div id="tip" class="tip" hidden></div></div>
+        <div class="legend" id="legend"></div>
+        <p class="note" data-i18n="unit">Counts are satellite fire detections expressed in VIIRS-equivalent pixels (375 m). They are not a number of fires and not burned area. A fire that burns for several days is counted on every satellite pass.</p>
+        <p class="note" data-i18n="eras">From 2012 the values are observed by VIIRS. Before 2012 they are estimated from MODIS, a coarser sensor, and shown with an 80 % range: about 1 month in 5 falls outside it.</p>
+        <p class="note warn" id="small-note" hidden data-i18n="smallnote">MODIS missed many small fires that VIIRS detects. In an area this size, a month with no value before 2012 means “MODIS detected nothing”, not “nothing burned”. Do not compare how often it burned before and after 2012.</p>
+      </div>
+
+      <div class="card">
+        <h3 data-i18n="seriestitle">Monthly series with 80 % range</h3>
+        <div id="series"></div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h3 data-i18n="yearstitle">Which years burned most</h3>
+          <canvas id="years" width="440" height="220" role="img" aria-label="Annual totals by year"></canvas>
+          <ol id="rank" class="rank"></ol>
+        </div>
+        <div class="card">
+          <h3 data-i18n="seasontitle">Which months of the year</h3>
+          <canvas id="season" width="440" height="220" role="img" aria-label="Median hotspots by calendar month"></canvas>
+          <p id="season-note" class="note"></p>
+        </div>
+      </div>
+
+      <div class="card" id="static-card" hidden>
+        <h3 data-i18n="statictitle">Fixed heat sources (gas flares, industry) — separate series, VIIRS counts, 2012 →</h3>
+        <canvas id="static" width="900" height="180" role="img" aria-label="Static-source detections by year"></canvas>
+        <p class="note" data-i18n="staticnote">Never added to the calendar above. In the sensor's own units: VIIRS counts since 2012; the MODIS-era values are not shown.</p>
+      </div>
+
+      <details class="card">
+        <summary data-i18n="how">How to read this</summary>
+        <ul class="how">
+          <li data-i18n="how1">Unit: the 0.25° cell. Drawn areas snap to whole cells; an area smaller than one cell becomes that cell.</li>
+          <li data-i18n="how2">Size tiers: ≥ 100 cells full calendar · 25–99 full, pre-2012 labelled reconstructed · 4–24 baseline 2012–2025, pre-2012 zero = no MODIS detection · 1–3 pre-2012 greyed and excluded unless you toggle them on. Chubut and Santa Cruz: one tier stricter. Tierra del Fuego: 2012 → only.</li>
+          <li data-i18n="how3">80 % range: calibrated out of sample per fire-regime region, size class and predicted count, widened in strong ENSO months and in cloudier-than-usual months. Only reconstructed months carry it.</li>
+          <li data-i18n="how4">Markers: ▲ cloudier than usual at overpass time (the count may be low) · ◆ partly modelled (satellite outage) · hatch: Terra-only era (Nov 2000 – Jun 2002), shown for ≥ 100 cells.</li>
+          <li data-i18n="how5">Current year: preliminary, near-real-time, NOAA-20/21 converted to S-NPP-equivalent (± 5 %), month to date. Not part of the harmonized record. This is not an alert system: an empty cell does not mean there is no fire.</li>
+        </ul>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p data-i18n="foot">NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Team GeoFuego.com.ar · Data: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), ERA5, NOAA CPC ONI, IGN Argentina · Code MIT, data CC BY 4.0 · Built with SI assistance (Claude, Anthropic); every number is computed by the open scripts from NASA FIRMS data. We acknowledge the use of data from NASA's Fire Information for Resource Management System (FIRMS), part of NASA's Earth Science Data and Information System (ESDIS).</p>
+</footer>
+
+<script src="vendor/leaflet-1.9.4/leaflet.js"></script>
+<script src="vendor/leaflet-draw-1.0.4/leaflet.draw.js"></script>
+<script src="vendor/uplot-1.6.31/uPlot.iife.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

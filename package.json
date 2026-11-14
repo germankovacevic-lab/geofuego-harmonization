@@ -4,7 +4,9 @@
   "description": "MODIS→VIIRS-equivalent harmonized fire-hotspot calendar for Argentina, 2000→today (NASA Space Apps 2026, GeoFuego.com.ar)",
   "type": "module",
   "license": "MIT",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "fetch": "node scripts/01_fetch.mjs && node scripts/01c_fetch_aux.mjs && python3 scripts/01d_fetch_era5_cloud.py && python3 scripts/01e_fetch_era5_precip.py",
     "fetch:bridge": "node scripts/01b_fetch_viirs_sp.mjs",
@@ -12,6 +14,9 @@
     "validate": "node scripts/05_loyo.mjs --ablation --tag=_ablation && node scripts/05b_external_validation.mjs && node scripts/05d_ha_per_hotspot.mjs && node scripts/05e_enso.mjs && node scripts/05f_cloud.mjs && node scripts/audit_static_sources.mjs",
     "bridge": "node scripts/04b_bridge.mjs",
     "figures": "python3 scripts/fig_factor_map.py 8 TA && python3 scripts/fig_factor_map.py 8 T && python3 scripts/fig_external_validation.py Argentina && python3 scripts/fig_ablation.py && python3 scripts/fig_headline_series.py",
-    "all": "npm run fetch && npm run build && npm run validate && npm run figures"
+    "all": "npm run fetch && npm run build && npm run validate && npm run figures && npm run live && npm run app",
+    "live": "node scripts/07_live_2026.mjs",
+    "app": "node scripts/08_app_payload.mjs",
+    "app:serve": "node -e \"const h=require('http'),f=require('fs'),p=require('path');h.createServer((q,s)=>{let u=q.url.split('?')[0];if(u==='/')u='/index.html';const x=p.join('deploy',u);if(!f.existsSync(x)){s.writeHead(404);return s.end()}s.writeHead(200,{'Content-Type':{'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png'}[p.extname(x)]||'application/octet-stream'});s.end(f.readFileSync(x))}).listen(8080,()=>console.log('http://127.0.0.1:8080/'))\""
   }
 }

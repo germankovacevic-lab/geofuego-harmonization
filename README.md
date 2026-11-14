@@ -18,6 +18,12 @@ MODIS (2000→, 1 km) and VIIRS (2012→, 375 m) count fire differently, and the
 
 All code in this repository was written during the hackathon window (14–15 Nov 2026, Buenos Aires time); git timestamps are the record.
 
+## The series in one figure
+
+![Argentina 2000–2025: raw MODIS, raw VIIRS, naive concatenation and the harmonized series with its 80 % interval](figures/headline_series_Argentina.png)
+
+Raw MODIS runs through 2025 and falls after 2011 as much as the harmonized series does (2003–2011 mean over 2012–2025 mean: 1.48 raw MODIS, 1.41 harmonized): the lower fire activity of the VIIRS era is real, the ≈ 3× step of the naive splice is not.
+
 ## Validation at a glance (`docs/audit_2026-11-14.md`, `docs/peer_review_fable52.md`)
 
 | test | result |

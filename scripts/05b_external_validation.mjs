@@ -1,6 +1,12 @@
 #!/usr/bin/env node
-// 05b_external_validation.mjs — Validate the harmonized series against an INDEPENDENT product: MODIS burned area (MCD64A1),
-// monthly by province, 2002–2025, as published by GWIS/JRC (country.profile downloads; derived from NASA MCD64A1 C6.1).
+// 05b_external_validation.mjs — CONSISTENCY CHECK of the harmonized series across the 2012 sensor splice against the MODIS
+// burned-area product MCD64A1 (monthly by province, 2002–2025, GWIS/JRC country-profile tables).
+// NOT an independent validation of the factor: the MCD64A1 C6 algorithm uses MODIS active-fire detections in its training
+// (Giglio et al. 2018), and since f ≈ V/M on the overlap, burned area per harmonized hotspot pre/post 2012 is close to burned
+// area per raw MODIS hotspot pre/post 2012 (column "MODIS-both-sides"). What the test does show: (i) the naive concatenation
+// has a ~3× step that the harmonized series removes; (ii) burned area per MODIS detection was stable across the splice, so
+// the reconstructed years are consistent with the observed ones; (iii) where the harmonized ratio departs from 1, the
+// MODIS-both-sides control departs the same way (regime change, not the factor).
 // Written with SI assistance (Claude, Anthropic); reviewed and validated by the team.
 //
 // Test: burned area per hotspot (ha / VIIRS-equivalent hotspot) should be CONTINUOUS across the 2012 sensor change if the

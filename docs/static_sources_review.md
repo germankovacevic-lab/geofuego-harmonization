@@ -19,7 +19,7 @@ Persistence alone (the rule used in GeoFuego production) also flagged 78 cells o
 
 Threshold sensitivity (share of Neuquén VIIRS hotspots flagged): 7/12 → 56 %, 8/12 → 52 %, **9/12 → 48 %**, 10/12 → 41 %, 11/12 → 30 %; cell 0.03° gives the same ± 5 points. No knee: the result does not hinge on the chosen threshold.
 
-Non-stationarity (the reason this matters for harmonization): VIIRS/MODIS ratio of the static class is 3.6 (2012) → 24–26 (2019–2025), while the vegetation class stays at 2.9–3.8. A single national scale factor would silently absorb a source that grew ~7× over the period and would then be applied to 2000–2011, when it did not exist.
+Non-stationarity (the reason this matters for harmonization): VIIRS/MODIS ratio of the static class is 3.6 (2012) → 13–26 in 2019–2025 (24.2, 20.9, 20.5, 18.5, 15.4, 12.8, 25.6), while the vegetation class stays at 2.9–3.8. A single national scale factor would silently absorb a source that grew ~7× over the period and would then be applied to 2000–2011, when it did not exist.
 
 ## Manual review (Google Earth, pin = hotspot centroid, box = cell)
 | cell | what is there | verdict |

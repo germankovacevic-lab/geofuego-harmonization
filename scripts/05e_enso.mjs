@@ -28,7 +28,7 @@ const SEASON = [7, 8, 9, 10, 11];
 // ---- ONI: season label → centre month ----
 const SEAS = ['DJF', 'JFM', 'FMA', 'MAM', 'AMJ', 'MJJ', 'JJA', 'JAS', 'ASO', 'SON', 'OND', 'NDJ'];
 const ONI = {}; // 'YYYY-M' -> anomaly
-for (const line of (await readFile(path.join(process.env.HOME, '.openclaw', 'data', 'firms_ar', 'oni.ascii.txt'), 'utf8')).split('\n').slice(1)) {
+for (const line of (await readFile(path.join(ROOT, 'data', 'external', 'oni', 'oni.ascii.txt'), 'utf8')).split('\n').slice(1)) {
   const f = line.trim().split(/\s+/); if (f.length < 4) continue; const m = SEAS.indexOf(f[0]) + 1; if (!m) continue; ONI[`${f[1]}-${m}`] = +f[3];
 }
 const oni = (y, m) => ONI[`${y}-${m}`];

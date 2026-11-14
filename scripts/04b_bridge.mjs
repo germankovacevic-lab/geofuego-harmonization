@@ -2,7 +2,7 @@
 // 04b_bridge.mjs — S-NPP ↔ NOAA-20 / NOAA-21 bridge factors (province × calendar month), fitted on the 2023–2025 overlap.
 // Written with SI assistance (Claude, Anthropic); reviewed and validated by the team.
 //
-// Why: the harmonized series (and the 2012–2025 calibration) is in S-NPP counts, but S-NPP stopped on 2026-11-01.
+// Why: the harmonized series (and the 2012–2023 MODIS→VIIRS calibration) is in S-NPP counts, but S-NPP stopped on 2026-11-01.
 // From then on the live series comes from NOAA-20 and NOAA-21 (same VIIRS instrument, 375 m, same 13:30 orbit plane
 // but ~50 min apart). Their detection counts are close to S-NPP but not identical; this script measures the ratio
 //     g_sat[prov] = Σ_{m,y} N_sat[prov,m,y] / Σ_{m,y} N_snpp[prov,m,y]   (ratio of sums over all months, shrunk to country, k = 20)

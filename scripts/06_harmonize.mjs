@@ -7,9 +7,11 @@
 //   2002-07 .. 2011-12   : H = f_TA[c,m] · (T + A)                            sensor = MODIS→VIIRS-eq band = H·exp(±1.28·σ_TA)   (≈ IC 80 %)
 //   2000-11 .. 2002-06   : H = f_T[c,m] · T   (Terra only, Aqua not yet)      sensor = MODIS-Terra→VIIRS-eq, terra_only = 1
 //   2000-01 .. 2000-10   : no data (MODIS archive starts 2000-11-01)         H = null
-// Band for aggregates (province, country, any AOI): relative σ = max( RSS of cell bands assuming independence,
-//   empirical LOYO floor ) where the floor is the LOYO monthly median |rel. error| per level (cell / province / country)
-//   interpolated in log10(number of cells). Independence alone under-states the error (±2 % at country level vs 4–9 % measured).
+// Band (IC80), CALIBRATED on out-of-sample LOYO residuals (05_loyo band_calibration + 05c AOI curve), per satellite set:
+//   σ_eff(n, set) = q80|log(V/P)|(n, set) / 1.2816, interpolated in log10(n cells) through the block curve (1…111 cells) and
+//   the province / country reference points; the band H·exp(±1.2816·σ_eff) then covers 80 % of out-of-sample months by
+//   construction. The RSS of cell bands (independence) is kept only as a lower bound. The Terra-only era (2000–mid 2002)
+//   uses its own, wider, curve (set T). Gap-filled observed months get σ = filled share × σ_eff(TA).
 // Satellite outages (03b_coverage.mjs) are filled with the other sensor, so that a gap in one satellite does not become
 // a false low in the series ("sensor of origin no longer matters"):
 //   2012+   : H = V + f_TA · M(on S-NPP outage days)                         e.g. S-NPP safe-hold 10 days in Aug 2022
@@ -35,21 +37,23 @@ const index = JSON.parse(await readFile(path.join(ROOT, 'data', 'grid', 'cells_i
 const provOf = new Map(index.cells.map(c => [c.id, c.prov]));
 const Y0 = 2000, Y1 = 2025, YEARS = []; for (let y = Y0; y <= Y1; y++) YEARS.push(y);
 const Z = 1.2816; // 80 % two-sided
-const LOYO = JSON.parse(await readFile(path.join(ROOT, 'data', 'validation', 'loyo_summary.json'), 'utf8'));
-const base = LOYO.summary.filter(s => s.K === 20 && s.CAP === 200);
-const EMP = { cell: base.find(s => s.level === 'cell').monthly_median_ape, prov: base.find(s => s.level === 'prov').monthly_median_ape, country: base.find(s => s.level === 'country').monthly_median_ape };
+const BANDCAL = JSON.parse(await readFile(path.join(ROOT, 'data', 'validation', 'band_calibration.json'), 'utf8'));
+const EMP = { cell: BANDCAL.band.TA.cell.sigma_equiv_for_80pct, prov: BANDCAL.band.TA.prov.sigma_equiv_for_80pct, country: BANDCAL.band.TA.country.sigma_equiv_for_80pct };
 const N_CELLS_TOTAL = Object.keys(agg.cells).length, N_CELLS_PROV = N_CELLS_TOTAL / 24;
 // Empirical relative σ for an aggregate of n cells: the AOI-size error curve measured by LOYO on random contiguous blocks
 // (05c_aoi_error.mjs: monthly median |rel. error| for 1, 4, 9, 21, 64, 111 cells) plus the province and country references,
 // interpolated piecewise-linearly in log10(n).
 const AOI = JSON.parse(await readFile(path.join(ROOT, 'data', 'validation', 'aoi_error_curve.json'), 'utf8'));
-const CURVE = [...AOI.curve.map(c => [c.n_cells_median, c.monthly_median_abs_rel_err]), ...AOI.reference.map(c => [c.n_cells_nominal, c.monthly_median_abs_rel_err])].sort((a, b) => a[0] - b[0]);
-export function empSigma(n) {
-  const x = Math.log10(Math.max(1, n));
-  if (x <= Math.log10(CURVE[0][0])) return CURVE[0][1];
-  for (let i = 1; i < CURVE.length; i++) { const [n1, s1] = CURVE[i - 1], [n2, s2] = CURVE[i]; const x1 = Math.log10(n1), x2 = Math.log10(n2); if (x <= x2) return s1 + (s2 - s1) * (x - x1) / (x2 - x1); }
-  return CURVE.at(-1)[1];
+const CURVES = {};
+for (const set of ['TA', 'T']) CURVES[set] = [...AOI.by_set[set].curve.map(c => [c.n_cells_median, c.q80_abs_log / Z]), ...AOI.by_set[set].reference.map(c => [c.n_cells_nominal, c.q80_abs_log / Z])].sort((a, b) => a[0] - b[0]);
+const CURVE = CURVES.TA;
+export function empSigma(n, set = 'TA') {
+  const C = CURVES[set] || CURVES.TA; const x = Math.log10(Math.max(1, n));
+  if (x <= Math.log10(C[0][0])) return C[0][1];
+  for (let i = 1; i < C.length; i++) { const [n1, s1] = C[i - 1], [n2, s2] = C[i]; const x1 = Math.log10(n1), x2 = Math.log10(n2); if (x <= x2) return s1 + (s2 - s1) * (x - x1) / (x2 - x1); }
+  return C.at(-1)[1];
 }
+const setOf = (y, m) => (y < 2002 || (y === 2002 && m <= 6)) ? 'T' : 'TA';
 const SI_NOTE = '# Produced by scripts written with SI assistance (Claude, Anthropic); all values computed from NASA FIRMS archives (MODIS C6.1, VIIRS S-NPP). License CC BY 4.0. GeoFuego Harmonization, NASA Space Apps 2026.';
 
 const COV = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'coverage.json'), 'utf8'));
@@ -62,14 +66,14 @@ const rTA = {}; { const acc = {}; for (const [cid, yrs] of Object.entries(agg.ce
 const BETA = +(process.argv.find(a => a.startsWith('--enso-beta='))?.split('=')[1] || 0);
 const ENSO_SIGMA_BETA = 0.025; // measured national sensitivity (05e): phase-dependent uncertainty added in quadrature to reconstructed months
 const ONI = {};
-{ const SEAS = ['DJF', 'JFM', 'FMA', 'MAM', 'AMJ', 'MJJ', 'JJA', 'JAS', 'ASO', 'SON', 'OND', 'NDJ']; for (const line of (await readFile(path.join(process.env.HOME, '.openclaw', 'data', 'firms_ar', 'oni.ascii.txt'), 'utf8')).split('\n').slice(1)) { const f = line.trim().split(/\s+/); const mi = SEAS.indexOf(f[0]) + 1; if (mi) ONI[`${f[1]}-${mi}`] = +f[3]; } }
+{ const SEAS = ['DJF', 'JFM', 'FMA', 'MAM', 'AMJ', 'MJJ', 'JJA', 'JAS', 'ASO', 'SON', 'OND', 'NDJ']; for (const line of (await readFile(path.join(ROOT, 'data', 'external', 'oni', 'oni.ascii.txt'), 'utf8')).split('\n').slice(1)) { const f = line.trim().split(/\s+/); const mi = SEAS.indexOf(f[0]) + 1; if (mi) ONI[`${f[1]}-${mi}`] = +f[3]; } }
 const ensoAdj = (y, m) => BETA && y < 2012 ? Math.exp(BETA * (ONI[`${y}-${m}`] ?? 0)) : 1;
 const ensoSig = (y, m) => y < 2012 ? Math.abs(ENSO_SIGMA_BETA * (ONI[`${y}-${m}`] ?? 0)) : 0;
 const era = (y, m) => y >= 2012 ? 'VIIRS' : (y > 2002 || (y === 2002 && m >= 7)) ? 'MODIS->VIIRS-eq' : (y > 2000 || m >= 11) ? 'MODIS-Terra->VIIRS-eq' : null;
 
 let cellsCsv = `${SI_NOTE}\ncell,prov,year,month,H,H_lo,H_hi,sigma_log,V,T,A,sensor,terra_only,gap_fill,static_viirs,static_modis\n`;
 let fillTotal = { snpp: 0, terra: 0, aqua: 0, terra_only: 0 };
-const compact = { grid: index.grid, years: YEARS, z: Z, emp: { ...EMP, n_prov: Math.round(N_CELLS_PROV), n_total: N_CELLS_TOTAL }, sigma_curve: CURVE, note: SI_NOTE.slice(2), cells: {} };
+const compact = { grid: index.grid, years: YEARS, z: Z, emp: { ...EMP, n_prov: Math.round(N_CELLS_PROV), n_total: N_CELLS_TOTAL }, sigma_curve: CURVE, sigma_curve_by_set: CURVES, terra_only_until: '2002-06', band: 'IC80 calibrated on LOYO residuals: sigma_eff = q80|log(V/P)|/1.2816 by number of cells and satellite set', note: SI_NOTE.slice(2), cells: {} };
 const provSeries = {}; // prov -> { H:[y][m], var:[y][m], obs:[y][m], static:[y][m] }
 const provAcc = p => (provSeries[p] ??= { n: 0, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)) });
 
@@ -85,15 +89,15 @@ for (const [cid, yrs] of Object.entries(agg.cells)) {
       const r = yrs[y]?.[m] || Array(12).fill(0);
       const V = r[0], T = r[1], A = r[2], Vs = r[3], Ms = r[4] + r[5], Mso = r[9] || 0, Ato = r[10] || 0, Tao = r[11] || 0;
       let H, sig = 0, terra = 0, gf = 0;
-      if (e === 'VIIRS') { H = V; if (Mso) { gf = fTA[m - 1][0] * Mso; H += gf; fillTotal.snpp += gf; } }
+      if (e === 'VIIRS') { H = V; if (Mso) { gf = fTA[m - 1][0] * Mso; H += gf; fillTotal.snpp += gf; sig = (gf / H) * EMP.cell; } }
       else if (e === 'MODIS->VIIRS-eq') {
         const k = rTA[prov]?.[m] ?? 0.55; const fillT = Ato * k, fillA = Tao / Math.max(k, 0.05);
         const adj = ensoAdj(y, m);
-        H = fTA[m - 1][0] * (T + A + fillT + fillA) * adj; gf = fTA[m - 1][0] * (fillT + fillA) * adj; fillTotal.terra += fTA[m - 1][0] * fillT; fillTotal.aqua += fTA[m - 1][0] * fillA; sig = fTA[m - 1][1];
+        H = fTA[m - 1][0] * (T + A + fillT + fillA) * adj; gf = fTA[m - 1][0] * (fillT + fillA) * adj; fillTotal.terra += fTA[m - 1][0] * fillT; fillTotal.aqua += fTA[m - 1][0] * fillA; sig = Math.max(fTA[m - 1][1], EMP.cell);
       } else {
         const od = outDays('Terra', y, m), scale = od ? dim(y, m) / Math.max(1, dim(y, m) - od) : 1;
         const adj = ensoAdj(y, m);
-        H = fT[m - 1][0] * T * scale * adj; gf = fT[m - 1][0] * T * (scale - 1) * adj; fillTotal.terra_only += gf; sig = fT[m - 1][1]; terra = 1;
+        H = fT[m - 1][0] * T * scale * adj; gf = fT[m - 1][0] * T * (scale - 1) * adj; fillTotal.terra_only += gf; sig = Math.max(fT[m - 1][1], empSigma(1, 'T')); terra = 1;
       }
       if (sig) sig = Math.sqrt(sig * sig + ensoSig(y, m) ** 2);
       const lo = sig ? H * Math.exp(-Z * sig) : H, hi = sig ? H * Math.exp(Z * sig) : H;
@@ -115,7 +119,7 @@ provSeries['Argentina'] = AR;
 let provCsv = `${SI_NOTE}\n# sigma_rel = max(RSS of cell bands, empirical LOYO floor by number of cells); band = H*exp(-+1.28*sigma_rel) ~ IC80; 0 for observed VIIRS years\nregion,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terra,outage_days_aqua,outage_days_snpp,static\n`;
 for (const [p, P] of Object.entries(provSeries)) for (let yi = 0; yi < YEARS.length; yi++) for (let m = 0; m < 12; m++) {
   if (P.nodata[yi][m]) continue;
-  const H = P.H[yi][m], rss = H > 0 ? Math.sqrt(P.var[yi][m]) / H : 0, sr = YEARS[yi] >= 2012 ? 0 : Math.max(rss, empSigma(P.n));
+  const H = P.H[yi][m], rss = H > 0 ? Math.sqrt(P.var[yi][m]) / H : 0, sr = YEARS[yi] >= 2012 ? (H > 0 && P.gf[yi][m] ? (P.gf[yi][m] / H) * empSigma(P.n, 'TA') : 0) : Math.max(rss, empSigma(P.n, setOf(YEARS[yi], m + 1)));
   const yy = YEARS[yi], mm = m + 1;
   provCsv += `"${p}",${P.n},${yy},${mm},${H.toFixed(1)},${(H * Math.exp(-Z * sr)).toFixed(1)},${(H * Math.exp(Z * sr)).toFixed(1)},${sr.toFixed(3)},${era(yy, mm)},${P.gf[yi][m] ? P.gf[yi][m].toFixed(1) : 0},${outDays('Terra', yy, mm)},${yy > 2002 || (yy === 2002 && mm >= 7) ? outDays('Aqua', yy, mm) : ''},${yy >= 2012 ? outDays('SNPP', yy, mm) : ''},${P.st[yi][m]}\n`;
 }
@@ -129,10 +133,10 @@ await writeFile(path.join(OUT, 'cells.json.gz'), gzipSync(json, { level: 9 }));
 console.log(`cells: ${Object.keys(compact.cells).length} · cells.json ${(json.length / 1e6).toFixed(1)} MB (gz ${(gzipSync(json, { level: 9 }).length / 1e6).toFixed(2)} MB) · cells.csv ${(cellsCsv.length / 1e6).toFixed(1)} MB`);
 if (BETA) console.log(`ENSO conditioning applied to 2000–2011: beta=${BETA} (H *= exp(beta*ONI))`);
 console.log(`gap fill (VIIRS-eq hotspots added): S-NPP outages ${Math.round(fillTotal.snpp)} · Terra outages ${Math.round(fillTotal.terra)} · Aqua outages ${Math.round(fillTotal.aqua)} · Terra-only era ${Math.round(fillTotal.terra_only)}`);
-console.log(`empirical σ curve (LOYO, monthly median |err| vs n cells): ` + CURVE.map(([n, s]) => `${n}:${(100 * s).toFixed(0)}%`).join(' '));
+for (const set of ['TA', 'T']) console.log(`calibrated σ_eff(${set}) = q80|log|/1.28 vs n cells: ` + CURVES[set].map(([n, s]) => `${n}:${(100 * s).toFixed(0)}%`).join(' '));
 console.log('\nArgentina, annual VIIRS-equivalent hotspots (vegetation class), band = IC80 (max of RSS and LOYO floor):');
 for (let yi = 0; yi < YEARS.length; yi++) {
   let H = 0, v = 0, st = 0; for (let m = 0; m < 12; m++) { H += AR.H[yi][m]; v += AR.var[yi][m]; st += AR.st[yi][m]; }
-  const sr = YEARS[yi] >= 2012 ? 0 : H ? Math.max(Math.sqrt(v) / H, EMP.country) : 0;
+  const sr = YEARS[yi] >= 2012 ? 0 : H ? Math.max(Math.sqrt(v) / H, empSigma(N_CELLS_TOTAL, setOf(YEARS[yi], 12))) : 0;
   console.log(`  ${YEARS[yi]}  ${String(Math.round(H)).padStart(7)}  [${Math.round(H * Math.exp(-Z * sr))}–${Math.round(H * Math.exp(Z * sr))}]  ${era(YEARS[yi], 12).padEnd(22)} static ${st}`);
 }

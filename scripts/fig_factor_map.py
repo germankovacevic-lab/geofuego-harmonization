@@ -39,7 +39,9 @@ ax.add_collection(pc)
 ax.set_xlim(-74, -53); ax.set_ylim(-55.2, -21); ax.set_aspect(1 / np.cos(np.deg2rad(38)))
 ax.set_xlabel("lon"); ax.set_ylabel("lat")
 names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-ax.set_title(f"Harmonization factor f = VIIRS / MODIS({'Terra+Aqua' if sset=='TA' else 'Terra only'})\n{names[month-1]}, fitted on 2012–2025 overlap · 0.25° cells (faint = shrunk to province)", fontsize=9)
+yrs = F.get("meta", {}).get("years", [])
+win = f"{yrs[0]}–{yrs[-1]}" if yrs else "overlap"
+ax.set_title(f"Harmonization factor f = VIIRS / MODIS({'Terra+Aqua' if sset=='TA' else 'Terra only'})\n{names[month-1]}, fitted on the {win} overlap (paired days) · 0.25° cells (faint = shrunk to province/region)", fontsize=9)
 cb = fig.colorbar(plt.cm.ScalarMappable(norm=pc.norm, cmap="viridis"), ax=ax, shrink=0.6, ticks=[1.5, 2, 3, 4, 6, 8, 12])
 cb.ax.set_yticklabels(["1.5", "2", "3", "4", "6", "8", "12"]); cb.set_label("f (log scale)")
 fig.text(0.01, 0.01, "Data: NASA FIRMS (MODIS C6.1, VIIRS S-NPP) · GeoFuego Harmonization · NASA Space Apps 2026", fontsize=6, alpha=0.7)

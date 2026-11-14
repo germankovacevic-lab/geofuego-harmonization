@@ -1,0 +1,45 @@
+set,prov,n_folds,season_mape_mean,season_mape_median
+TA,Santa Cruz,11,0.2364,0.1945
+TA,Chubut,10,0.2267,0.1332
+TA,Río Negro,12,0.1189,0.084
+TA,Neuquén,12,0.2537,0.2448
+TA,Buenos Aires,12,0.0978,0.0806
+TA,La Pampa,12,0.0878,0.0705
+TA,Mendoza,12,0.0983,0.1015
+TA,San Luis,12,0.0905,0.0845
+TA,Córdoba,12,0.0777,0.0695
+TA,Santa Fe,12,0.0275,0.0178
+TA,Entre Ríos,12,0.1124,0.1306
+TA,San Juan,12,0.1147,0.1153
+TA,La Rioja,12,0.0668,0.0682
+TA,Corrientes,12,0.0573,0.0425
+TA,Santiago del Estero,12,0.0579,0.0703
+TA,Catamarca,12,0.1288,0.1133
+TA,Misiones,12,0.0753,0.0798
+TA,Tucumán,12,0.0499,0.0478
+TA,Chaco,12,0.0445,0.0481
+TA,Formosa,12,0.0463,0.0377
+TA,Salta,12,0.0764,0.0441
+TA,Jujuy,12,0.1677,0.157
+T,Santa Cruz,11,0.4384,0.3518
+T,Chubut,10,0.377,0.4604
+T,Río Negro,12,0.2359,0.2827
+T,Neuquén,12,0.2587,0.188
+T,Buenos Aires,12,0.1858,0.1852
+T,La Pampa,12,0.1675,0.1696
+T,Mendoza,12,0.1414,0.1483
+T,San Luis,12,0.1492,0.1501
+T,Córdoba,12,0.1125,0.1007
+T,Santa Fe,12,0.0745,0.077
+T,Entre Ríos,12,0.1997,0.206
+T,San Juan,12,0.1337,0.1583
+T,La Rioja,12,0.134,0.1643
+T,Corrientes,12,0.1114,0.101
+T,Santiago del Estero,12,0.0847,0.078
+T,Catamarca,12,0.1566,0.1691
+T,Misiones,12,0.2238,0.2094
+T,Tucumán,12,0.1061,0.1286
+T,Chaco,12,0.0699,0.0754
+T,Formosa,12,0.1292,0.1307
+T,Salta,12,0.1355,0.0993
+T,Jujuy,12,0.2779,0.2502

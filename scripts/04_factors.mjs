@@ -8,7 +8,8 @@
 // effect is visible in 2024–2025 (Aqua/Terra 2.2–2.5 vs 1.7–1.9 before, VIIRS/Terra 11.6 in 2025 vs ~9). Factors fitted
 // with those years would be applied to 2000–2011, when both satellites were at nominal crossing times.
 //
-// Usage: node scripts/04_factors.mjs [--k=20] [--cap=200] [--years=2012-2023] [--no-regions] [--out=data/factors]
+// K = 10: lowest province season MAPE in the LOYO sweep (10.4 % vs 10.6 % for K = 20); CAP has no measurable effect (kept at 200).
+// Usage: node scripts/04_factors.mjs [--k=10] [--cap=200] [--years=2012-2023] [--no-regions] [--out=data/factors]
 // Output: <out>/factors.csv, <out>/factors.json
 
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
@@ -19,7 +20,7 @@ import { REGION_OF } from '../lib/regions.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (n, d) => { const a = process.argv.find(x => x.startsWith(`--${n}=`)); return a ? a.split('=')[1] : d; };
-const K = +arg('k', 20), CAP = +arg('cap', 200);
+const K = +arg('k', 10), CAP = +arg('cap', 200);
 const [Y0, Y1] = arg('years', '2012-2023').split('-').map(Number);
 const useRegions = !process.argv.includes('--no-regions');
 const OUT = path.join(ROOT, arg('out', 'data/factors'));

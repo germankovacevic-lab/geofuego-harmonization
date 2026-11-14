@@ -1,0 +1,123 @@
+{
+ "generated": "2026-11-14T15:22:22.019Z",
+ "years": [
+  2012,
+  2013,
+  2014,
+  2015,
+  2016,
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022,
+  2023
+ ],
+ "z": 1.2816,
+ "note": "q80_abs_log: symmetric band H*exp(±q80) covers 80% of out-of-sample unit-months (LOYO). sigma_equiv_for_80pct = q80/1.2816 for use with the z=1.28 convention.",
+ "band": {
+  "TA": {
+   "country": {
+    "n": 144,
+    "median_abs_log": 0.0544,
+    "q80_abs_log": 0.1026,
+    "q90_abs_log": 0.1336,
+    "p10_log": -0.0831,
+    "p90_log": 0.112,
+    "bias_median_log": 0.0139,
+    "previous_band_sigma": 0.0533,
+    "previous_band_coverage": 0.625,
+    "sigma_equiv_for_80pct": 0.0801
+   },
+   "prov": {
+    "n": 2647,
+    "median_abs_log": 0.1715,
+    "q80_abs_log": 0.3771,
+    "q90_abs_log": 0.5483,
+    "p10_log": -0.3164,
+    "p90_log": 0.4485,
+    "bias_median_log": 0.0229,
+    "previous_band_sigma": 0.1724,
+    "previous_band_coverage": 0.601,
+    "sigma_equiv_for_80pct": 0.2942
+   },
+   "cell": {
+    "n": 41146,
+    "median_abs_log": 0.3662,
+    "q80_abs_log": 0.8005,
+    "q90_abs_log": 1.1956,
+    "p10_log": -0.5338,
+    "p90_log": 1.1529,
+    "bias_median_log": 0.1019,
+    "previous_band_sigma": 0.3549,
+    "previous_band_coverage": 0.587,
+    "sigma_equiv_for_80pct": 0.6246
+   }
+  },
+  "T": {
+   "country": {
+    "n": 144,
+    "median_abs_log": 0.1021,
+    "q80_abs_log": 0.2057,
+    "q90_abs_log": 0.3293,
+    "p10_log": -0.1362,
+    "p90_log": 0.3291,
+    "bias_median_log": -0.0054,
+    "previous_band_sigma": 0.1061,
+    "previous_band_coverage": 0.653,
+    "sigma_equiv_for_80pct": 0.1605
+   },
+   "prov": {
+    "n": 2647,
+    "median_abs_log": 0.2902,
+    "q80_abs_log": 0.6293,
+    "q90_abs_log": 0.9364,
+    "p10_log": -0.4758,
+    "p90_log": 0.8042,
+    "bias_median_log": 0.0726,
+    "previous_band_sigma": 0.2807,
+    "previous_band_coverage": 0.595,
+    "sigma_equiv_for_80pct": 0.4911
+   },
+   "cell": {
+    "n": 41146,
+    "median_abs_log": 0.7456,
+    "q80_abs_log": 3.2189,
+    "q90_abs_log": 3.6109,
+    "p10_log": -0.7632,
+    "p90_log": 3.6109,
+    "bias_median_log": 0.3827,
+    "previous_band_sigma": 0.6649,
+    "previous_band_coverage": 0.544,
+    "sigma_equiv_for_80pct": 2.5116
+   }
+  }
+ },
+ "forward_test": {
+  "TA": {
+   "2024": {
+    "country_pred_over_obs": 1.035,
+    "prov_season_mape": 0.1153,
+    "country_monthly_median_ape": 0.0766
+   },
+   "2025": {
+    "country_pred_over_obs": 1.02,
+    "prov_season_mape": 0.2111,
+    "country_monthly_median_ape": 0.0628
+   }
+  },
+  "T": {
+   "2024": {
+    "country_pred_over_obs": 0.873,
+    "prov_season_mape": 0.1899,
+    "country_monthly_median_ape": 0.2646
+   },
+   "2025": {
+    "country_pred_over_obs": 0.748,
+    "prov_season_mape": 0.3674,
+    "country_monthly_median_ape": 0.2975
+   }
+  }
+ }
+}

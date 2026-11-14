@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-14T14:50:24.374Z",
- "method": "LOYO 2012-2023, random contiguous blocks, paired days, vegetation class",
+ "generated": "2026-11-14T15:23:17.706Z",
+ "method": "LOYO 2012-2023, random contiguous blocks, paired days, vegetation class, K=10",
  "sizes": [
   1,
   2,
@@ -16,74 +16,254 @@
    "n_cells_nominal": 1,
    "n_cells_median": 1,
    "samples": 4800,
-   "monthly_median_abs_rel_err": 0.3434,
-   "monthly_p75": 0.602,
-   "season_mape_mean": 0.2619,
-   "season_mape_median": 0.2052
+   "monthly_median_abs_rel_err": 0.3462,
+   "monthly_p75": 0.6091,
+   "q80_abs_log": 0.7527,
+   "season_mape_mean": 0.2633,
+   "season_mape_median": 0.2068
   },
   {
    "block": "2x2",
    "n_cells_nominal": 4,
    "n_cells_median": 4,
    "samples": 4800,
-   "monthly_median_abs_rel_err": 0.3129,
-   "monthly_p75": 0.5649,
-   "season_mape_mean": 0.2373,
-   "season_mape_median": 0.1714
+   "monthly_median_abs_rel_err": 0.3151,
+   "monthly_p75": 0.5683,
+   "q80_abs_log": 0.6977,
+   "season_mape_mean": 0.2376,
+   "season_mape_median": 0.1734
   },
   {
    "block": "3x3",
    "n_cells_nominal": 9,
    "n_cells_median": 9,
    "samples": 4800,
-   "monthly_median_abs_rel_err": 0.2912,
-   "monthly_p75": 0.5445,
-   "season_mape_mean": 0.2371,
-   "season_mape_median": 0.1643
+   "monthly_median_abs_rel_err": 0.2943,
+   "monthly_p75": 0.5454,
+   "q80_abs_log": 0.6786,
+   "season_mape_mean": 0.2339,
+   "season_mape_median": 0.1614
   },
   {
    "block": "5x5",
    "n_cells_nominal": 25,
    "n_cells_median": 21,
    "samples": 4800,
-   "monthly_median_abs_rel_err": 0.2781,
-   "monthly_p75": 0.531,
-   "season_mape_mean": 0.2187,
-   "season_mape_median": 0.1406
+   "monthly_median_abs_rel_err": 0.2787,
+   "monthly_p75": 0.5321,
+   "q80_abs_log": 0.6516,
+   "season_mape_mean": 0.2133,
+   "season_mape_median": 0.1385
   },
   {
    "block": "10x10",
    "n_cells_nominal": 100,
    "n_cells_median": 64,
    "samples": 4800,
-   "monthly_median_abs_rel_err": 0.2307,
-   "monthly_p75": 0.4677,
-   "season_mape_mean": 0.1888,
-   "season_mape_median": 0.114
+   "monthly_median_abs_rel_err": 0.2303,
+   "monthly_p75": 0.4637,
+   "q80_abs_log": 0.5752,
+   "season_mape_mean": 0.1851,
+   "season_mape_median": 0.1118
   },
   {
    "block": "15x15",
    "n_cells_nominal": 225,
    "n_cells_median": 111,
    "samples": 4800,
-   "monthly_median_abs_rel_err": 0.1978,
-   "monthly_p75": 0.4099,
-   "season_mape_mean": 0.1774,
-   "season_mape_median": 0.1
+   "monthly_median_abs_rel_err": 0.1969,
+   "monthly_p75": 0.4084,
+   "q80_abs_log": 0.5083,
+   "season_mape_mean": 0.175,
+   "season_mape_median": 0.0973
   }
  ],
  "reference": [
   {
    "block": "province (avg)",
    "n_cells_nominal": 175,
-   "monthly_median_abs_rel_err": 0.1716,
-   "season_mape_mean": 0.1056
+   "monthly_median_abs_rel_err": 0.1712,
+   "season_mape_mean": 0.1039,
+   "q80_abs_log": 0.3771
   },
   {
    "block": "country",
    "n_cells_nominal": 4193,
-   "monthly_median_abs_rel_err": 0.0585,
-   "season_mape_mean": 0.0354
+   "monthly_median_abs_rel_err": 0.0594,
+   "season_mape_mean": 0.0326,
+   "q80_abs_log": 0.1026
   }
- ]
+ ],
+ "by_set": {
+  "TA": {
+   "curve": [
+    {
+     "block": "1x1",
+     "n_cells_nominal": 1,
+     "n_cells_median": 1,
+     "samples": 4800,
+     "monthly_median_abs_rel_err": 0.3462,
+     "monthly_p75": 0.6091,
+     "q80_abs_log": 0.7527,
+     "season_mape_mean": 0.2633,
+     "season_mape_median": 0.2068
+    },
+    {
+     "block": "2x2",
+     "n_cells_nominal": 4,
+     "n_cells_median": 4,
+     "samples": 4800,
+     "monthly_median_abs_rel_err": 0.3151,
+     "monthly_p75": 0.5683,
+     "q80_abs_log": 0.6977,
+     "season_mape_mean": 0.2376,
+     "season_mape_median": 0.1734
+    },
+    {
+     "block": "3x3",
+     "n_cells_nominal": 9,
+     "n_cells_median": 9,
+     "samples": 4800,
+     "monthly_median_abs_rel_err": 0.2943,
+     "monthly_p75": 0.5454,
+     "q80_abs_log": 0.6786,
+     "season_mape_mean": 0.2339,
+     "season_mape_median": 0.1614
+    },
+    {
+     "block": "5x5",
+     "n_cells_nominal": 25,
+     "n_cells_median": 21,
+     "samples": 4800,
+     "monthly_median_abs_rel_err": 0.2787,
+     "monthly_p75": 0.5321,
+     "q80_abs_log": 0.6516,
+     "season_mape_mean": 0.2133,
+     "season_mape_median": 0.1385
+    },
+    {
+     "block": "10x10",
+     "n_cells_nominal": 100,
+     "n_cells_median": 64,
+     "samples": 4800,
+     "monthly_median_abs_rel_err": 0.2303,
+     "monthly_p75": 0.4637,
+     "q80_abs_log": 0.5752,
+     "season_mape_mean": 0.1851,
+     "season_mape_median": 0.1118
+    },
+    {
+     "block": "15x15",
+     "n_cells_nominal": 225,
+     "n_cells_median": 111,
+     "samples": 4800,
+     "monthly_median_abs_rel_err": 0.1969,
+     "monthly_p75": 0.4084,
+     "q80_abs_log": 0.5083,
+     "season_mape_mean": 0.175,
+     "season_mape_median": 0.0973
+    }
+   ],
+   "reference": [
+    {
+     "block": "province (avg)",
+     "n_cells_nominal": 175,
+     "monthly_median_abs_rel_err": 0.1712,
+     "season_mape_mean": 0.1039,
+     "q80_abs_log": 0.3771
+    },
+    {
+     "block": "country",
+     "n_cells_nominal": 4193,
+     "monthly_median_abs_rel_err": 0.0594,
+     "season_mape_mean": 0.0326,
+     "q80_abs_log": 0.1026
+    }
+   ]
+  },
+  "T": {
+   "curve": [
+    {
+     "block": "1x1",
+     "n_cells_nominal": 1,
+     "n_cells_median": 1,
+     "samples": 4800,
+     "monthly_median_abs_rel_err": 0.6597,
+     "monthly_p75": 1,
+     "q80_abs_log": 3.1355,
+     "season_mape_mean": 0.4838,
+     "season_mape_median": 0.3857
+    },
+    {
+     "block": "2x2",
+     "n_cells_nominal": 4,
+     "n_cells_median": 4,
+     "samples": 4800,
+     "monthly_median_abs_rel_err": 0.5733,
+     "monthly_p75": 1,
+     "q80_abs_log": 3.0445,
+     "season_mape_mean": 0.4232,
+     "season_mape_median": 0.3281
+    },
+    {
+     "block": "3x3",
+     "n_cells_nominal": 9,
+     "n_cells_median": 9,
+     "samples": 4800,
+     "monthly_median_abs_rel_err": 0.5234,
+     "monthly_p75": 1,
+     "q80_abs_log": 1.7324,
+     "season_mape_mean": 0.4044,
+     "season_mape_median": 0.2947
+    },
+    {
+     "block": "5x5",
+     "n_cells_nominal": 25,
+     "n_cells_median": 21,
+     "samples": 4800,
+     "monthly_median_abs_rel_err": 0.4849,
+     "monthly_p75": 1,
+     "q80_abs_log": 1.4029,
+     "season_mape_mean": 0.3601,
+     "season_mape_median": 0.253
+    },
+    {
+     "block": "10x10",
+     "n_cells_nominal": 100,
+     "n_cells_median": 64,
+     "samples": 4800,
+     "monthly_median_abs_rel_err": 0.3979,
+     "monthly_p75": 0.7702,
+     "q80_abs_log": 1.0529,
+     "season_mape_mean": 0.2812,
+     "season_mape_median": 0.181
+    },
+    {
+     "block": "15x15",
+     "n_cells_nominal": 225,
+     "n_cells_median": 111,
+     "samples": 4800,
+     "monthly_median_abs_rel_err": 0.3416,
+     "monthly_p75": 0.6683,
+     "q80_abs_log": 0.8936,
+     "season_mape_mean": 0.2629,
+     "season_mape_median": 0.1591
+    }
+   ],
+   "reference": [
+    {
+     "block": "province (avg)",
+     "n_cells_nominal": 175,
+     "monthly_median_abs_rel_err": 0.2822,
+     "q80_abs_log": 0.6293
+    },
+    {
+     "block": "country",
+     "n_cells_nominal": 4193,
+     "monthly_median_abs_rel_err": 0.1367,
+     "q80_abs_log": 0.2057
+    }
+   ]
+  }
+ }
 }

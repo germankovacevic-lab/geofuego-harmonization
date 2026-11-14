@@ -23,12 +23,20 @@ import { provinceOf } from '../lib/geo.js';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const RAW = path.join(ROOT, 'data', 'raw');
 const CEL = 0.02, MIN_IN_WINDOW = 9, WINDOW = 12, MIN_NIGHT_FRAC = 0.5;
+// Secondary rule for INTERMITTENT flares (conventional oil pads vent for weeks, then stop): >= 4 months in any 12-month window
+// AND >= 70 % night detections AND >= 10 hotspots. Vegetation fire is diurnal: a 70 % night share over >= 10 detections does
+// not occur in grass/forest fire months (audit 14/11: vegetation class night fraction 0.27). Motivated by the two worst LOYO
+// provinces (Neuquén, Santa Cruz) being the two oil basins while only 3 Santa Cruz cells met the persistent rule.
+// AND median VIIRS FRP < 3 MW: without it the rule also catches night-time agricultural and land-clearing burning (sugar
+// cane in Jujuy/Salta, deforestation piles in the Chaco: FRP 3–7 MW), which is vegetation fire. Flares are small and cool.
+const INT_MIN_IN_WINDOW = 4, INT_MIN_NIGHT_FRAC = 0.7, INT_MIN_N = 10, INT_MAX_FRP_MW = 3;
 export const staticKey = (lat, lon) => Math.floor(lat / CEL) + ':' + Math.floor(lon / CEL);
 
 const manifest = JSON.parse(await readFile(path.join(RAW, 'MANIFEST.json'), 'utf8'));
 const months = { viirs: new Map(), modis: new Map() }; // key -> Set(yyyy-mm)
 const dn = { viirs: new Map(), modis: new Map() };     // key -> [n, night]
 const pos = { viirs: new Map(), modis: new Map() };    // key -> [sumLat, sumLon, n] (hotspot centroid inside the cell)
+const frpV = new Map();                                 // key -> VIIRS FRP values (for the intermittent rule)
 
 const t0 = Date.now();
 for (const [file, meta] of Object.entries(manifest)) {
@@ -47,6 +55,7 @@ for (const [file, meta] of Object.entries(manifest)) {
     const d = dn[isModis ? 'modis' : 'viirs']; let c = d.get(k); if (!c) d.set(k, c = [0, 0]);
     c[0]++; if (f[13] === 'N') c[1]++;
     const P = pos[isModis ? 'modis' : 'viirs']; let q = P.get(k); if (!q) P.set(k, q = [0, 0, 0]); q[0] += +f[0]; q[1] += +f[1]; q[2]++;
+    if (!isModis) { let a = frpV.get(k); if (!a) frpV.set(k, a = []); a.push(+f[12]); }
   }
 }
 const idx = m => (+m.slice(0, 4)) * 12 + (+m.slice(5)) - 1;
@@ -58,16 +67,19 @@ function maxInWindow(set) {
 const cells = {}, rejected = {};
 for (const sensor of ['viirs', 'modis']) for (const [k, s] of months[sensor]) {
   const mw = maxInWindow(s);
-  if (mw < MIN_IN_WINDOW) continue;
-  const [i, j] = k.split(':').map(Number);
   // night fraction: prefer VIIRS (375 m, 2012+), fall back to MODIS for MODIS-only cells
   const dv = dn.viirs.get(k), dm = dn.modis.get(k);
+  const nTot = (dv?.[0] || 0) + (dm?.[0] || 0);
   const nf = dv && dv[0] >= 10 ? dv[1] / dv[0] : dm ? dm[1] / dm[0] : 0;
+  const fr = frpV.get(k); const frpMed = fr && fr.length ? [...fr].sort((a, b) => a - b)[Math.floor(fr.length / 2)] : null;
+  const persistent = mw >= MIN_IN_WINDOW, intermittent = !persistent && mw >= INT_MIN_IN_WINDOW && nf >= INT_MIN_NIGHT_FRAC && nTot >= INT_MIN_N && frpMed !== null && frpMed < INT_MAX_FRP_MW;
+  if (!persistent && !intermittent) continue;
+  const [i, j] = k.split(':').map(Number);
   const q = pos.viirs.get(k) || pos.modis.get(k);
   const base = { lat: +((i + 0.5) * CEL).toFixed(3), lon: +((j + 0.5) * CEL).toFixed(3), bbox: [+(i * CEL).toFixed(3), +(j * CEL).toFixed(3), +((i + 1) * CEL).toFixed(3), +((j + 1) * CEL).toFixed(3)],
     centroid: q ? [+(q[0] / q[2]).toFixed(4), +(q[1] / q[2]).toFixed(4)] : null, hotspots: (pos.viirs.get(k)?.[2] || 0) + (pos.modis.get(k)?.[2] || 0),
-    viirs_months: 0, modis_months: 0, night_frac: +nf.toFixed(3), sensors: [] };
-  if (nf < MIN_NIGHT_FRAC) { const r = (rejected[k] ??= base); r[sensor + '_months'] = mw; r.sensors.push(sensor); continue; }
+    viirs_months: 0, modis_months: 0, night_frac: +nf.toFixed(3), frp_median_viirs: frpMed === null ? null : +frpMed.toFixed(2), rule: persistent ? 'persistent' : 'intermittent-night', sensors: [] };
+  if (persistent && nf < MIN_NIGHT_FRAC) { const r = (rejected[k] ??= base); r[sensor + '_months'] = mw; r.sensors.push(sensor); continue; }
   const c = (cells[k] ??= base);
   c[sensor + '_months'] = mw; c.sensors.push(sensor);
 }
@@ -76,7 +88,10 @@ for (const c of Object.values(cells)) { const p = provinceOf(c.lat, c.lon) || '(
 await mkdir(path.join(ROOT, 'data', 'agg'), { recursive: true });
 const rej_by_prov = {};
 for (const c of Object.values(rejected)) { const p = provinceOf(c.lat, c.lon) || '(outside)'; rej_by_prov[p] = (rej_by_prov[p] || 0) + 1; }
-await writeFile(path.join(ROOT, 'data', 'agg', 'static_cells.json'), JSON.stringify({ rule: { cell_deg: CEL, min_months_in_window: MIN_IN_WINDOW, window_months: WINDOW, min_night_fraction: MIN_NIGHT_FRAC, detected_on: 'union(VIIRS S-NPP 2012-2025, MODIS 2000-2025)' }, generated: new Date().toISOString(), n: Object.keys(cells).length, cells, by_prov, rejected_by_night: { n: Object.keys(rejected).length, by_prov: rej_by_prov, cells: rejected } }));
+const byRule = {}; for (const c of Object.values(cells)) byRule[c.rule] = (byRule[c.rule] || 0) + 1;
+const intByProv = {}; for (const c of Object.values(cells)) if (c.rule === 'intermittent-night') { const p = provinceOf(c.lat, c.lon) || '(outside)'; intByProv[p] = (intByProv[p] || 0) + 1; }
+console.log(`rules: ${JSON.stringify(byRule)} · intermittent-night by province: ${Object.entries(intByProv).sort((a, b) => b[1] - a[1]).map(([p, n]) => p.split(',')[0] + ' ' + n).join(', ')}`);
+await writeFile(path.join(ROOT, 'data', 'agg', 'static_cells.json'), JSON.stringify({ rule: { cell_deg: CEL, min_months_in_window: MIN_IN_WINDOW, window_months: WINDOW, min_night_fraction: MIN_NIGHT_FRAC, intermittent: { min_months_in_window: INT_MIN_IN_WINDOW, min_night_fraction: INT_MIN_NIGHT_FRAC, min_hotspots: INT_MIN_N, max_median_viirs_frp_mw: INT_MAX_FRP_MW }, detected_on: 'union(VIIRS S-NPP 2012-2025, MODIS 2000-2025)' }, by_rule: byRule, generated: new Date().toISOString(), n: Object.keys(cells).length, cells, by_prov, rejected_by_night: { n: Object.keys(rejected).length, by_prov: rej_by_prov, cells: rejected } }));
 console.log(`persistent but DIURNAL (returned to vegetation fire): ${Object.keys(rejected).length} cells → ${Object.entries(rej_by_prov).sort((a, b) => b[1] - a[1]).map(([p, n]) => p.split(',')[0] + ' ' + n).join(', ')}`);
 const nV = Object.values(cells).filter(c => c.sensors.includes('viirs')).length, nM = Object.values(cells).filter(c => c.sensors.includes('modis')).length, both = Object.values(cells).filter(c => c.sensors.length === 2).length;
 console.log(`static-source cells: ${Object.keys(cells).length} (viirs ${nV}, modis ${nM}, both ${both}) in ${((Date.now() - t0) / 1000).toFixed(1)}s`);

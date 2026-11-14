@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-14T15:49:51.288Z",
+ "generated": "2026-11-14T16:02:07.857Z",
  "source": "GWIS/JRC MCD64A1_burned_area_full_dataset_2002_2025.csv (sha256 of zip 279a356d…6349f8), ha summed over land-cover classes",
  "gadm_regions_seen": [
   "Jujuy",
@@ -59,26 +59,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 15.56,
-     "post2012": 15.88,
-     "ratio_pre_over_post": 0.98
+     "pre2012": 15.68,
+     "post2012": 16.04,
+     "ratio_pre_over_post": 0.978
     },
     "naive_concat": {
-     "pre2012": 50.34,
-     "post2012": 16.21,
-     "ratio_pre_over_post": 3.105
+     "pre2012": 50.51,
+     "post2012": 16.33,
+     "ratio_pre_over_post": 3.094
     },
     "raw_modis_both_sides": {
-     "pre2012": 50.34,
-     "post2012": 51.21,
-     "ratio_pre_over_post": 0.983
+     "pre2012": 50.51,
+     "post2012": 51.35,
+     "ratio_pre_over_post": 0.984
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.854,
+    "pearson_log_all": 0.855,
     "spearman_all": 0.823,
-    "pearson_log_pre2012": 0.857,
-    "pearson_log_post2012": 0.802
+    "pearson_log_pre2012": 0.856,
+    "pearson_log_post2012": 0.804
    }
   },
   {
@@ -86,19 +86,19 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 21.91,
-     "post2012": 18.59,
+     "pre2012": 21.92,
+     "post2012": 18.61,
      "ratio_pre_over_post": 1.178
     },
     "naive_concat": {
-     "pre2012": 83.41,
-     "post2012": 18.86,
-     "ratio_pre_over_post": 4.424
+     "pre2012": 83.44,
+     "post2012": 18.88,
+     "ratio_pre_over_post": 4.421
     },
     "raw_modis_both_sides": {
-     "pre2012": 83.41,
-     "post2012": 67.3,
-     "ratio_pre_over_post": 1.239
+     "pre2012": 83.44,
+     "post2012": 67.32,
+     "ratio_pre_over_post": 1.24
     }
    },
    "correlation_annual": {
@@ -113,26 +113,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 17.69,
-     "post2012": 17.08,
-     "ratio_pre_over_post": 1.035
+     "pre2012": 17.74,
+     "post2012": 17.09,
+     "ratio_pre_over_post": 1.038
     },
     "naive_concat": {
-     "pre2012": 57.06,
-     "post2012": 17.08,
-     "ratio_pre_over_post": 3.34
+     "pre2012": 57.31,
+     "post2012": 17.09,
+     "ratio_pre_over_post": 3.353
     },
     "raw_modis_both_sides": {
-     "pre2012": 57.06,
-     "post2012": 53.45,
-     "ratio_pre_over_post": 1.067
+     "pre2012": 57.31,
+     "post2012": 53.48,
+     "ratio_pre_over_post": 1.072
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.822,
-    "spearman_all": 0.722,
-    "pearson_log_pre2012": 0.826,
-    "pearson_log_post2012": 0.821
+    "pearson_log_all": 0.821,
+    "spearman_all": 0.721,
+    "pearson_log_pre2012": 0.827,
+    "pearson_log_post2012": 0.82
    }
   },
   {
@@ -140,26 +140,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 16,
-     "post2012": 18.26,
-     "ratio_pre_over_post": 0.876
+     "pre2012": 16.09,
+     "post2012": 18.45,
+     "ratio_pre_over_post": 0.872
     },
     "naive_concat": {
-     "pre2012": 45.53,
-     "post2012": 18.3,
-     "ratio_pre_over_post": 2.488
+     "pre2012": 45.67,
+     "post2012": 18.47,
+     "ratio_pre_over_post": 2.473
     },
     "raw_modis_both_sides": {
-     "pre2012": 45.53,
-     "post2012": 52.01,
+     "pre2012": 45.67,
+     "post2012": 52.21,
      "ratio_pre_over_post": 0.875
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.889,
+    "pearson_log_all": 0.89,
     "spearman_all": 0.873,
-    "pearson_log_pre2012": 0.832,
-    "pearson_log_post2012": 0.788
+    "pearson_log_pre2012": 0.833,
+    "pearson_log_post2012": 0.789
    }
   },
   {
@@ -167,19 +167,19 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 17.39,
-     "post2012": 12.49,
-     "ratio_pre_over_post": 1.392
+     "pre2012": 17.42,
+     "post2012": 12.51,
+     "ratio_pre_over_post": 1.393
     },
     "naive_concat": {
-     "pre2012": 55.72,
-     "post2012": 12.5,
-     "ratio_pre_over_post": 4.456
+     "pre2012": 55.75,
+     "post2012": 12.51,
+     "ratio_pre_over_post": 4.455
     },
     "raw_modis_both_sides": {
-     "pre2012": 55.72,
-     "post2012": 38.44,
-     "ratio_pre_over_post": 1.449
+     "pre2012": 55.75,
+     "post2012": 38.45,
+     "ratio_pre_over_post": 1.45
     }
    },
    "correlation_annual": {
@@ -194,26 +194,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 12.34,
-     "post2012": 12.88,
-     "ratio_pre_over_post": 0.958
+     "pre2012": 12.5,
+     "post2012": 12.95,
+     "ratio_pre_over_post": 0.966
     },
     "naive_concat": {
-     "pre2012": 36.86,
-     "post2012": 12.88,
-     "ratio_pre_over_post": 2.861
+     "pre2012": 37.17,
+     "post2012": 12.95,
+     "ratio_pre_over_post": 2.871
     },
     "raw_modis_both_sides": {
-     "pre2012": 36.86,
-     "post2012": 39.15,
-     "ratio_pre_over_post": 0.941
+     "pre2012": 37.17,
+     "post2012": 39.29,
+     "ratio_pre_over_post": 0.946
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.815,
+    "pearson_log_all": 0.817,
     "spearman_all": 0.811,
-    "pearson_log_pre2012": 0.895,
-    "pearson_log_post2012": 0.719
+    "pearson_log_pre2012": 0.896,
+    "pearson_log_post2012": 0.723
    }
   },
   {
@@ -221,14 +221,14 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 36.18,
-     "post2012": 38.89,
-     "ratio_pre_over_post": 0.93
+     "pre2012": 36.32,
+     "post2012": 39.07,
+     "ratio_pre_over_post": 0.929
     },
     "naive_concat": {
      "pre2012": 125.4,
-     "post2012": 42.64,
-     "ratio_pre_over_post": 2.941
+     "post2012": 42.74,
+     "ratio_pre_over_post": 2.934
     },
     "raw_modis_both_sides": {
      "pre2012": 125.4,
@@ -237,10 +237,10 @@
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.944,
+    "pearson_log_all": 0.945,
     "spearman_all": 0.945,
-    "pearson_log_pre2012": 0.916,
-    "pearson_log_post2012": 0.974
+    "pearson_log_pre2012": 0.917,
+    "pearson_log_post2012": 0.975
    }
   },
   {
@@ -248,26 +248,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 8.78,
-     "post2012": 13.74,
-     "ratio_pre_over_post": 0.639
+     "pre2012": 8.88,
+     "post2012": 14.04,
+     "ratio_pre_over_post": 0.633
     },
     "naive_concat": {
-     "pre2012": 28.67,
-     "post2012": 13.74,
-     "ratio_pre_over_post": 2.087
+     "pre2012": 28.99,
+     "post2012": 14.04,
+     "ratio_pre_over_post": 2.065
     },
     "raw_modis_both_sides": {
-     "pre2012": 28.67,
-     "post2012": 45.27,
-     "ratio_pre_over_post": 0.633
+     "pre2012": 28.99,
+     "post2012": 45.71,
+     "ratio_pre_over_post": 0.634
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.876,
+    "pearson_log_all": 0.875,
     "spearman_all": 0.902,
-    "pearson_log_pre2012": 0.652,
-    "pearson_log_post2012": 0.827
+    "pearson_log_pre2012": 0.654,
+    "pearson_log_post2012": 0.825
    }
   },
   {
@@ -275,25 +275,25 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 28.17,
-     "post2012": 37.56,
+     "pre2012": 28.18,
+     "post2012": 37.58,
      "ratio_pre_over_post": 0.75
     },
     "naive_concat": {
-     "pre2012": 86.83,
-     "post2012": 37.56,
+     "pre2012": 86.88,
+     "post2012": 37.58,
      "ratio_pre_over_post": 2.312
     },
     "raw_modis_both_sides": {
-     "pre2012": 86.83,
-     "post2012": 125.95,
+     "pre2012": 86.88,
+     "post2012": 126.05,
      "ratio_pre_over_post": 0.689
     }
    },
    "correlation_annual": {
     "pearson_log_all": 0.941,
     "spearman_all": 0.883,
-    "pearson_log_pre2012": 0.985,
+    "pearson_log_pre2012": 0.984,
     "pearson_log_post2012": 0.928
    }
   },
@@ -302,26 +302,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 21.38,
-     "post2012": 18.82,
-     "ratio_pre_over_post": 1.136
+     "pre2012": 21.5,
+     "post2012": 18.9,
+     "ratio_pre_over_post": 1.138
     },
     "naive_concat": {
-     "pre2012": 60.3,
-     "post2012": 18.82,
-     "ratio_pre_over_post": 3.204
+     "pre2012": 60.4,
+     "post2012": 18.9,
+     "ratio_pre_over_post": 3.196
     },
     "raw_modis_both_sides": {
-     "pre2012": 60.3,
-     "post2012": 57.73,
-     "ratio_pre_over_post": 1.045
+     "pre2012": 60.4,
+     "post2012": 58.06,
+     "ratio_pre_over_post": 1.04
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.833,
+    "pearson_log_all": 0.834,
     "spearman_all": 0.801,
-    "pearson_log_pre2012": 0.597,
-    "pearson_log_post2012": 0.714
+    "pearson_log_pre2012": 0.596,
+    "pearson_log_post2012": 0.716
    }
   },
   {
@@ -329,14 +329,14 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 12.01,
-     "post2012": 14.82,
-     "ratio_pre_over_post": 0.81
+     "pre2012": 12.02,
+     "post2012": 14.87,
+     "ratio_pre_over_post": 0.808
     },
     "naive_concat": {
      "pre2012": 40.72,
-     "post2012": 14.83,
-     "ratio_pre_over_post": 2.745
+     "post2012": 14.87,
+     "ratio_pre_over_post": 2.738
     },
     "raw_modis_both_sides": {
      "pre2012": 40.72,
@@ -346,7 +346,7 @@
    },
    "correlation_annual": {
     "pearson_log_all": 0.902,
-    "spearman_all": 0.892,
+    "spearman_all": 0.899,
     "pearson_log_pre2012": 0.819,
     "pearson_log_post2012": 0.96
    }
@@ -356,26 +356,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 8.83,
-     "post2012": 10.83,
-     "ratio_pre_over_post": 0.815
+     "pre2012": 8.93,
+     "post2012": 10.97,
+     "ratio_pre_over_post": 0.813
     },
     "naive_concat": {
-     "pre2012": 24.55,
-     "post2012": 11.69,
-     "ratio_pre_over_post": 2.099
+     "pre2012": 24.6,
+     "post2012": 11.85,
+     "ratio_pre_over_post": 2.076
     },
     "raw_modis_both_sides": {
-     "pre2012": 24.55,
-     "post2012": 29.7,
-     "ratio_pre_over_post": 0.826
+     "pre2012": 24.6,
+     "post2012": 29.75,
+     "ratio_pre_over_post": 0.827
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.662,
-    "spearman_all": 0.54,
+    "pearson_log_all": 0.66,
+    "spearman_all": 0.544,
     "pearson_log_pre2012": 0.941,
-    "pearson_log_post2012": 0.487
+    "pearson_log_post2012": 0.486
    }
   },
   {
@@ -383,25 +383,25 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 7.54,
-     "post2012": 14.12,
-     "ratio_pre_over_post": 0.534
+     "pre2012": 7.67,
+     "post2012": 14.29,
+     "ratio_pre_over_post": 0.537
     },
     "naive_concat": {
-     "pre2012": 27.19,
-     "post2012": 14.14,
-     "ratio_pre_over_post": 1.923
+     "pre2012": 27.33,
+     "post2012": 14.31,
+     "ratio_pre_over_post": 1.91
     },
     "raw_modis_both_sides": {
-     "pre2012": 27.19,
-     "post2012": 47.35,
+     "pre2012": 27.33,
+     "post2012": 47.6,
      "ratio_pre_over_post": 0.574
     }
    },
    "correlation_annual": {
     "pearson_log_all": 0.915,
-    "spearman_all": 0.908,
-    "pearson_log_pre2012": 0.968,
+    "spearman_all": 0.909,
+    "pearson_log_pre2012": 0.97,
     "pearson_log_post2012": 0.881
    }
   },
@@ -410,24 +410,24 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 5.2,
-     "post2012": 5.02,
-     "ratio_pre_over_post": 1.036
+     "pre2012": 5.24,
+     "post2012": 5.06,
+     "ratio_pre_over_post": 1.035
     },
     "naive_concat": {
-     "pre2012": 21.47,
-     "post2012": 5.02,
-     "ratio_pre_over_post": 4.28
+     "pre2012": 21.51,
+     "post2012": 5.06,
+     "ratio_pre_over_post": 4.252
     },
     "raw_modis_both_sides": {
-     "pre2012": 21.47,
-     "post2012": 17.49,
-     "ratio_pre_over_post": 1.228
+     "pre2012": 21.51,
+     "post2012": 17.54,
+     "ratio_pre_over_post": 1.226
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.947,
-    "spearman_all": 0.901,
+    "pearson_log_all": 0.946,
+    "spearman_all": 0.897,
     "pearson_log_pre2012": 0.964,
     "pearson_log_post2012": 0.931
    }
@@ -437,26 +437,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 12.95,
-     "post2012": 17.54,
-     "ratio_pre_over_post": 0.738
+     "pre2012": 13.48,
+     "post2012": 18.02,
+     "ratio_pre_over_post": 0.748
     },
     "naive_concat": {
-     "pre2012": 37.55,
-     "post2012": 17.54,
-     "ratio_pre_over_post": 2.141
+     "pre2012": 38.46,
+     "post2012": 18.02,
+     "ratio_pre_over_post": 2.134
     },
     "raw_modis_both_sides": {
-     "pre2012": 37.55,
-     "post2012": 55.5,
-     "ratio_pre_over_post": 0.677
+     "pre2012": 38.46,
+     "post2012": 55.7,
+     "ratio_pre_over_post": 0.69
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.8,
-    "spearman_all": 0.649,
-    "pearson_log_pre2012": 0.818,
-    "pearson_log_post2012": 0.821
+    "pearson_log_all": 0.803,
+    "spearman_all": 0.643,
+    "pearson_log_pre2012": 0.817,
+    "pearson_log_post2012": 0.825
    }
   },
   {
@@ -464,26 +464,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 25.59,
-     "post2012": 24.96,
-     "ratio_pre_over_post": 1.025
+     "pre2012": 25.64,
+     "post2012": 25.24,
+     "ratio_pre_over_post": 1.016
     },
     "naive_concat": {
      "pre2012": 77.8,
-     "post2012": 24.96,
-     "ratio_pre_over_post": 3.117
+     "post2012": 25.24,
+     "ratio_pre_over_post": 3.083
     },
     "raw_modis_both_sides": {
      "pre2012": 77.8,
-     "post2012": 72.78,
-     "ratio_pre_over_post": 1.069
+     "post2012": 73.05,
+     "ratio_pre_over_post": 1.065
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.694,
+    "pearson_log_all": 0.697,
     "spearman_all": 0.75,
-    "pearson_log_pre2012": 0.345,
-    "pearson_log_post2012": 0.612
+    "pearson_log_pre2012": 0.358,
+    "pearson_log_post2012": 0.615
    }
   },
   {
@@ -491,26 +491,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 14.4,
-     "post2012": 15.29,
-     "ratio_pre_over_post": 0.942
+     "pre2012": 14.45,
+     "post2012": 15.38,
+     "ratio_pre_over_post": 0.94
     },
     "naive_concat": {
-     "pre2012": 52.63,
-     "post2012": 15.29,
-     "ratio_pre_over_post": 3.442
+     "pre2012": 52.64,
+     "post2012": 15.39,
+     "ratio_pre_over_post": 3.42
     },
     "raw_modis_both_sides": {
-     "pre2012": 52.63,
-     "post2012": 56.78,
-     "ratio_pre_over_post": 0.927
+     "pre2012": 52.64,
+     "post2012": 56.9,
+     "ratio_pre_over_post": 0.925
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.914,
-    "spearman_all": 0.889,
+    "pearson_log_all": 0.915,
+    "spearman_all": 0.897,
     "pearson_log_pre2012": 0.937,
-    "pearson_log_post2012": 0.876
+    "pearson_log_post2012": 0.881
    }
   },
   {
@@ -518,26 +518,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 11.06,
-     "post2012": 11.48,
-     "ratio_pre_over_post": 0.964
+     "pre2012": 11.48,
+     "post2012": 11.89,
+     "ratio_pre_over_post": 0.966
     },
     "naive_concat": {
-     "pre2012": 33.24,
-     "post2012": 11.55,
-     "ratio_pre_over_post": 2.877
+     "pre2012": 33.74,
+     "post2012": 11.97,
+     "ratio_pre_over_post": 2.82
     },
     "raw_modis_both_sides": {
-     "pre2012": 33.24,
-     "post2012": 39,
-     "ratio_pre_over_post": 0.852
+     "pre2012": 33.74,
+     "post2012": 41.36,
+     "ratio_pre_over_post": 0.816
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.894,
-    "spearman_all": 0.907,
-    "pearson_log_pre2012": 0.914,
-    "pearson_log_post2012": 0.884
+    "pearson_log_all": 0.895,
+    "spearman_all": 0.909,
+    "pearson_log_pre2012": 0.923,
+    "pearson_log_post2012": 0.88
    }
   },
   {
@@ -545,14 +545,14 @@
    "n_years": 22,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 14.47,
-     "post2012": 14.29,
-     "ratio_pre_over_post": 1.012
+     "pre2012": 14.78,
+     "post2012": 14.83,
+     "ratio_pre_over_post": 0.996
     },
     "naive_concat": {
      "pre2012": 55.73,
-     "post2012": 14.32,
-     "ratio_pre_over_post": 3.892
+     "post2012": 14.83,
+     "ratio_pre_over_post": 3.758
     },
     "raw_modis_both_sides": {
      "pre2012": 55.73,
@@ -561,10 +561,10 @@
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.637,
-    "spearman_all": 0.811,
-    "pearson_log_pre2012": 0.651,
-    "pearson_log_post2012": 0.663
+    "pearson_log_all": 0.647,
+    "spearman_all": 0.807,
+    "pearson_log_pre2012": 0.672,
+    "pearson_log_post2012": 0.669
    }
   },
   {
@@ -572,25 +572,25 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 8.44,
-     "post2012": 5.78,
-     "ratio_pre_over_post": 1.459
+     "pre2012": 10.99,
+     "post2012": 7.79,
+     "ratio_pre_over_post": 1.411
     },
     "naive_concat": {
-     "pre2012": 43.79,
-     "post2012": 5.78,
-     "ratio_pre_over_post": 7.573
+     "pre2012": 45.04,
+     "post2012": 8.16,
+     "ratio_pre_over_post": 5.523
     },
     "raw_modis_both_sides": {
-     "pre2012": 43.79,
-     "post2012": 33.39,
-     "ratio_pre_over_post": 1.312
+     "pre2012": 45.04,
+     "post2012": 34.5,
+     "ratio_pre_over_post": 1.306
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.695,
-    "spearman_all": 0.75,
-    "pearson_log_pre2012": 0.665,
+    "pearson_log_all": 0.702,
+    "spearman_all": 0.777,
+    "pearson_log_pre2012": 0.697,
     "pearson_log_post2012": 0.701
    }
   },
@@ -599,26 +599,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 3.27,
-     "post2012": 2.95,
+     "pre2012": 3.28,
+     "post2012": 2.96,
      "ratio_pre_over_post": 1.109
     },
     "naive_concat": {
      "pre2012": 9.6,
-     "post2012": 2.95,
-     "ratio_pre_over_post": 3.259
+     "post2012": 2.96,
+     "ratio_pre_over_post": 3.244
     },
     "raw_modis_both_sides": {
      "pre2012": 9.6,
-     "post2012": 9.02,
-     "ratio_pre_over_post": 1.064
+     "post2012": 9.03,
+     "ratio_pre_over_post": 1.063
     }
    },
    "correlation_annual": {
     "pearson_log_all": 0.778,
     "spearman_all": 0.662,
-    "pearson_log_pre2012": 0.707,
-    "pearson_log_post2012": 0.849
+    "pearson_log_pre2012": 0.706,
+    "pearson_log_post2012": 0.85
    }
   },
   {
@@ -626,26 +626,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 0.32,
+     "pre2012": 0.33,
      "post2012": 0.26,
      "ratio_pre_over_post": 1.234
     },
     "naive_concat": {
      "pre2012": 1.19,
      "post2012": 0.26,
-     "ratio_pre_over_post": 4.509
+     "ratio_pre_over_post": 4.497
     },
     "raw_modis_both_sides": {
      "pre2012": 1.19,
      "post2012": 0.99,
-     "ratio_pre_over_post": 1.195
+     "ratio_pre_over_post": 1.198
     }
    },
    "correlation_annual": {
     "pearson_log_all": 0.531,
-    "spearman_all": 0.481,
-    "pearson_log_pre2012": 0.432,
-    "pearson_log_post2012": 0.775
+    "spearman_all": 0.479,
+    "pearson_log_pre2012": 0.433,
+    "pearson_log_post2012": 0.777
    }
   },
   {
@@ -653,26 +653,26 @@
    "n_years": 24,
    "ha_per_hotspot": {
     "harmonized": {
-     "pre2012": 8.39,
-     "post2012": 3.26,
-     "ratio_pre_over_post": 2.573
+     "pre2012": 9.95,
+     "post2012": 4.85,
+     "ratio_pre_over_post": 2.049
     },
     "naive_concat": {
-     "pre2012": 34.13,
-     "post2012": 3.36,
-     "ratio_pre_over_post": 10.147
+     "pre2012": 34.16,
+     "post2012": 5.05,
+     "ratio_pre_over_post": 6.758
     },
     "raw_modis_both_sides": {
-     "pre2012": 34.13,
+     "pre2012": 34.16,
      "post2012": 20.61,
-     "ratio_pre_over_post": 1.656
+     "ratio_pre_over_post": 1.657
     }
    },
    "correlation_annual": {
-    "pearson_log_all": 0.28,
-    "spearman_all": 0.236,
-    "pearson_log_pre2012": -0.058,
-    "pearson_log_post2012": 0.357
+    "pearson_log_all": 0.431,
+    "spearman_all": 0.45,
+    "pearson_log_pre2012": 0.024,
+    "pearson_log_post2012": 0.576
    }
   }
  ]

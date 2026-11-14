@@ -34,10 +34,15 @@ const [LY0, LY1] = arg('years', '2012-2023').split('-').map(Number);
 const YEARS = []; for (let y = LY0; y <= LY1; y++) YEARS.push(y);
 const FORWARD = [2024, 2025].filter(y => y > LY1);
 const SEASON = [7, 8, 9, 10, 11], Z = 1.2816;
+// Each province also gets its OWN fire season (the 5 calendar months with the highest mean observed VIIRS count over the
+// window): Patagonia burns in Dec–Mar, not Jul–Nov, so the national season under-counts its fire and inflates its error.
+const OWN_SEASON = {};
 const agg = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'counts.json'), 'utf8'));
 const index = JSON.parse(await readFile(path.join(ROOT, 'data', 'grid', 'cells_index.json'), 'utf8'));
 const provOf = new Map(index.cells.map(c => [c.id, c.prov]));
 const SETS = { TA: { V: r => r[6] ?? 0, M: r => (r[7] ?? 0) + (r[8] ?? 0) }, T: { V: r => r[6] ?? 0, M: r => r[7] ?? 0 } };
+{ const clim = {}; for (const [cid, yrs] of Object.entries(agg.cells)) { const p = provOf.get(+cid); if (!p) continue; for (const y of YEARS) { const ym = yrs[y]; if (!ym) continue; for (const [m, r] of Object.entries(ym)) ((clim[p] ??= Array(13).fill(0)))[+m] += r[6] ?? 0; } }
+  for (const [p, a] of Object.entries(clim)) OWN_SEASON[p] = a.map((v, m) => [v, m]).slice(1).sort((x, y) => y[0] - x[0]).slice(0, 5).map(x => x[1]).sort((x, y) => x - y); }
 const THR = { cell: { season: 20, month: 10 }, prov: { season: 50, month: 30 }, country: { season: 50, month: 30 } };
 const median = a => { const b = [...a].sort((x, y) => x - y); return b.length ? b[Math.floor(b.length / 2)] : null; };
 const quant = (a, q) => { const b = [...a].sort((x, y) => x - y); return b.length ? b[Math.min(b.length - 1, Math.floor(q * b.length))] : null; };
@@ -60,6 +65,7 @@ function metrics(units, level, resid) {
     if (resid) for (let m = 1; m <= 12; m++) if (u.P[m] >= 5) resid.push({ P: u.P[m], r: Math.log((u.V[m] + 0.5) / (u.P[m] + 0.5)), unit: name, level });
     const sV = SEASON.reduce((a, m) => a + u.V[m], 0), sP = SEASON.reduce((a, m) => a + u.P[m], 0), sS = SEASON.reduce((a, m) => a + u.S[m], 0);
     if (sV >= THR[level].season) { ape.push(Math.abs(sP - sV) / sV); apeS.push(Math.abs(sS - sV) / sV); perUnit[name] = Math.abs(sP - sV) / sV; }
+    if (level === 'prov' && OWN_SEASON[name]) { const oV = OWN_SEASON[name].reduce((a, m) => a + u.V[m], 0), oP = OWN_SEASON[name].reduce((a, m) => a + u.P[m], 0); if (oV >= THR.prov.season) perUnit[name + '|own'] = Math.abs(oP - oV) / oV; }
     for (let m = 1; m <= 12; m++) if (u.V[m] >= THR[level].month) { monthly.push(Math.abs(u.P[m] - u.V[m]) / u.V[m]); monthlyS.push(Math.abs(u.S[m] - u.V[m]) / u.V[m]); }
     sumV += u.V.reduce((a, b) => a + b, 0); sumP += u.P.reduce((a, b) => a + b, 0); sumS += u.S.reduce((a, b) => a + b, 0);
   }
@@ -75,7 +81,7 @@ for (const cfg of configs) for (const set of ['TA', 'T']) {
     for (const level of ['country', 'prov', 'cell']) {
       const isBase = cfg.K === K0 && cfg.CAP === 200 && cfg.depth === 'cell';
       const r = metrics(units, level, isBase ? (resid[set] ??= []) : null);
-      if (level === 'prov' && isBase) for (const [p, e] of Object.entries(r.perUnit)) (provFolds[`${set}|${p}`] ??= []).push(e);
+      if (level === 'prov' && isBase) for (const [p, e] of Object.entries(r.perUnit)) (provFolds[`${set}|${p}`] ??= []).push(e); // keys 'prov' and 'prov|own'
       delete r.perUnit;
       folds.push({ set, K: cfg.K, CAP: cfg.CAP, depth: cfg.depth, year: yStar, level, scalar: +scalar.toFixed(3), ...r });
     }
@@ -134,7 +140,7 @@ const backward = {};
 // forward test: factors from the full window applied to 2024, 2025
 const forward = {};
 if (FORWARD.length) { const fit = fitFactors(agg.cells, provOf, { K: K0, CAP: 200, years: YEARS, useRegions }); for (const set of ['TA', 'T']) for (const y of FORWARD) { const { units } = predict(fit, set, y); const c = metrics(units, 'country'), p = metrics(units, 'prov'); (forward[set] ??= {})[y] = { country_pred_over_obs: +c.annual_ratio.toFixed(3), prov_season_mape: +p.season_mape.toFixed(4), country_monthly_median_ape: +c.monthly_median_ape.toFixed(4) }; } }
-const byProv = Object.entries(provFolds).map(([k, arr]) => { const [set, prov] = k.split('|'); return { set, prov, n_folds: arr.length, season_mape_mean: +(arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(4), season_mape_median: +median(arr).toFixed(4) }; });
+const byProv = Object.entries(provFolds).filter(([k]) => !k.endsWith('|own')).map(([k, arr]) => { const [set, prov] = k.split('|'); const own = provFolds[`${set}|${prov}|own`] || []; return { set, prov, n_folds: arr.length, season_mape_mean: +(arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(4), season_mape_median: +median(arr).toFixed(4), own_season_months: (OWN_SEASON[prov] || []).join('-'), own_season_mape_mean: own.length ? +(own.reduce((a, b) => a + b, 0) / own.length).toFixed(4) : null, own_season_mape_median: own.length ? +median(own).toFixed(4) : null }; });
 const toCsv = rows => Object.keys(rows[0]).join(',') + '\n' + rows.map(r => Object.values(r).map(v => v === null ? '' : typeof v === 'string' && v.includes(',') ? `"${v}"` : v).join(',')).join('\n') + '\n';
 await writeFile(path.join(OUT, `loyo_folds${TAG}.csv`), toCsv(folds));
 await writeFile(path.join(OUT, `loyo_summary${TAG}.csv`), toCsv(summary));
@@ -156,4 +162,4 @@ if (Object.keys(band).length) {
   console.log(`\nbackward test 2003–2011 (Terra-only / Terra+Aqua reconstruction, country): ${Object.entries(backward).filter(([k]) => k !== 'summary').map(([y, v]) => `${y}:${v.terra_only_over_terra_aqua}`).join(' ')}  | range ${backward.summary.country_min}–${backward.summary.country_max}, province-year q80|log| ${backward.summary.province_year_q80_abs_log}`);
 }
 if (Object.keys(forward).length) { console.log('\nforward test (factors from the full window applied to years never used):'); for (const set of Object.keys(forward)) for (const [y, f] of Object.entries(forward[set])) console.log(`  ${set} ${y}: country pred/obs ${f.country_pred_over_obs}  province season MAPE ${pct(f.prov_season_mape)}  country monthly med|err| ${pct(f.country_monthly_median_ape)}`); }
-if (byProv.length && !SWEEP && !ABLATION) { console.log('\nper-province season MAPE (TA, mean over folds):'); for (const r of byProv.filter(r => r.set === 'TA').sort((a, b) => a.prov.localeCompare(b.prov))) console.log(`  ${r.prov.split(',')[0].slice(0, 22).padEnd(22)} ${pct(r.season_mape_mean)}  (median ${pct(r.season_mape_median)})`); }
+if (byProv.length && !SWEEP && !ABLATION) { console.log('\nper-province MAPE (TA, mean over folds): national season Jul–Nov | own 5-month season'); for (const r of byProv.filter(r => r.set === 'TA').sort((a, b) => a.prov.localeCompare(b.prov))) console.log(`  ${r.prov.split(',')[0].slice(0, 22).padEnd(22)} ${pct(r.season_mape_mean)} (med ${pct(r.season_mape_median)})  | own ${r.own_season_months.padEnd(12)} ${r.own_season_mape_mean === null ? '    -' : pct(r.own_season_mape_mean)} (med ${r.own_season_mape_median === null ? '-' : pct(r.own_season_mape_median)})`); }

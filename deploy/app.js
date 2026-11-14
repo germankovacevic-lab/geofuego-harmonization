@@ -465,9 +465,9 @@ function fromHash() {
   if (h.get('pt')) { const [lat, lon] = h.get('pt').split(',').map(Number); $('lat').value = lat; $('lon').value = lon; return selectPoint(lat, lon); }
   if (h.get('bbox')) { const [s, w, n, e] = h.get('bbox').split(',').map(Number); const r = L.rectangle([[s, w], [n, e]], { color: '#e8eaf0', weight: 1.5, fill: false }); drawn.addLayer(r); return selectLayer(r); }
 }
-function selectCountry() { select({ kind: 'country', label: 'Argentina', cells: Object.keys(D.cells).map(Number) }); }
+function selectCountry() { $('prov').value = ''; select({ kind: 'country', label: 'Argentina', cells: Object.keys(D.cells).map(Number) }); }
 function selectProvince(p) { if (!p) return; select({ kind: 'province', label: p, cells: Object.keys(D.cells).filter(id => D.cells[id].p === p).map(Number) }); }
-function selectPoint(lat, lon) { const id = cellOf(lat, lon); if (id == null || !D.cells[id]) { alert(lang === 'es' ? 'Punto fuera de la grilla de Argentina.' : 'Point outside the Argentina grid.'); return; } select({ kind: 'point', label: `${lat.toFixed(2)}, ${lon.toFixed(2)}`, cells: [id] }); }
+function selectPoint(lat, lon) { $('prov').value = ''; const id = cellOf(lat, lon); if (id == null || !D.cells[id]) { alert(lang === 'es' ? 'Punto fuera de la grilla de Argentina.' : 'Point outside the Argentina grid.'); return; } select({ kind: 'point', label: `${lat.toFixed(2)}, ${lon.toFixed(2)}`, cells: [id] }); }
 function selectLayer(layer) { const { ids, snapped1 } = cellsForLayer(layer); const b = layer.getBounds(); select({ kind: 'drawn', label: 'drawn', cells: ids, snapped1, bbox: [b.getSouth(), b.getWest(), b.getNorth(), b.getEast()] }); }
 
 function initMap() {

@@ -137,3 +137,4 @@ footer p { margin:0; }
 .mv-scale i { flex:1; height:6px; border-radius:3px; background:linear-gradient(90deg, rgb(45,12,80), rgb(140,30,100), rgb(225,75,45), rgb(245,125,25), rgb(253,225,110), rgb(255,250,190)); }
 #map .leaflet-bottom { bottom:96px; }
 .pulse-label { display:none; }
+.warnline { color:var(--warn); }

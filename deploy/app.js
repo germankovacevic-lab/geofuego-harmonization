@@ -8,6 +8,7 @@
 // ---------- i18n ----------
 const T = {
   en: {
+    stepterra: 'The harmonized line starts in 2003 here: November 2000 – June 2002 is the Terra-only era (one satellite, reconstruction error ≈ 17 % per province against ≈ 10 % with Terra + Aqua), shown only for areas of 100 cells or more. The raw MODIS line still starts in 2001.',
     mcount: 'Count', manom: 'Anomaly', kcrit: 'Critical months', kcritd: (pct, peak) => `${pct} % of a typical year's activity · peak ${peak}`,
     kworst: 'Worst year', kworstd: (v, x) => `${v} hotspots · ${x} the median year`, kmean: 'Typical year', kmeand: (a, b) => `median of annual totals, ${a}–${b}`,
     kskill: 'Calibration skill', kskilld: (sc) => `fire-season error out of sample (leave-one-year-out 2012–23) · one national factor: ${sc}`, kskillsz: (n) => `fire-season error out of sample for ${n === 1 ? 'a single cell' : `areas of ~${n} cells`} (leave-one-year-out 2012–23)`,
@@ -74,6 +75,7 @@ const T = {
     csvhdr: 'GeoFuego Harmonization — CC BY 4.0 — produced by scripts written with SI assistance (Claude, Anthropic) from NASA FIRMS data',
   },
   es: {
+    stepterra: 'Acá la línea armonizada empieza en 2003: noviembre 2000 – junio 2002 es la era de solo Terra (un satélite, error de reconstrucción ≈ 17 % por provincia contra ≈ 10 % con Terra + Aqua), que se muestra solo en áreas de 100 celdas o más. La línea de MODIS crudo sí empieza en 2001.',
     mcount: 'Conteo', manom: 'Anomalía', kcrit: 'Meses críticos', kcritd: (pct, peak) => `${pct} % de la actividad de un año típico · pico en ${peak}`,
     kworst: 'Peor año', kworstd: (v, x) => `${v} focos · ${x} el año mediano`, kmean: 'Año típico', kmeand: (a, b) => `mediana de los totales anuales, ${a}–${b}`,
     kskill: 'Calidad de la calibración', kskilld: (sc) => `error de temporada fuera de muestra (dejando un año afuera, 2012–23) · un factor nacional único: ${sc}`, kskillsz: (n) => `error de temporada fuera de muestra para ${n === 1 ? 'una celda suelta' : `áreas de ~${n} celdas`} (dejando un año afuera, 2012–23)`,
@@ -356,7 +358,7 @@ function renderStep() {
     kp.push(hB ? `<div class="kpi good"><div class="l">${t('stepharm')}</div><div class="v">${ratioFmt(hA / hB)}</div><div class="d">${Math.abs(Math.log((hA / hB) / (mA / mB))) < Math.log(1.25) ? t('stepharmd') : t('stepharmd2', ratioFmt(mA / mB))}</div></div>` : `<div class="kpi"><div class="l">${t('stepharm')}</div><div class="v">—</div><div class="d">${t('stepharmna')}</div></div>`);
   } else kp.push(`<p class="note warn">${t('steplow')}</p>`);
   $('step-kpis').innerHTML = kp.join('');
-  $('step-note').textContent = t('stepnote');
+  $('step-note').innerHTML = (A.tier !== 'A' && !A.tdf && hv.some(v => v != null) ? `<span class="warnline">${t('stepterra')}</span><br>` : '') + t('stepnote');
   const el = $('step-chart'); el.innerHTML = ''; if (stepPlot) { stepPlot.destroy(); stepPlot = null; }
   const width = Math.min(900, el.clientWidth || 900);
   const seam = u => { const x = Math.round(u.valToPos(2011.5, 'x', true)); const c = u.ctx; c.save(); c.strokeStyle = 'rgba(255,255,255,.45)'; c.setLineDash([4, 4]); c.lineWidth = 1; c.beginPath(); c.moveTo(x, u.bbox.top); c.lineTo(x, u.bbox.top + u.bbox.height); c.stroke(); c.setLineDash([]); c.fillStyle = 'rgba(255,255,255,.7)'; c.font = `${11 * devicePixelRatio}px system-ui, sans-serif`; c.fillText(t('viirsstarts') + ' →', x + 6 * devicePixelRatio, u.bbox.top + 14 * devicePixelRatio); c.restore(); };

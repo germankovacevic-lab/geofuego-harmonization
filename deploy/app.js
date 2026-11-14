@@ -472,7 +472,7 @@ function select(sel) {
   A = aggregate(sel);
   if (cellsLayer) { cellsLayer.remove(); cellsLayer = null; }
   const feats = sel.cells.map(id => { const [a, c, b, d] = cellBounds(id); return [[a, c], [b, d]]; });
-  if (sel.kind !== 'cells') { picked = new Set(); paintPicked(); cellsLayer = L.layerGroup(feats.length > 1500 ? [L.rectangle(L.latLngBounds(feats.map(f => f[0]).concat(feats.map(f => f[1]))), { color: '#f5a623', weight: 1.5, fill: false, dashArray: '4 3' })] : feats.map(f => L.rectangle(f, { color: '#f5a623', weight: 1, fillOpacity: 0.12, interactive: false }))).addTo(map); }
+  if (sel.kind !== 'cells') { picked = new Set(); paintPicked(); cellsLayer = L.layerGroup(feats.length > 1500 ? [L.rectangle(L.latLngBounds(feats.map(f => f[0]).concat(feats.map(f => f[1]))), { color: '#f5a623', weight: 1.5, fill: false, dashArray: '4 3', interactive: false })] : feats.map(f => L.rectangle(f, { color: '#f5a623', weight: 1, fillOpacity: 0.12, interactive: false }))).addTo(map); }
   if (sel.kind !== 'drawn') { if (drawn) drawn.clearLayers(); }
   highlightProvince(sel.kind === 'province' ? sel.label : null);
   $('empty').hidden = true;

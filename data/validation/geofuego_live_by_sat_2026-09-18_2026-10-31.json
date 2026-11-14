@@ -1,0 +1,867 @@
+{
+ "source": "GeoFuego D1 flama_focos (NRT feeds, 3 VIIRS satellites, static flag fijo=0), read-only export 2026-11-14",
+ "window": [
+  "2026-09-18",
+  "2026-10-31"
+ ],
+ "rows": [
+  {
+   "sat": "NOAA-20",
+   "prov": null,
+   "mes": "2026-09",
+   "n": 4835
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": null,
+   "mes": "2026-10",
+   "n": 2973
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Buenos Aires",
+   "mes": "2026-09",
+   "n": 158
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Buenos Aires",
+   "mes": "2026-10",
+   "n": 57
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Catamarca",
+   "mes": "2026-09",
+   "n": 363
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Catamarca",
+   "mes": "2026-10",
+   "n": 75
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Chaco",
+   "mes": "2026-09",
+   "n": 935
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Chaco",
+   "mes": "2026-10",
+   "n": 624
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Chubut",
+   "mes": "2026-09",
+   "n": 1
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Chubut",
+   "mes": "2026-10",
+   "n": 10
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Corrientes",
+   "mes": "2026-09",
+   "n": 823
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Corrientes",
+   "mes": "2026-10",
+   "n": 460
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Córdoba",
+   "mes": "2026-09",
+   "n": 108
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Córdoba",
+   "mes": "2026-10",
+   "n": 95
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Entre Ríos",
+   "mes": "2026-09",
+   "n": 320
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Entre Ríos",
+   "mes": "2026-10",
+   "n": 124
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Formosa",
+   "mes": "2026-09",
+   "n": 2764
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Formosa",
+   "mes": "2026-10",
+   "n": 594
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Jujuy",
+   "mes": "2026-09",
+   "n": 65
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Jujuy",
+   "mes": "2026-10",
+   "n": 28
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "La Pampa",
+   "mes": "2026-09",
+   "n": 7
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "La Pampa",
+   "mes": "2026-10",
+   "n": 9
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "La Rioja",
+   "mes": "2026-09",
+   "n": 27
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "La Rioja",
+   "mes": "2026-10",
+   "n": 33
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Mendoza",
+   "mes": "2026-09",
+   "n": 243
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Mendoza",
+   "mes": "2026-10",
+   "n": 55
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Misiones",
+   "mes": "2026-09",
+   "n": 131
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Misiones",
+   "mes": "2026-10",
+   "n": 74
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Neuquén",
+   "mes": "2026-09",
+   "n": 18
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Neuquén",
+   "mes": "2026-10",
+   "n": 45
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Río Negro",
+   "mes": "2026-09",
+   "n": 41
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Río Negro",
+   "mes": "2026-10",
+   "n": 37
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Salta",
+   "mes": "2026-09",
+   "n": 565
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Salta",
+   "mes": "2026-10",
+   "n": 292
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "San Juan",
+   "mes": "2026-09",
+   "n": 121
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "San Juan",
+   "mes": "2026-10",
+   "n": 35
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "San Luis",
+   "mes": "2026-09",
+   "n": 96
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "San Luis",
+   "mes": "2026-10",
+   "n": 76
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Santa Cruz",
+   "mes": "2026-09",
+   "n": 2
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Santa Cruz",
+   "mes": "2026-10",
+   "n": 5
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Santa Fe",
+   "mes": "2026-09",
+   "n": 990
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Santa Fe",
+   "mes": "2026-10",
+   "n": 628
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Santiago del Estero",
+   "mes": "2026-09",
+   "n": 1654
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Santiago del Estero",
+   "mes": "2026-10",
+   "n": 704
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+   "mes": "2026-09",
+   "n": 6
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+   "mes": "2026-10",
+   "n": 1
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Tucumán",
+   "mes": "2026-09",
+   "n": 104
+  },
+  {
+   "sat": "NOAA-20",
+   "prov": "Tucumán",
+   "mes": "2026-10",
+   "n": 54
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": null,
+   "mes": "2026-09",
+   "n": 4168
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": null,
+   "mes": "2026-10",
+   "n": 2879
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Buenos Aires",
+   "mes": "2026-09",
+   "n": 182
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Buenos Aires",
+   "mes": "2026-10",
+   "n": 105
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Catamarca",
+   "mes": "2026-09",
+   "n": 322
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Catamarca",
+   "mes": "2026-10",
+   "n": 65
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Chaco",
+   "mes": "2026-09",
+   "n": 1028
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Chaco",
+   "mes": "2026-10",
+   "n": 620
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Chubut",
+   "mes": "2026-10",
+   "n": 18
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Corrientes",
+   "mes": "2026-09",
+   "n": 836
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Corrientes",
+   "mes": "2026-10",
+   "n": 377
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Córdoba",
+   "mes": "2026-09",
+   "n": 118
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Córdoba",
+   "mes": "2026-10",
+   "n": 121
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Entre Ríos",
+   "mes": "2026-09",
+   "n": 287
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Entre Ríos",
+   "mes": "2026-10",
+   "n": 134
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Formosa",
+   "mes": "2026-09",
+   "n": 2521
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Formosa",
+   "mes": "2026-10",
+   "n": 604
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Jujuy",
+   "mes": "2026-09",
+   "n": 51
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Jujuy",
+   "mes": "2026-10",
+   "n": 47
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "La Pampa",
+   "mes": "2026-09",
+   "n": 17
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "La Pampa",
+   "mes": "2026-10",
+   "n": 5
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "La Rioja",
+   "mes": "2026-09",
+   "n": 28
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "La Rioja",
+   "mes": "2026-10",
+   "n": 42
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Mendoza",
+   "mes": "2026-09",
+   "n": 217
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Mendoza",
+   "mes": "2026-10",
+   "n": 63
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Misiones",
+   "mes": "2026-09",
+   "n": 159
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Misiones",
+   "mes": "2026-10",
+   "n": 53
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Neuquén",
+   "mes": "2026-09",
+   "n": 9
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Neuquén",
+   "mes": "2026-10",
+   "n": 52
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Río Negro",
+   "mes": "2026-09",
+   "n": 48
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Río Negro",
+   "mes": "2026-10",
+   "n": 45
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Salta",
+   "mes": "2026-09",
+   "n": 451
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Salta",
+   "mes": "2026-10",
+   "n": 329
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "San Juan",
+   "mes": "2026-09",
+   "n": 101
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "San Juan",
+   "mes": "2026-10",
+   "n": 52
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "San Luis",
+   "mes": "2026-09",
+   "n": 97
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "San Luis",
+   "mes": "2026-10",
+   "n": 66
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Santa Cruz",
+   "mes": "2026-09",
+   "n": 3
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Santa Cruz",
+   "mes": "2026-10",
+   "n": 9
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Santa Fe",
+   "mes": "2026-09",
+   "n": 876
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Santa Fe",
+   "mes": "2026-10",
+   "n": 722
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Santiago del Estero",
+   "mes": "2026-09",
+   "n": 1358
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Santiago del Estero",
+   "mes": "2026-10",
+   "n": 843
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+   "mes": "2026-09",
+   "n": 3
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+   "mes": "2026-10",
+   "n": 1
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Tucumán",
+   "mes": "2026-09",
+   "n": 109
+  },
+  {
+   "sat": "NOAA-21",
+   "prov": "Tucumán",
+   "mes": "2026-10",
+   "n": 82
+  },
+  {
+   "sat": "S-NPP",
+   "prov": null,
+   "mes": "2026-09",
+   "n": 4572
+  },
+  {
+   "sat": "S-NPP",
+   "prov": null,
+   "mes": "2026-10",
+   "n": 3262
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Buenos Aires",
+   "mes": "2026-09",
+   "n": 179
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Buenos Aires",
+   "mes": "2026-10",
+   "n": 81
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Catamarca",
+   "mes": "2026-09",
+   "n": 325
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Catamarca",
+   "mes": "2026-10",
+   "n": 47
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Chaco",
+   "mes": "2026-09",
+   "n": 915
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Chaco",
+   "mes": "2026-10",
+   "n": 683
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Chubut",
+   "mes": "2026-09",
+   "n": 4
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Chubut",
+   "mes": "2026-10",
+   "n": 16
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Ciudad Autónoma de Buenos Aires",
+   "mes": "2026-10",
+   "n": 1
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Corrientes",
+   "mes": "2026-09",
+   "n": 904
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Corrientes",
+   "mes": "2026-10",
+   "n": 483
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Córdoba",
+   "mes": "2026-09",
+   "n": 121
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Córdoba",
+   "mes": "2026-10",
+   "n": 127
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Entre Ríos",
+   "mes": "2026-09",
+   "n": 314
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Entre Ríos",
+   "mes": "2026-10",
+   "n": 133
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Formosa",
+   "mes": "2026-09",
+   "n": 2631
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Formosa",
+   "mes": "2026-10",
+   "n": 572
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Jujuy",
+   "mes": "2026-09",
+   "n": 56
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Jujuy",
+   "mes": "2026-10",
+   "n": 48
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "La Pampa",
+   "mes": "2026-09",
+   "n": 6
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "La Pampa",
+   "mes": "2026-10",
+   "n": 3
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "La Rioja",
+   "mes": "2026-09",
+   "n": 31
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "La Rioja",
+   "mes": "2026-10",
+   "n": 36
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Mendoza",
+   "mes": "2026-09",
+   "n": 268
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Mendoza",
+   "mes": "2026-10",
+   "n": 105
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Misiones",
+   "mes": "2026-09",
+   "n": 155
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Misiones",
+   "mes": "2026-10",
+   "n": 76
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Neuquén",
+   "mes": "2026-09",
+   "n": 24
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Neuquén",
+   "mes": "2026-10",
+   "n": 53
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Río Negro",
+   "mes": "2026-09",
+   "n": 52
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Río Negro",
+   "mes": "2026-10",
+   "n": 43
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Salta",
+   "mes": "2026-09",
+   "n": 533
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Salta",
+   "mes": "2026-10",
+   "n": 342
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "San Juan",
+   "mes": "2026-09",
+   "n": 125
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "San Juan",
+   "mes": "2026-10",
+   "n": 94
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "San Luis",
+   "mes": "2026-09",
+   "n": 82
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "San Luis",
+   "mes": "2026-10",
+   "n": 83
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Santa Cruz",
+   "mes": "2026-09",
+   "n": 1
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Santa Cruz",
+   "mes": "2026-10",
+   "n": 4
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Santa Fe",
+   "mes": "2026-09",
+   "n": 1002
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Santa Fe",
+   "mes": "2026-10",
+   "n": 738
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Santiago del Estero",
+   "mes": "2026-09",
+   "n": 1429
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Santiago del Estero",
+   "mes": "2026-10",
+   "n": 932
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+   "mes": "2026-09",
+   "n": 4
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Tucumán",
+   "mes": "2026-09",
+   "n": 76
+  },
+  {
+   "sat": "S-NPP",
+   "prov": "Tucumán",
+   "mes": "2026-10",
+   "n": 67
+  }
+ ]
+}

@@ -139,3 +139,4 @@ footer p { margin:0; }
 .pulse-label { display:none; }
 .warnline { color:var(--warn); }
 .step-kpis .kpi .v, .sum-kpis .kpi .v { white-space:nowrap; }
+.note.ctx26 { color:#bfe6f5; background:#13232b; border:1px solid #1f4a5c; border-radius:8px; padding:8px 10px; margin-top:8px; }

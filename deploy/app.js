@@ -8,6 +8,7 @@
 // ---------- i18n ----------
 const T = {
   en: {
+    ctx26: 'Context 2026 (Argentina, preliminary): strong El Niño, ONI +2.5 in Aug–Oct, the highest for those months since 1950. In most departments of the main fire provinces, August 2026 had the greenest vegetation for an August since 2001 and very wet topsoil; September was near normal; October was the coldest October since 2001. Nationally, August and October 2026 are the lowest August and the lowest October of the VIIRS record (2012 →). Sources: NOAA CPC ONI; ERA5-Land and MODIS NDVI via the Estado hídrico dataset (doi:10.5281/zenodo.24035880).',
     stepterra: 'The harmonized line starts in 2003 here: November 2000 – June 2002 is the Terra-only era (one satellite, reconstruction error ≈ 17 % per province against ≈ 10 % with Terra + Aqua), shown only for areas of 100 cells or more. The raw MODIS line still starts in 2001.',
     mcount: 'Count', manom: 'Anomaly', kcrit: 'Critical months', kcritd: (pct, peak) => `${pct} % of a typical year's activity · peak ${peak}`,
     kworst: 'Worst year', kworstd: (v, x) => `${v} hotspots · ${x} the median year`, kmean: 'Typical year', kmeand: (a, b) => `median of annual totals, ${a}–${b}`,
@@ -49,7 +50,7 @@ const T = {
     how3: '80 % range: calibrated out of sample per fire-regime region, size class and predicted count, widened in strong ENSO months and in cloudier-than-usual months. Only reconstructed months carry it.',
     how4: 'Markers: ▲ cloudier than usual at overpass time (the count may be low) · ◆ partly modelled (satellite outage) · hatch: Terra-only era (Nov 2000 – Jun 2002), shown for ≥ 100 cells.',
     how5: 'Current year: preliminary, near-real-time, NOAA-20/21 converted to S-NPP-equivalent (± 5 %), month to date. Not part of the harmonized record. This is not an alert system: an empty cell does not mean there is no fire.',
-    foot: "NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Team GeoFuego.com.ar · Data: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), ERA5, NOAA CPC ONI, IGN Argentina · Code MIT, data CC BY 4.0 · Built with SI assistance (Claude, Anthropic); every number is computed by the open scripts from NASA FIRMS data. We acknowledge the use of data from NASA's Fire Information for Resource Management System (FIRMS), part of NASA's Earth Science Data and Information System (ESDIS).",
+    foot: "NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Team GeoFuego.com.ar · Data: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), ERA5, ERA5-Land and MODIS NDVI (2026 context line), NOAA CPC ONI, IGN Argentina · Code MIT, data CC BY 4.0 · Built with SI assistance (Claude, Anthropic); every number is computed by the open scripts from NASA FIRMS data. We acknowledge the use of data from NASA's Fire Information for Resource Management System (FIRMS), part of NASA's Earth Science Data and Information System (ESDIS).",
     // dynamic
     cells: 'cells', km2: 'km²', tier: 'tier', dominant: 'mostly in', region: 'region', drawn: 'Drawn area', point: 'Point', argentina: 'Argentina',
     snapped1: 'The area is smaller than one cell: the calendar is that of the cell containing it.',
@@ -75,6 +76,7 @@ const T = {
     csvhdr: 'GeoFuego Harmonization — CC BY 4.0 — produced by scripts written with SI assistance (Claude, Anthropic) from NASA FIRMS data',
   },
   es: {
+    ctx26: 'Contexto 2026 (Argentina, preliminar): El Niño fuerte, ONI +2,5 en ago–oct, el más alto para esos meses desde 1950. En la mayoría de los departamentos de las principales provincias con fuego, agosto 2026 tuvo la vegetación más verde para un agosto desde 2001 y el suelo superficial muy húmedo; septiembre fue casi normal; octubre fue el octubre más frío desde 2001. A nivel país, agosto y octubre 2026 son el agosto y el octubre más bajos del registro VIIRS (2012 →). Fuentes: NOAA CPC ONI; ERA5-Land y NDVI MODIS vía el dataset Estado hídrico (doi:10.5281/zenodo.24035880).',
     stepterra: 'Acá la línea armonizada empieza en 2003: noviembre 2000 – junio 2002 es la era de solo Terra (un satélite, error de reconstrucción ≈ 17 % por provincia contra ≈ 10 % con Terra + Aqua), que se muestra solo en áreas de 100 celdas o más. La línea de MODIS crudo sí empieza en 2001.',
     mcount: 'Conteo', manom: 'Anomalía', kcrit: 'Meses críticos', kcritd: (pct, peak) => `${pct} % de la actividad de un año típico · pico en ${peak}`,
     kworst: 'Peor año', kworstd: (v, x) => `${v} focos · ${x} el año mediano`, kmean: 'Año típico', kmeand: (a, b) => `mediana de los totales anuales, ${a}–${b}`,
@@ -116,7 +118,7 @@ const T = {
     how3: 'Rango del 80 %: calibrado fuera de muestra por región de régimen de fuego, clase de tamaño y conteo predicho; ensanchado en meses de ENSO fuerte y en meses más nublados que lo normal. Solo los meses reconstruidos lo llevan.',
     how4: 'Marcas: ▲ más nublado que lo normal a la hora de paso (el conteo puede estar bajo) · ◆ parcialmente modelado (corte de satélite) · rayado: era solo Terra (nov 2000 – jun 2002), visible con ≥ 100 celdas.',
     how5: 'Año en curso: preliminar, casi en tiempo real, NOAA-20/21 convertidos a equivalente S-NPP (± 5 %), mes a la fecha. No forma parte del registro armonizado. No es un sistema de alerta: una celda vacía no significa que no haya fuego.',
-    foot: 'NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Equipo GeoFuego.com.ar · Datos: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), ERA5, NOAA CPC ONI, IGN Argentina · Código MIT, datos CC BY 4.0 · Construido con asistencia de SI (Claude, Anthropic); cada número lo calculan los scripts abiertos desde datos NASA FIRMS. We acknowledge the use of data from NASA\'s Fire Information for Resource Management System (FIRMS), part of NASA\'s Earth Science Data and Information System (ESDIS).',
+    foot: 'NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Equipo GeoFuego.com.ar · Datos: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), ERA5, ERA5-Land y NDVI MODIS (línea de contexto 2026), NOAA CPC ONI, IGN Argentina · Código MIT, datos CC BY 4.0 · Construido con asistencia de SI (Claude, Anthropic); cada número lo calculan los scripts abiertos desde datos NASA FIRMS. We acknowledge the use of data from NASA\'s Fire Information for Resource Management System (FIRMS), part of NASA\'s Earth Science Data and Information System (ESDIS).',
     cells: 'celdas', km2: 'km²', tier: 'nivel', dominant: 'mayormente en', region: 'región', drawn: 'Área dibujada', point: 'Punto', argentina: 'Argentina',
     snapped1: 'El área es menor que una celda: el calendario es el de la celda que la contiene.',
     tierA: 'Calendario completo, todos los años.', tierB: 'Calendario completo; los valores anteriores a 2012 son reconstruidos y llevan el rango del 80 %.',
@@ -332,7 +334,7 @@ function renderNow() {
   const ytdHist = ys.filter(y => monthsWithData.every(M => usable(y, M.m))).map(y => monthsWithData.reduce((a, M) => a + A.H[y - Y0][M.m - 1] * frac(M), 0));
   const ytdMed = median(ytdHist);
   cards.push(`<div class="kpi ${ytdMed && ytd / ytdMed >= 1.5 ? 'up' : ytdMed && ytd / ytdMed <= 0.67 ? 'down' : ''}"><div class="l">${t('months')[0]}–${t('months')[last.m - 1]} ${cur.year}${frac(last) < 1 ? ` (${t('through')} ${cur.through})` : ''}</div><div class="v">${fmt(ytd)}</div><div class="d">${ytdMed != null ? `${t(frac(last) < 1 ? 'vspace' : 'vsmedian', ytd / ytdMed)} · ${t('median')} ${fmt(ytdMed)} (${ytdHist.length} ${t('years')})` : '—'}</div></div>`);
-  el.innerHTML = `<div class="now-grid">${cards.join('')}</div><p class="note">${t('nowpre')} ${t('through')} ${cur.through}. ${t('snppeq')} (NOAA-20 ÷ ${cur.bridge['NOAA-20']}, NOAA-21 ÷ ${cur.bridge['NOAA-21']}).${ys.length ? ` ${t('baseline')}: ${ys[0]}–${ys[ys.length - 1]}.` : ''}${monthsWithData.some(M => M.partial) ? ' ⚠ ' + t('partial') : ''}</p>`;
+  el.innerHTML = `<div class="now-grid">${cards.join('')}</div><p class="note">${t('nowpre')} ${t('through')} ${cur.through}. ${t('snppeq')} (NOAA-20 ÷ ${cur.bridge['NOAA-20']}, NOAA-21 ÷ ${cur.bridge['NOAA-21']}).${ys.length ? ` ${t('baseline')}: ${ys[0]}–${ys[ys.length - 1]}.` : ''}${monthsWithData.some(M => M.partial) ? ' ⚠ ' + t('partial') : ''}</p>${cur.year === 2026 ? `<p class="note ctx26">${t('ctx26')}</p>` : ''}`;
 }
 
 

@@ -1,5 +1,5 @@
 # Produced by scripts written with SI assistance (Claude, Anthropic); all values computed from NASA FIRMS country archives (MODIS Collection 6/6.1, file versions 6.2/6.03/61.03; VIIRS S-NPP). License CC BY 4.0. GeoFuego Harmonization, NASA Space Apps 2026.
-# H_lo/H_hi = 80% prediction interval calibrated out-of-sample by predicted count, satellite set and fire-regime region of the cell's province (band_calibration.json by_region); empty for observed VIIRS months
+# H_lo/H_hi = 80% prediction interval calibrated out-of-sample by predicted count, satellite set and fire-regime region (cell-level residuals; band_calibration.json by_region_size class '1'); lower bound clamped to H; empty for observed VIIRS months
 cell,prov,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,V,T,A,sensor,terra_only,gap_fill,additive,cloud_anom,cloud_underdetection,static_viirs,static_modis
 22,"Tierra del Fuego, Antártida e Islas del Atlántico Sur",2021,10,1.0,,,,,1,0,0,VIIRS,0,0,0,-0.095,0,0,0
 30,"Tierra del Fuego, Antártida e Islas del Atlántico Sur",2004,2,4.5,0.5,9.1,-2.193,0.701,0,0,1,MODIS->VIIRS-eq,0,0,0,0.043,0,,0

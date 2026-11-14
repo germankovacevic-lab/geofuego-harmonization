@@ -48,11 +48,15 @@ const Z = 1.2816; // 80 % two-sided
 const BANDCAL = JSON.parse(await readFile(path.join(ROOT, 'data', 'validation', 'band_calibration.json'), 'utf8'));
 const BINSET = { TA: BANDCAL.band.TA.by_count, T: BANDCAL.band.T.by_count };
 const REGBINS = { TA: BANDCAL.band.TA.by_region, T: BANDCAL.band.T.by_region }; // variant A (14:25), kept for reference
-const RC = { TA: BANDCAL.band.TA.by_region_class, T: BANDCAL.band.T.by_region_class }; // variant D (adopted 16:40): [region|'national'][cell|agg][bin], fallback chain already resolved in 05_loyo
+const RC = { TA: BANDCAL.band.TA.by_region_class, T: BANDCAL.band.T.by_region_class }; // variant D (15:15): [region|'national'][cell|agg][bin]
 if (!RC.TA || !RC.T) throw new Error('band_calibration.json has no by_region_class bins: run 05_loyo.mjs');
+// round 4 (05g_size_bins): bins by region × SIZE CLASS of the aggregate (1 | 2-9 | 10-49 | 50-199 | 200+); class 1 = cell bins, 200+ = agg bins
+const RS = BANDCAL.by_region_size; if (!RS?.TA || !RS?.T) throw new Error('band_calibration.json has no by_region_size bins: run 05g_size_bins.mjs');
+const SIZE_CLASSES = RS.size_classes; const sizeClassOf = n => SIZE_CLASSES.find(c => n >= c.min && n <= c.max).name;
 /** signed log offsets [p10, p90] of the 80 % interval for a predicted count P under satellite set s, in region reg (null = pooled/country) */
 /** cls = 'cell' (one 0.25° cell) or 'agg' (any aggregate: province, country, user AOI); reg = fire-regime region or null for the whole country */
-function bandLog(P, s, reg = null, cls = 'agg') { const bins = RC[s]?.[reg || 'national']?.[cls] || RC[s]?.national?.[cls] || BINSET[s] || BINSET.TA; let b = bins[0]; for (const x of bins) if (P >= x.P_min) b = x; return [b.p10_log, b.p90_log]; }
+/** cls: a size class name ('1', '2-9', '10-49', '50-199', '200+') or 'agg' (country); reg = fire-regime region or null for the whole country */
+function bandLog(P, s, reg = null, cls = 'agg') { const bins = cls === 'agg' ? RC[s].national.agg : (RS[s]?.[reg || 'national']?.[cls] || RS[s]?.national?.[cls] || RC[s].national.agg); let b = bins[0]; for (const x of bins) if (P >= x.P_min) b = x; return [Math.min(0, b.p10_log), Math.max(0, b.p90_log)]; } // clamped so that the interval always contains H (round 4: 28 province rows had H below its own lower bound)
 const regionOf = prov => REGION_OF[prov] || null;
 const N_CELLS_TOTAL = Object.keys(agg.cells).length;
 // Empirical relative σ for an aggregate of n cells: the AOI-size error curve measured by LOYO on random contiguous blocks
@@ -94,9 +98,9 @@ const cloudAnom = (cell, y, m, e) => { if (!CLOUD) return null; const r = CLOUD.
 let cloudFlagged = 0;
 const era = (y, m) => y >= 2012 ? 'VIIRS' : (y > 2002 || (y === 2002 && m >= 7)) ? 'MODIS->VIIRS-eq' : (y > 2000 || m >= 11) ? 'MODIS-Terra->VIIRS-eq' : null;
 
-let cellsCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval calibrated out-of-sample by predicted count, satellite set and fire-regime region of the cell's province (band_calibration.json by_region); empty for observed VIIRS months\ncell,prov,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,V,T,A,sensor,terra_only,gap_fill,additive,cloud_anom,cloud_underdetection,static_viirs,static_modis\n`;
+let cellsCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval calibrated out-of-sample by predicted count, satellite set and fire-regime region (cell-level residuals; band_calibration.json by_region_size class '1'); lower bound clamped to H; empty for observed VIIRS months\ncell,prov,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,V,T,A,sensor,terra_only,gap_fill,additive,cloud_anom,cloud_underdetection,static_viirs,static_modis\n`;
 let fillTotal = { snpp: 0, terra: 0, aqua: 0, terra_only: 0, additive: 0 };
-const compact = { grid: index.grid, years: YEARS, terra_only_until: '2002-06', band_by_count: BINSET, band_by_region_class: RC, region_of_prov: REGION_OF, band: '80% prediction interval [H*exp(p10), H*exp(p90)] with p10/p90 from the bin containing the predicted count H in band_by_region_class[set][region][class]; class = cell for an AOI of one 0.25° cell, agg for any aggregate of 2+ cells; region = region of the cells carrying the largest share of H, national for the whole country; set T before 2002-07, TA until 2011-12, none for observed VIIRS months; widen by |0.025*ONI| per side in reconstructed months. band_by_count = national pooled bins (reference only)', sigma_curve_by_cells_diagnostic: CURVES, note: SI_NOTE.slice(2), cells: {} };
+const compact = { grid: index.grid, years: YEARS, terra_only_until: '2002-06', band_by_count: BINSET, band_by_region_class: RC, band_by_region_size: { size_classes: SIZE_CLASSES, TA: RS.TA, T: RS.T }, region_of_prov: REGION_OF, band: '80% prediction interval [H*exp(p10), H*exp(p90)] with p10/p90 from the bin containing the predicted count H in band_by_region_size[set][region][size_class]; size_class by the number of 0.25° cells inside the AOI (1 | 2-9 | 10-49 | 50-199 | 200+); region = region of the cells carrying the largest share of H; the whole country uses band_by_region_class[set].national.agg; clamp p10 <= 0 <= p90; set T before 2002-07, TA until 2011-12, none for observed VIIRS months; widen by |0.025*ONI| per side in reconstructed months. band_by_region_class and band_by_count are kept for reference', sigma_curve_by_cells_diagnostic: CURVES, note: SI_NOTE.slice(2), cells: {} };
 const provSeries = {}; // prov -> { H:[y][m], var:[y][m], obs:[y][m], static:[y][m] }
 const provAcc = p => (provSeries[p] ??= { n: 0, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)), ca: YEARS.map(() => Array(12).fill(0)), caw: YEARS.map(() => Array(12).fill(0)) });
 
@@ -114,7 +118,7 @@ for (const [cid, yrs] of Object.entries(agg.cells)) {
       const r = yrs[y]?.[m] || Array(12).fill(0);
       const V = r[0], T = r[1], A = r[2], Vs = r[3], Ms = r[4] + r[5], Mso = r[9] || 0, Ato = r[10] || 0, Tao = r[11] || 0;
       let H, sig = 0, terra = 0, gf = 0, lo, hi, b10 = 0, b90 = 0, additive = 0;
-      if (e === 'VIIRS') { H = V; lo = hi = H; if (Mso) { gf = fTA[m - 1][0] * Mso; H += gf; fillTotal.snpp += gf; const [q1, q9] = bandLog(gf, 'TA', reg, 'cell'); lo = V + gf * Math.exp(q1); hi = V + gf * Math.exp(q9); b10 = Math.log(lo / H); b90 = Math.log(hi / H); sig = 1; } }
+      if (e === 'VIIRS') { H = V; lo = hi = H; if (Mso) { gf = fTA[m - 1][0] * Mso; H += gf; fillTotal.snpp += gf; const [q1, q9] = bandLog(gf, 'TA', reg, '1'); lo = V + gf * Math.exp(q1); hi = V + gf * Math.exp(q9); b10 = Math.log(lo / H); b90 = Math.log(hi / H); sig = 1; } }
       else if (e === 'MODIS->VIIRS-eq') {
         const k = rTA[prov]?.[m] ?? 0.55; const fillT = Ato * k, fillA = Tao / Math.max(k, 0.05);
         const adj = ensoAdj(y, m);
@@ -128,7 +132,7 @@ for (const [cid, yrs] of Object.entries(agg.cells)) {
       }
       const ca = cloudAnom(cell, y, m, e); const under = ca !== null && ca > CLOUD_FLAG ? +(1 - Math.exp(-CLOUD_SLOPE * ca)).toFixed(3) : 0;
       if (under) { (cld[y] ??= Array(12).fill(0))[m - 1] = Math.round(100 * ca); cloudFlagged++; }
-      if (e !== 'VIIRS') { const es = ensoSig(y, m); [b10, b90] = bandLog(H, terra ? 'T' : 'TA', reg, 'cell'); b10 -= es; b90 += es; if (under) b90 += CLOUD_SLOPE * ca; lo = H * Math.exp(b10); hi = H * Math.exp(b90); }
+      if (e !== 'VIIRS') { const es = ensoSig(y, m); [b10, b90] = bandLog(H, terra ? 'T' : 'TA', reg, '1'); b10 -= es; b90 += es; if (under) b90 += CLOUD_SLOPE * ca; lo = H * Math.exp(b10); hi = H * Math.exp(b90); }
       hy[m - 1] = Math.round(H); sy[m - 1] = e === 'VIIRS' && !gf ? 0 : 1;
       if (Vs || Ms) (st[y] ??= Array(12).fill(0))[m - 1] = e === 'VIIRS' ? Vs : Ms;
       if (gf > 0.5) (gfc[y] ??= Array(12).fill(0))[m - 1] = Math.round(gf);
@@ -144,16 +148,17 @@ for (const [cid, yrs] of Object.entries(agg.cells)) {
 const AR = { n: N_CELLS_TOTAL, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)), ca: YEARS.map(() => Array(12).fill(0)), caw: YEARS.map(() => Array(12).fill(0)) };
 for (const P of Object.values(provSeries)) for (let yi = 0; yi < YEARS.length; yi++) for (let m = 0; m < 12; m++) { AR.H[yi][m] += P.H[yi][m]; AR.var[yi][m] += P.var[yi][m]; if (!P.nodata[yi][m]) AR.nodata[yi][m] = false; AR.st[yi][m] += P.st[yi][m]; AR.gf[yi][m] += P.gf[yi][m]; AR.ca[yi][m] += P.ca[yi][m]; AR.caw[yi][m] += P.caw[yi][m]; }
 provSeries['Argentina'] = AR;
-let provCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval [H*exp(p10), H*exp(p90)] calibrated out-of-sample by predicted count, satellite set and fire-regime region of the province (band_calibration.json by_region; Argentina uses the national pooled bins), widened by |0.025*ONI| per side in reconstructed months; empty for observed VIIRS months without gap fill. Tierra del Fuego: interval not verifiable (3 province-months with predicted count >= 30 in 2012-2023). factor_source = estimated (own weight > 0 at province level) or assigned (own weight 0 for that month and set: the region factor is used; Tierra del Fuego in most months, Ciudad Autónoma de Buenos Aires, Santa Cruz in some Terra-only months)\nunit,n_cells,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,sensor,gap_fill,outage_days_terra,outage_days_aqua,outage_days_snpp,cloud_anom,cloud_underdetection,static,factor_source\n`;
+let provCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval [H*exp(p10), H*exp(p90)] calibrated out-of-sample by predicted count, satellite set, fire-regime region and SIZE CLASS of the province (number of cells: 2-9 | 10-49 | 50-199 | 200+; band_calibration.json by_region_size; Argentina uses the national aggregate bins); lower bound clamped to H, widened by |0.025*ONI| per side in reconstructed months; empty for observed VIIRS months without gap fill. Tierra del Fuego: interval not verifiable (3 province-months with predicted count >= 30 in 2012-2023). factor_source = estimated (own weight >= 0.5 at province level for that month and set) or assigned (more than half of the factor is borrowed from the region: Tierra del Fuego, Ciudad Autónoma de Buenos Aires, and a few Terra-only months of Santa Cruz and Chubut)\nunit,n_cells,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,sensor,gap_fill,outage_days_terra,outage_days_aqua,outage_days_snpp,cloud_anom,cloud_underdetection,static,factor_source\n`;
 const provW = (p, m, set) => p === 'Argentina' ? 1 : (F.prov[set]?.[p]?.[m - 1]?.w ?? 0); // own weight of the province factor for that month and set
+const ASSIGNED_W = 0.5; // round 4: a factor that is mostly borrowed (own weight < 0.5) is labelled assigned (Tierra del Fuego's December factor rests on one event)
 for (const [p, P] of Object.entries(provSeries)) for (let yi = 0; yi < YEARS.length; yi++) for (let m = 0; m < 12; m++) {
   if (P.nodata[yi][m]) continue;
   const yy = YEARS[yi], mm = m + 1, H = P.H[yi][m], gf = P.gf[yi][m], reg = p === 'Argentina' ? null : regionOf(p);
   let lo = '', hi = '', b10 = '', b90 = '';
   const caP = P.caw[yi][m] ? P.ca[yi][m] / P.caw[yi][m] : null, underP = caP !== null && caP > CLOUD_FLAG ? +(1 - Math.exp(-CLOUD_SLOPE * caP)).toFixed(3) : 0;
-  if (yy < 2012 && H > 0) { const es = ensoSig(yy, mm); let [q1, q9] = bandLog(H, setOf(yy, mm), reg, 'agg'); q1 -= es; q9 += es; if (underP) q9 += CLOUD_SLOPE * caP; lo = (H * Math.exp(q1)).toFixed(1); hi = (H * Math.exp(q9)).toFixed(1); b10 = q1.toFixed(3); b90 = q9.toFixed(3); }
-  else if (gf > 0 && H > 0) { const [q1, q9] = bandLog(gf, 'TA', reg, 'agg'); const l = H - gf + gf * Math.exp(q1), h = H - gf + gf * Math.exp(q9); lo = l.toFixed(1); hi = h.toFixed(1); b10 = Math.log(l / H).toFixed(3); b90 = Math.log(h / H).toFixed(3); }
-  provCsv += `"${p}",${P.n},${yy},${mm},${H.toFixed(1)},${lo},${hi},${b10},${b90},${era(yy, mm)},${gf ? gf.toFixed(1) : 0},${outDays('Terra', yy, mm)},${yy > 2002 || (yy === 2002 && mm >= 7) ? outDays('Aqua', yy, mm) : ''},${yy >= 2012 ? outDays('SNPP', yy, mm) : ''},${caP === null ? '' : caP.toFixed(3)},${underP || 0},${P.st[yi][m]},${yy < 2012 ? (provW(p, mm, setOf(yy, mm)) > 0 ? 'estimated' : 'assigned') : ''}\n`;
+  if (yy < 2012 && H > 0) { const es = ensoSig(yy, mm); let [q1, q9] = bandLog(H, setOf(yy, mm), reg, p === 'Argentina' ? 'agg' : sizeClassOf(P.n)); q1 -= es; q9 += es; if (underP) q9 += CLOUD_SLOPE * caP; lo = (H * Math.exp(q1)).toFixed(1); hi = (H * Math.exp(q9)).toFixed(1); b10 = q1.toFixed(3); b90 = q9.toFixed(3); }
+  else if (gf > 0 && H > 0) { const [q1, q9] = bandLog(gf, 'TA', reg, p === 'Argentina' ? 'agg' : sizeClassOf(P.n)); const l = H - gf + gf * Math.exp(q1), h = H - gf + gf * Math.exp(q9); lo = l.toFixed(1); hi = h.toFixed(1); b10 = Math.log(l / H).toFixed(3); b90 = Math.log(h / H).toFixed(3); }
+  provCsv += `"${p}",${P.n},${yy},${mm},${H.toFixed(1)},${lo},${hi},${b10},${b90},${era(yy, mm)},${gf ? gf.toFixed(1) : 0},${outDays('Terra', yy, mm)},${yy > 2002 || (yy === 2002 && mm >= 7) ? outDays('Aqua', yy, mm) : ''},${yy >= 2012 ? outDays('SNPP', yy, mm) : ''},${caP === null ? '' : caP.toFixed(3)},${underP || 0},${P.st[yi][m]},${yy < 2012 ? (provW(p, mm, setOf(yy, mm)) >= ASSIGNED_W ? 'estimated' : 'assigned') : ''}\n`;
 }
 await writeFile(path.join(OUT, 'harmonized_cells.csv'), cellsCsv);
 await writeFile(path.join(OUT, 'harmonized_provinces.csv'), provCsv);

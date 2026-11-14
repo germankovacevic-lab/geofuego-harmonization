@@ -135,7 +135,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Tierra del Fuego, Antártida e Islas del Atlántico Sur",31,2011,10,101.4,50.0,205.9,0.552,MODIS->VIIRS-eq,0,0,0,,0
 "Tierra del Fuego, Antártida e Islas del Atlántico Sur",31,2011,11,0.0,0.0,0.0,0.488,MODIS->VIIRS-eq,0,0,1,,0
 "Tierra del Fuego, Antártida e Islas del Atlántico Sur",31,2011,12,0.0,0.0,0.0,0.488,MODIS->VIIRS-eq,0,0,0,,0
-"Tierra del Fuego, Antártida e Islas del Atlántico Sur",31,2012,1,17.0,17.0,17.0,0.000,VIIRS,0,0,0,0,0
+"Tierra del Fuego, Antártida e Islas del Atlántico Sur",31,2012,1,111.8,65.8,189.8,0.413,VIIRS,94.8,0,0,19,0
 "Tierra del Fuego, Antártida e Islas del Atlántico Sur",31,2012,2,117.0,117.0,117.0,0.000,VIIRS,0,0,0,0,0
 "Tierra del Fuego, Antártida e Islas del Atlántico Sur",31,2012,3,1.0,1.0,1.0,0.000,VIIRS,0,0,0,1,0
 "Tierra del Fuego, Antártida e Islas del Atlántico Sur",31,2012,4,8.0,8.0,8.0,0.000,VIIRS,0,0,0,0,0
@@ -437,7 +437,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Santa Cruz",281,2011,10,3.8,1.7,8.4,0.625,MODIS->VIIRS-eq,0,0,0,,0
 "Santa Cruz",281,2011,11,29.2,15.8,54.0,0.480,MODIS->VIIRS-eq,0,0,1,,0
 "Santa Cruz",281,2011,12,46.0,18.7,113.3,0.703,MODIS->VIIRS-eq,0,0,0,,0
-"Santa Cruz",281,2012,1,39.0,39.0,39.0,0.000,VIIRS,0,0,0,0,3
+"Santa Cruz",281,2012,1,63.4,55.7,72.1,0.101,VIIRS,24.4,0,0,19,3
 "Santa Cruz",281,2012,2,24.0,24.0,24.0,0.000,VIIRS,0,0,0,0,4
 "Santa Cruz",281,2012,3,25.2,24.1,26.2,0.033,VIIRS,3.2,0,0,1,0
 "Santa Cruz",281,2012,4,36.0,36.0,36.0,0.000,VIIRS,0,0,0,0,0
@@ -739,7 +739,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Chubut",278,2011,10,9.2,5.1,16.7,0.464,MODIS->VIIRS-eq,0,0,0,,0
 "Chubut",278,2011,11,40.0,25.7,62.3,0.346,MODIS->VIIRS-eq,8.8,0,1,,0
 "Chubut",278,2011,12,258.6,182.5,366.4,0.272,MODIS->VIIRS-eq,0,0,0,,0
-"Chubut",278,2012,1,8.0,8.0,8.0,0.000,VIIRS,0,0,0,0,5
+"Chubut",278,2012,1,285.1,205.5,395.7,0.256,VIIRS,277.1,0,0,19,5
 "Chubut",278,2012,2,25.0,25.0,25.0,0.000,VIIRS,0,0,0,0,2
 "Chubut",278,2012,3,14.3,12.9,15.8,0.079,VIIRS,4.3,0,0,1,5
 "Chubut",278,2012,4,16.0,16.0,16.0,0.000,VIIRS,0,0,0,0,2
@@ -1041,7 +1041,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Río Negro",325,2011,10,68.6,48.3,97.3,0.273,MODIS->VIIRS-eq,0,0,0,,0
 "Río Negro",325,2011,11,34.2,16.1,72.3,0.585,MODIS->VIIRS-eq,0,0,1,,0
 "Río Negro",325,2011,12,89.3,64.6,123.4,0.252,MODIS->VIIRS-eq,0,0,0,,0
-"Río Negro",325,2012,1,10.0,10.0,10.0,0.000,VIIRS,0,0,0,0,0
+"Río Negro",325,2012,1,42.2,33.0,54.0,0.193,VIIRS,32.2,0,0,19,0
 "Río Negro",325,2012,2,82.0,82.0,82.0,0.000,VIIRS,0,0,0,0,1
 "Río Negro",325,2012,3,65.0,65.0,65.0,0.000,VIIRS,0,0,0,1,0
 "Río Negro",325,2012,4,85.0,85.0,85.0,0.000,VIIRS,0,0,0,0,0
@@ -1343,7 +1343,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Buenos Aires",531,2011,10,535.5,404.2,709.3,0.219,MODIS->VIIRS-eq,0,0,0,,1
 "Buenos Aires",531,2011,11,202.9,153.2,268.8,0.219,MODIS->VIIRS-eq,0.4,0,1,,4
 "Buenos Aires",531,2011,12,321.0,242.3,425.2,0.219,MODIS->VIIRS-eq,0,0,0,,2
-"Buenos Aires",531,2012,1,218.0,218.0,218.0,0.000,VIIRS,0,0,0,0,3
+"Buenos Aires",531,2012,1,982.9,789.7,1223.3,0.171,VIIRS,764.9,0,0,19,3
 "Buenos Aires",531,2012,2,290.0,290.0,290.0,0.000,VIIRS,0,0,0,0,7
 "Buenos Aires",531,2012,3,213.0,213.0,213.0,0.000,VIIRS,0,0,0,1,9
 "Buenos Aires",531,2012,4,314.0,314.0,314.0,0.000,VIIRS,0,0,0,0,7
@@ -1645,7 +1645,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Neuquén",158,2011,10,92.7,61.7,139.2,0.317,MODIS->VIIRS-eq,0,0,0,,0
 "Neuquén",158,2011,11,65.2,43.4,98.0,0.318,MODIS->VIIRS-eq,8.8,0,1,,3
 "Neuquén",158,2011,12,55.1,34.6,87.8,0.363,MODIS->VIIRS-eq,0,0,0,,5
-"Neuquén",158,2012,1,136.0,136.0,136.0,0.000,VIIRS,0,0,0,0,4
+"Neuquén",158,2012,1,743.6,533.4,1036.5,0.259,VIIRS,607.6,0,0,19,4
 "Neuquén",158,2012,2,182.0,182.0,182.0,0.000,VIIRS,0,0,0,0,7
 "Neuquén",158,2012,3,126.6,122.3,130.9,0.026,VIIRS,10.6,0,0,1,9
 "Neuquén",158,2012,4,143.0,143.0,143.0,0.000,VIIRS,0,0,0,0,8
@@ -1947,7 +1947,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "La Pampa",220,2011,10,48.2,33.7,68.9,0.279,MODIS->VIIRS-eq,0,0,0,,0
 "La Pampa",220,2011,11,17.8,10.4,30.6,0.421,MODIS->VIIRS-eq,0,0,1,,0
 "La Pampa",220,2011,12,1119.6,783.2,1600.4,0.279,MODIS->VIIRS-eq,0,0,0,,0
-"La Pampa",220,2012,1,9.0,9.0,9.0,0.000,VIIRS,0,0,0,0,0
+"La Pampa",220,2012,1,478.0,336.6,678.7,0.274,VIIRS,469.0,0,0,19,0
 "La Pampa",220,2012,2,15.0,15.0,15.0,0.000,VIIRS,0,0,0,0,0
 "La Pampa",220,2012,3,57.0,57.0,57.0,0.000,VIIRS,0,0,0,1,0
 "La Pampa",220,2012,4,19.0,19.0,19.0,0.000,VIIRS,0,0,0,0,0
@@ -2249,7 +2249,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Mendoza",234,2011,10,223.4,157.1,317.7,0.275,MODIS->VIIRS-eq,0,0,0,,1
 "Mendoza",234,2011,11,77.5,54.5,110.1,0.275,MODIS->VIIRS-eq,0,0,1,,2
 "Mendoza",234,2011,12,113.8,80.1,161.9,0.275,MODIS->VIIRS-eq,0,0,0,,0
-"Mendoza",234,2012,1,9.0,9.0,9.0,0.000,VIIRS,0,0,0,0,1
+"Mendoza",234,2012,1,53.9,40.2,72.3,0.229,VIIRS,44.9,0,0,19,1
 "Mendoza",234,2012,2,67.0,67.0,67.0,0.000,VIIRS,0,0,0,0,2
 "Mendoza",234,2012,3,78.0,78.0,78.0,0.000,VIIRS,0,0,0,1,3
 "Mendoza",234,2012,4,90.0,90.0,90.0,0.000,VIIRS,0,0,0,0,3
@@ -2551,7 +2551,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "San Luis",120,2011,10,316.9,195.0,515.2,0.379,MODIS->VIIRS-eq,0,0,0,,0
 "San Luis",120,2011,11,188.1,115.7,305.7,0.379,MODIS->VIIRS-eq,0,0,1,,0
 "San Luis",120,2011,12,528.3,325.0,858.8,0.379,MODIS->VIIRS-eq,0,0,0,,0
-"San Luis",120,2012,1,16.0,16.0,16.0,0.000,VIIRS,0,0,0,0,0
+"San Luis",120,2012,1,805.5,500.4,1296.9,0.372,VIIRS,789.5,0,0,19,0
 "San Luis",120,2012,2,75.0,75.0,75.0,0.000,VIIRS,0,0,0,0,0
 "San Luis",120,2012,3,40.0,40.0,40.0,0.000,VIIRS,0,0,0,1,0
 "San Luis",120,2012,4,9.0,9.0,9.0,0.000,VIIRS,0,0,0,0,0
@@ -2853,7 +2853,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Córdoba",247,2011,10,268.8,189.9,380.5,0.271,MODIS->VIIRS-eq,0,0,0,,0
 "Córdoba",247,2011,11,236.3,167.0,334.4,0.271,MODIS->VIIRS-eq,0,0,1,,0
 "Córdoba",247,2011,12,477.9,291.3,784.1,0.386,MODIS->VIIRS-eq,0,0,0,,0
-"Córdoba",247,2012,1,60.0,60.0,60.0,0.000,VIIRS,0,0,0,0,2
+"Córdoba",247,2012,1,336.6,253.1,447.8,0.223,VIIRS,276.6,0,0,19,2
 "Córdoba",247,2012,2,95.0,95.0,95.0,0.000,VIIRS,0,0,0,0,2
 "Córdoba",247,2012,3,244.2,242.7,245.6,0.005,VIIRS,4.2,0,0,1,9
 "Córdoba",247,2012,4,57.0,57.0,57.0,0.000,VIIRS,0,0,0,0,6
@@ -3155,7 +3155,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Ciudad Autónoma de Buenos Aires",1,2011,10,3.4,1.5,7.5,0.625,MODIS->VIIRS-eq,0,0,0,,0
 "Ciudad Autónoma de Buenos Aires",1,2011,11,2.9,1.3,6.5,0.625,MODIS->VIIRS-eq,0,0,1,,0
 "Ciudad Autónoma de Buenos Aires",1,2011,12,4.6,2.1,10.3,0.625,MODIS->VIIRS-eq,0,0,0,,0
-"Ciudad Autónoma de Buenos Aires",1,2012,1,0.0,0.0,0.0,0.000,VIIRS,0,0,0,0,0
+"Ciudad Autónoma de Buenos Aires",1,2012,1,0.0,0.0,0.0,0.000,VIIRS,0,0,0,19,0
 "Ciudad Autónoma de Buenos Aires",1,2012,2,1.0,1.0,1.0,0.000,VIIRS,0,0,0,0,1
 "Ciudad Autónoma de Buenos Aires",1,2012,3,3.0,3.0,3.0,0.000,VIIRS,0,0,0,1,0
 "Ciudad Autónoma de Buenos Aires",1,2012,4,6.0,6.0,6.0,0.000,VIIRS,0,0,0,0,2
@@ -3457,7 +3457,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Santa Fe",202,2011,10,1416.7,983.8,2040.2,0.285,MODIS->VIIRS-eq,0,0,0,,0
 "Santa Fe",202,2011,11,1036.4,719.7,1492.6,0.285,MODIS->VIIRS-eq,1.8,0,1,,0
 "Santa Fe",202,2011,12,1807.7,1255.2,2603.2,0.285,MODIS->VIIRS-eq,0,0,0,,0
-"Santa Fe",202,2012,1,405.0,405.0,405.0,0.000,VIIRS,0,0,0,0,0
+"Santa Fe",202,2012,1,2348.1,1736.4,3175.4,0.235,VIIRS,1943.1,0,0,19,0
 "Santa Fe",202,2012,2,1036.0,1036.0,1036.0,0.000,VIIRS,0,0,0,0,0
 "Santa Fe",202,2012,3,750.9,748.4,753.4,0.003,VIIRS,6.9,0,0,1,1
 "Santa Fe",202,2012,4,429.0,429.0,429.0,0.000,VIIRS,0,0,0,0,0
@@ -3759,7 +3759,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Entre Ríos",127,2011,10,135.3,84.6,216.4,0.366,MODIS->VIIRS-eq,0,0,0,,2
 "Entre Ríos",127,2011,11,233.3,145.9,373.0,0.366,MODIS->VIIRS-eq,4.4,0,1,,1
 "Entre Ríos",127,2011,12,528.7,330.6,845.5,0.366,MODIS->VIIRS-eq,0,0,0,,0
-"Entre Ríos",127,2012,1,332.0,332.0,332.0,0.000,VIIRS,0,0,0,0,5
+"Entre Ríos",127,2012,1,937.6,692.3,1269.7,0.237,VIIRS,605.6,0,0,19,5
 "Entre Ríos",127,2012,2,211.0,211.0,211.0,0.000,VIIRS,0,0,0,0,5
 "Entre Ríos",127,2012,3,109.0,109.0,109.0,0.000,VIIRS,0,0,0,1,4
 "Entre Ríos",127,2012,4,187.0,187.0,187.0,0.000,VIIRS,0,0,0,0,7
@@ -4061,7 +4061,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "San Juan",131,2011,10,60.7,38.3,96.2,0.359,MODIS->VIIRS-eq,0,0,0,,0
 "San Juan",131,2011,11,53.1,30.6,91.9,0.428,MODIS->VIIRS-eq,0,0,1,,0
 "San Juan",131,2011,12,24.4,11.8,50.6,0.568,MODIS->VIIRS-eq,0,0,0,,0
-"San Juan",131,2012,1,10.0,10.0,10.0,0.000,VIIRS,0,0,0,0,0
+"San Juan",131,2012,1,12.7,11.5,14.0,0.076,VIIRS,2.7,0,0,19,0
 "San Juan",131,2012,2,22.0,22.0,22.0,0.000,VIIRS,0,0,0,0,0
 "San Juan",131,2012,3,33.0,30.4,35.9,0.066,VIIRS,6.0,0,0,1,0
 "San Juan",131,2012,4,30.0,30.0,30.0,0.000,VIIRS,0,0,0,0,0
@@ -4363,7 +4363,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "La Rioja",135,2011,10,42.4,27.0,66.7,0.353,MODIS->VIIRS-eq,0,0,0,,0
 "La Rioja",135,2011,11,54.2,34.5,85.2,0.353,MODIS->VIIRS-eq,0,0,1,,0
 "La Rioja",135,2011,12,139.1,69.4,279.0,0.543,MODIS->VIIRS-eq,0,0,0,,0
-"La Rioja",135,2012,1,12.0,12.0,12.0,0.000,VIIRS,0,0,0,0,0
+"La Rioja",135,2012,1,28.4,21.9,36.8,0.204,VIIRS,16.4,0,0,19,0
 "La Rioja",135,2012,2,28.0,28.0,28.0,0.000,VIIRS,0,0,0,0,0
 "La Rioja",135,2012,3,7.0,7.0,7.0,0.000,VIIRS,0,0,0,1,0
 "La Rioja",135,2012,4,6.0,6.0,6.0,0.000,VIIRS,0,0,0,0,1
@@ -4665,7 +4665,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Corrientes",146,2011,10,438.0,285.1,672.8,0.335,MODIS->VIIRS-eq,0,0,0,,1
 "Corrientes",146,2011,11,231.6,150.7,355.7,0.335,MODIS->VIIRS-eq,0,0,1,,4
 "Corrientes",146,2011,12,645.1,420.0,991.1,0.335,MODIS->VIIRS-eq,0,0,0,,3
-"Corrientes",146,2012,1,898.0,898.0,898.0,0.000,VIIRS,0,0,0,0,7
+"Corrientes",146,2012,1,1938.5,1539.5,2440.9,0.180,VIIRS,1040.5,0,0,19,7
 "Corrientes",146,2012,2,2751.0,2751.0,2751.0,0.000,VIIRS,0,0,0,0,7
 "Corrientes",146,2012,3,4309.8,4286.7,4332.9,0.004,VIIRS,53.8,0,0,1,26
 "Corrientes",146,2012,4,1705.0,1705.0,1705.0,0.000,VIIRS,0,0,0,0,11
@@ -4967,7 +4967,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Santiago del Estero",196,2011,10,2669.1,1848.6,3853.7,0.287,MODIS->VIIRS-eq,0,0,0,,0
 "Santiago del Estero",196,2011,11,3011.0,2085.4,4347.5,0.287,MODIS->VIIRS-eq,0,0,1,,0
 "Santiago del Estero",196,2011,12,1471.5,1019.2,2124.7,0.287,MODIS->VIIRS-eq,0,0,0,,0
-"Santiago del Estero",196,2012,1,217.0,217.0,217.0,0.000,VIIRS,0,0,0,0,0
+"Santiago del Estero",196,2012,1,768.6,590.5,1000.4,0.206,VIIRS,551.6,0,0,19,0
 "Santiago del Estero",196,2012,2,393.0,393.0,393.0,0.000,VIIRS,0,0,0,0,0
 "Santiago del Estero",196,2012,3,623.3,620.6,626.0,0.003,VIIRS,7.3,0,0,1,0
 "Santiago del Estero",196,2012,4,177.0,177.0,177.0,0.000,VIIRS,0,0,0,0,0
@@ -5269,7 +5269,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Catamarca",150,2011,10,67.5,43.3,105.4,0.348,MODIS->VIIRS-eq,0,0,0,,0
 "Catamarca",150,2011,11,150.5,98.7,229.3,0.329,MODIS->VIIRS-eq,0,0,1,,0
 "Catamarca",150,2011,12,276.7,181.5,421.7,0.329,MODIS->VIIRS-eq,0,0,0,,0
-"Catamarca",150,2012,1,1.0,1.0,1.0,0.000,VIIRS,0,0,0,0,0
+"Catamarca",150,2012,1,12.3,8.4,18.1,0.302,VIIRS,11.3,0,0,19,0
 "Catamarca",150,2012,2,13.0,13.0,13.0,0.000,VIIRS,0,0,0,0,0
 "Catamarca",150,2012,3,9.0,9.0,9.0,0.000,VIIRS,0,0,0,1,0
 "Catamarca",150,2012,4,10.0,10.0,10.0,0.000,VIIRS,0,0,0,0,2
@@ -5571,7 +5571,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Misiones",59,2011,10,303.3,169.7,542.1,0.453,MODIS->VIIRS-eq,0,0,0,,0
 "Misiones",59,2011,11,285.6,159.8,510.6,0.453,MODIS->VIIRS-eq,0,0,1,,0
 "Misiones",59,2011,12,246.7,138.0,441.0,0.453,MODIS->VIIRS-eq,0,0,0,,0
-"Misiones",59,2012,1,102.0,102.0,102.0,0.000,VIIRS,0,0,0,0,0
+"Misiones",59,2012,1,293.5,200.9,428.7,0.296,VIIRS,191.5,0,0,19,0
 "Misiones",59,2012,2,356.0,356.0,356.0,0.000,VIIRS,0,0,0,0,0
 "Misiones",59,2012,3,824.3,796.2,853.4,0.027,VIIRS,49.3,0,0,1,0
 "Misiones",59,2012,4,360.0,360.0,360.0,0.000,VIIRS,0,0,0,0,1
@@ -5873,7 +5873,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Tucumán",34,2011,10,406.2,218.8,754.1,0.483,MODIS->VIIRS-eq,0,0,0,,0
 "Tucumán",34,2011,11,151.1,81.4,280.4,0.483,MODIS->VIIRS-eq,0,0,1,,0
 "Tucumán",34,2011,12,116.6,62.8,216.5,0.483,MODIS->VIIRS-eq,0,0,0,,0
-"Tucumán",34,2012,1,42.0,42.0,42.0,0.000,VIIRS,0,0,0,0,0
+"Tucumán",34,2012,1,60.4,50.0,72.9,0.147,VIIRS,18.4,0,0,19,0
 "Tucumán",34,2012,2,48.0,48.0,48.0,0.000,VIIRS,0,0,0,0,0
 "Tucumán",34,2012,3,69.0,69.0,69.0,0.000,VIIRS,0,0,0,1,0
 "Tucumán",34,2012,4,15.0,15.0,15.0,0.000,VIIRS,0,0,0,0,0
@@ -6175,7 +6175,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Chaco",149,2011,10,1507.3,986.9,2302.0,0.330,MODIS->VIIRS-eq,0,0,0,,0
 "Chaco",149,2011,11,1155.0,756.3,1763.9,0.330,MODIS->VIIRS-eq,0,0,1,,0
 "Chaco",149,2011,12,1104.6,723.3,1687.0,0.330,MODIS->VIIRS-eq,0,0,0,,0
-"Chaco",149,2012,1,667.0,667.0,667.0,0.000,VIIRS,0,0,0,0,0
+"Chaco",149,2012,1,1986.1,1499.2,2631.1,0.219,VIIRS,1319.1,0,0,19,0
 "Chaco",149,2012,2,770.0,770.0,770.0,0.000,VIIRS,0,0,0,0,0
 "Chaco",149,2012,3,1668.2,1649.6,1687.1,0.009,VIIRS,44.2,0,0,1,0
 "Chaco",149,2012,4,232.0,232.0,232.0,0.000,VIIRS,0,0,0,0,0
@@ -6477,7 +6477,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Formosa",122,2011,10,3612.1,2232.7,5843.6,0.375,MODIS->VIIRS-eq,0,0,0,,0
 "Formosa",122,2011,11,1643.3,1015.7,2658.5,0.375,MODIS->VIIRS-eq,0,0,1,,0
 "Formosa",122,2011,12,3077.1,1902.0,4978.1,0.375,MODIS->VIIRS-eq,0,0,0,,0
-"Formosa",122,2012,1,1528.0,1528.0,1528.0,0.000,VIIRS,0,0,0,0,0
+"Formosa",122,2012,1,7525.6,5129.1,11042.0,0.299,VIIRS,5997.6,0,0,19,0
 "Formosa",122,2012,2,2446.0,2446.0,2446.0,0.000,VIIRS,0,0,0,0,0
 "Formosa",122,2012,3,1885.2,1868.3,1902.1,0.007,VIIRS,35.2,0,0,1,0
 "Formosa",122,2012,4,141.0,141.0,141.0,0.000,VIIRS,0,0,0,0,0
@@ -6779,7 +6779,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Salta",233,2011,10,5850.1,4112.8,8321.4,0.275,MODIS->VIIRS-eq,0,0,0,,0
 "Salta",233,2011,11,5626.4,3955.5,8003.1,0.275,MODIS->VIIRS-eq,6.1,0,1,,0
 "Salta",233,2011,12,1410.9,991.9,2006.8,0.275,MODIS->VIIRS-eq,0,0,0,,1
-"Salta",233,2012,1,198.0,198.0,198.0,0.000,VIIRS,0,0,0,0,0
+"Salta",233,2012,1,543.7,434.6,680.2,0.175,VIIRS,345.7,0,0,19,0
 "Salta",233,2012,2,166.0,166.0,166.0,0.000,VIIRS,0,0,0,0,0
 "Salta",233,2012,3,619.4,617.8,620.9,0.002,VIIRS,4.4,0,0,1,9
 "Salta",233,2012,4,40.0,40.0,40.0,0.000,VIIRS,0,0,0,0,2
@@ -7081,7 +7081,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Jujuy",83,2011,10,666.8,387.2,1148.4,0.424,MODIS->VIIRS-eq,0,0,0,,0
 "Jujuy",83,2011,11,895.5,519.9,1542.2,0.424,MODIS->VIIRS-eq,0,0,1,,0
 "Jujuy",83,2011,12,207.9,120.7,358.0,0.424,MODIS->VIIRS-eq,0,0,0,,0
-"Jujuy",83,2012,1,16.0,16.0,16.0,0.000,VIIRS,0,0,0,0,0
+"Jujuy",83,2012,1,42.0,30.0,58.7,0.262,VIIRS,26.0,0,0,19,0
 "Jujuy",83,2012,2,16.0,16.0,16.0,0.000,VIIRS,0,0,0,0,0
 "Jujuy",83,2012,3,27.0,27.0,27.0,0.000,VIIRS,0,0,0,1,0
 "Jujuy",83,2012,4,8.0,8.0,8.0,0.000,VIIRS,0,0,0,0,0
@@ -7383,7 +7383,7 @@ region,n_cells,year,month,H,H_lo,H_hi,sigma_rel,sensor,gap_fill,outage_days_terr
 "Argentina",4193,2011,10,18847.4,17009.6,20883.9,0.080,MODIS->VIIRS-eq,0,0,0,,5
 "Argentina",4193,2011,11,15421.0,13917.3,17087.2,0.080,MODIS->VIIRS-eq,30.3,0,1,,14
 "Argentina",4193,2011,12,14071.2,12699.1,15591.6,0.080,MODIS->VIIRS-eq,0,0,0,,11
-"Argentina",4193,2012,1,4950.0,4950.0,4950.0,0.000,VIIRS,0,0,0,0,30
+"Argentina",4193,2012,1,20400.5,18875.3,22048.9,0.061,VIIRS,15450.5,0,0,19,30
 "Argentina",4193,2012,2,9229.0,9229.0,9229.0,0.000,VIIRS,0,0,0,0,38
 "Argentina",4193,2012,3,11802.3,11778.8,11825.8,0.002,VIIRS,229.3,0,0,1,75
 "Argentina",4193,2012,4,4123.0,4123.0,4123.0,0.000,VIIRS,0,0,0,0,52

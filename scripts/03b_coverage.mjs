@@ -43,6 +43,9 @@ const days = []; for (let d = new Date('2000-11-01T00:00:00Z'); d <= new Date('2
 const n = (s, d) => daily[s][d] || 0;
 const active = (s, d) => d >= START[s] && d <= END[s];
 const outages = { Terra: [], Aqua: [], SNPP: [] };
+// S-NPP pre-operational days: the VIIRS archive starts on 2012-01-20; 1–19 Jan 2012 are treated as outage days so that the
+// harmonized series fills them from MODIS instead of showing a false low (reviewer finding, round 2).
+for (const d of days) if (d >= '2012-01-01' && d < START.SNPP) outages.SNPP.push(d);
 for (const s of Object.keys(daily)) {
   for (let i = 0; i < days.length; i++) {
     const d = days[i]; if (!active(s, d) || n(s, d) > 0) continue;
@@ -57,7 +60,7 @@ for (const s of Object.keys(daily)) {
   }
 }
 const by_month = {};
-for (const s of Object.keys(daily)) { by_month[s] = {}; for (const d of days) { if (!active(s, d)) continue; const m = d.slice(0, 7); const o = (by_month[s][m] ??= { days_data: 0, outage_days: 0 }); if (n(s, d) > 0) o.days_data++; } for (const d of outages[s]) by_month[s][d.slice(0, 7)].outage_days++; }
+for (const s of Object.keys(daily)) { by_month[s] = {}; for (const d of days) { if (!active(s, d)) continue; const m = d.slice(0, 7); const o = (by_month[s][m] ??= { days_data: 0, outage_days: 0 }); if (n(s, d) > 0) o.days_data++; } for (const d of outages[s]) { const o = (by_month[s][d.slice(0, 7)] ??= { days_data: 0, outage_days: 0 }); o.outage_days++; } }
 await writeFile(path.join(ROOT, 'data', 'agg', 'coverage.json'), JSON.stringify({ generated: new Date().toISOString(), rule: 'zero national vegetation hotspots while another satellite sees >=5, or a zero-run >=3 days framed by >=5/day', start: START, daily, outages, by_month }));
 for (const s of Object.keys(daily)) {
   const months = Object.entries(by_month[s]).filter(([, o]) => o.outage_days >= 2).map(([m, o]) => `${m}(${o.outage_days})`);

@@ -39,7 +39,7 @@ const CEL = STATIC.rule.cell_deg;
 const staticKey = (lat, lon) => Math.floor(lat / CEL) + ':' + Math.floor(lon / CEL);
 const COV = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'coverage.json'), 'utf8'));
 const OUT_T = new Set(COV.outages.Terra), OUT_A = new Set(COV.outages.Aqua), OUT_V = new Set(COV.outages.SNPP);
-const activeA = d => d >= COV.start.Aqua, activeV = d => d >= COV.start.SNPP;
+const activeA = d => d >= COV.start.Aqua, activeV = d => d >= '2012-01-01'; // VIIRS era starts 2012-01-01; 1–19 Jan 2012 are S-NPP outage (pre-operational) days
 const pairedDay = d => activeV(d) && !OUT_T.has(d) && !OUT_A.has(d) && !OUT_V.has(d);
 let pairedN = 0, gapN = 0;
 

@@ -7,3 +7,4 @@ data/raw/*
 data/external/gwis/*.zip
 data/external/gwis/mcd64a1/
 data/external/gwis/mvp64/
+tmp/

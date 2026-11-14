@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
 <link rel="stylesheet" href="vendor/leaflet-draw-1.0.4/leaflet.draw.css">
 <link rel="stylesheet" href="vendor/uplot-1.6.31/uPlot.min.css">
-<link rel="stylesheet" href="app.css?v=202611142208">
+<link rel="stylesheet" href="app.css?v=202611142216">
 </head>
 <body>
 <header class="top">
@@ -105,6 +105,7 @@
           <div class="tools">
             <label class="tog"><input id="tog-pre" type="checkbox"> <span data-i18n="togpre">show greyed years</span></label>
             <label class="tog"><input id="tog-static" type="checkbox"> <span data-i18n="togstatic">fixed heat sources</span></label>
+            <label class="tog"><span data-i18n="colours">Colours</span> <select id="ramp" aria-label="Colour scale"><option value="fire">Fire</option><option value="viridis">Viridis · colour-blind safe</option><option value="cividis">Cividis · colour-blind safe</option></select></label>
             <button id="dl-png" class="btn small" type="button">PNG</button>
             <button id="dl-csv" class="btn small" type="button">CSV</button>
           </div>
@@ -166,6 +167,6 @@
 <script src="vendor/leaflet-1.9.4/leaflet.js"></script>
 <script src="vendor/leaflet-draw-1.0.4/leaflet.draw.js"></script>
 <script src="vendor/uplot-1.6.31/uPlot.iife.min.js"></script>
-<script src="app.js?v=202611142208"></script>
+<script src="app.js?v=202611142216"></script>
 </body>
 </html>

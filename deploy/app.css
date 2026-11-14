@@ -1,5 +1,5 @@
 /* GeoFuego Harmonization — app styles. Written with SI assistance (Claude, Anthropic); reviewed by the team. */
-:root { --bg:#0f1115; --panel:#171a21; --card:#1e2230; --text:#e8eaf0; --muted:#9aa3b5; --line:#2a3040; --accent:#f5a623; --warn:#ffb347; --ok:#7dd3a5; --font: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+:root { --bg:#0f1115; --panel:#171a21; --card:#1e2230; --text:#e8eaf0; --muted:#9aa3b5; --line:#2a3040; --accent:#f5a623; --warn:#ffb347; --ok:#4fc3f7; --font: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 * { box-sizing: border-box; }
 html, body { margin:0; background:var(--bg); color:var(--text); font-family:var(--font); font-size:15px; line-height:1.4; height:100%; }
 body { display:flex; flex-direction:column; height:100vh; overflow:hidden; }
@@ -102,4 +102,5 @@ footer p { margin:0; }
 .case-btns .pill { border-color:var(--line); background:#151821; }
 .case-btns .pill.on { border-color:#c2410c; background:#3a1d0e; color:#ffd2b3; }
 .case-line { margin:10px 0 0; font-size:15px; } .case-line b { color:#ff8a65; font-size:18px; }
-.card.valid .kpi .v { color:var(--ok); }
+.card.valid .kpi .v { color:#ffb347; }
+#ramp { padding:3px 6px; font-size:12px; }

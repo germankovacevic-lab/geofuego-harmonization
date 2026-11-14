@@ -8,6 +8,7 @@
 // ---------- i18n ----------
 const T = {
   en: {
+    colours: 'Colours',
     casestitle: 'Known fire seasons — one click', validtitle: 'How well it works — tested on years the model never saw',
     validnote: 'Country-level tests, out of sample. Factors fitted on 2012–2023 only; 2024 and 2025 were used neither for the factors nor for the range. Details and every script: Method &amp; code.',
     v1l: 'Years never used: 2024 · 2025', v1d: 'reconstruction vs what VIIRS observed, country (predicted / observed 1.044 · 1.024)',
@@ -68,6 +69,7 @@ const T = {
     csvhdr: 'GeoFuego Harmonization — CC BY 4.0 — produced by scripts written with SI assistance (Claude, Anthropic) from NASA FIRMS data',
   },
   es: {
+    colours: 'Colores',
     casestitle: 'Temporadas de fuego conocidas — un click', validtitle: 'Qué tan bien funciona — probado en años que el modelo nunca vio',
     validnote: 'Pruebas a nivel país, fuera de muestra. Factores ajustados solo con 2012–2023; 2024 y 2025 no se usaron ni para los factores ni para el rango. Detalle y cada script: Método y código.',
     v1l: 'Años nunca usados: 2024 · 2025', v1d: 'reconstrucción contra lo que observó VIIRS, país (predicho / observado 1,044 · 1,024)',
@@ -253,6 +255,14 @@ const quantile = (arr, q) => { const a = arr.filter(v => v != null).sort((x, y) 
 
 // viridis (colour-blind safe), 8 anchors interpolated
 const VIR = [[68, 1, 84], [72, 40, 120], [62, 74, 137], [49, 104, 142], [38, 130, 142], [31, 158, 137], [53, 183, 121], [109, 205, 89], [180, 222, 44], [253, 231, 37]];
+const RAMPS = {
+  fire: [[45, 12, 80], [90, 18, 105], [140, 30, 100], [190, 45, 75], [225, 75, 45], [245, 125, 25], [250, 180, 40], [253, 225, 110], [255, 250, 190]],
+  viridis: VIR,
+  cividis: [[0, 34, 78], [18, 53, 112], [59, 73, 108], [87, 92, 109], [112, 113, 115], [138, 134, 120], [166, 157, 117], [195, 181, 109], [226, 206, 92], [254, 232, 56]],
+};
+let rampName = 'fire';
+const ramp = x => { const R = RAMPS[rampName]; x = Math.max(0, Math.min(1, x)); const i = Math.min(R.length - 2, Math.floor(x * (R.length - 1))), f = x * (R.length - 1) - i; const c = R[i].map((v, k) => Math.round(v + (R[i + 1][k] - v) * f)); return { css: `rgb(${c[0]},${c[1]},${c[2]})`, lum: (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255 }; };
+const kfmt = v => v == null ? '' : v < 1000 ? String(Math.round(v)) : v < 9950 ? (v / 1000).toFixed(1).replace('.', lang === 'es' ? ',' : '.') + 'K' : Math.round(v / 1000) + 'K';
 const viridis = x => { x = Math.max(0, Math.min(1, x)); const i = Math.min(VIR.length - 2, Math.floor(x * (VIR.length - 1))), f = x * (VIR.length - 1) - i; const c = VIR[i].map((v, k) => Math.round(v + (VIR[i + 1][k] - v) * f)); return `rgb(${c[0]},${c[1]},${c[2]})`; };
 
 function render() {
@@ -406,7 +416,7 @@ function renderFireMap() {
     if (v > 0) { tot[id] = v; if (v > max) max = v; }
   }
   const lm = Math.log1p(max);
-  for (const [id, v] of Object.entries(tot)) { const x = Math.log1p(v) / lm; if (x < 0.25) continue; const [a, c, b, d] = cellBounds(+id); fireLayer.addLayer(L.rectangle([[a, c], [b, d]], { stroke: false, fillColor: fireCol((x - 0.25) / 0.75), fillOpacity: 0.15 + 0.45 * x, interactive: false })); }
+  for (const [id, v] of Object.entries(tot)) { const x = Math.log1p(v) / lm; if (x < 0.25) continue; const [a, c, b, d] = cellBounds(+id); fireLayer.addLayer(L.rectangle([[a, c], [b, d]], { stroke: false, fillColor: RAMPS.fire ? (() => { const r0 = rampName; rampName = 'fire'; const c = ramp(0.3 + 0.7 * (x - 0.25) / 0.75).css; rampName = r0; return c; })() : fireCol((x - 0.25) / 0.75), fillOpacity: 0.15 + 0.45 * x, interactive: false })); }
   if (on || fireLayer._first !== false) { fireLayer.addTo(map); fireLayer._first = false; }
 }
 
@@ -426,39 +436,54 @@ function cellValue(y, m) { // y calendar, m 1-based → { v, kind, lo, hi, flags
 }
 function renderCalendar() {
   const cv = $('cal'), ctx = cv.getContext('2d'); const rows = calendarRows();
-  const W = 900, left = 56, top = 26, cw = (W - left - 10) / 12, ch = 19; const Hh = top + rows.length * ch + 8;
+  const W = 900, left = 50, top = 24, totW = 96, cw = (W - left - totW - 8) / 12, ch = 22; const Hh = top + (rows.length + 1) * ch + 14;
   cv.width = W; cv.height = Hh; ctx.clearRect(0, 0, W, Hh);
   ctx.fillStyle = '#1e2230'; ctx.fillRect(0, 0, W, Hh);
-  let max = 0; for (const y of rows) for (let m = 1; m <= 12; m++) { if (!inRange(y, m)) continue; const c = cellValue(y, m); if (c.v != null && !c.grey) max = Math.max(max, c.v); }
-  const scale = v => Math.log1p(v) / Math.log1p(Math.max(1, max));
+  let max = 0; const vals = []; for (const y of rows) for (let m = 1; m <= 12; m++) { if (!inRange(y, m)) continue; const c = cellValue(y, m); if (c.v != null && !c.grey) { max = Math.max(max, c.v); vals.push(c.v); } }
+  // colour by percentile of the months shown (full contrast at any scale); zero is always the bottom colour
+  vals.sort((a, b) => a - b);
+  const scale = v => { if (v <= 0 || vals.length < 2) return 0; let lo = 0, hi = vals.length; while (lo < hi) { const mid = (lo + hi) >> 1; if (vals[mid] <= v) lo = mid + 1; else hi = mid; } return (lo - 1) / (vals.length - 1); };
+  // annual totals of the shown range (usable months; current year = preliminary sum)
+  const tot = {}; let tmax = 1;
+  for (const y of rows) { let v = 0, n = 0; for (let m = 1; m <= 12; m++) { if (!inRange(y, m)) continue; const c = cellValue(y, m); if (c.v != null && !c.grey && c.kind !== 'nodata') { v += c.v; n++; } } if (n) { tot[y] = v; if (y !== 2000) tmax = Math.max(tmax, v); } }
   ctx.font = '12px system-ui, sans-serif'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'center';
   for (let m = 0; m < 12; m++) ctx.fillText(t('months')[m], left + m * cw + cw / 2, 12);
+  const tx = left + 12 * cw + 8; ctx.textAlign = 'left'; ctx.fillText(lang === 'es' ? 'Total año' : 'Year total', tx, 12);
   calCells = [];
+  const cellText = (txt, x, yy, fill) => { if (!txt) return; ctx.font = '600 11px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = fill; ctx.fillText(txt, x + cw / 2, yy + ch / 2 + 0.5); };
   for (let r = 0; r < rows.length; r++) {
     const y = rows[r]; const yy = top + r * ch;
-    ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'right'; ctx.fillText(String(y), left - 8, yy + ch / 2);
+    ctx.font = '12px system-ui, sans-serif'; ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'right'; ctx.fillText(String(y), left - 8, yy + ch / 2);
     for (let m = 1; m <= 12; m++) {
       const x = left + (m - 1) * cw; const c = cellValue(y, m); const inR = inRange(y, m);
-      let fill = '#2a3040';
+      let fill = '#2a3040', txtCol = '#e8eaf0', txt = '';
       if (!inR || c.kind === 'nodata') fill = '#262a36';
-      else if (c.grey) fill = '#3a3f4e';
-      else if (c.v != null) fill = viridis(scale(c.v));
+      else if (c.grey) { fill = '#3a3f4e'; txt = c.v ? kfmt(c.v) : ''; txtCol = '#7d8496'; }
+      else if (c.v != null) { const k = ramp(scale(c.v)); fill = k.css; txtCol = k.lum > 0.55 ? '#14161c' : '#ffffff'; txt = kfmt(c.v); }
       ctx.fillStyle = fill; ctx.fillRect(x + 1, yy + 1, cw - 2, ch - 2);
-      if (inR && c.kind === 'terra' && !c.grey) { ctx.save(); ctx.beginPath(); ctx.rect(x + 1, yy + 1, cw - 2, ch - 2); ctx.clip(); ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 1; for (let k = -ch; k < cw; k += 6) { ctx.beginPath(); ctx.moveTo(x + k, yy + ch); ctx.lineTo(x + k + ch, yy); ctx.stroke(); } ctx.restore(); }
-      if (inR && c.kind === 'prelim') { ctx.strokeStyle = '#f5a623'; ctx.setLineDash([3, 2]); ctx.strokeRect(x + 1.5, yy + 1.5, cw - 3, ch - 3); ctx.setLineDash([]); }
+      if (inR && c.kind === 'terra' && !c.grey) { ctx.save(); ctx.beginPath(); ctx.rect(x + 1, yy + 1, cw - 2, ch - 2); ctx.clip(); ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 1; for (let k = -ch; k < cw; k += 6) { ctx.beginPath(); ctx.moveTo(x + k, yy + ch); ctx.lineTo(x + k + ch, yy); ctx.stroke(); } ctx.restore(); }
+      if (inR && c.kind === 'prelim') { ctx.strokeStyle = '#ffffff'; ctx.setLineDash([3, 2]); ctx.strokeRect(x + 1.5, yy + 1.5, cw - 3, ch - 3); ctx.setLineDash([]); }
+      if (inR) cellText(txt + (c.kind === 'prelim' && !c.complete && txt ? '*' : ''), x, yy, txtCol);
       if (inR && c.v != null && !c.grey && c.kind !== 'prelim' && c.kind !== 'nodata') {
-        if (c.cloud) { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.moveTo(x + cw - 4, yy + 3); ctx.lineTo(x + cw - 9, yy + 8); ctx.lineTo(x + cw - 4, yy + 8); ctx.fill(); ctx.strokeStyle = '#000'; ctx.lineWidth = .5; ctx.stroke(); }
-        if (c.gap > 0.10 || (y >= 2012 && c.gap > 0)) { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.moveTo(x + 5, yy + ch - 3); ctx.lineTo(x + 8, yy + ch - 7); ctx.lineTo(x + 11, yy + ch - 3); ctx.lineTo(x + 8, yy + ch + 1 - 2); ctx.closePath(); ctx.fill(); }
+        if (c.cloud) { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.moveTo(x + cw - 2, yy + 2); ctx.lineTo(x + cw - 8, yy + 2); ctx.lineTo(x + cw - 2, yy + 8); ctx.fill(); }
+        if (c.gap > 0.10 || (y >= 2012 && c.gap > 0)) { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.moveTo(x + 3, yy + ch - 6); ctx.lineTo(x + 6, yy + ch - 9); ctx.lineTo(x + 9, yy + ch - 6); ctx.lineTo(x + 6, yy + ch - 3); ctx.closePath(); ctx.fill(); }
       }
       calCells.push({ x: x + 1, y: yy + 1, w: cw - 2, h: ch - 2, year: y, month: m, c, inR });
     }
+    // year total: bar + value
+    if (tot[y] != null) { const bw = (totW - 44) * Math.min(1, tot[y] / tmax); ctx.fillStyle = y === YCUR ? 'rgba(255,255,255,.35)' : ramp(0.55 + 0.45 * tot[y] / tmax).css; ctx.fillRect(tx, yy + 6, Math.max(2, bw), ch - 12); ctx.font = '11px system-ui, sans-serif'; ctx.fillStyle = '#c9cfdb'; ctx.textAlign = 'left'; ctx.fillText(kfmt(tot[y]) + (y === YCUR ? '*' : ''), tx + Math.max(2, bw) + 4, yy + ch / 2); }
   }
+  // median row (baseline years, usable months)
+  const yy = top + rows.length * ch + 6; const ys = baselineYears();
+  ctx.font = '12px system-ui, sans-serif'; ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'right'; ctx.fillText(lang === 'es' ? 'Mediana' : 'Median', left - 6, yy + ch / 2);
+  for (let m = 1; m <= 12; m++) { const med = median(ys.filter(y => usable(y, m)).map(y => A.H[y - Y0][m - 1])); if (med == null) continue; ctx.font = '600 11px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#c9cfdb'; ctx.fillText(kfmt(med), left + (m - 1) * cw + cw / 2, yy + ch / 2); }
+  ctx.strokeStyle = '#2a3040'; ctx.beginPath(); ctx.moveTo(left, yy); ctx.lineTo(left + 12 * cw, yy); ctx.stroke();
   // legend
   const lg = $('legend'); lg.innerHTML = '';
-  const lc = document.createElement('canvas'); lc.width = 160; lc.height = 10; const g = lc.getContext('2d'); for (let i = 0; i < 160; i++) { g.fillStyle = viridis(i / 159); g.fillRect(i, 0, 1, 10); }
+  const lc = document.createElement('canvas'); lc.width = 160; lc.height = 10; const g = lc.getContext('2d'); for (let i = 0; i < 160; i++) { g.fillStyle = ramp(i / 159).css; g.fillRect(i, 0, 1, 10); }
   lg.append(Object.assign(document.createElement('span'), { textContent: t('legendlow') }), lc, Object.assign(document.createElement('span'), { textContent: `${t('legendhigh')} (${fmt(max)})` }));
-  const sw = (color, label, dashed) => { const s = document.createElement('span'); s.innerHTML = `<i style="display:inline-block;width:12px;height:12px;background:${color};border-radius:2px;vertical-align:-2px;margin-right:4px;${dashed ? 'border:1px dashed #f5a623;background:transparent;' : ''}"></i>${label}`; return s; };
-  lg.append(sw('#3a3f4e', t('legendgrey')), sw('#262a36', t('legendnd')), sw('', t('prelim'), true), Object.assign(document.createElement('span'), { textContent: '▲ ' + t('cloud').split(':')[0] }), Object.assign(document.createElement('span'), { textContent: '◆ ' + t('gap', '').replace(' ()', '') }));
+  const sw = (color, label, dashed) => { const s = document.createElement('span'); s.innerHTML = `<i style="display:inline-block;width:12px;height:12px;background:${color};border-radius:2px;vertical-align:-2px;margin-right:4px;${dashed ? 'border:1px dashed #fff;background:transparent;' : ''}"></i>${label}`; return s; };
+  lg.append(sw('#3a3f4e', t('legendgrey')), sw('#262a36', t('legendnd')), sw('', t('prelim') + ' (*)', true), Object.assign(document.createElement('span'), { textContent: '◤ ' + t('cloud').split(':')[0] }), Object.assign(document.createElement('span'), { textContent: '◆ ' + t('gap', '').replace(' ()', '') }), Object.assign(document.createElement('span'), { textContent: `${lang === 'es' ? 'Mediana' : 'Median'}: ${ys.length ? ys[0] + '–' + ys[ys.length - 1] : '—'}` }));
 }
 function calTip(ev) {
   const cv = $('cal'); const rect = cv.getBoundingClientRect(); const sx = cv.width / rect.width, sy = cv.height / rect.height;
@@ -501,7 +526,7 @@ function renderSeries() {
       { label: t('hotspots'), stroke: '#f5a623', width: 1.5, value: (u, v) => fmt(v), spanGaps: false },
       { label: t('rangehi'), stroke: 'rgba(245,166,35,0)', fill: 'rgba(245,166,35,0.18)', value: (u, v) => fmt(v), spanGaps: false },
       { label: t('rangelo'), stroke: 'rgba(245,166,35,0)', value: (u, v) => fmt(v), spanGaps: false },
-      { label: String(YCUR), stroke: '#7dd3a5', width: 2, dash: [4, 3], points: { show: true, size: 6 }, value: (u, v) => fmt(v) },
+      { label: String(YCUR), stroke: '#4fc3f7', width: 2, dash: [4, 3], points: { show: true, size: 6 }, value: (u, v) => fmt(v) },
     ],
     bands: [{ series: [2, 3], fill: 'rgba(245,166,35,0.18)' }],
     legend: { show: true },
@@ -524,7 +549,7 @@ function renderYears() {
   const n = data.length + (cur != null ? 1 : 0); const left = 44, bottom = 22, bw = (W - left - 8) / Math.max(1, n);
   ctx.font = '10px system-ui, sans-serif'; ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
   data.forEach((d, i) => { const hgt = (Hh - bottom - 10) * d.tot / max; const x = left + i * bw; ctx.fillStyle = d.y >= 2012 ? '#f5a623' : terraOnly(d.y, 12) && d.y < 2002 ? '#8a6d2b' : '#c48a2a'; ctx.fillRect(x + 1, Hh - bottom - hgt, bw - 2, hgt); if ((d.y % 5 === 0 && d.y !== 2025) || n < 14) { ctx.fillStyle = '#9aa3b5'; ctx.fillText(String(d.y), x + bw / 2, Hh - bottom + 4); } });
-  if (cur != null) { const hgt = (Hh - bottom - 10) * cur / max; const x = left + data.length * bw; ctx.setLineDash([3, 2]); ctx.strokeStyle = '#7dd3a5'; ctx.strokeRect(x + 1.5, Hh - bottom - hgt, bw - 3, hgt); ctx.setLineDash([]); ctx.fillStyle = '#7dd3a5'; ctx.fillText(String(YCUR), x + bw / 2, Hh - bottom + 4); }
+  if (cur != null) { const hgt = (Hh - bottom - 10) * cur / max; const x = left + data.length * bw; ctx.setLineDash([3, 2]); ctx.strokeStyle = '#4fc3f7'; ctx.strokeRect(x + 1.5, Hh - bottom - hgt, bw - 3, hgt); ctx.setLineDash([]); ctx.fillStyle = '#4fc3f7'; ctx.fillText(String(YCUR), x + bw / 2, Hh - bottom + 4); }
   ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#9aa3b5'; ctx.fillText(fmt(max), left - 4, 12); ctx.fillText('0', left - 4, Hh - bottom);
   // ranking
   const rk = $('rank'); rk.innerHTML = '';
@@ -545,7 +570,7 @@ function renderSeason() {
     const x = left + m * bw; const hM = med[m] == null ? 0 : (Hh - bottom - 10) * med[m] / max;
     if (q1[m] != null) { const y1 = Hh - bottom - (Hh - bottom - 10) * q3[m] / max, y2 = Hh - bottom - (Hh - bottom - 10) * q1[m] / max; ctx.fillStyle = 'rgba(245,166,35,0.25)'; ctx.fillRect(x + 2, y1, bw - 4, Math.max(1, y2 - y1)); }
     ctx.fillStyle = '#f5a623'; ctx.fillRect(x + 2, Hh - bottom - hM, bw - 4, Math.max(hM, med[m] != null ? 1 : 0));
-    if (curM[m] != null) { const yc = Hh - bottom - (Hh - bottom - 10) * curM[m] / max; ctx.fillStyle = '#7dd3a5'; ctx.beginPath(); ctx.arc(x + bw / 2, yc, 4, 0, 2 * Math.PI); ctx.fill(); }
+    if (curM[m] != null) { const yc = Hh - bottom - (Hh - bottom - 10) * curM[m] / max; ctx.fillStyle = '#4fc3f7'; ctx.beginPath(); ctx.arc(x + bw / 2, yc, 4, 0, 2 * Math.PI); ctx.fill(); }
     ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillText(t('months')[m], x + bw / 2, Hh - bottom + 4);
   }
   ctx.textAlign = 'right'; ctx.textBaseline = 'middle'; ctx.fillText(fmt(max), left - 4, 12); ctx.fillText('0', left - 4, Hh - bottom);
@@ -560,7 +585,7 @@ function renderWhere() {
   const rows = provs.map(p => ({ p, share: T ? tot[p] / T : 0, cshare: TC ? cur[p] / TC : 0, tot: tot[p] })).sort((a, b) => b.share - a.share).slice(0, 10);
   const cv = $('where'), ctx = cv.getContext('2d'); const W = cv.width, rowH = 24, left = 150, Hh = rows.length * rowH + 30; cv.height = Hh; ctx.clearRect(0, 0, W, Hh); ctx.fillStyle = '#1e2230'; ctx.fillRect(0, 0, W, Hh);
   const max = Math.max(0.01, ...rows.map(r => Math.max(r.share, r.cshare))); const bw = W - left - 120; ctx.font = '12px system-ui, sans-serif'; ctx.textBaseline = 'middle';
-  rows.forEach((r, i) => { const y = 8 + i * rowH; ctx.fillStyle = '#e8eaf0'; ctx.textAlign = 'right'; ctx.fillText(r.p === TDF ? 'Tierra del Fuego' : r.p, left - 8, y + 10); ctx.fillStyle = '#f5a623'; ctx.fillRect(left, y + 2, bw * r.share / max, 9); if (A.cur) { ctx.fillStyle = '#7dd3a5'; ctx.fillRect(left, y + 12, bw * r.cshare / max, 6); } ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'left'; ctx.fillText(`${(100 * r.share).toFixed(1)} %${A.cur ? ` · ${(100 * r.cshare).toFixed(0)} %` : ''}`, left + bw * Math.max(r.share, r.cshare) / max + 6, y + 10); });
+  rows.forEach((r, i) => { const y = 8 + i * rowH; ctx.fillStyle = '#e8eaf0'; ctx.textAlign = 'right'; ctx.fillText(r.p === TDF ? 'Tierra del Fuego' : r.p, left - 8, y + 10); ctx.fillStyle = '#f5a623'; ctx.fillRect(left, y + 2, bw * r.share / max, 9); if (A.cur) { ctx.fillStyle = '#4fc3f7'; ctx.fillRect(left, y + 12, bw * r.cshare / max, 6); } ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'left'; ctx.fillText(`${(100 * r.share).toFixed(1)} %${A.cur ? ` · ${(100 * r.cshare).toFixed(0)} %` : ''}`, left + bw * Math.max(r.share, r.cshare) / max + 6, y + 10); });
   ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'left'; ctx.fillText(lang === 'es' ? `naranja: participación ${Math.max(A.fromYear, range.from[0])}–${Math.min(2025, range.to[0])} · verde: ${YCUR} a la fecha` : `orange: share ${Math.max(A.fromYear, range.from[0])}–${Math.min(2025, range.to[0])} · green: ${YCUR} to date`, left, Hh - 10);
 }
 
@@ -741,6 +766,7 @@ function initUI() {
   $('from').addEventListener('change', onRange); $('to').addEventListener('change', onRange);
   $('tog-pre').addEventListener('change', e => { showPre = e.target.checked; render(); });
   $('tog-static').addEventListener('change', e => { showStatic = e.target.checked; renderStatic(); if (A) history.replaceState(null, '', '#' + encodeSel(A.sel)); if (showStatic) $('static-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
+  $('ramp').addEventListener('change', e => { rampName = e.target.value; renderCalendar(); });
   $('dl-csv').addEventListener('click', downloadCSV); $('dl-png').addEventListener('click', downloadPNG);
   $('cal').addEventListener('mousemove', calTip); $('cal').addEventListener('mouseleave', () => { $('tip').hidden = true; });
   $('lang').addEventListener('click', () => { lang = lang === 'en' ? 'es' : 'en'; applyI18n(); applyDrawLocale(); if (A) { location.hash = encodeSel(A.sel); render(); } });

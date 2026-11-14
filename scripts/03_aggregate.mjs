@@ -14,6 +14,8 @@
 //   [9]     M_snppOut  = T+A on days when S-NPP was in outage (2012+)      → fills VIIRS gaps with f·M
 //   [10]    A_terraOut = Aqua on days when Terra was in outage (2002-07+)  → fills Terra gaps in reconstructed months
 //   [11]    T_aquaOut  = Terra on days when Aqua was in outage (2002-07+)  → fills Aqua gaps in reconstructed months
+//   [12..17] Vpd, Vpn, Tpd, Tpn, Apd, Apn  paired-day vegetation counts split by DAY / NIGHT detection (daynight column)
+//                                      → day/night factor sets (tested in 05_loyo --daynight)
 //
 // Output: data/agg/counts.json   { cells: { <cellId>: { <year>: { <month>: [V,T,A,Vs,Ts,As] } } }, drops, totals }
 //         data/agg/country_year.csv  year, V, T, A, Vs, Ts, As, ratio_V_over_TA, ratio_static
@@ -48,7 +50,7 @@ const drops = { filtered_type: 0, filtered_conf: 0, outside_grid: 0, no_land_cel
 const country = {};          // year -> [V,T,A,Vs,Ts,As]
 let kept = 0, read = 0, staticN = 0;
 
-const NCOL = 12;
+const NCOL = 18;
 function add(cell, y, m, k, extra) {
   const cy = (cells[cell] ??= {}); const ym = (cy[y] ??= {}); const arr = (ym[m] ??= Array(NCOL).fill(0));
   arr[k]++; (country[y] ??= Array(NCOL).fill(0))[k]++;
@@ -84,7 +86,7 @@ for (const [file, meta] of Object.entries(manifest)) {
     const extra = [];
     if (staticSet.has(staticKey(+f[0], +f[1]))) { k += 3; staticN++; }
     else {
-      if (pairedDay(d)) { extra.push(6 + k); pairedN++; }
+      if (pairedDay(d)) { extra.push(6 + k); extra.push(12 + 2 * k + (f[13] === 'N' ? 1 : 0)); pairedN++; }
       if (k > 0 && activeV(d) && OUT_V.has(d)) { extra.push(9); gapN++; }          // MODIS on a VIIRS-outage day
       if (k === 2 && OUT_T.has(d)) { extra.push(10); gapN++; }                     // Aqua on a Terra-outage day
       if (k === 1 && activeA(d) && OUT_A.has(d)) { extra.push(11); gapN++; }       // Terra on an Aqua-outage day
@@ -95,9 +97,9 @@ for (const [file, meta] of Object.entries(manifest)) {
 }
 
 const years = Object.keys(country).map(Number).sort();
-let csv = 'year,V,T,A,Vs,Ts,As,Vp,Tp,Ap,M_snppOut,A_terraOut,T_aquaOut,ratio_V_over_TA,ratio_paired,ratio_static\n';
-for (const y of years) { const [V, T, A, Vs, Ts, As, Vp, Tp, Ap, g1, g2, g3] = country[y]; csv += `${y},${V},${T},${A},${Vs},${Ts},${As},${Vp},${Tp},${Ap},${g1},${g2},${g3},${T + A ? (V / (T + A)).toFixed(3) : ''},${Tp + Ap ? (Vp / (Tp + Ap)).toFixed(3) : ''},${Ts + As ? (Vs / (Ts + As)).toFixed(3) : ''}\n`; }
+let csv = 'year,V,T,A,Vs,Ts,As,Vp,Tp,Ap,M_snppOut,A_terraOut,T_aquaOut,Vpd,Vpn,Tpd,Tpn,Apd,Apn,ratio_V_over_TA,ratio_paired,ratio_static,ratio_day,ratio_night\n';
+for (const y of years) { const [V, T, A, Vs, Ts, As, Vp, Tp, Ap, g1, g2, g3, Vd, Vn, Td, Tn, Ad, An] = country[y]; csv += `${y},${V},${T},${A},${Vs},${Ts},${As},${Vp},${Tp},${Ap},${g1},${g2},${g3},${Vd},${Vn},${Td},${Tn},${Ad},${An},${T + A ? (V / (T + A)).toFixed(3) : ''},${Tp + Ap ? (Vp / (Tp + Ap)).toFixed(3) : ''},${Ts + As ? (Vs / (Ts + As)).toFixed(3) : ''},${Td + Ad ? (Vd / (Td + Ad)).toFixed(3) : ''},${Tn + An ? (Vn / (Tn + An)).toFixed(3) : ''}\n`; }
 await writeFile(path.join(OUT, 'country_year.csv'), csv);
-await writeFile(path.join(OUT, 'counts.json'), JSON.stringify({ generated: new Date().toISOString(), filters: { modis: 'type==0 && confidence>=30', viirs: 'type==0 && confidence!=l' }, columns: ['V', 'T', 'A', 'Vs', 'Ts', 'As', 'Vp', 'Tp', 'Ap', 'M_snppOut', 'A_terraOut', 'T_aquaOut'], static_rule: STATIC.rule, coverage_rule: COV.rule, read, kept, static: staticN, paired: pairedN, on_outage_days: gapN, drops, cells }));
+await writeFile(path.join(OUT, 'counts.json'), JSON.stringify({ generated: new Date().toISOString(), filters: { modis: 'type==0 && confidence>=30', viirs: 'type==0 && confidence!=l' }, columns: ['V', 'T', 'A', 'Vs', 'Ts', 'As', 'Vp', 'Tp', 'Ap', 'M_snppOut', 'A_terraOut', 'T_aquaOut', 'Vpd', 'Vpn', 'Tpd', 'Tpn', 'Apd', 'Apn'], static_rule: STATIC.rule, coverage_rule: COV.rule, read, kept, static: staticN, paired: pairedN, on_outage_days: gapN, drops, cells }));
 console.log(`\nread=${read} kept=${kept} static=${staticN} (${(100 * staticN / kept).toFixed(2)}%) paired=${pairedN} on_outage_days=${gapN} drops=${JSON.stringify(drops)} cells_with_data=${Object.keys(cells).length} in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
 console.log(csv);

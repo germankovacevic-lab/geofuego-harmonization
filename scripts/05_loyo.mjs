@@ -29,6 +29,7 @@ const OUT = path.join(ROOT, 'data', 'validation');
 await mkdir(OUT, { recursive: true });
 const arg = (n, d) => { const a = process.argv.find(x => x.startsWith(`--${n}=`)); return a ? a.split('=')[1] : d; };
 const SWEEP = process.argv.includes('--sweep'), ABLATION = process.argv.includes('--ablation'), useRegions = !process.argv.includes('--no-regions'), ADDITIVE = process.argv.includes('--additive'); // additive term tested and not adopted (see lib/factors.js)
+const DAYNIGHT = process.argv.includes('--daynight'); // adds the day/night-split sets TAdn and Tdn to the evaluation
 const TAG = arg('tag', ''), K0 = +arg('k', 10);
 const [LY0, LY1] = arg('years', '2012-2023').split('-').map(Number);
 const YEARS = []; for (let y = LY0; y <= LY1; y++) YEARS.push(y);
@@ -40,7 +41,11 @@ const OWN_SEASON = {};
 const agg = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'counts.json'), 'utf8'));
 const index = JSON.parse(await readFile(path.join(ROOT, 'data', 'grid', 'cells_index.json'), 'utf8'));
 const provOf = new Map(index.cells.map(c => [c.id, c.prov]));
-const SETS = { TA: { V: r => r[6] ?? 0, M: r => (r[7] ?? 0) + (r[8] ?? 0) }, T: { V: r => r[6] ?? 0, M: r => r[7] ?? 0 } };
+const SETS = { TA: { V: r => r[6] ?? 0, M: r => (r[7] ?? 0) + (r[8] ?? 0) }, T: { V: r => r[6] ?? 0, M: r => r[7] ?? 0 },
+  // day/night split: V = total paired VIIRS; prediction uses two factors (see predict)
+  TAdn: { V: r => r[6] ?? 0, M: r => (r[7] ?? 0) + (r[8] ?? 0), d: 'TAd', n: 'TAn', Md: r => (r[14] ?? 0) + (r[16] ?? 0), Mn: r => (r[15] ?? 0) + (r[17] ?? 0) },
+  Tdn: { V: r => r[6] ?? 0, M: r => r[7] ?? 0, d: 'Td', n: 'Tn', Md: r => r[14] ?? 0, Mn: r => r[15] ?? 0 } };
+const EVAL_SETS = DAYNIGHT ? ['TA', 'T', 'TAdn', 'Tdn'] : ['TA', 'T'];
 { const clim = {}; for (const [cid, yrs] of Object.entries(agg.cells)) { const p = provOf.get(+cid); if (!p) continue; for (const y of YEARS) { const ym = yrs[y]; if (!ym) continue; for (const [m, r] of Object.entries(ym)) ((clim[p] ??= Array(13).fill(0)))[+m] += r[6] ?? 0; } }
   for (const [p, a] of Object.entries(clim)) OWN_SEASON[p] = a.map((v, m) => [v, m]).slice(1).sort((x, y) => y[0] - x[0]).slice(0, 5).map(x => x[1]).sort((x, y) => x - y); }
 const THR = { cell: { season: 20, month: 10 }, prov: { season: 50, month: 30 }, country: { season: 50, month: 30 } };
@@ -49,18 +54,22 @@ const median = a => { const b = [...a].sort((x, y) => x - y); return b.length ? 
 const quant = (a, q) => { const b = [...a].sort((x, y) => x - y); return b.length ? b[Math.min(b.length - 1, Math.floor(q * b.length))] : null; };
 
 function predict(fit, set, yStar) { // -> { units: {cell,prov,country: Map(unit -> {V[13],P[13],S[13]})}, scalar }
-  let sV = 0, sM = 0; for (const c of fit.country[set]) { sV += c.V; sM += c.M; }
+  const base = SETS[set].d ? (set === 'TAdn' ? 'TA' : 'T') : set;
+  let sV = 0, sM = 0; for (const c of fit.country[base]) { sV += c.V; sM += c.M; }
   const scalar = sV / sM;
   const units = { cell: new Map(), prov: new Map(), country: new Map([['AR', { V: Array(13).fill(0), P: Array(13).fill(0), S: Array(13).fill(0) }]]) };
   for (const [cid, yrs] of Object.entries(agg.cells)) {
-    const cell = +cid, prov = provOf.get(cell); if (!prov) continue; const fc = fit.cell[set][cell]; if (!fc) continue;
-    const ym = yrs[yStar] || {}; const ac = fit.add?.[set]?.cell?.[cell];
+    const cell = +cid, prov = provOf.get(cell); if (!prov) continue; const fc = fit.cell[base][cell]; if (!fc) continue;
+    const fd = SETS[set].d ? fit.cell[SETS[set].d][cell] : null, fn = SETS[set].n ? fit.cell[SETS[set].n][cell] : null;
+    const ym = yrs[yStar] || {}; const ac = fit.add?.[base]?.cell?.[cell];
     if (!ac && !yrs[yStar]) continue;
     if (!units.cell.has(cell)) units.cell.set(cell, { V: Array(13).fill(0), P: Array(13).fill(0), S: Array(13).fill(0) });
     if (!units.prov.has(prov)) units.prov.set(prov, { V: Array(13).fill(0), P: Array(13).fill(0), S: Array(13).fill(0) });
     // iterate ALL 12 months (absent entries = no detections by any sensor) so that the additive term is applied without
     // conditioning on the outcome; without the additive term absent months contribute 0 to both V and P
-    for (let m = 1; m <= 12; m++) { const r = ym[m] || ZERO; const V = SETS[set].V(r), M = SETS[set].M(r), P = M > 0 ? fc[m - 1][0] * M : (ac ? ac[m - 1] : 0); if (!V && !P && !M) continue; for (const u of [units.cell.get(cell), units.prov.get(prov), units.country.get('AR')]) { u.V[m] += V; u.P[m] += P; u.S[m] += scalar * M; } }
+    for (let m = 1; m <= 12; m++) { const r = ym[m] || ZERO; const V = SETS[set].V(r), M = SETS[set].M(r); let P = M > 0 ? fc[m - 1][0] * M : (ac ? ac[m - 1] : 0);
+      if (fd && fn) P = fd[m - 1][0] * SETS[set].Md(r) + fn[m - 1][0] * SETS[set].Mn(r);
+      if (!V && !P && !M) continue; for (const u of [units.cell.get(cell), units.prov.get(prov), units.country.get('AR')]) { u.V[m] += V; u.P[m] += P; u.S[m] += scalar * M; } }
   }
   return { units, scalar };
 }
@@ -79,9 +88,12 @@ function metrics(units, level, resid) {
 
 const configs = SWEEP ? [10, 20, 50].flatMap(K => [100, 200, 500].map(CAP => ({ K, CAP, depth: 'cell' }))) : ABLATION ? ['country', 'region', 'prov', 'cell'].map(depth => ({ K: K0, CAP: 200, depth })) : [{ K: K0, CAP: 200, depth: 'cell' }];
 const folds = [], provFolds = {}, resid = {}; const t0 = Date.now();
-for (const cfg of configs) for (const set of ['TA', 'T']) {
+const fitCache = new Map();
+for (const cfg of configs) for (const set of EVAL_SETS) {
   for (const yStar of YEARS) {
-    const fit = fitFactors(agg.cells, provOf, { K: cfg.K, CAP: cfg.CAP, years: YEARS.filter(y => y !== yStar), useRegions, depth: cfg.depth, additive: ADDITIVE });
+    const ck = `${cfg.K}|${cfg.CAP}|${cfg.depth}|${yStar}`;
+    if (!fitCache.has(ck)) fitCache.set(ck, fitFactors(agg.cells, provOf, { K: cfg.K, CAP: cfg.CAP, years: YEARS.filter(y => y !== yStar), useRegions, depth: cfg.depth, additive: ADDITIVE, daynight: DAYNIGHT }));
+    const fit = fitCache.get(ck);
     const { units, scalar } = predict(fit, set, yStar);
     for (const level of ['country', 'prov', 'cell']) {
       const isBase = cfg.K === K0 && cfg.CAP === 200 && cfg.depth === 'cell';
@@ -95,7 +107,7 @@ for (const cfg of configs) for (const set of ['TA', 'T']) {
 }
 // summary per config × set × level
 const summary = [];
-for (const cfg of configs) for (const set of ['TA', 'T']) for (const level of ['country', 'prov', 'cell']) {
+for (const cfg of configs) for (const set of EVAL_SETS) for (const level of ['country', 'prov', 'cell']) {
   const rows = folds.filter(r => r.set === set && r.K === cfg.K && r.CAP === cfg.CAP && r.depth === cfg.depth && r.level === level);
   const mean = k => rows.reduce((a, r) => a + (r[k] ?? 0), 0) / rows.length;
   summary.push({ set, K: cfg.K, CAP: cfg.CAP, depth: cfg.depth, level, season_mape: +mean('season_mape').toFixed(4), season_mape_scalar: +mean('season_mape_scalar').toFixed(4), monthly_median_ape: +mean('monthly_median_ape').toFixed(4), monthly_median_ape_scalar: +mean('monthly_median_ape_scalar').toFixed(4), annual_ratio_min: +Math.min(...rows.map(r => r.annual_ratio)).toFixed(3), annual_ratio_max: +Math.max(...rows.map(r => r.annual_ratio)).toFixed(3), annual_ratio_rms_dev: +Math.sqrt(rows.reduce((a, r) => a + (r.annual_ratio - 1) ** 2, 0) / rows.length).toFixed(4) });
@@ -151,7 +163,7 @@ await writeFile(path.join(OUT, `loyo_folds${TAG}.csv`), toCsv(folds));
 await writeFile(path.join(OUT, `loyo_summary${TAG}.csv`), toCsv(summary));
 if (byProv.length) await writeFile(path.join(OUT, `loyo_by_province${TAG}.csv`), toCsv(byProv));
 await writeFile(path.join(OUT, `loyo_summary${TAG}.json`), JSON.stringify({ generated: new Date().toISOString(), years: YEARS, season: SEASON, K: K0, configs, useRegions, summary, by_province: byProv, band_calibration: band, band_coverage: coverage, split_window: split, backward_test_2003_2011: backward, forward_test: forward, folds }, null, 1));
-if (!SWEEP && !ABLATION && !TAG) await writeFile(path.join(OUT, 'band_calibration.json'), JSON.stringify({ generated: new Date().toISOString(), years: YEARS, z: Z, note: 'by_count: signed p10/p90 of log(V/P) of out-of-sample unit-months binned by PREDICTED count P (pooled cell/province/country), per satellite set. 80% prediction interval = [P*exp(p10), P*exp(p90)]. by_level: reference quantiles. band_coverage: fraction of out-of-sample months inside that interval.', band, band_coverage: coverage, split_window: split, backward_test_2003_2011: backward, forward_test: forward }, null, 1));
+if (!SWEEP && !ABLATION && !TAG && !DAYNIGHT) await writeFile(path.join(OUT, 'band_calibration.json'), JSON.stringify({ generated: new Date().toISOString(), years: YEARS, z: Z, note: 'by_count: signed p10/p90 of log(V/P) of out-of-sample unit-months binned by PREDICTED count P (pooled cell/province/country), per satellite set. 80% prediction interval = [P*exp(p10), P*exp(p90)]. by_level: reference quantiles. band_coverage: fraction of out-of-sample months inside that interval.', band, band_coverage: coverage, split_window: split, backward_test_2003_2011: backward, forward_test: forward }, null, 1));
 
 const pct = x => (100 * x).toFixed(1).padStart(5) + '%';
 console.log(`LOYO ${YEARS.length} folds (${YEARS[0]}–${YEARS.at(-1)}) · season Jul–Nov · K=${K0} · additive=${ADDITIVE} · ${configs.length} config(s) · sets TA and T\n`);

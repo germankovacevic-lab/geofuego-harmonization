@@ -32,6 +32,8 @@ All code in this repository was written during the hackathon window (14–15 Nov
 | Consistency across the 2012 splice vs MODIS burned area (MCD64A1) | burned ha per hotspot pre/post 2012: **0.97** harmonized vs **3.10** naive concatenation (not an independent validation: MCD64A1 is trained with MODIS active fires) |
 | S-NPP/NOAA bridge vs production NRT data (different pipeline) | 0.982 vs 0.980 (NOAA-20); provincial spread (w > 0.9) 0.93–1.16 (NOAA-20), 0.89–0.99 (NOAA-21) |
 | ENSO dependence of the ratio (team hypothesis) | real (r = −0.37 monthly) but small; conditioning did not improve out-of-sample skill → carried as extra band width in strong-phase months |
+| Day/night split factors (reviewer suggestion) | night VIIRS/MODIS ratio **6.1–6.7** vs day **2.7–3.0** (physics confirmed), but separate day and night factors give no net skill gain (country 3.3 → 2.9 %, province 10.2 → 10.6 %, cell 29.7 → 30.8 %): the pooled cell×month factor already absorbs the local day/night mix → not adopted, kept as an option |
+| Additive term for months where MODIS saw nothing (reviewer suggestion) | fixes single cells (Terra-only cell error 54 → 42 %) but degrades every aggregate and both out-of-time tests → not adopted; the structural zero of small pre-2012 AOIs stays declared |
 
 ## Pre-existing work (declared, cited)
 
@@ -48,7 +50,7 @@ All code in this repository was written during the hackathon window (14–15 Nov
 
 ## Known limits (declared)
 
-Observed VIIRS months carry no interval (they are the reference); a cloudy month reads as a quiet month (no obscuration correction); day and night detections are pooled; the region table is hand-made; the outage detector conditions on MODIS zeros (effect < 1 % of counts per year); the unit is VIIRS-equivalent 375 m pixel counts, not fires nor area; Argentina only.
+Observed VIIRS months carry no interval (they are the reference); a cloudy month reads as a quiet month (no obscuration correction); day and night detections are pooled (split tested, no gain); the region table is hand-made; the outage detector conditions on MODIS zeros (effect < 1 % of counts per year); the unit is VIIRS-equivalent 375 m pixel counts, not fires nor area; Argentina only.
 
 ## Pipeline
 

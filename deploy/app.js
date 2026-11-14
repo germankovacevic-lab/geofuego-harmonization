@@ -452,7 +452,7 @@ function renderKpis() {
   if (yrs.length >= 3) {
     const medY = median(yrs.map(d => d.tot)); let ranked = yrs; if (A.tier === 'D' && showPre) ranked = yrs.filter(d => d.y >= 2012);
     const w = ranked.reduce((a, b) => b.tot > a.tot ? b : a, ranked[0]);
-    out.push(`<div class="kpi"><div class="l">${t('kmean')}</div><div class="v">${fmt(medY)}</div><div class="d">${t('kmeand', yrs[0].y, yrs[yrs.length - 1].y)}</div></div>`);
+    out.push(`<div class="kpi"><div class="l">${t('kmean')}</div><div class="v">${fmt(medY)} <span class="u">${lang === 'es' ? 'focos' : 'hotspots'}</span></div><div class="d">${t('kmeand', yrs[0].y, yrs[yrs.length - 1].y)}</div></div>`);
     out.push(`<div class="kpi"><div class="l">${t('kworst')}</div><div class="v">${w.y}</div><div class="d">${t('kworstd', fmt(w.tot), medY > 0 ? (w.tot / medY).toFixed(1).replace('.', lang === 'es' ? ',' : '.') + '×' : '—')}</div></div>`);
   }
   if (SKILL) {

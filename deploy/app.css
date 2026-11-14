@@ -120,3 +120,4 @@ footer p { margin:0; }
 .map-chip i { width:10px; height:10px; border-radius:50%; background:#4a4f5e; display:inline-block; }
 .map-chip.on { color:#ffd2b3; border-color:#c2410c; } .map-chip.on i { background:linear-gradient(135deg,#ffe066,#f5731f 55%,#b4231a); box-shadow:0 0 6px #f5731f; }
 .map-chip:hover { border-color:#f5a623; }
+.kpi .v .u { font-size:13px; font-weight:500; color:var(--muted); }

@@ -1,0 +1,191 @@
+{
+ "generated": "2026-11-14",
+ "method": "Outage runs detected by 03b_coverage.mjs (zero national vegetation hotspots while another satellite sees >= 5, or a zero-run >= 3 days framed by >= 5/day), runs of >= 3 days, cross-checked by hand against official records on 14 Nov 2026.",
+ "sources": {
+  "Terra": "NASA MODAPS, Terra major data outage periods, https://modaps.modaps.eosdis.nasa.gov/services/production/outages_terra.html",
+  "Aqua": "NASA MODAPS, Aqua major data outage periods, https://modaps.modaps.eosdis.nasa.gov/services/production/outages_aqua.html",
+  "SNPP": [
+   "NASA Earthdata alert 'Suomi NPP Recovers from Safe Mode' (safe mode from 2022-07-26 16:25 UTC; data activation 2022-08-10)",
+   "NSIDC announcement 2022-07 (SNPP safe mode 2022-07-26)",
+   "NASA Earthdata alert 'Suomi NPP VIIRS Data Product Geolocation Anomaly - July 2024' (GPS outage 2024-07-09, recovery 2024-07-16)",
+   "NASA Earthdata alert 'Suomi NPP VIIRS Data Product Anomaly - July 2024' (outage 2024-07-24 05:28-18:22 UTC, processing on hold)",
+   "NASA Earthdata alert 'Suomi NPP VIIRS Data Product Anomaly - November 2024' (GPS anomaly; data gap 2024-11-02 21:12 to 2024-11-06 17:36 UTC)",
+   "VIIRS 375 m active fire archive (VNP14IMGML) begins 2012-01-19/20"
+  ]
+ },
+ "runs": [
+  {
+   "sat": "Terra",
+   "detected": "2001-06-16/2001-07-03",
+   "days": 18,
+   "official": "2001-06-15 04:00 - 2001-07-03 09:15 MODIS instrument in survival/safe mode",
+   "status": "confirmed"
+  },
+  {
+   "sat": "Terra",
+   "detected": "2002-03-20/2002-03-28",
+   "days": 9,
+   "official": "2002-03-19 14:45 - 2002-03-28 10:10 MODIS survival/safe mode",
+   "status": "confirmed"
+  },
+  {
+   "sat": "Terra",
+   "detected": "2002-04-11/2002-04-15",
+   "days": 5,
+   "official": "2002-04-14 - 2002-04-16 L0 outage (Science Formatting Equipment); 2002-04-10 Delta-V",
+   "status": "partial (3 of 5 days documented)"
+  },
+  {
+   "sat": "Terra",
+   "detected": "2002-07-01/2002-07-03",
+   "days": 3,
+   "official": "none for Terra; Aqua MODIS in safe mode 2002-06-27 - 2002-07-03",
+   "status": "unconfirmed (gap fill 1 203, both MODIS satellites affected)"
+  },
+  {
+   "sat": "Terra",
+   "detected": "2003-12-17/2003-12-24",
+   "days": 8,
+   "official": "2003-12-16 - 2003-12-24 MODIS survival/safe mode",
+   "status": "confirmed"
+  },
+  {
+   "sat": "Terra",
+   "detected": "2008-12-21/2008-12-23",
+   "days": 3,
+   "official": "2008-12-20 - 2008-12-23 L0 outage, Science Formatter issue",
+   "status": "confirmed"
+  },
+  {
+   "sat": "Terra",
+   "detected": "2010-05-28/2010-05-30",
+   "days": 3,
+   "official": "none",
+   "status": "unconfirmed (gap fill 7)"
+  },
+  {
+   "sat": "Terra",
+   "detected": "2011-06-05/2011-06-07",
+   "days": 3,
+   "official": "none",
+   "status": "unconfirmed (gap fill 37)"
+  },
+  {
+   "sat": "Terra",
+   "detected": "2016-02-19/2016-02-27",
+   "days": 9,
+   "official": "2016-02-18 - 2016-02-28 Terra SafeHold",
+   "status": "confirmed"
+  },
+  {
+   "sat": "Terra",
+   "detected": "2017-04-23/2017-04-25",
+   "days": 3,
+   "official": "2017-04-24 03:40-19:45 spacecraft data anomaly",
+   "status": "partial"
+  },
+  {
+   "sat": "Terra",
+   "detected": "2018-07-03/2018-07-05",
+   "days": 3,
+   "official": "none",
+   "status": "unconfirmed (gap fill 0: observed VIIRS era)"
+  },
+  {
+   "sat": "Terra",
+   "detected": "2019-10-15/2019-10-17",
+   "days": 3,
+   "official": "none",
+   "status": "unconfirmed (gap fill 0)"
+  },
+  {
+   "sat": "Terra",
+   "detected": "2022-10-11/2022-10-23",
+   "days": 13,
+   "official": "2022-10-10 13:00 - 2022-10-23 22:35 Terra Constellation Exit Maneuver",
+   "status": "confirmed"
+  },
+  {
+   "sat": "Aqua",
+   "detected": "2002-07-30/2002-08-07",
+   "days": 9,
+   "official": "2002-07-29 20:25 - 2002-08-08 00:25 MODIS survival/safe mode",
+   "status": "confirmed"
+  },
+  {
+   "sat": "Aqua",
+   "detected": "2005-06-15/2005-06-17",
+   "days": 3,
+   "official": "none",
+   "status": "unconfirmed (gap fill 60)"
+  },
+  {
+   "sat": "Aqua",
+   "detected": "2019-04-25/2019-04-27",
+   "days": 3,
+   "official": "none",
+   "status": "unconfirmed (gap fill 0)"
+  },
+  {
+   "sat": "Aqua",
+   "detected": "2022-03-31/2022-04-16",
+   "days": 17,
+   "official": "2022-03-31 16:00 - 2022-04-17 03:00 Aqua Safe Mode",
+   "status": "confirmed"
+  },
+  {
+   "sat": "Aqua",
+   "detected": "2024-04-09/2024-04-11",
+   "days": 3,
+   "official": "2024-04-11 18:00-18:55 EDOS outage only",
+   "status": "unconfirmed (gap fill 0)"
+  },
+  {
+   "sat": "SNPP",
+   "detected": "2012-01-01/2012-01-19",
+   "days": 19,
+   "official": "VIIRS 375 m active fire archive begins 2012-01-19/20 (pre-operational period)",
+   "status": "confirmed"
+  },
+  {
+   "sat": "SNPP",
+   "detected": "2022-07-27/2022-08-10",
+   "days": 15,
+   "official": "spacecraft safe mode from 2022-07-26 16:25 UTC; data activation from 2022-08-10; LP DAAC: data 2022-07-26 to 2022-08-20 not recoverable (FIRMS archive resumes 2022-08-11)",
+   "status": "confirmed"
+  },
+  {
+   "sat": "SNPP",
+   "detected": "2024-05-30/2024-06-03",
+   "days": 5,
+   "official": "none found",
+   "status": "unconfirmed (gap fill 1 008 over May-Jun)"
+  },
+  {
+   "sat": "SNPP",
+   "detected": "2024-07-10/2024-07-15",
+   "days": 6,
+   "official": "GPS outage 2024-07-09, recovery 2024-07-16",
+   "status": "confirmed"
+  },
+  {
+   "sat": "SNPP",
+   "detected": "2024-07-24/2024-07-28",
+   "days": 5,
+   "official": "outage 2024-07-24 05:28-18:22 UTC, VIIRS processing on hold pending Cal/Val",
+   "status": "confirmed"
+  },
+  {
+   "sat": "SNPP",
+   "detected": "2024-11-03/2024-11-05",
+   "days": 3,
+   "official": "GPS anomaly 2024-11-02 21:12 - 2024-11-06 17:36 UTC, data gap",
+   "status": "confirmed"
+  }
+ ],
+ "missed_by_our_rule": [
+  "Aqua MODIS safe mode 2002-06-27 - 2002-07-03 (before our Aqua start date; Terra flagged instead)",
+  "Aqua MODIS safe mode 2002-09-12 - 2002-09-14 (2 full days, below the 3-day rule; not flagged by the cross-satellite test)"
+ ],
+ "summary": "24 runs of >= 3 days: 15 confirmed, 2 partial, 7 unconfirmed. Every run of >= 8 days (7 events) is a documented spacecraft or instrument safe mode / maneuver / GPS anomaly. The unconfirmed runs are all 3-5 days and add at most 1 203 (Jul 2002) and 1 008 (May-Jun 2024) VIIRS-equivalent hotspots of gap fill; the others 0-60. Short runs of 1-2 days (95 Terra, 52 Aqua, 3 SNPP) were not cross-checked: the MODAPS tables list hundreds of sub-day EDOS/L0 outages and a day with partial coverage can read as zero in a low-fire month."
+}

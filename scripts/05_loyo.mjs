@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 // 05_loyo.mjs — Leave-one-year-out validation of the harmonization factors, for BOTH satellite sets, with:
 //   - k/cap sweep (--sweep), ablation ladder (--ablation), forward test on 2024–2025 (always),
-//   - empirical band calibration: quantiles of |log(V/P)| per level and set → multipliers that give 80 % coverage,
+//   - empirical band calibration: signed 10th/90th percentiles of log(V/P) BINNED BY PREDICTED COUNT, per set, pooled over
+//     cell / province / country unit-months with P >= 5 (conditioning on the prediction, not on the outcome) → an asymmetric
+//     80 % prediction interval that depends on the predicted count, not on the number of cells; coverage reported per province,
+//   - split-window tests (train 2012–2017 → test 2018–2023 and the reverse): the error of EXTRAPOLATING in time,
+//   - backward test inside the MODIS era: 2003–2011 Terra-only reconstruction f_T·T vs Terra+Aqua f_TA·(T+A),
 //   - per-province season MAPE.
 // Written with SI assistance (Claude, Anthropic); reviewed and validated by the team.
 //
@@ -53,9 +57,10 @@ function predict(fit, set, yStar) { // -> { units: {cell,prov,country: Map(unit 
 function metrics(units, level, resid) {
   const ape = [], apeS = [], monthly = [], monthlyS = []; let sumV = 0, sumP = 0, sumS = 0; const perUnit = {};
   for (const [name, u] of units[level]) {
+    if (resid) for (let m = 1; m <= 12; m++) if (u.P[m] >= 5) resid.push({ P: u.P[m], r: Math.log((u.V[m] + 0.5) / (u.P[m] + 0.5)), unit: name, level });
     const sV = SEASON.reduce((a, m) => a + u.V[m], 0), sP = SEASON.reduce((a, m) => a + u.P[m], 0), sS = SEASON.reduce((a, m) => a + u.S[m], 0);
     if (sV >= THR[level].season) { ape.push(Math.abs(sP - sV) / sV); apeS.push(Math.abs(sS - sV) / sV); perUnit[name] = Math.abs(sP - sV) / sV; }
-    for (let m = 1; m <= 12; m++) if (u.V[m] >= THR[level].month) { monthly.push(Math.abs(u.P[m] - u.V[m]) / u.V[m]); monthlyS.push(Math.abs(u.S[m] - u.V[m]) / u.V[m]); if (resid) resid.push(Math.log((u.V[m] + 0.5) / (u.P[m] + 0.5))); }
+    for (let m = 1; m <= 12; m++) if (u.V[m] >= THR[level].month) { monthly.push(Math.abs(u.P[m] - u.V[m]) / u.V[m]); monthlyS.push(Math.abs(u.S[m] - u.V[m]) / u.V[m]); }
     sumV += u.V.reduce((a, b) => a + b, 0); sumP += u.P.reduce((a, b) => a + b, 0); sumS += u.S.reduce((a, b) => a + b, 0);
   }
   return { n_units: ape.length, season_mape: ape.length ? ape.reduce((a, b) => a + b, 0) / ape.length : null, season_mape_scalar: apeS.length ? apeS.reduce((a, b) => a + b, 0) / apeS.length : null, monthly_median_ape: median(monthly), monthly_median_ape_scalar: median(monthlyS), annual_ratio: sumP / sumV, annual_ratio_scalar: sumS / sumV, perUnit };
@@ -68,8 +73,8 @@ for (const cfg of configs) for (const set of ['TA', 'T']) {
     const fit = fitFactors(agg.cells, provOf, { K: cfg.K, CAP: cfg.CAP, years: YEARS.filter(y => y !== yStar), useRegions, depth: cfg.depth });
     const { units, scalar } = predict(fit, set, yStar);
     for (const level of ['country', 'prov', 'cell']) {
-      const key = `${set}|${level}`; const isBase = cfg.K === K0 && cfg.CAP === 200 && cfg.depth === 'cell';
-      const r = metrics(units, level, isBase ? (resid[key] ??= []) : null);
+      const isBase = cfg.K === K0 && cfg.CAP === 200 && cfg.depth === 'cell';
+      const r = metrics(units, level, isBase ? (resid[set] ??= []) : null);
       if (level === 'prov' && isBase) for (const [p, e] of Object.entries(r.perUnit)) (provFolds[`${set}|${p}`] ??= []).push(e);
       delete r.perUnit;
       folds.push({ set, K: cfg.K, CAP: cfg.CAP, depth: cfg.depth, year: yStar, level, scalar: +scalar.toFixed(3), ...r });
@@ -84,14 +89,47 @@ for (const cfg of configs) for (const set of ['TA', 'T']) for (const level of ['
   const mean = k => rows.reduce((a, r) => a + (r[k] ?? 0), 0) / rows.length;
   summary.push({ set, K: cfg.K, CAP: cfg.CAP, depth: cfg.depth, level, season_mape: +mean('season_mape').toFixed(4), season_mape_scalar: +mean('season_mape_scalar').toFixed(4), monthly_median_ape: +mean('monthly_median_ape').toFixed(4), monthly_median_ape_scalar: +mean('monthly_median_ape_scalar').toFixed(4), annual_ratio_min: +Math.min(...rows.map(r => r.annual_ratio)).toFixed(3), annual_ratio_max: +Math.max(...rows.map(r => r.annual_ratio)).toFixed(3), annual_ratio_rms_dev: +Math.sqrt(rows.reduce((a, r) => a + (r.annual_ratio - 1) ** 2, 0) / rows.length).toFixed(4) });
 }
-// band calibration from out-of-sample residuals (base config)
-const band = {};
-for (const [key, rs] of Object.entries(resid)) {
-  const [set, level] = key.split('|'); const abs = rs.map(Math.abs);
-  const medAbs = median(abs), oldSigma = median(rs.map(x => Math.abs(Math.exp(x) - 1))); // previous floor: median |rel err| used as σ
-  const covOld = abs.filter(a => a <= Z * oldSigma).length / abs.length;
-  const q80 = quant(abs, 0.8), q90 = quant(abs, 0.9), p10 = quant(rs, 0.1), p90 = quant(rs, 0.9);
-  (band[set] ??= {})[level] = { n: rs.length, median_abs_log: +medAbs.toFixed(4), q80_abs_log: +q80.toFixed(4), q90_abs_log: +q90.toFixed(4), p10_log: +p10.toFixed(4), p90_log: +p90.toFixed(4), bias_median_log: +median(rs).toFixed(4), previous_band_sigma: +oldSigma.toFixed(4), previous_band_coverage: +covOld.toFixed(3), sigma_equiv_for_80pct: +(q80 / Z).toFixed(4) };
+// band calibration from out-of-sample residuals (base config): per set, (a) per level: quantiles of |log| (reference),
+// (b) BINNED BY PREDICTED COUNT, pooled over levels: signed p10 / p50 / p90 → the band used by 06_harmonize and the app.
+const BINS = [5, 15, 40, 100, 300, 1000, 3000, 1e12];
+const binOf = P => { for (let i = 0; i < BINS.length - 1; i++) if (P < BINS[i + 1]) return i; return BINS.length - 2; };
+const band = {}, coverage = {};
+for (const [set, recs] of Object.entries(resid)) {
+  band[set] = { by_level: {}, by_count: [] };
+  for (const level of ['country', 'prov', 'cell']) {
+    const rs = recs.filter(x => x.level === level && x.P >= (level === 'cell' ? 10 : 30)).map(x => x.r); if (!rs.length) continue;
+    const abs = rs.map(Math.abs);
+    band[set].by_level[level] = { n: rs.length, median_abs_log: +median(abs).toFixed(4), q80_abs_log: +quant(abs, 0.8).toFixed(4), p10_log: +quant(rs, 0.1).toFixed(4), p90_log: +quant(rs, 0.9).toFixed(4), bias_median_log: +median(rs).toFixed(4), sigma_equiv_for_80pct: +(quant(abs, 0.8) / Z).toFixed(4) };
+  }
+  for (let i = 0; i < BINS.length - 1; i++) {
+    const rs = recs.filter(x => binOf(x.P) === i).map(x => x.r); if (rs.length < 30) continue;
+    band[set].by_count.push({ P_min: BINS[i], P_max: BINS[i + 1] === 1e12 ? null : BINS[i + 1], n: rs.length, p10_log: +quant(rs, 0.1).toFixed(4), p50_log: +quant(rs, 0.5).toFixed(4), p90_log: +quant(rs, 0.9).toFixed(4), share_V_zero: +(recs.filter(x => binOf(x.P) === i && Math.exp(x.r) * (x.P + 0.5) - 0.5 < 0.5).length / rs.length).toFixed(3) });
+  }
+  // coverage of the count-binned band, per province (province-months with P >= 30) and per level
+  const cov = (arr) => { let inside = 0, n = 0; for (const x of arr) { const b = band[set].by_count.find(c => x.P >= c.P_min && (c.P_max === null || x.P < c.P_max)); if (!b) continue; n++; if (x.r >= b.p10_log && x.r <= b.p90_log) inside++; } return n ? +(inside / n).toFixed(3) : null; };
+  coverage[set] = { by_level: Object.fromEntries(['country', 'prov', 'cell'].map(l => [l, cov(recs.filter(x => x.level === l))])), by_province: {} };
+  const provs = [...new Set(recs.filter(x => x.level === 'prov').map(x => x.unit))];
+  for (const p of provs) coverage[set].by_province[p] = cov(recs.filter(x => x.level === 'prov' && x.unit === p && x.P >= 30));
+}
+// split-window tests: extrapolation in time (base config)
+const half = Math.floor(YEARS.length / 2), W1 = YEARS.slice(0, half), W2 = YEARS.slice(half);
+const split = {};
+for (const [name, train, test] of [['train_early_test_late', W1, W2], ['train_late_test_early', W2, W1]]) {
+  const fit = fitFactors(agg.cells, provOf, { K: K0, CAP: 200, years: train, useRegions });
+  split[name] = { train: [train[0], train.at(-1)], test: {} };
+  for (const set of ['TA', 'T']) { const ys = {}; for (const y of test) { const { units } = predict(fit, set, y); ys[y] = { country_pred_over_obs: +metrics(units, 'country').annual_ratio.toFixed(3), prov_season_mape: +metrics(units, 'prov').season_mape.toFixed(4) }; } const vals = Object.values(ys); split[name].test[set] = { per_year: ys, country_pred_over_obs_mean: +(vals.reduce((a, v) => a + v.country_pred_over_obs, 0) / vals.length).toFixed(3), prov_season_mape_mean: +(vals.reduce((a, v) => a + v.prov_season_mape, 0) / vals.length).toFixed(4) }; }
+}
+// backward test inside the MODIS era: 2003–2011, Terra-only reconstruction vs Terra+Aqua reconstruction (all days)
+const backward = {};
+{ const fit = fitFactors(agg.cells, provOf, { K: K0, CAP: 200, years: YEARS, useRegions }); const provLog = [];
+  for (let y = 2003; y <= 2011; y++) {
+    let sT = 0, sTA = 0; const pu = new Map();
+    for (const [cid, yrs] of Object.entries(agg.cells)) { const cell = +cid, prov = provOf.get(cell); const ym = yrs[y]; if (!ym || !prov) continue; const fT = fit.cell.T[cell], fTA = fit.cell.TA[cell]; if (!fT || !fTA) continue;
+      for (const [m, r] of Object.entries(ym)) { const pT = fT[m - 1][0] * r[1], pTA = fTA[m - 1][0] * (r[1] + r[2]); sT += pT; sTA += pTA; const u = (pu.get(prov) ?? pu.set(prov, [0, 0]).get(prov)); u[0] += pT; u[1] += pTA; } }
+    backward[y] = { terra_only_over_terra_aqua: +(sT / sTA).toFixed(3) };
+    for (const [, [a, b]] of pu) if (b >= 50) provLog.push(Math.abs(Math.log((a + 0.5) / (b + 0.5))));
+  }
+  backward.summary = { country_min: Math.min(...Object.values(backward).filter(v => v.terra_only_over_terra_aqua).map(v => v.terra_only_over_terra_aqua)), country_max: Math.max(...Object.values(backward).filter(v => v.terra_only_over_terra_aqua).map(v => v.terra_only_over_terra_aqua)), province_year_q80_abs_log: +quant(provLog, 0.8).toFixed(3), n_province_years: provLog.length };
 }
 // forward test: factors from the full window applied to 2024, 2025
 const forward = {};
@@ -101,13 +139,21 @@ const toCsv = rows => Object.keys(rows[0]).join(',') + '\n' + rows.map(r => Obje
 await writeFile(path.join(OUT, `loyo_folds${TAG}.csv`), toCsv(folds));
 await writeFile(path.join(OUT, `loyo_summary${TAG}.csv`), toCsv(summary));
 if (byProv.length) await writeFile(path.join(OUT, `loyo_by_province${TAG}.csv`), toCsv(byProv));
-await writeFile(path.join(OUT, `loyo_summary${TAG}.json`), JSON.stringify({ generated: new Date().toISOString(), years: YEARS, season: SEASON, K: K0, configs, useRegions, summary, by_province: byProv, band_calibration: band, forward_test: forward, folds }, null, 1));
-if (!SWEEP && !ABLATION && !TAG) await writeFile(path.join(OUT, 'band_calibration.json'), JSON.stringify({ generated: new Date().toISOString(), years: YEARS, z: Z, note: 'q80_abs_log: symmetric band H*exp(±q80) covers 80% of out-of-sample unit-months (LOYO). sigma_equiv_for_80pct = q80/1.2816 for use with the z=1.28 convention.', band, forward_test: forward }, null, 1));
+await writeFile(path.join(OUT, `loyo_summary${TAG}.json`), JSON.stringify({ generated: new Date().toISOString(), years: YEARS, season: SEASON, K: K0, configs, useRegions, summary, by_province: byProv, band_calibration: band, band_coverage: coverage, split_window: split, backward_test_2003_2011: backward, forward_test: forward, folds }, null, 1));
+if (!SWEEP && !ABLATION && !TAG) await writeFile(path.join(OUT, 'band_calibration.json'), JSON.stringify({ generated: new Date().toISOString(), years: YEARS, z: Z, note: 'by_count: signed p10/p90 of log(V/P) of out-of-sample unit-months binned by PREDICTED count P (pooled cell/province/country), per satellite set. 80% prediction interval = [P*exp(p10), P*exp(p90)]. by_level: reference quantiles. band_coverage: fraction of out-of-sample months inside that interval.', band, band_coverage: coverage, split_window: split, backward_test_2003_2011: backward, forward_test: forward }, null, 1));
 
 const pct = x => (100 * x).toFixed(1).padStart(5) + '%';
 console.log(`LOYO ${YEARS.length} folds (${YEARS[0]}–${YEARS.at(-1)}) · season Jul–Nov · K=${K0} · ${configs.length} config(s) · sets TA and T\n`);
 console.log('set K   CAP  depth    level     season MAPE  (scalar)   monthly med|err| (scalar)   annual pred/obs range  rms');
 for (const s of summary) console.log(`${s.set.padEnd(3)} ${String(s.K).padEnd(3)} ${String(s.CAP).padEnd(4)} ${s.depth.padEnd(8)} ${s.level.padEnd(8)}  ${pct(s.season_mape)}  (${pct(s.season_mape_scalar)})   ${pct(s.monthly_median_ape)}  (${pct(s.monthly_median_ape_scalar)})     ${s.annual_ratio_min}–${s.annual_ratio_max}   ${s.annual_ratio_rms_dev}`);
-if (Object.keys(band).length) { console.log('\nband calibration (out-of-sample monthly residuals): set level   n     median|log|  q80|log|  previous σ  previous coverage'); for (const set of Object.keys(band)) for (const [lvl, b] of Object.entries(band[set])) console.log(`  ${set.padEnd(3)} ${lvl.padEnd(8)} ${String(b.n).padStart(6)}   ${b.median_abs_log.toFixed(3)}       ${b.q80_abs_log.toFixed(3)}     ${b.previous_band_sigma.toFixed(3)}       ${pct(b.previous_band_coverage)}`); }
+if (Object.keys(band).length) {
+  console.log('\nband by predicted count (signed log residual quantiles, pooled levels): set  P range      n     p10     p50     p90   share V=0');
+  for (const set of Object.keys(band)) for (const b of band[set].by_count) console.log(`  ${set.padEnd(3)} ${String(b.P_min).padStart(5)}–${String(b.P_max ?? '∞').padEnd(6)} ${String(b.n).padStart(6)}  ${b.p10_log.toFixed(3).padStart(6)}  ${b.p50_log.toFixed(3).padStart(6)}  ${b.p90_log.toFixed(3).padStart(6)}   ${pct(b.share_V_zero)}`);
+  console.log('\ncoverage of the count-binned 80 % interval (out-of-sample): set  country  prov  cell  | provinces min…max');
+  for (const set of Object.keys(coverage)) { const c = coverage[set]; const pv = Object.entries(c.by_province).filter(([, v]) => v !== null).sort((a, b) => a[1] - b[1]); console.log(`  ${set.padEnd(3)} ${pct(c.by_level.country)}  ${pct(c.by_level.prov)}  ${pct(c.by_level.cell)}  | ${pv[0]?.[0].split(',')[0]} ${pct(pv[0]?.[1])} … ${pv.at(-1)?.[0].split(',')[0]} ${pct(pv.at(-1)?.[1])}`); }
+  console.log('\nsplit-window (extrapolation in time), country pred/obs mean and province season MAPE:');
+  for (const [name, s] of Object.entries(split)) for (const set of ['TA', 'T']) console.log(`  ${name.padEnd(24)} ${set.padEnd(3)} train ${s.train.join('–')}: pred/obs ${s.test[set].country_pred_over_obs_mean}  prov MAPE ${pct(s.test[set].prov_season_mape_mean)}   per year ${Object.entries(s.test[set].per_year).map(([y, v]) => `${y}:${v.country_pred_over_obs}`).join(' ')}`);
+  console.log(`\nbackward test 2003–2011 (Terra-only / Terra+Aqua reconstruction, country): ${Object.entries(backward).filter(([k]) => k !== 'summary').map(([y, v]) => `${y}:${v.terra_only_over_terra_aqua}`).join(' ')}  | range ${backward.summary.country_min}–${backward.summary.country_max}, province-year q80|log| ${backward.summary.province_year_q80_abs_log}`);
+}
 if (Object.keys(forward).length) { console.log('\nforward test (factors from the full window applied to years never used):'); for (const set of Object.keys(forward)) for (const [y, f] of Object.entries(forward[set])) console.log(`  ${set} ${y}: country pred/obs ${f.country_pred_over_obs}  province season MAPE ${pct(f.prov_season_mape)}  country monthly med|err| ${pct(f.country_monthly_median_ape)}`); }
 if (byProv.length && !SWEEP && !ABLATION) { console.log('\nper-province season MAPE (TA, mean over folds):'); for (const r of byProv.filter(r => r.set === 'TA').sort((a, b) => a.prov.localeCompare(b.prov))) console.log(`  ${r.prov.split(',')[0].slice(0, 22).padEnd(22)} ${pct(r.season_mape_mean)}  (median ${pct(r.season_mape_median)})`); }

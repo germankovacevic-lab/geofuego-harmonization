@@ -61,7 +61,7 @@ for (const s of Object.keys(daily)) {
 }
 const by_month = {};
 for (const s of Object.keys(daily)) { by_month[s] = {}; for (const d of days) { if (!active(s, d)) continue; const m = d.slice(0, 7); const o = (by_month[s][m] ??= { days_data: 0, outage_days: 0 }); if (n(s, d) > 0) o.days_data++; } for (const d of outages[s]) { const o = (by_month[s][d.slice(0, 7)] ??= { days_data: 0, outage_days: 0 }); o.outage_days++; } }
-await writeFile(path.join(ROOT, 'data', 'agg', 'coverage.json'), JSON.stringify({ generated: new Date().toISOString(), rule: 'zero national vegetation hotspots while another satellite sees >=5, or a zero-run >=3 days framed by >=5/day', start: START, daily, outages, by_month }));
+await writeFile(path.join(ROOT, 'data', 'agg', 'coverage.json'), JSON.stringify({ generated: new Date().toISOString(), rule: 'zero national vegetation hotspots while the count expected from another operating satellite (via mean ratios A/T=1.8, V/T=9, V/A=5) is >= 8, or a zero-run >= 3 days framed by >= 5/day; plus S-NPP pre-operational days 1-19 Jan 2012', start: START, daily, outages, by_month }));
 for (const s of Object.keys(daily)) {
   const months = Object.entries(by_month[s]).filter(([, o]) => o.outage_days >= 2).map(([m, o]) => `${m}(${o.outage_days})`);
   console.log(`${s.padEnd(5)} outage days: ${outages[s].length}  → months with ≥2: ${months.join(' ')}`);

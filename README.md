@@ -10,9 +10,9 @@ DOI (this work): https://doi.org/10.5281/zenodo.24220107 · App: https://spaceap
 
 MODIS (2000→, 1 km) and VIIRS (2012→, 375 m) count fire differently, and the ratio between them is not a constant: it depends on region, calendar month and satellite overpass time, and it is a different ratio altogether for persistent thermal sources (gas flares, industry). This repository contains:
 
-1. A **harmonization engine**: a VIIRS/MODIS factor per 0.25° cell × calendar month × satellite set (Terra+Aqua; Terra only), fitted as a ratio of sums on **paired days** of the **2012–2023** overlap (orbit-drift years 2024–2025 excluded), with hierarchical shrinkage cell → province → fire-regime region → country (K = 10, chosen by leave-one-year-out).
+1. A **harmonization engine**: a VIIRS/MODIS factor per 0.25° cell × calendar month × satellite set (Terra+Aqua; Terra only), fitted as a ratio of sums on **paired days** of the **2012–2023** overlap (orbit-drift years 2024–2025 excluded), with hierarchical shrinkage cell → province → fire-regime region → country. The cell level is estimated where the overlap has enough MODIS detections (**30 % of cell-months**); the other 70 % inherit the province (or region) value. Shrinkage constant K = 10 (K = 10 and 20 are within fold noise; CAP is inert).
 2. A **persistent-thermal-source class** (gas flares, refineries, kilns, sawmill boilers, landfills) detected by two physical signatures (persistence ≥ 9 months in 12 **and** ≥ 50 % night detections), kept as a separate column, never dropped.
-3. A **harmonized monthly series 2000 → 2025** per cell, province and country in VIIRS-equivalent counts, with sensor-of-origin flag, satellite-outage gap filling across sensors, and an **IC80 band calibrated on out-of-sample residuals** (by number of cells and satellite set).
+3. A **harmonized monthly series 2000 → 2025** per cell, province and country in VIIRS-equivalent counts, with sensor-of-origin flag, satellite-outage gap filling across sensors (incl. the S-NPP pre-operational days of January 2012), and an **80 % prediction interval calibrated on out-of-sample residuals**, asymmetric and binned by predicted count and satellite set.
 4. A **bridge S-NPP ↔ NOAA-20 / NOAA-21** (g = 0.980 / 0.951, fitted on 2023–2025 standard-processing archives on paired days) so that the series continues after S-NPP's end of mission (2026-11-01) and the 3-satellite live series can be expressed in S-NPP-equivalent units.
 5. A web app (in progress) where the user draws any area of interest, picks a date range, and gets the 26-year calendar, the current month vs the historical median, and downloadable CSV/PNG.
 
@@ -22,13 +22,15 @@ All code in this repository was written during the hackathon window (14–15 Nov
 
 | test | result |
 |---|---|
-| Leave-one-year-out 2012–2023, fire-season error (Terra+Aqua set) | country **3.3 %** · province **10.4 %** · single cell 30 % (naive national scalar: 8.6 / 17.1 / 34 %) |
+| Leave-one-year-out 2012–2023 (interpolation), fire-season error, Terra+Aqua set | country **3.3 %** · province **10.4 %** · single cell 30 % (naive national scalar: 8.6 / 17.1 / 34 %) |
+| Split-window tests (extrapolation in time): train 2012–17 → test 2018–23 and the reverse | country predicted/observed **0.94** and **1.03** (province error 12.5 / 14.0 %): the ratio drifted ≈ 7–10 % between the two halves, so the honest country-level error for 2002–2011 is **≈ 5–8 %**, not 3 % |
 | Ablation ladder (province error) | scalar 17.1 → country×month 15.7 → +region 14.8 → +province 13.7 → +cell **10.4 %** |
-| Forward test on years never used (Terra+Aqua) | 2024: predicted/observed **1.035** · 2025: **1.02** |
-| Terra-only set (used 2000 – mid 2002) | country 5.8 % · province 17.5 % · worst year 0.79: wider band by construction |
-| Band calibration | IC80 = 80th percentile of out-of-sample \|log(V/P)\| by n cells and set (the earlier median-based band covered ≈ 60–65 %, see `band_calibration.json`) |
+| Forward test on years never used (Terra+Aqua) | 2024: predicted/observed **1.035** · 2025: **1.02** (Terra-only: 0.87, 0.75 = measured orbit drift) |
+| Backward test inside the MODIS era, 2003–2011: Terra-only reconstruction vs Terra+Aqua reconstruction | country **0.94–1.04** per year; province-year 80th pct \|log\| 0.20: supports the 2000–mid-2002 years |
+| Terra-only set (used 2000 – mid 2002) | country 5.8 % · province 17.5 % · worst year 0.79; **multiplicative limit**: where MODIS saw nothing the model returns zero (23 % of Terra-only cell-months with predicted 5–15) |
+| 80 % prediction interval, measured coverage on out-of-sample months (`band_calibration.json`) | country 88 % · province 80 % · cell 80 %; by province 50 % (Tierra del Fuego, Neuquén 52 %) to 93 % (Tucumán): fire-poor and flare-affected provinces remain under-covered and are flagged |
 | Consistency across the 2012 splice vs MODIS burned area (MCD64A1) | burned ha per hotspot pre/post 2012: **0.97** harmonized vs **3.10** naive concatenation (not an independent validation: MCD64A1 is trained with MODIS active fires) |
-| S-NPP/NOAA bridge vs production NRT data (different pipeline) | 0.982 vs 0.980 (NOAA-20) |
+| S-NPP/NOAA bridge vs production NRT data (different pipeline) | 0.982 vs 0.980 (NOAA-20); provincial spread (w > 0.9) 0.93–1.16 (NOAA-20), 0.89–0.99 (NOAA-21) |
 | ENSO dependence of the ratio (team hypothesis) | real (r = −0.37 monthly) but small; conditioning did not improve out-of-sample skill → carried as extra band width in strong-phase months |
 
 ## Pre-existing work (declared, cited)
@@ -39,14 +41,18 @@ All code in this repository was written during the hackathon window (14–15 Nov
 
 ## Data
 
-- **NASA FIRMS** active fire archive by country: MODIS C6.1 (2000–2025) and VIIRS S-NPP (2012–2025) — `scripts/01_fetch.mjs`, sha256 of every file in `data/raw/MANIFEST.json`.
+- **NASA FIRMS** active fire archive by country: MODIS (2000–2025; the `version` column reads 6.2 up to 2018, 6.03 for 2019–2022 and 61.03 for 2023–2025 — all Collection 6 / 6.1 archive products, treated as one series; FIRMS version-notes check pending) and VIIRS S-NPP (2012–2025) — `scripts/01_fetch.mjs`, sha256 of every file in `data/raw/MANIFEST.json`.
 - **NASA FIRMS Area API**, standard processing: VIIRS S-NPP, NOAA-20, NOAA-21 2023–2025 over Argentina (bridge only) — `scripts/01b_fetch_viirs_sp.mjs` (needs a free FIRMS MAP_KEY in `~/.config/nasa/firms-map-key`).
 - **NOAA CPC Oceanic Niño Index** and **GWIS/JRC burned-area tables (MCD64A1, MVP64)** — `scripts/01c_fetch_aux.mjs`; Argentina rows committed in `data/external/`.
 - Raw hotspot CSVs are not committed (≈ 1 GB); derived products are published in the Zenodo record.
 
+## Known limits (declared)
+
+Observed VIIRS months carry no interval (they are the reference); a cloudy month reads as a quiet month (no obscuration correction); day and night detections are pooled; the region table is hand-made; the outage detector conditions on MODIS zeros (effect < 1 % of counts per year); the unit is VIIRS-equivalent 375 m pixel counts, not fires nor area; Argentina only.
+
 ## Pipeline
 
-`01_fetch` → `02_grid` → `03a_static_sources` → `03b_coverage` → `03_aggregate` → `04_factors` → `05_loyo` (+ `05b` consistency, `05c` AOI curve, `05d` ha-per-hotspot, `05e` ENSO) → `06_harmonize` → `04b_bridge`. Figures: `fig_*.py`. Everything runs with Node ≥ 20 and Python 3 (numpy, matplotlib).
+`npm run all` (or step by step) — `01_fetch` → `02_grid` → `03a_static_sources` → `03b_coverage` → `03_aggregate` → `04_factors` → `05_loyo` (+ `05b` consistency, `05c` AOI curve, `05d` ha-per-hotspot, `05e` ENSO) → `06_harmonize` → `04b_bridge`. Figures: `fig_*.py`. Everything runs with Node ≥ 20 and Python 3 (numpy, matplotlib).
 
 ## Super Intelligence (SI) acknowledgment
 

@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-14T15:46:30.091Z",
+ "generated": "2026-11-14T15:48:12.616Z",
  "years": [
   2012,
   2013,
@@ -15,83 +15,440 @@
   2023
  ],
  "z": 1.2816,
- "note": "q80_abs_log: symmetric band H*exp(±q80) covers 80% of out-of-sample unit-months (LOYO). sigma_equiv_for_80pct = q80/1.2816 for use with the z=1.28 convention.",
+ "note": "by_count: signed p10/p90 of log(V/P) of out-of-sample unit-months binned by PREDICTED count P (pooled cell/province/country), per satellite set. 80% prediction interval = [P*exp(p10), P*exp(p90)]. by_level: reference quantiles. band_coverage: fraction of out-of-sample months inside that interval.",
  "band": {
   "TA": {
-   "country": {
-    "n": 144,
-    "median_abs_log": 0.0544,
-    "q80_abs_log": 0.1026,
-    "q90_abs_log": 0.1336,
-    "p10_log": -0.0831,
-    "p90_log": 0.112,
-    "bias_median_log": 0.0139,
-    "previous_band_sigma": 0.0533,
-    "previous_band_coverage": 0.625,
-    "sigma_equiv_for_80pct": 0.0801
+   "by_level": {
+    "country": {
+     "n": 144,
+     "median_abs_log": 0.0544,
+     "q80_abs_log": 0.1026,
+     "p10_log": -0.0831,
+     "p90_log": 0.112,
+     "bias_median_log": 0.0139,
+     "sigma_equiv_for_80pct": 0.0801
+    },
+    "prov": {
+     "n": 2562,
+     "median_abs_log": 0.1634,
+     "q80_abs_log": 0.3552,
+     "p10_log": -0.3641,
+     "p90_log": 0.3461,
+     "bias_median_log": -0.0026,
+     "sigma_equiv_for_80pct": 0.2772
+    },
+    "cell": {
+     "n": 41568,
+     "median_abs_log": 0.3816,
+     "q80_abs_log": 0.8393,
+     "p10_log": -1.1947,
+     "p90_log": 0.4575,
+     "bias_median_log": -0.192,
+     "sigma_equiv_for_80pct": 0.6549
+    }
    },
-   "prov": {
-    "n": 2647,
-    "median_abs_log": 0.1715,
-    "q80_abs_log": 0.3771,
-    "q90_abs_log": 0.5483,
-    "p10_log": -0.3164,
-    "p90_log": 0.4485,
-    "bias_median_log": 0.0229,
-    "previous_band_sigma": 0.1724,
-    "previous_band_coverage": 0.601,
-    "sigma_equiv_for_80pct": 0.2942
+   "by_count": [
+    {
+     "P_min": 5,
+     "P_max": 15,
+     "n": 31228,
+     "p10_log": -2.4962,
+     "p50_log": -0.3988,
+     "p90_log": 0.632,
+     "share_V_zero": 0.116
+    },
+    {
+     "P_min": 15,
+     "P_max": 40,
+     "n": 18841,
+     "p10_log": -1.199,
+     "p50_log": -0.2034,
+     "p90_log": 0.4846,
+     "share_V_zero": 0.012
+    },
+    {
+     "P_min": 40,
+     "P_max": 100,
+     "n": 9385,
+     "p10_log": -0.7469,
+     "p50_log": -0.128,
+     "p90_log": 0.3862,
+     "share_V_zero": 0
+    },
+    {
+     "P_min": 100,
+     "P_max": 300,
+     "n": 4108,
+     "p10_log": -0.5465,
+     "p50_log": -0.0767,
+     "p90_log": 0.338,
+     "share_V_zero": 0
+    },
+    {
+     "P_min": 300,
+     "P_max": 1000,
+     "n": 1122,
+     "p10_log": -0.3587,
+     "p50_log": -0.0091,
+     "p90_log": 0.3287,
+     "share_V_zero": 0
+    },
+    {
+     "P_min": 1000,
+     "P_max": 3000,
+     "n": 379,
+     "p10_log": -0.2278,
+     "p50_log": -0.0049,
+     "p90_log": 0.1874,
+     "share_V_zero": 0
+    },
+    {
+     "P_min": 3000,
+     "P_max": null,
+     "n": 320,
+     "p10_log": -0.1185,
+     "p50_log": 0.0014,
+     "p90_log": 0.133,
+     "share_V_zero": 0
+    }
+   ]
+  },
+  "T": {
+   "by_level": {
+    "country": {
+     "n": 144,
+     "median_abs_log": 0.1021,
+     "q80_abs_log": 0.2057,
+     "p10_log": -0.1362,
+     "p90_log": 0.3291,
+     "bias_median_log": -0.0054,
+     "sigma_equiv_for_80pct": 0.1605
+    },
+    "prov": {
+     "n": 2505,
+     "median_abs_log": 0.2685,
+     "q80_abs_log": 0.5698,
+     "p10_log": -0.5733,
+     "p90_log": 0.5689,
+     "bias_median_log": 0.0158,
+     "sigma_equiv_for_80pct": 0.4446
+    },
+    "cell": {
+     "n": 39375,
+     "median_abs_log": 0.7105,
+     "q80_abs_log": 1.6558,
+     "p10_log": -2.5784,
+     "p90_log": 0.5707,
+     "bias_median_log": -0.5215,
+     "sigma_equiv_for_80pct": 1.292
+    }
    },
-   "cell": {
-    "n": 41146,
-    "median_abs_log": 0.3662,
-    "q80_abs_log": 0.8005,
-    "q90_abs_log": 1.1956,
-    "p10_log": -0.5338,
-    "p90_log": 1.1529,
-    "bias_median_log": 0.1019,
-    "previous_band_sigma": 0.3549,
-    "previous_band_coverage": 0.587,
-    "sigma_equiv_for_80pct": 0.6246
+   "by_count": [
+    {
+     "P_min": 5,
+     "P_max": 15,
+     "n": 22041,
+     "p10_log": -2.9184,
+     "p50_log": -0.7257,
+     "p90_log": 0.8769,
+     "share_V_zero": 0.23
+    },
+    {
+     "P_min": 15,
+     "P_max": 40,
+     "n": 18131,
+     "p10_log": -2.7418,
+     "p50_log": -0.5886,
+     "p90_log": 0.633,
+     "share_V_zero": 0.084
+    },
+    {
+     "P_min": 40,
+     "P_max": 100,
+     "n": 9764,
+     "p10_log": -1.7453,
+     "p50_log": -0.4086,
+     "p90_log": 0.4833,
+     "share_V_zero": 0.015
+    },
+    {
+     "P_min": 100,
+     "P_max": 300,
+     "n": 4362,
+     "p10_log": -1.1325,
+     "p50_log": -0.2885,
+     "p90_log": 0.4201,
+     "share_V_zero": 0.001
+    },
+    {
+     "P_min": 300,
+     "P_max": 1000,
+     "n": 1236,
+     "p10_log": -0.8045,
+     "p50_log": -0.118,
+     "p90_log": 0.4415,
+     "share_V_zero": 0
+    },
+    {
+     "P_min": 1000,
+     "P_max": 3000,
+     "n": 364,
+     "p10_log": -0.357,
+     "p50_log": 0.0223,
+     "p90_log": 0.3258,
+     "share_V_zero": 0
+    },
+    {
+     "P_min": 3000,
+     "P_max": null,
+     "n": 314,
+     "p10_log": -0.2249,
+     "p50_log": -0.0174,
+     "p90_log": 0.2758,
+     "share_V_zero": 0
+    }
+   ]
+  }
+ },
+ "band_coverage": {
+  "TA": {
+   "by_level": {
+    "country": 0.882,
+    "prov": 0.797,
+    "cell": 0.8
+   },
+   "by_province": {
+    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.5,
+    "Santa Cruz": 0.766,
+    "Chubut": 0.657,
+    "Río Negro": 0.813,
+    "Neuquén": 0.523,
+    "Buenos Aires": 0.797,
+    "La Pampa": 0.84,
+    "Mendoza": 0.816,
+    "San Luis": 0.893,
+    "Córdoba": 0.879,
+    "Ciudad Autónoma de Buenos Aires": null,
+    "Santa Fe": 0.861,
+    "Entre Ríos": 0.823,
+    "San Juan": 0.86,
+    "La Rioja": 0.845,
+    "Corrientes": 0.826,
+    "Santiago del Estero": 0.865,
+    "Catamarca": 0.829,
+    "Misiones": 0.835,
+    "Tucumán": 0.928,
+    "Chaco": 0.879,
+    "Formosa": 0.871,
+    "Salta": 0.806,
+    "Jujuy": 0.843
    }
   },
   "T": {
-   "country": {
-    "n": 144,
-    "median_abs_log": 0.1021,
-    "q80_abs_log": 0.2057,
-    "q90_abs_log": 0.3293,
-    "p10_log": -0.1362,
-    "p90_log": 0.3291,
-    "bias_median_log": -0.0054,
-    "previous_band_sigma": 0.1061,
-    "previous_band_coverage": 0.653,
-    "sigma_equiv_for_80pct": 0.1605
+   "by_level": {
+    "country": 0.868,
+    "prov": 0.776,
+    "cell": 0.801
    },
-   "prov": {
-    "n": 2647,
-    "median_abs_log": 0.2902,
-    "q80_abs_log": 0.6293,
-    "q90_abs_log": 0.9364,
-    "p10_log": -0.4758,
-    "p90_log": 0.8042,
-    "bias_median_log": 0.0726,
-    "previous_band_sigma": 0.2807,
-    "previous_band_coverage": 0.595,
-    "sigma_equiv_for_80pct": 0.4911
-   },
-   "cell": {
-    "n": 41146,
-    "median_abs_log": 0.7456,
-    "q80_abs_log": 3.2189,
-    "q90_abs_log": 3.6109,
-    "p10_log": -0.7632,
-    "p90_log": 3.6109,
-    "bias_median_log": 0.3827,
-    "previous_band_sigma": 0.6649,
-    "previous_band_coverage": 0.544,
-    "sigma_equiv_for_80pct": 2.5116
+   "by_province": {
+    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.5,
+    "Santa Cruz": 0.943,
+    "Chubut": 0.711,
+    "Río Negro": 0.772,
+    "Neuquén": 0.66,
+    "Buenos Aires": 0.727,
+    "La Pampa": 0.748,
+    "Mendoza": 0.811,
+    "San Luis": 0.866,
+    "Córdoba": 0.831,
+    "Santa Fe": 0.757,
+    "Entre Ríos": 0.745,
+    "San Juan": 0.848,
+    "La Rioja": 0.905,
+    "Corrientes": 0.769,
+    "Santiago del Estero": 0.915,
+    "Catamarca": 0.87,
+    "Misiones": 0.626,
+    "Tucumán": 0.851,
+    "Chaco": 0.864,
+    "Formosa": 0.793,
+    "Salta": 0.771,
+    "Jujuy": 0.867,
+    "Ciudad Autónoma de Buenos Aires": null
    }
+  }
+ },
+ "split_window": {
+  "train_early_test_late": {
+   "train": [
+    2012,
+    2017
+   ],
+   "test": {
+    "TA": {
+     "per_year": {
+      "2018": {
+       "country_pred_over_obs": 0.96,
+       "prov_season_mape": 0.1561
+      },
+      "2019": {
+       "country_pred_over_obs": 1.003,
+       "prov_season_mape": 0.1276
+      },
+      "2020": {
+       "country_pred_over_obs": 0.916,
+       "prov_season_mape": 0.1148
+      },
+      "2021": {
+       "country_pred_over_obs": 0.957,
+       "prov_season_mape": 0.1023
+      },
+      "2022": {
+       "country_pred_over_obs": 0.847,
+       "prov_season_mape": 0.1607
+      },
+      "2023": {
+       "country_pred_over_obs": 0.943,
+       "prov_season_mape": 0.0862
+      }
+     },
+     "country_pred_over_obs_mean": 0.938,
+     "prov_season_mape_mean": 0.1246
+    },
+    "T": {
+     "per_year": {
+      "2018": {
+       "country_pred_over_obs": 0.909,
+       "prov_season_mape": 0.243
+      },
+      "2019": {
+       "country_pred_over_obs": 0.937,
+       "prov_season_mape": 0.1823
+      },
+      "2020": {
+       "country_pred_over_obs": 0.877,
+       "prov_season_mape": 0.2593
+      },
+      "2021": {
+       "country_pred_over_obs": 0.956,
+       "prov_season_mape": 0.1271
+      },
+      "2022": {
+       "country_pred_over_obs": 0.735,
+       "prov_season_mape": 0.2219
+      },
+      "2023": {
+       "country_pred_over_obs": 0.935,
+       "prov_season_mape": 0.1879
+      }
+     },
+     "country_pred_over_obs_mean": 0.892,
+     "prov_season_mape_mean": 0.2036
+    }
+   }
+  },
+  "train_late_test_early": {
+   "train": [
+    2018,
+    2023
+   ],
+   "test": {
+    "TA": {
+     "per_year": {
+      "2012": {
+       "country_pred_over_obs": 1.038,
+       "prov_season_mape": 0.12
+      },
+      "2013": {
+       "country_pred_over_obs": 0.981,
+       "prov_season_mape": 0.1221
+      },
+      "2014": {
+       "country_pred_over_obs": 1.055,
+       "prov_season_mape": 0.1659
+      },
+      "2015": {
+       "country_pred_over_obs": 1.035,
+       "prov_season_mape": 0.1395
+      },
+      "2016": {
+       "country_pred_over_obs": 1.037,
+       "prov_season_mape": 0.1191
+      },
+      "2017": {
+       "country_pred_over_obs": 1.045,
+       "prov_season_mape": 0.1709
+      }
+     },
+     "country_pred_over_obs_mean": 1.032,
+     "prov_season_mape_mean": 0.1396
+    },
+    "T": {
+     "per_year": {
+      "2012": {
+       "country_pred_over_obs": 1.093,
+       "prov_season_mape": 0.2703
+      },
+      "2013": {
+       "country_pred_over_obs": 1.034,
+       "prov_season_mape": 0.1322
+      },
+      "2014": {
+       "country_pred_over_obs": 1.119,
+       "prov_season_mape": 0.288
+      },
+      "2015": {
+       "country_pred_over_obs": 1.034,
+       "prov_season_mape": 0.1898
+      },
+      "2016": {
+       "country_pred_over_obs": 1.004,
+       "prov_season_mape": 0.1915
+      },
+      "2017": {
+       "country_pred_over_obs": 1.065,
+       "prov_season_mape": 0.2477
+      }
+     },
+     "country_pred_over_obs_mean": 1.058,
+     "prov_season_mape_mean": 0.2199
+    }
+   }
+  }
+ },
+ "backward_test_2003_2011": {
+  "2003": {
+   "terra_only_over_terra_aqua": 0.939
+  },
+  "2004": {
+   "terra_only_over_terra_aqua": 1.005
+  },
+  "2005": {
+   "terra_only_over_terra_aqua": 1.009
+  },
+  "2006": {
+   "terra_only_over_terra_aqua": 0.989
+  },
+  "2007": {
+   "terra_only_over_terra_aqua": 0.995
+  },
+  "2008": {
+   "terra_only_over_terra_aqua": 1.035
+  },
+  "2009": {
+   "terra_only_over_terra_aqua": 1.024
+  },
+  "2010": {
+   "terra_only_over_terra_aqua": 0.986
+  },
+  "2011": {
+   "terra_only_over_terra_aqua": 1.032
+  },
+  "summary": {
+   "country_min": 0.939,
+   "country_max": 1.035,
+   "province_year_q80_abs_log": 0.201,
+   "n_province_years": 200
   }
  },
  "forward_test": {

@@ -7,13 +7,14 @@ doi: "10.5281/zenodo.24220107"
 url: "https://spaceapps.geofuego.com.ar"
 repository-code: "https://github.com/germankovacevic-lab/geofuego-harmonization"
 license: MIT
+license-url: "https://github.com/germankovacevic-lab/geofuego-harmonization/blob/main/LICENSE"
 authors:
   - family-names: Kovacevic
     given-names: "Germán Ricardo"
     orcid: "https://orcid.org/0009-0007-4270-1963"
     affiliation: "AgentNeo, Buenos Aires, Argentina (GEOFUEGO and Copernicus.com.ar projects)"
 keywords: [MODIS, VIIRS, FIRMS, active fire, hotspot harmonization, fire calendar, Argentina, NASA Space Apps 2026, CONAE]
-notes: "Code written with SI assistance (Claude, Anthropic); reviewed and validated by the team. Data products and figures are licensed CC BY 4.0."
+notes: "Code written with SI assistance (Claude, Anthropic); reviewed and validated by the team. Code is MIT; data products and figures are CC BY 4.0. Input data: NASA FIRMS (MODIS C6/6.1 archive, VIIRS S-NPP/NOAA-20/NOAA-21), NOAA CPC ONI, GWIS/JRC MCD64A1 country tables, IGN Argentina."
 references:
   - type: software
     title: "GeoFuego Index (GFI) method package"

@@ -116,3 +116,7 @@ footer p { margin:0; }
 .cases-row { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin-top:10px; }
 .cases-row .case-btns .pill { padding:4px 10px; font-size:12.5px; }
 .summary .case-line { margin:8px 0 0; }
+.map-chip { display:flex; align-items:center; gap:7px; background:rgba(15,17,21,.82); color:#c9cfdb; border:1px solid #3a3f4e; border-radius:999px; padding:5px 12px 5px 9px; font:500 12px var(--font); cursor:pointer; backdrop-filter:blur(3px); box-shadow:0 1px 4px rgba(0,0,0,.4); }
+.map-chip i { width:10px; height:10px; border-radius:50%; background:#4a4f5e; display:inline-block; }
+.map-chip.on { color:#ffd2b3; border-color:#c2410c; } .map-chip.on i { background:linear-gradient(135deg,#ffe066,#f5731f 55%,#b4231a); box-shadow:0 0 6px #f5731f; }
+.map-chip:hover { border-color:#f5a623; }

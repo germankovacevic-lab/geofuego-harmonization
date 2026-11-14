@@ -813,7 +813,9 @@ function initMap() {
   map.addControl(new Pulse({ position: 'topleft' }));
   buildGrid();
   renderFireMap();
-  L.control.layers(null, { [t('fireslayer')]: fireLayer }, { position: 'bottomright', collapsed: false }).addTo(map);
+  // hotspots layer toggle: a dark chip in the app's own style (replaces Leaflet's white overlay box)
+  const FireTog = L.Control.extend({ onAdd() { const a = L.DomUtil.create('button', 'map-chip on'); a.type = 'button'; const lab = () => { a.innerHTML = `<i></i>${t('fireslayer')}`; }; lab(); L.DomEvent.disableClickPropagation(a); L.DomEvent.on(a, 'click', () => { const on = !map.hasLayer(fireLayer); if (on) fireLayer.addTo(map); else fireLayer.remove(); a.classList.toggle('on', on); }); map.on('langchange', lab); return a; } });
+  map.addControl(new FireTog({ position: 'bottomleft' }));
 }
 
 // Leaflet.draw strings (B7-i): the toolbar reads L.drawLocal when the button is built and when a drawing starts
@@ -841,7 +843,7 @@ function initUI() {
   document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => { calMode = b.dataset.mode; document.querySelectorAll('[data-mode]').forEach(x => x.classList.toggle('on', x === b)); $('ramp').disabled = calMode === 'anom'; renderCalendar(); }));
   $('dl-csv').addEventListener('click', downloadCSV); $('dl-png').addEventListener('click', downloadPNG);
   $('cal').addEventListener('mousemove', calTip); $('cal').addEventListener('mouseleave', () => { $('tip').hidden = true; });
-  $('lang').addEventListener('click', () => { lang = lang === 'en' ? 'es' : 'en'; applyI18n(); applyDrawLocale(); if (A) { location.hash = encodeSel(A.sel); render(); } });
+  $('lang').addEventListener('click', () => { lang = lang === 'en' ? 'es' : 'en'; applyI18n(); applyDrawLocale(); map.fire('langchange'); if (A) { location.hash = encodeSel(A.sel); render(); } });
   window.addEventListener('resize', () => { if (A) { renderSeries(); renderStep(); } });
   document.querySelectorAll('#step-card .pill').forEach(b => b.addEventListener('click', () => { const on = !b.classList.contains('on'); b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); stepShow[b.dataset.s] = on; applyStepShow(); }));
   window.addEventListener('hashchange', () => { if (A && location.hash === '#' + encodeSel(A.sel)) return; const h = new URLSearchParams(location.hash.replace(/^#/, '')); if (h.get('lang') && h.get('lang') !== lang) { lang = h.get('lang') === 'es' ? 'es' : 'en'; applyI18n(); } fromHash(); });

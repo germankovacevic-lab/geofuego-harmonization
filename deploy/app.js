@@ -12,7 +12,7 @@ const T = {
     kworst: 'Worst year', kworstd: (v, x) => `${v} hotspots · ${x} the median year`, kmean: 'Typical year', kmeand: (a, b) => `median of annual totals, ${a}–${b}`,
     kskill: 'Calibration skill', kskilld: (sc) => `fire-season error out of sample (leave-one-year-out 2012–23) · one national factor: ${sc}`, kskillsz: (n) => `fire-season error out of sample for ${n === 1 ? 'a single cell' : `areas of ~${n} cells`} (leave-one-year-out 2012–23)`,
     anomlegend: (y0, y1) => `Anomaly = month ÷ median of the same month, ${y0}–${y1}. Blue below normal, red above. “·” = too little fire in the record to compare.`,
-    pulse: 'Fire pulse: play the years', pulseTitle: 'Fire pulse',
+    pulse: 'Fire pulse: play the years', pulseTitle: 'Fire film',
     colours: 'Colours',
     casestitle: 'Known fire seasons', validtitle: 'How well it works — tested on years the model never saw',
     validnote: 'Country-level tests, out of sample. Factors fitted on 2012–2023 only; 2024 and 2025 were used neither for the factors nor for the range. Details and every script: Method &amp; code.',
@@ -78,7 +78,7 @@ const T = {
     kworst: 'Peor año', kworstd: (v, x) => `${v} focos · ${x} el año mediano`, kmean: 'Año típico', kmeand: (a, b) => `mediana de los totales anuales, ${a}–${b}`,
     kskill: 'Calidad de la calibración', kskilld: (sc) => `error de temporada fuera de muestra (dejando un año afuera, 2012–23) · un factor nacional único: ${sc}`, kskillsz: (n) => `error de temporada fuera de muestra para ${n === 1 ? 'una celda suelta' : `áreas de ~${n} celdas`} (dejando un año afuera, 2012–23)`,
     anomlegend: (y0, y1) => `Anomalía = mes ÷ mediana del mismo mes, ${y0}–${y1}. Azul debajo de lo normal, rojo arriba. “·” = muy poco fuego en el registro para comparar.`,
-    pulse: 'Pulso de fuego: recorrer los años', pulseTitle: 'Pulso de fuego',
+    pulse: 'Pulso de fuego: recorrer los años', pulseTitle: 'Película del fuego',
     colours: 'Colores',
     casestitle: 'Temporadas conocidas', validtitle: 'Qué tan bien funciona — probado en años que el modelo nunca vio',
     validnote: 'Pruebas a nivel país, fuera de muestra. Factores ajustados solo con 2012–2023; 2024 y 2025 no se usaron ni para los factores ni para el rango. Detalle y cada script: Método y código.',
@@ -470,26 +470,56 @@ function renderKpis() {
   $('sum-kpis').innerHTML = out.join('');
 }
 
-// ---------- fire pulse: animate the years on the map ----------
-let pulseTimer = null;
-function stopPulse() { if (pulseTimer) { clearInterval(pulseTimer); pulseTimer = null; } document.querySelector('.pulse-label')?.remove(); const b = document.querySelector('.leaflet-control-pulse a'); if (b) b.textContent = '▶'; renderFireMap(); }
-function startPulse() {
-  if (pulseTimer) { stopPulse(); return; }
-  if (!map.hasLayer(fireLayer)) fireLayer.addTo(map);
-  // one fixed scale over all years so the years are comparable
-  const per = {}; let max = 1;
-  for (const [id, c] of Object.entries(D.cells)) { const a = []; for (let y = 2001; y <= 2025; y++) { let v = 0; for (const h of c.h[y - Y0]) if (h > 0) v += h; a.push(v); if (v > max) max = v; } if (L26) { const lc = L26.cells[id]; a.push(lc ? lc.h.reduce((p, q) => p + (q > 0 ? q : 0), 0) : 0); } per[id] = a; }
-  const years = []; for (let y = 2001; y <= 2025; y++) years.push(y); if (L26) years.push(YCUR);
-  const lm = Math.log1p(max); const lab = document.createElement('div'); lab.className = 'pulse-label'; document.getElementById('map').appendChild(lab);
-  const b = document.querySelector('.leaflet-control-pulse a'); if (b) b.textContent = '■';
-  let k = 0; const step = () => {
-    if (k >= years.length) { stopPulse(); return; }
-    const y = years[k]; lab.textContent = y === YCUR ? `${y}*` : String(y); fireLayer.clearLayers(); const r0 = rampName; rampName = 'fire';
-    for (const [id, a] of Object.entries(per)) { const v = a[k]; if (!v) continue; const x = Math.log1p(v) / lm; if (x < 0.2) continue; const [p, c, q, d] = cellBounds(+id); fireLayer.addLayer(L.rectangle([[p, c], [q, d]], { stroke: false, fillColor: ramp(0.25 + 0.75 * (x - 0.2) / 0.8).css, fillOpacity: 0.2 + 0.6 * x, interactive: false })); }
-    rampName = r0; k++;
-  };
-  step(); pulseTimer = setInterval(step, 700);
+// ---------- fire movie: 26 years on a dark basemap, high contrast (player bar under the map) ----------
+let pulseTimer = null, movie = null; // movie = { frames, labels, rects, k, mode }
+const MOVIE_STEP = { year: 650, month: 110 };
+function movieFrames(mode) {
+  const ids = A && A.sel.kind !== 'country' ? A.sel.cells.map(String) : Object.keys(D.cells);
+  const labels = [], cols = [];
+  if (mode === 'year') { for (let y = 2001; y <= 2025; y++) labels.push(String(y)); if (L26) labels.push(`${YCUR}*`); }
+  else { for (let y = 2000; y <= 2025; y++) for (let m = 1; m <= 12; m++) if (y > 2000 || m >= 11) labels.push(`${t('months')[m - 1]} ${y}`); if (L26) L26.months.forEach(M => { if (M.days) labels.push(`${t('months')[M.m - 1]} ${YCUR}*`); }); }
+  const vals = {}; const all = [];
+  for (const id of ids) {
+    const c = D.cells[id]; if (!c) continue; const a = []; const lc = L26?.cells[id];
+    if (mode === 'year') { for (let y = 2001; y <= 2025; y++) a.push(c.h[y - Y0].reduce((p, q) => p + (q > 0 ? q : 0), 0)); if (L26) a.push(lc ? lc.h.reduce((p, q) => p + (q > 0 ? q : 0), 0) : 0); }
+    else { for (let y = 2000; y <= 2025; y++) for (let m = 1; m <= 12; m++) if (y > 2000 || m >= 11) a.push(Math.max(0, c.h[y - Y0][m - 1])); if (L26) L26.months.forEach(M => { if (M.days) a.push(lc && lc.h[M.m - 1] > 0 ? lc.h[M.m - 1] : 0); }); }
+    vals[id] = a; for (const v of a) if (v > 0) all.push(v);
+  }
+  all.sort((x, y) => x - y); const top = all.length ? all[Math.floor(0.99 * (all.length - 1))] : 1; // one fixed scale for the whole film (99th percentile)
+  return { ids: Object.keys(vals), vals, labels, lm: Math.log1p(Math.max(1, top)), top };
 }
+let darkBase = null;
+function movieOn() {
+  if (!darkBase) { const esri = 'https://server.arcgisonline.com/ArcGIS/rest/services/'; darkBase = L.layerGroup([L.tileLayer(esri + 'Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, attribution: '© Esri, HERE, Garmin · NASA FIRMS' }), L.tileLayer(esri + 'Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, pane: 'shadowPane' })]); }
+  darkBase.addTo(map); if (fireLayer) fireLayer.remove(); if (gridLayer) gridLayer.remove(); if (cellsLayer) cellsLayer.remove();
+  const F = movieFrames(movie.mode); movie.F = F; movie.layer = L.layerGroup().addTo(map); movie.rects = {};
+  for (const id of F.ids) { const [a, c, b, d] = cellBounds(+id); movie.rects[id] = L.rectangle([[a, c], [b, d]], { stroke: false, fillColor: '#000', fillOpacity: 0, interactive: false }).addTo(movie.layer); }
+  const sc = $('mv-scrub'); sc.max = F.labels.length - 1; $('mv-top').textContent = fmt(F.top) + (movie.mode === 'year' ? (lang === 'es' ? ' focos/año' : ' /yr') : (lang === 'es' ? ' focos/mes' : ' /mo'));
+}
+function movieOff() { if (!movie) return; if (pulseTimer) { clearInterval(pulseTimer); pulseTimer = null; } movie.layer?.remove(); darkBase?.remove(); movie = null; if (cellsLayer && !map.hasLayer(cellsLayer)) cellsLayer.addTo(map); $('mv-play').textContent = '▶'; $('mv-label').textContent = ''; $('mv-bar').classList.remove('playing'); renderFireMap(); if (gridLayer && map.getZoom() >= GRID_MIN_ZOOM) gridLayer.addTo(map); }
+function movieShow(k) {
+  const F = movie.F; movie.k = k; const r0 = rampName; rampName = 'fire';
+  for (const id of F.ids) { const v = F.vals[id][k]; const R = movie.rects[id]; if (!v) { R.setStyle({ fillOpacity: 0 }); continue; } const x = Math.min(1, Math.log1p(v) / F.lm); R.setStyle({ fillColor: ramp(0.08 + 0.92 * x).css, fillOpacity: 0.35 + 0.6 * x }); }
+  rampName = r0; $('mv-label').textContent = F.labels[k]; $('mv-scrub').value = k;
+}
+function moviePlay() {
+  if (pulseTimer) { clearInterval(pulseTimer); pulseTimer = null; $('mv-play').textContent = '▶'; $('mv-bar').classList.remove('playing'); return; }
+  if (!movie) { movie = { mode: $('mv-bar').dataset.mode || 'year', k: 0 }; movieOn(); }
+  if (movie.k >= movie.F.labels.length - 1) movie.k = 0;
+  $('mv-play').textContent = '❚❚'; $('mv-bar').classList.add('playing');
+  movieShow(movie.k);
+  pulseTimer = setInterval(() => { if (movie.k >= movie.F.labels.length - 1) { clearInterval(pulseTimer); pulseTimer = null; $('mv-play').textContent = '▶'; $('mv-bar').classList.remove('playing'); return; } movieShow(movie.k + 1); }, MOVIE_STEP[movie.mode]);
+}
+function buildMovieBar() {
+  const bar = document.createElement('div'); bar.id = 'mv-bar'; bar.className = 'mv-bar'; bar.dataset.mode = 'year';
+  bar.innerHTML = `<button id="mv-play" type="button" class="mv-play" aria-label="Play">▶</button><div class="mv-mid"><div class="mv-title"><b>${t('pulseTitle')} 2000 → ${YCUR}</b><span class="mv-modes"><button type="button" data-mv="year" class="on">${lang === 'es' ? 'Años' : 'Years'}</button><button type="button" data-mv="month">${lang === 'es' ? 'Meses' : 'Months'}</button></span><span id="mv-label" class="mv-label"></span><button id="mv-close" type="button" class="mv-x" title="Close" aria-label="Close">✕</button></div><input id="mv-scrub" type="range" min="0" max="25" value="0" aria-label="Frame"><div class="mv-scale"><span>0</span><i></i><span id="mv-top"></span></div></div>`;
+  document.getElementById('map').appendChild(bar); L.DomEvent.disableClickPropagation(bar); L.DomEvent.disableScrollPropagation(bar);
+  $('mv-play').addEventListener('click', moviePlay);
+  $('mv-close').addEventListener('click', movieOff);
+  $('mv-scrub').addEventListener('input', e => { if (!movie) { movie = { mode: bar.dataset.mode, k: 0 }; movieOn(); } if (pulseTimer) { clearInterval(pulseTimer); pulseTimer = null; $('mv-play').textContent = '▶'; bar.classList.remove('playing'); } movieShow(+e.target.value); });
+  bar.querySelectorAll('[data-mv]').forEach(b => b.addEventListener('click', () => { bar.dataset.mode = b.dataset.mv; bar.querySelectorAll('[data-mv]').forEach(x => x.classList.toggle('on', x === b)); const was = !!pulseTimer; movieOff(); if (was) moviePlay(); }));
+}
+const startPulse = moviePlay, stopPulse = movieOff;
 
 // ---------- calendar heatmap ----------
 let calCells = []; // for hit testing
@@ -754,7 +784,7 @@ function select(sel) {
   $('empty').hidden = true;
   if (sel.kind === 'point' || sel.kind === 'province' || sel.kind === 'country') { map.invalidateSize(); map.fitBounds(L.latLngBounds(feats.flat()), { padding: [10, 10], maxZoom: sel.kind === 'point' ? 9 : 7, animate: false }); }
   location.hash = encodeSel(sel);
-  if (!pulseTimer) renderFireMap();
+  if (movie) movieOff(); else renderFireMap();
   render();
 }
 // cell ids are encoded as sorted runs "a-b.c.d-e" (a rectangle is a handful of runs, one per grid row), never truncated
@@ -815,8 +845,7 @@ function initMap() {
   map.on(L.Draw.Event.CREATED, e => { lastDrawTs = Date.now(); $('prov').value = ''; rectToCells(e.layer); });
   const Home = L.Control.extend({ onAdd() { const d = L.DomUtil.create('div', 'leaflet-bar leaflet-control-home'); const a = L.DomUtil.create('a', '', d); a.href = '#'; a.title = t('home'); a.setAttribute('aria-label', t('home')); a.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="2"/></svg>'; L.DomEvent.on(a, 'click', ev => { L.DomEvent.preventDefault(ev); L.DomEvent.stopPropagation(ev); map.setView([-38.5, -63.5], 4); }); return d; } });
   map.addControl(new Home({ position: 'topleft' }));
-  const Pulse = L.Control.extend({ onAdd() { const d = L.DomUtil.create('div', 'leaflet-bar leaflet-control-pulse'); const a = L.DomUtil.create('a', '', d); a.href = '#'; a.title = t('pulse'); a.setAttribute('aria-label', t('pulse')); a.textContent = '▶'; L.DomEvent.on(a, 'click', ev => { L.DomEvent.preventDefault(ev); L.DomEvent.stopPropagation(ev); startPulse(); }); return d; } });
-  map.addControl(new Pulse({ position: 'topleft' }));
+  buildMovieBar();
   buildGrid();
   renderFireMap();
   // hotspots layer toggle: a dark chip in the app's own style (replaces Leaflet's white overlay box)

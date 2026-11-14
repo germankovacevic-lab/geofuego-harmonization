@@ -121,3 +121,19 @@ footer p { margin:0; }
 .map-chip.on { color:#ffd2b3; border-color:#c2410c; } .map-chip.on i { background:linear-gradient(135deg,#ffe066,#f5731f 55%,#b4231a); box-shadow:0 0 6px #f5731f; }
 .map-chip:hover { border-color:#f5a623; }
 .kpi .v .u { font-size:13px; font-weight:500; color:var(--muted); }
+.mv-bar { position:absolute; left:10px; right:10px; bottom:10px; z-index:850; display:flex; gap:12px; align-items:center; background:rgba(12,13,18,.9); border:1px solid #3a3f4e; border-radius:14px; padding:8px 12px; backdrop-filter:blur(4px); box-shadow:0 4px 16px rgba(0,0,0,.5); }
+.mv-play { flex:0 0 auto; width:44px; height:44px; border-radius:50%; border:0; background:radial-gradient(circle at 35% 30%, #ffb15c, #f5731f 55%, #b4231a); color:#14161c; font-size:16px; font-weight:700; cursor:pointer; box-shadow:0 0 12px rgba(245,115,31,.55); }
+.mv-bar.playing .mv-play { font-size:12px; }
+.mv-mid { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:4px; }
+.mv-title { display:flex; align-items:center; gap:10px; font:12.5px var(--font); color:#e8eaf0; white-space:nowrap; }
+.mv-title b { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-weight:600; }
+.mv-modes { display:flex; gap:2px; background:#1e2230; border-radius:7px; padding:2px; }
+.mv-modes button { background:transparent; border:0; color:#9aa3b5; font:11.5px var(--font); padding:2px 8px; border-radius:5px; cursor:pointer; }
+.mv-modes button.on { background:#3a1d0e; color:#ffd2b3; }
+.mv-label { margin-left:auto; font:700 18px system-ui, sans-serif; color:#ffd2b3; min-width:84px; text-align:right; }
+.mv-x { background:transparent; border:0; color:#7d8496; cursor:pointer; font-size:13px; padding:0 2px; }
+#mv-scrub { width:100%; accent-color:#f5731f; height:14px; margin:0; }
+.mv-scale { display:flex; align-items:center; gap:6px; font:10.5px var(--font); color:#9aa3b5; }
+.mv-scale i { flex:1; height:6px; border-radius:3px; background:linear-gradient(90deg, rgb(45,12,80), rgb(140,30,100), rgb(225,75,45), rgb(245,125,25), rgb(253,225,110), rgb(255,250,190)); }
+#map .leaflet-bottom { bottom:96px; }
+.pulse-label { display:none; }

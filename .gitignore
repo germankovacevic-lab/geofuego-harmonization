@@ -8,3 +8,6 @@ data/external/gwis/*.zip
 data/external/gwis/mcd64a1/
 data/external/gwis/mvp64/
 tmp/
+data/external/era5/*.nc
+data/agg/cloud_cells.json
+data/agg/precip_cells.json

@@ -1,0 +1,302 @@
+{
+ "generated": "2026-11-14T16:23:33.157Z",
+ "source": "ERA5 monthly averaged reanalysis by hour of day, total_cloud_cover, 0.25deg (Copernicus CDS)",
+ "testA_ratio_residual_vs_cloud": {
+  "differential_anomaly": {
+   "r": 0.018356009986284758,
+   "slope": 0.20330515783947445,
+   "n": 2246,
+   "bins": [
+    {
+     "anomaly_from": -1,
+     "anomaly_to": -0.15,
+     "n": 0,
+     "median_log_ratio": null
+    },
+    {
+     "anomaly_from": -0.15,
+     "anomaly_to": -0.08,
+     "n": 10,
+     "median_log_ratio": -0.235
+    },
+    {
+     "anomaly_from": -0.08,
+     "anomaly_to": -0.03,
+     "n": 386,
+     "median_log_ratio": -0.2
+    },
+    {
+     "anomaly_from": -0.03,
+     "anomaly_to": 0.03,
+     "n": 1535,
+     "median_log_ratio": -0.168
+    },
+    {
+     "anomaly_from": 0.03,
+     "anomaly_to": 0.08,
+     "n": 302,
+     "median_log_ratio": -0.219
+    },
+    {
+     "anomaly_from": 0.08,
+     "anomaly_to": 0.15,
+     "n": 13,
+     "median_log_ratio": -0.116
+    },
+    {
+     "anomaly_from": 0.15,
+     "anomaly_to": 1,
+     "n": 0,
+     "median_log_ratio": null
+    }
+   ]
+  },
+  "day13_anomaly": {
+   "r": -0.13221116231004723,
+   "slope": -0.4742565971170443,
+   "n": 2246,
+   "bins": [
+    {
+     "anomaly_from": -1,
+     "anomaly_to": -0.15,
+     "n": 190,
+     "median_log_ratio": -0.122
+    },
+    {
+     "anomaly_from": -0.15,
+     "anomaly_to": -0.08,
+     "n": 381,
+     "median_log_ratio": -0.125
+    },
+    {
+     "anomaly_from": -0.08,
+     "anomaly_to": -0.03,
+     "n": 493,
+     "median_log_ratio": -0.139
+    },
+    {
+     "anomaly_from": -0.03,
+     "anomaly_to": 0.03,
+     "n": 548,
+     "median_log_ratio": -0.223
+    },
+    {
+     "anomaly_from": 0.03,
+     "anomaly_to": 0.08,
+     "n": 308,
+     "median_log_ratio": -0.21
+    },
+    {
+     "anomaly_from": 0.08,
+     "anomaly_to": 0.15,
+     "n": 228,
+     "median_log_ratio": -0.27
+    },
+    {
+     "anomaly_from": 0.15,
+     "anomaly_to": 1,
+     "n": 98,
+     "median_log_ratio": -0.256
+    }
+   ]
+  }
+ },
+ "testB_count_level_vs_cloud": {
+  "viirs_vs_day13_cloud": {
+   "r": -0.4629116834333433,
+   "slope": -4.616888281533786,
+   "n": 2716,
+   "bins": [
+    {
+     "anomaly_from": -1,
+     "anomaly_to": -0.15,
+     "n": 195,
+     "median_log_ratio": 0.387
+    },
+    {
+     "anomaly_from": -0.15,
+     "anomaly_to": -0.08,
+     "n": 419,
+     "median_log_ratio": 0.149
+    },
+    {
+     "anomaly_from": -0.08,
+     "anomaly_to": -0.03,
+     "n": 560,
+     "median_log_ratio": -0.103
+    },
+    {
+     "anomaly_from": -0.03,
+     "anomaly_to": 0.03,
+     "n": 672,
+     "median_log_ratio": -0.396
+    },
+    {
+     "anomaly_from": 0.03,
+     "anomaly_to": 0.08,
+     "n": 410,
+     "median_log_ratio": -0.581
+    },
+    {
+     "anomaly_from": 0.08,
+     "anomaly_to": 0.15,
+     "n": 314,
+     "median_log_ratio": -0.781
+    },
+    {
+     "anomaly_from": 0.15,
+     "anomaly_to": 1,
+     "n": 146,
+     "median_log_ratio": -1.136
+    }
+   ]
+  },
+  "viirs_vs_night_cloud": {
+   "r": -0.4081825850541549,
+   "slope": -4.191058377379776,
+   "n": 2716,
+   "bins": [
+    {
+     "anomaly_from": -1,
+     "anomaly_to": -0.15,
+     "n": 157,
+     "median_log_ratio": 0.323
+    },
+    {
+     "anomaly_from": -0.15,
+     "anomaly_to": -0.08,
+     "n": 469,
+     "median_log_ratio": 0.122
+    },
+    {
+     "anomaly_from": -0.08,
+     "anomaly_to": -0.03,
+     "n": 518,
+     "median_log_ratio": -0.174
+    },
+    {
+     "anomaly_from": -0.03,
+     "anomaly_to": 0.03,
+     "n": 700,
+     "median_log_ratio": -0.375
+    },
+    {
+     "anomaly_from": 0.03,
+     "anomaly_to": 0.08,
+     "n": 412,
+     "median_log_ratio": -0.554
+    },
+    {
+     "anomaly_from": 0.08,
+     "anomaly_to": 0.15,
+     "n": 321,
+     "median_log_ratio": -0.729
+    },
+    {
+     "anomaly_from": 0.15,
+     "anomaly_to": 1,
+     "n": 139,
+     "median_log_ratio": -1.197
+    }
+   ]
+  },
+  "modis_TA_vs_day13_cloud": {
+   "r": -0.4155524182012011,
+   "slope": -4.1213934848083165,
+   "n": 4107,
+   "bins": [
+    {
+     "anomaly_from": -1,
+     "anomaly_to": -0.15,
+     "n": 273,
+     "median_log_ratio": 0.278
+    },
+    {
+     "anomaly_from": -0.15,
+     "anomaly_to": -0.08,
+     "n": 620,
+     "median_log_ratio": 0.127
+    },
+    {
+     "anomaly_from": -0.08,
+     "anomaly_to": -0.03,
+     "n": 872,
+     "median_log_ratio": -0.121
+    },
+    {
+     "anomaly_from": -0.03,
+     "anomaly_to": 0.03,
+     "n": 1029,
+     "median_log_ratio": -0.294
+    },
+    {
+     "anomaly_from": 0.03,
+     "anomaly_to": 0.08,
+     "n": 635,
+     "median_log_ratio": -0.614
+    },
+    {
+     "anomaly_from": 0.08,
+     "anomaly_to": 0.15,
+     "n": 468,
+     "median_log_ratio": -0.843
+    },
+    {
+     "anomaly_from": 0.15,
+     "anomaly_to": 1,
+     "n": 210,
+     "median_log_ratio": -1.117
+    }
+   ]
+  },
+  "modis_T_vs_terra_cloud": {
+   "r": -0.4220475016763619,
+   "slope": -4.180610763561347,
+   "n": 3011,
+   "bins": [
+    {
+     "anomaly_from": -1,
+     "anomaly_to": -0.15,
+     "n": 184,
+     "median_log_ratio": 0.332
+    },
+    {
+     "anomaly_from": -0.15,
+     "anomaly_to": -0.08,
+     "n": 522,
+     "median_log_ratio": 0.103
+    },
+    {
+     "anomaly_from": -0.08,
+     "anomaly_to": -0.03,
+     "n": 584,
+     "median_log_ratio": -0.086
+    },
+    {
+     "anomaly_from": -0.03,
+     "anomaly_to": 0.03,
+     "n": 743,
+     "median_log_ratio": -0.306
+    },
+    {
+     "anomaly_from": 0.03,
+     "anomaly_to": 0.08,
+     "n": 471,
+     "median_log_ratio": -0.575
+    },
+    {
+     "anomaly_from": 0.08,
+     "anomaly_to": 0.15,
+     "n": 350,
+     "median_log_ratio": -0.872
+    },
+    {
+     "anomaly_from": 0.15,
+     "anomaly_to": 1,
+     "n": 157,
+     "median_log_ratio": -1.065
+    }
+   ]
+  }
+ }
+}

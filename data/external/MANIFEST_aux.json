@@ -1,0 +1,23 @@
+{
+  "era5_tcc_monthly_by_hour": {
+    "dataset": "reanalysis-era5-single-levels-monthly-means",
+    "product": "monthly_averaged_reanalysis_by_hour_of_day",
+    "variable": "total_cloud_cover",
+    "hours_utc": [
+      "04",
+      "05",
+      "13",
+      "14",
+      "16",
+      "17"
+    ],
+    "area": [
+      -21,
+      -74,
+      -55,
+      -53
+    ],
+    "bytes": 53439832,
+    "sha256": "d760fc4bac0851d08407042ebd89591965d7b30ca7443c35de50a8691eecc360"
+  }
+}

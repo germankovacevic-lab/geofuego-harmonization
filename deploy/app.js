@@ -9,7 +9,7 @@
 const T = {
   en: {
     tagline: 'One fire-hotspot calendar for any area of Argentina, November 2000 → today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month.',
-    method: 'Method & code', province: 'Province', country: 'Whole country', latlon: 'Lat / Lon', go: 'Go', drawhint: 'or draw a rectangle / polygon on the map',
+    method: 'Method & code', province: 'Province', country: 'Whole country', latlon: 'Lat / Lon', go: 'Go', clear: 'Clear', drawhint: 'or draw a rectangle / polygon on the map, or click a province',
     attrib: 'Basemap: Esri World Light Gray Canvas (Esri, HERE, Garmin, OpenStreetMap contributors). Grid: 0.25°. Data: NASA FIRMS (MODIS, VIIRS).',
     empty: 'Pick a province, enter a point, or draw an area. The calendar snaps to whole 0.25° cells (about 25 × 25 km).',
     from: 'From', to: 'to', nowtitle: 'This month vs the historical median', caltitle: 'Burning-activity calendar', togpre: 'show greyed years', togstatic: 'fixed heat sources',
@@ -50,7 +50,7 @@ const T = {
   },
   es: {
     tagline: 'Un calendario de focos de calor para cualquier área de Argentina, noviembre 2000 → hoy. MODIS convertido a conteos equivalentes VIIRS, con un rango del 80 % calibrado en cada mes reconstruido.',
-    method: 'Método y código', province: 'Provincia', country: 'Todo el país', latlon: 'Lat / Lon', go: 'Ir', drawhint: 'o dibujá un rectángulo / polígono en el mapa',
+    method: 'Método y código', province: 'Provincia', country: 'Todo el país', latlon: 'Lat / Lon', go: 'Ir', clear: 'Limpiar', drawhint: 'o dibujá un rectángulo / polígono en el mapa, o hacé click en una provincia',
     attrib: 'Mapa base: Esri World Light Gray Canvas (Esri, HERE, Garmin, colaboradores de OpenStreetMap). Grilla: 0,25°. Datos: NASA FIRMS (MODIS, VIIRS).',
     empty: 'Elegí una provincia, ingresá un punto o dibujá un área. El calendario se ajusta a celdas enteras de 0,25° (unos 25 × 25 km).',
     from: 'Desde', to: 'hasta', nowtitle: 'Este mes contra la mediana histórica', caltitle: 'Calendario de actividad de fuego', togpre: 'mostrar años grises', togstatic: 'fuentes fijas de calor',
@@ -100,7 +100,7 @@ function applyI18n() {
 }
 
 // ---------- data ----------
-let D = null, L26 = null, ONI = {};
+let D = null, L26 = null, ONI = {}, PROV = null;
 const Y0 = 2000, YEARS = 26, YCUR = 2026;
 const grid = { latMin: -55, latMax: -21, lonMin: -74, lonMax: -53, step: 0.25, nCols: 84 };
 const cellOf = (lat, lon) => (lat < grid.latMin || lat >= grid.latMax || lon < grid.lonMin || lon >= grid.lonMax) ? null : Math.floor((lat - grid.latMin) / grid.step) * grid.nCols + Math.floor((lon - grid.lonMin) / grid.step);
@@ -112,8 +112,8 @@ const setOf = (y, m) => (y < 2002 || (y === 2002 && m < 7)) ? 'T' : y <= 2011 ? 
 const SIZE = n => n === 1 ? '1' : n <= 9 ? '2-9' : n <= 49 ? '10-49' : n <= 199 ? '50-199' : '200+';
 
 async function load() {
-  const [a, b, c] = await Promise.all([fetch('data/cells.json').then(r => r.json()), fetch('data/cells_2026.json').then(r => r.json()).catch(() => null), fetch('data/oni.json').then(r => r.json()).catch(() => ({ oni: {} }))]);
-  D = a; L26 = b; ONI = c.oni || {};
+  const [a, b, c, p] = await Promise.all([fetch('data/cells.json').then(r => r.json()), fetch('data/cells_2026.json').then(r => r.json()).catch(() => null), fetch('data/oni.json').then(r => r.json()).catch(() => ({ oni: {} })), fetch('data/provincias.json').then(r => r.json()).catch(() => null)]);
+  D = a; L26 = b; ONI = c.oni || {}; PROV = p;
   Object.assign(grid, D.grid);
 }
 
@@ -436,7 +436,10 @@ const slug = () => (A.sel.label || A.sel.kind || 'aoi').toString().normalize('NF
 function save(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
 
 // ---------- map & selection ----------
-let map, drawn, cellsLayer;
+let map, drawn, cellsLayer, provLayers = {};
+const DRAW_STYLE = { color: '#d9480f', weight: 2, fillColor: '#f5a623', fillOpacity: 0.15 };
+function highlightProvince(name) { for (const [n, l] of Object.entries(provLayers)) l.setStyle(n === name ? { color: '#d9480f', weight: 2.5, fillOpacity: 0 } : { color: '#6c7a93', weight: 1, fillOpacity: 0 }); }
+function clearSelection() { if (drawn) drawn.clearLayers(); if (cellsLayer) { cellsLayer.remove(); cellsLayer = null; } A = null; highlightProvince(null); $('prov').value = ''; $('out').hidden = true; $('empty').hidden = false; history.replaceState(null, '', location.pathname + (lang === 'es' ? '#lang=es' : '')); map.setView([-38.5, -63.5], 4); }
 function pointInRing(lat, lon, ring) { let inside = false; for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) { const yi = ring[i].lat, xi = ring[i].lng, yj = ring[j].lat, xj = ring[j].lng; if ((yi > lat) !== (yj > lat) && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside; } return inside; }
 function cellsForLayer(layer) {
   const b = layer.getBounds(); const ring = layer instanceof L.Rectangle ? null : layer.getLatLngs()[0];
@@ -453,6 +456,8 @@ function select(sel) {
   const feats = sel.cells.map(id => { const [a, c, b, d] = cellBounds(id); return [[a, c], [b, d]]; });
   cellsLayer = L.layerGroup(feats.length > 1500 ? [L.rectangle(L.latLngBounds(feats.map(f => f[0]).concat(feats.map(f => f[1]))), { color: '#f5a623', weight: 1.5, fill: false, dashArray: '4 3' })] : feats.map(f => L.rectangle(f, { color: '#f5a623', weight: 1, fillOpacity: 0.12, interactive: false }))).addTo(map);
   if (sel.kind !== 'drawn') { if (drawn) drawn.clearLayers(); }
+  highlightProvince(sel.kind === 'province' ? sel.label : null);
+  $('empty').hidden = true;
   if (sel.kind === 'point' || sel.kind === 'province' || sel.kind === 'country') { map.invalidateSize(); map.fitBounds(L.latLngBounds(feats.flat()), { padding: [10, 10], maxZoom: sel.kind === 'point' ? 9 : 7, animate: false }); }
   location.hash = encodeSel(sel);
   render();
@@ -463,7 +468,7 @@ function fromHash() {
   if (h.get('aoi') === 'ar') return selectCountry();
   if (h.get('prov')) { const p = h.get('prov'); $('prov').value = p; return selectProvince(p); }
   if (h.get('pt')) { const [lat, lon] = h.get('pt').split(',').map(Number); $('lat').value = lat; $('lon').value = lon; return selectPoint(lat, lon); }
-  if (h.get('bbox')) { const [s, w, n, e] = h.get('bbox').split(',').map(Number); const r = L.rectangle([[s, w], [n, e]], { color: '#e8eaf0', weight: 1.5, fill: false }); drawn.addLayer(r); return selectLayer(r); }
+  if (h.get('bbox')) { const [s, w, n, e] = h.get('bbox').split(',').map(Number); const r = L.rectangle([[s, w], [n, e]], DRAW_STYLE); drawn.addLayer(r); return selectLayer(r); }
 }
 function selectCountry() { $('prov').value = ''; select({ kind: 'country', label: 'Argentina', cells: Object.keys(D.cells).map(Number) }); }
 function selectProvince(p) { if (!p) return; select({ kind: 'province', label: p, cells: Object.keys(D.cells).filter(id => D.cells[id].p === p).map(Number) }); }
@@ -473,11 +478,12 @@ function selectLayer(layer) { const { ids, snapped1 } = cellsForLayer(layer); co
 function initMap() {
   map = L.map('map', { preferCanvas: true, zoomControl: true, attributionControl: false }).setView([-38.5, -63.5], 4);
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3 }).addTo(map);
+  if (PROV) for (const p of PROV.provincias) { const l = L.polygon(p.rings.map(r => [r]), { color: '#6c7a93', weight: 1, fillOpacity: 0, fillColor: '#f5a623', interactive: true, bubblingMouseEvents: false }).addTo(map); l.bindTooltip(p.n === TDF ? 'Tierra del Fuego' : p.n, { sticky: true, direction: 'top', opacity: 0.9 }); l.on('click', () => { if (document.querySelector('.leaflet-draw-toolbar .leaflet-draw-toolbar-button-enabled')) return; $('prov').value = p.n; selectProvince(p.n); }); l.on('mouseover', () => { if (!(A && A.sel.kind === 'province' && A.sel.label === p.n)) l.setStyle({ fillOpacity: 0.12 }); }); l.on('mouseout', () => l.setStyle({ fillOpacity: 0 })); provLayers[p.n] = l; }
   drawn = new L.FeatureGroup().addTo(map);
-  const ctl = new L.Control.Draw({ position: 'topleft', draw: { polyline: false, circle: false, circlemarker: false, marker: false, rectangle: { shapeOptions: { color: '#e8eaf0', weight: 1.5, fill: false } }, polygon: { allowIntersection: false, shapeOptions: { color: '#e8eaf0', weight: 1.5, fill: false } } }, edit: { featureGroup: drawn, edit: false } });
+  const ctl = new L.Control.Draw({ position: 'topleft', draw: { polyline: false, circle: false, circlemarker: false, marker: false, rectangle: { shapeOptions: DRAW_STYLE, showArea: false }, polygon: { allowIntersection: false, shapeOptions: DRAW_STYLE, showArea: false } }, edit: { featureGroup: drawn, edit: false } });
   map.addControl(ctl);
   map.on(L.Draw.Event.CREATED, e => { drawn.clearLayers(); drawn.addLayer(e.layer); $('prov').value = ''; selectLayer(e.layer); });
-  map.on(L.Draw.Event.DELETED, () => { if (cellsLayer) cellsLayer.remove(); });
+  map.on(L.Draw.Event.DELETED, () => clearSelection());
 }
 
 function initUI() {
@@ -485,6 +491,7 @@ function initUI() {
   for (const p of provs) $('prov').append(Object.assign(document.createElement('option'), { value: p, textContent: p === TDF ? 'Tierra del Fuego' : p }));
   $('prov').addEventListener('change', e => selectProvince(e.target.value));
   $('country').addEventListener('click', () => { $('prov').value = ''; selectCountry(); });
+  $('clear').addEventListener('click', clearSelection);
   $('go').addEventListener('click', () => { const lat = +$('lat').value, lon = +$('lon').value; if (!isFinite(lat) || !isFinite(lon) || !$('lat').value || !$('lon').value) return; $('prov').value = ''; selectPoint(lat, lon); });
   $('from').addEventListener('change', e => { const [y, m] = e.target.value.split('-').map(Number); if (y) { range.from = [y, m]; render(); } });
   $('to').addEventListener('change', e => { const [y, m] = e.target.value.split('-').map(Number); if (y) { range.to = [y, m]; render(); } });

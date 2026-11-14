@@ -9,7 +9,7 @@
 const T = {
   en: {
     tagline: 'One fire-hotspot calendar for any area of Argentina, November 2000 → today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month.',
-    method: 'Method & code', province: 'Province', country: 'Whole country', latlon: 'Lat / Lon', go: 'Go', clear: 'Clear', drawhint: 'or draw a rectangle / polygon on the map, or click a province',
+    h1sub: 'MODIS + VIIRS fire calendar', method: 'Method & code', province: 'Province', country: 'Whole country', latlon: 'Lat / Lon', go: 'Go', clear: 'Clear', drawhint: 'or draw a rectangle / polygon on the map, or click a province',
     attrib: 'Basemaps: Esri World Imagery (Esri, Maxar, Earthstar Geographics), World Boundaries & Places, World Topo, Light Gray Canvas (Esri, HERE, Garmin, OpenStreetMap contributors). Grid: 0.25°. Data: NASA FIRMS (MODIS, VIIRS).',
     empty: 'Pick a province, enter a point, or draw an area. The calendar snaps to whole 0.25° cells (about 25 × 25 km).',
     from: 'From', to: 'to', nowtitle: 'This month vs the historical median', caltitle: 'Burning-activity calendar', togpre: 'show greyed years', togstatic: 'fixed heat sources',
@@ -50,7 +50,7 @@ const T = {
   },
   es: {
     tagline: 'Un calendario de focos de calor para cualquier área de Argentina, noviembre 2000 → hoy. MODIS convertido a conteos equivalentes VIIRS, con un rango del 80 % calibrado en cada mes reconstruido.',
-    method: 'Método y código', province: 'Provincia', country: 'Todo el país', latlon: 'Lat / Lon', go: 'Ir', clear: 'Limpiar', drawhint: 'o dibujá un rectángulo / polígono en el mapa, o hacé click en una provincia',
+    h1sub: 'calendario de fuego MODIS + VIIRS', method: 'Método y código', province: 'Provincia', country: 'Todo el país', latlon: 'Lat / Lon', go: 'Ir', clear: 'Limpiar', drawhint: 'o dibujá un rectángulo / polígono en el mapa, o hacé click en una provincia',
     attrib: 'Mapas base: Esri World Imagery (Esri, Maxar, Earthstar Geographics), World Boundaries & Places, World Topo, Light Gray Canvas (Esri, HERE, Garmin, colaboradores de OpenStreetMap). Grilla: 0,25°. Datos: NASA FIRMS (MODIS, VIIRS).',
     empty: 'Elegí una provincia, ingresá un punto o dibujá un área. El calendario se ajusta a celdas enteras de 0,25° (unos 25 × 25 km).',
     from: 'Desde', to: 'hasta', nowtitle: 'Este mes contra la mediana histórica', caltitle: 'Calendario de actividad de fuego', togpre: 'mostrar años grises', togstatic: 'fuentes fijas de calor',

@@ -142,3 +142,8 @@ footer p { margin:0; }
 .note.ctx26 { color:#bfe6f5; background:#13232b; border:1px solid #1f4a5c; border-radius:8px; padding:8px 10px; margin-top:8px; }
 .summary .case-line { font-size:clamp(11px, 0.92vw, 13.5px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .summary .case-line b { font-size:1.15em; }
+.cases-row { flex-wrap:nowrap; } .cases-row .case-btns { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; gap:6px; }
+.cases-row .case-btns::-webkit-scrollbar { display:none; }
+.cases-row .case-btns .pill { white-space:nowrap; font-size:clamp(11px, 0.85vw, 12.5px); padding:4px 9px; }
+.cases-row .seg-l { white-space:nowrap; }
+.cases-row { flex-wrap:wrap; row-gap:6px; } .cases-row .seg-l { width:100%; } .cases-row .case-btns { width:100%; }

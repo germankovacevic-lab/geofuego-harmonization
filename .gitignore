@@ -4,3 +4,6 @@ data/raw/*
 *.log
 .DS_Store
 .wrangler/
+data/external/gwis/*.zip
+data/external/gwis/mcd64a1/
+data/external/gwis/mvp64/

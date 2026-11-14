@@ -60,9 +60,11 @@ const rTA = {}; { const acc = {}; for (const [cid, yrs] of Object.entries(agg.ce
 // Optional ENSO conditioning of the reconstructed years (05e_enso.mjs): H *= exp(BETA * ONI(y,m)); BETA < 0 raises the
 // factor in La Niña (dry) months. Applied only to MODIS-reconstructed months (2000–2011); observed VIIRS is untouched.
 const BETA = +(process.argv.find(a => a.startsWith('--enso-beta='))?.split('=')[1] || 0);
+const ENSO_SIGMA_BETA = 0.025; // measured national sensitivity (05e): phase-dependent uncertainty added in quadrature to reconstructed months
 const ONI = {};
-if (BETA) { const SEAS = ['DJF', 'JFM', 'FMA', 'MAM', 'AMJ', 'MJJ', 'JJA', 'JAS', 'ASO', 'SON', 'OND', 'NDJ']; for (const line of (await readFile(path.join(process.env.HOME, '.openclaw', 'data', 'firms_ar', 'oni.ascii.txt'), 'utf8')).split('\n').slice(1)) { const f = line.trim().split(/\s+/); const mi = SEAS.indexOf(f[0]) + 1; if (mi) ONI[`${f[1]}-${mi}`] = +f[3]; } }
+{ const SEAS = ['DJF', 'JFM', 'FMA', 'MAM', 'AMJ', 'MJJ', 'JJA', 'JAS', 'ASO', 'SON', 'OND', 'NDJ']; for (const line of (await readFile(path.join(process.env.HOME, '.openclaw', 'data', 'firms_ar', 'oni.ascii.txt'), 'utf8')).split('\n').slice(1)) { const f = line.trim().split(/\s+/); const mi = SEAS.indexOf(f[0]) + 1; if (mi) ONI[`${f[1]}-${mi}`] = +f[3]; } }
 const ensoAdj = (y, m) => BETA && y < 2012 ? Math.exp(BETA * (ONI[`${y}-${m}`] ?? 0)) : 1;
+const ensoSig = (y, m) => y < 2012 ? Math.abs(ENSO_SIGMA_BETA * (ONI[`${y}-${m}`] ?? 0)) : 0;
 const era = (y, m) => y >= 2012 ? 'VIIRS' : (y > 2002 || (y === 2002 && m >= 7)) ? 'MODIS->VIIRS-eq' : (y > 2000 || m >= 11) ? 'MODIS-Terra->VIIRS-eq' : null;
 
 let cellsCsv = `${SI_NOTE}\ncell,prov,year,month,H,H_lo,H_hi,sigma_log,V,T,A,sensor,terra_only,gap_fill,static_viirs,static_modis\n`;
@@ -93,6 +95,7 @@ for (const [cid, yrs] of Object.entries(agg.cells)) {
         const adj = ensoAdj(y, m);
         H = fT[m - 1][0] * T * scale * adj; gf = fT[m - 1][0] * T * (scale - 1) * adj; fillTotal.terra_only += gf; sig = fT[m - 1][1]; terra = 1;
       }
+      if (sig) sig = Math.sqrt(sig * sig + ensoSig(y, m) ** 2);
       const lo = sig ? H * Math.exp(-Z * sig) : H, hi = sig ? H * Math.exp(Z * sig) : H;
       hy[m - 1] = Math.round(H); sy[m - 1] = Math.round(sig * 1000);
       if (Vs || Ms) (st[y] ??= Array(12).fill(0))[m - 1] = e === 'VIIRS' ? Vs : Ms;

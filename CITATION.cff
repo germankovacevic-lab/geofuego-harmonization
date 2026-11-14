@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this method, data or code, please cite it as below."
+title: "GeoFuego Harmonization: MODIS to VIIRS-equivalent harmonized fire-hotspot calendar for Argentina, 2000 to today (NASA Space Apps Challenge 2026)"
+version: 0.1.0
+date-released: "2026-11-14"
+doi: "10.5281/zenodo.24220107"
+url: "https://spaceapps.geofuego.com.ar"
+repository-code: "https://github.com/germankovacevic-lab/geofuego-harmonization"
+license: MIT
+authors:
+  - family-names: Kovacevic
+    given-names: "Germán Ricardo"
+    orcid: "https://orcid.org/0009-0007-4270-1963"
+    affiliation: "AgentNeo, Buenos Aires, Argentina (GEOFUEGO and Copernicus.com.ar projects)"
+keywords: [MODIS, VIIRS, FIRMS, active fire, hotspot harmonization, fire calendar, Argentina, NASA Space Apps 2026, CONAE]
+notes: "Code written with SI assistance (Claude, Anthropic); reviewed and validated by the team. Data products and figures are licensed CC BY 4.0."
+references:
+  - type: software
+    title: "GeoFuego Index (GFI) method package"
+    doi: "10.5281/zenodo.23017739"
+    authors:
+      - family-names: Kovacevic
+        given-names: "Germán Ricardo"

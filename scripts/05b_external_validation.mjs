@@ -42,7 +42,7 @@ for (const line of gwis.slice(1)) {
 }
 
 // --- our series: harmonized H per region×year×month, and RAW MODIS (T+A) and VIIRS per province×year from counts.json ---
-const prov = (await readFile(path.join(ROOT, 'data', 'harmonized', 'harmonized_provinces.csv'), 'utf8')).split('\n').filter(l => l && !l.startsWith('#') && !l.startsWith('region'));
+const prov = (await readFile(path.join(ROOT, 'data', 'harmonized', 'harmonized_provinces.csv'), 'utf8')).split('\n').filter(l => l && !l.startsWith('#') && !l.startsWith('unit') && !l.startsWith('region'));
 const H = {};
 for (const line of prov) { const m = line.match(/^"([^"]+)",(\d+),(\d+),(\d+),([\d.]+)/); if (!m) continue; const [, p, , y, mo, h] = m; ((H[p] ??= {})[+y] ??= Array(13).fill(0))[+mo] += +h; }
 const agg = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'counts.json'), 'utf8'));

@@ -1,6 +1,6 @@
-# Produced by scripts written with SI assistance (Claude, Anthropic); all values computed from NASA FIRMS archives (MODIS C6.1, VIIRS S-NPP). License CC BY 4.0. GeoFuego Harmonization, NASA Space Apps 2026.
+# Produced by scripts written with SI assistance (Claude, Anthropic); all values computed from NASA FIRMS country archives (MODIS Collection 6/6.1, file versions 6.2/6.03/61.03; VIIRS S-NPP). License CC BY 4.0. GeoFuego Harmonization, NASA Space Apps 2026.
 # H_lo/H_hi = 80% prediction interval [H*exp(p10), H*exp(p90)] calibrated out-of-sample by predicted count, satellite set and fire-regime region of the province (band_calibration.json by_region; Argentina uses the national pooled bins), widened by |0.025*ONI| per side in reconstructed months; empty for observed VIIRS months without gap fill. Tierra del Fuego: interval not verifiable (3 province-months with predicted count >= 30 in 2012-2023)
-region,n_cells,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,sensor,gap_fill,outage_days_terra,outage_days_aqua,outage_days_snpp,cloud_anom,cloud_underdetection,static
+unit,n_cells,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,sensor,gap_fill,outage_days_terra,outage_days_aqua,outage_days_snpp,cloud_anom,cloud_underdetection,static
 "Tierra del Fuego, Antártida e Islas del Atlántico Sur",31,2000,11,0.0,,,,,MODIS-Terra->VIIRS-eq,0,0,,,0.056,0.154,0
 "Tierra del Fuego, Antártida e Islas del Atlántico Sur",31,2000,12,0.0,,,,,MODIS-Terra->VIIRS-eq,0,0,,,0.053,0.147,0
 "Tierra del Fuego, Antártida e Islas del Atlántico Sur",31,2001,1,0.0,,,,,MODIS-Terra->VIIRS-eq,0,0,,,0.006,0,0

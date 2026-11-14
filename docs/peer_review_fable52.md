@@ -1,5 +1,7 @@
 # Peer review — GeoFuego Harmonization (data, method, validation)
 
+> **This review was written by an SI system (Claude Fable 5.2, Anthropic) in an isolated session; it is not a human expert opinion.** The team answered it in `audit_2026-11-14.md` (addendum 13:00).
+
 Reviewer role: senior active-fire products judge (NASA/CONAE perspective). Scope: harmonization only; app, video and form are not reviewed. Repository state: commit `458a9b5`, 14 Nov 2026, 12:00. Reviewer checks were read-only re-computations from `data/agg/counts.json`, `data/factors/factors.json` and the validation files, using `lib/factors.js` unchanged. Written with SI assistance (Claude Fable 5.2, Anthropic).
 
 ## 1. Summary verdict

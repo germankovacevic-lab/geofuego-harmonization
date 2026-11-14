@@ -1,8 +1,11 @@
 #!/usr/bin/env node
-// audit_static_sources.mjs — Independent checks on the persistent-thermal-source classification (03a).
+// audit_static_sources.mjs — Checks on the static-source classification (03a).
 // Written with SI assistance (Claude, Anthropic); reviewed and validated by the team.
-// The rule used only "months with hotspots"; these checks use variables the rule never saw:
-//   day/night flag, FRP, FIRMS type=2 (NASA's own static-source label), seasonality, threshold sensitivity.
+// Rules 1 and 2 use months with hotspots, night fraction and (rule 2) VIIRS FRP; rule 3 uses NASA's MODIS type-2 flag.
+// Of the checks below, only seasonality and threshold sensitivity are independent of every rule; night fraction and FRP
+// are inputs of rules 1–2, and the VIIRS type-2 co-location is partly by construction once rule 3 exists (declared).
+// Also measured: MODIS vegetation detections 2003–2011 inside the FLARE cells (rules 1–2), i.e. the fire the time-invariant
+// mask removes from the reconstructed years before the wells existed, per province.
 // Output: data/agg/audit_static.json, data/agg/static_cells.kml (for Google Earth)
 
 import { createReadStream } from 'node:fs';
@@ -76,8 +79,19 @@ for (const [file, meta] of Object.entries(manifest)) {
 sens.forEach((s, i) => { s.neuquen_share_static = +(nq[i].st / nq[i].tot).toFixed(3); delete s._cells; });
 
 const seas = g => { const tot = g.byMonth.reduce((a, b) => a + b, 0); const m = g.byMonth.slice(1).map(x => +(x / tot).toFixed(3)); return { monthly_share: m, max_over_min: +(Math.max(...m) / Math.max(1e-9, Math.min(...m))).toFixed(1) }; };
+// ---- pass 3: MODIS type-0 detections 2003–2011 inside flare cells (rules 1–2) vs all, per province ----
+const flare = new Set(Object.entries(S.cells).filter(([, c]) => c.rule !== 'modis-type2-static').map(([k]) => k));
+const pre = {}; // prov -> { all, inFlare }
+for (const [file, meta] of Object.entries(manifest)) {
+  if (meta.sensor !== 'modis') continue; const yr = +file.match(/_(\d{4})_/)[1]; if (yr < 2003 || yr > 2011) continue;
+  const rl = readline.createInterface({ input: createReadStream(path.join(RAW, file)) }); let header = true;
+  for await (const line of rl) { if (header) { header = false; continue; } const f = line.split(','); if (f.length < 15 || f[14] !== '0' || +f[9] < 30) continue; const p = provinceOf(+f[0], +f[1]) || '(outside)'; const o = (pre[p] ??= { all: 0, inFlare: 0 }); o.all++; if (flare.has(key(+f[0], +f[1]))) o.inFlare++; }
+}
+let allPre = 0, inPre = 0; for (const o of Object.values(pre)) { allPre += o.all; inPre += o.inFlare; }
+const preOut = { note: 'MODIS vegetation detections (type 0, conf >= 30) 2003-2011 that fall inside the flare cells (rules 1-2, time-invariant mask): removed from the reconstructed series as static although the wells may not have existed yet', country: { modis_2003_2011: allPre, inside_flare_cells: inPre, share: +(inPre / allPre).toFixed(4) }, by_province: Object.fromEntries(Object.entries(pre).map(([p, o]) => [p, { modis_2003_2011: o.all, inside_flare_cells: o.inFlare, share: +(o.inFlare / o.all).toFixed(4) }]).sort((a, b) => b[1].share - a[1].share)) };
 const report = {
   generated: new Date().toISOString(),
+  caveat: 'night fraction and FRP are inputs of rules 1-2; type-2 co-location is partly by construction with rule 3; only seasonality and threshold sensitivity are independent of every rule',
   signatures: {
     static: { hotspots: sig.static.n, night_fraction: +(sig.static.night / sig.static.n).toFixed(3), frp_median_MW: med(sig.static.frp), firms_type2_dropped_here: sig.static.type2, seasonality: seas(sig.static) },
     vegetation: { hotspots: sig.veg.n, night_fraction: +(sig.veg.night / sig.veg.n).toFixed(3), frp_median_MW: med(sig.veg.frp), firms_type2_dropped_here: sig.veg.type2, seasonality: seas(sig.veg) },
@@ -85,6 +99,7 @@ const report = {
   type2_concentration: { share_of_all_type2_inside_static_cells: +(sig.static.type2 / (sig.static.type2 + sig.veg.type2)).toFixed(3), share_of_all_type0_inside_static_cells: +(sig.static.n / (sig.static.n + sig.veg.n)).toFixed(4) },
   sensitivity: sens,
   by_province_viirs_share_static: Object.fromEntries(Object.entries(provTot).map(([p, t]) => [p, +(t.static / (t.static + t.veg)).toFixed(3)]).sort((a, b) => b[1] - a[1])),
+  pre2012_modis_vegetation_inside_flare_cells: preOut,
 };
 await writeFile(path.join(ROOT, 'data', 'agg', 'audit_static.json'), JSON.stringify(report, null, 2));
 

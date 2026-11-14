@@ -1,5 +1,6 @@
 {
-  "generated": "2026-11-14T17:58:35.149Z",
+  "generated": "2026-11-14T18:05:40.507Z",
+  "caveat": "night fraction and FRP are inputs of rules 1-2; type-2 co-location is partly by construction with rule 3; only seasonality and threshold sensitivity are independent of every rule",
   "signatures": {
     "static": {
       "hotspots": 63895,
@@ -115,30 +116,165 @@
     }
   ],
   "by_province_viirs_share_static": {
-    "Neuquén": 0.585,
-    "Santa Cruz": 0.277,
-    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.248,
-    "Mendoza": 0.113,
-    "Buenos Aires": 0.054,
-    "Tucumán": 0.054,
-    "(outside)": 0.05,
+    "Neuquén": 0.571,
+    "Santa Cruz": 0.292,
+    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.21,
+    "Mendoza": 0.116,
+    "Buenos Aires": 0.053,
+    "Tucumán": 0.053,
+    "(outside)": 0.051,
     "San Juan": 0.05,
     "La Rioja": 0.049,
-    "Chubut": 0.028,
-    "Jujuy": 0.02,
+    "Ciudad Autónoma de Buenos Aires": 0.048,
+    "Chubut": 0.026,
+    "Jujuy": 0.019,
+    "Salta": 0.018,
+    "Catamarca": 0.018,
     "Córdoba": 0.017,
-    "Salta": 0.017,
     "Río Negro": 0.017,
-    "Catamarca": 0.017,
-    "Ciudad Autónoma de Buenos Aires": 0.016,
     "Chaco": 0.013,
     "Entre Ríos": 0.012,
-    "Santiago del Estero": 0.01,
+    "Santiago del Estero": 0.011,
     "Misiones": 0.009,
     "Corrientes": 0.009,
     "San Luis": 0.007,
-    "Formosa": 0.004,
     "Santa Fe": 0.004,
+    "Formosa": 0.004,
     "La Pampa": 0.004
+  },
+  "pre2012_modis_vegetation_inside_flare_cells": {
+    "note": "MODIS vegetation detections (type 0, conf >= 30) 2003-2011 that fall inside the flare cells (rules 1-2, time-invariant mask): removed from the reconstructed series as static although the wells may not have existed yet",
+    "country": {
+      "modis_2003_2011": 736191,
+      "inside_flare_cells": 3925,
+      "share": 0.0053
+    },
+    "by_province": {
+      "Tierra del Fuego, Antártida e Islas del Atlántico Sur": {
+        "modis_2003_2011": 130,
+        "inside_flare_cells": 56,
+        "share": 0.4308
+      },
+      "Neuquén": {
+        "modis_2003_2011": 3466,
+        "inside_flare_cells": 534,
+        "share": 0.1541
+      },
+      "Santa Cruz": {
+        "modis_2003_2011": 981,
+        "inside_flare_cells": 65,
+        "share": 0.0663
+      },
+      "La Rioja": {
+        "modis_2003_2011": 3208,
+        "inside_flare_cells": 58,
+        "share": 0.0181
+      },
+      "Buenos Aires": {
+        "modis_2003_2011": 30127,
+        "inside_flare_cells": 363,
+        "share": 0.012
+      },
+      "Mendoza": {
+        "modis_2003_2011": 10545,
+        "inside_flare_cells": 121,
+        "share": 0.0115
+      },
+      "Salta": {
+        "modis_2003_2011": 90910,
+        "inside_flare_cells": 1010,
+        "share": 0.0111
+      },
+      "Chaco": {
+        "modis_2003_2011": 83773,
+        "inside_flare_cells": 620,
+        "share": 0.0074
+      },
+      "Chubut": {
+        "modis_2003_2011": 986,
+        "inside_flare_cells": 7,
+        "share": 0.0071
+      },
+      "Corrientes": {
+        "modis_2003_2011": 67161,
+        "inside_flare_cells": 305,
+        "share": 0.0045
+      },
+      "Entre Ríos": {
+        "modis_2003_2011": 34281,
+        "inside_flare_cells": 127,
+        "share": 0.0037
+      },
+      "Formosa": {
+        "modis_2003_2011": 72089,
+        "inside_flare_cells": 218,
+        "share": 0.003
+      },
+      "Misiones": {
+        "modis_2003_2011": 26314,
+        "inside_flare_cells": 66,
+        "share": 0.0025
+      },
+      "Jujuy": {
+        "modis_2003_2011": 8742,
+        "inside_flare_cells": 21,
+        "share": 0.0024
+      },
+      "Río Negro": {
+        "modis_2003_2011": 6894,
+        "inside_flare_cells": 15,
+        "share": 0.0022
+      },
+      "Santiago del Estero": {
+        "modis_2003_2011": 129331,
+        "inside_flare_cells": 219,
+        "share": 0.0017
+      },
+      "Catamarca": {
+        "modis_2003_2011": 6727,
+        "inside_flare_cells": 11,
+        "share": 0.0016
+      },
+      "(outside)": {
+        "modis_2003_2011": 665,
+        "inside_flare_cells": 1,
+        "share": 0.0015
+      },
+      "Tucumán": {
+        "modis_2003_2011": 22069,
+        "inside_flare_cells": 28,
+        "share": 0.0013
+      },
+      "Santa Fe": {
+        "modis_2003_2011": 79425,
+        "inside_flare_cells": 67,
+        "share": 0.0008
+      },
+      "San Luis": {
+        "modis_2003_2011": 19090,
+        "inside_flare_cells": 6,
+        "share": 0.0003
+      },
+      "Córdoba": {
+        "modis_2003_2011": 23229,
+        "inside_flare_cells": 5,
+        "share": 0.0002
+      },
+      "La Pampa": {
+        "modis_2003_2011": 11362,
+        "inside_flare_cells": 2,
+        "share": 0.0002
+      },
+      "San Juan": {
+        "modis_2003_2011": 4660,
+        "inside_flare_cells": 0,
+        "share": 0
+      },
+      "Ciudad Autónoma de Buenos Aires": {
+        "modis_2003_2011": 26,
+        "inside_flare_cells": 0,
+        "share": 0
+      }
+    }
   }
 }

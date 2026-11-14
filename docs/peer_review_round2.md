@@ -1,5 +1,7 @@
 # Peer review, round 2 — harmonization engine (data, method, validation, claims)
 
+> **This review was written by an SI system (Claude Fable 5.2, Anthropic) acting as an independent reviewer with no prior context on the project; it is not a human expert opinion.** The team answered it in `audit_2026-11-14.md` (addendum 13:30).
+
 Scope: the harmonization work only (app, video and form are not built). All checks were done with print-only scripts on the committed files and by re-running the LOYO with `lib/factors.js`.
 
 ## 1. Verdict and provisional scores

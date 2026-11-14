@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // 05d_ha_per_hotspot.mjs — Empirical translation of VIIRS-equivalent hotspot counts into burned hectares, by province and
-// calendar month, from the independent MCD64A1 burned-area product (GWIS/JRC, 2002–2025).
+// calendar month, from the MCD64A1 burned-area product (GWIS/JRC, 2002–2025; not independent of MODIS active fires, which it uses in training).
 // Written with SI assistance (Claude, Anthropic); reviewed and validated by the team.
 //
 // The unit of the harmonized series is the hotspot count (375 m active-fire pixels). Users think in hectares. This table

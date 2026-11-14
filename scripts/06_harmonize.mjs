@@ -4,7 +4,7 @@
 //
 // Per cell c, year y, month m (METHOD_DESIGN §2.3):
 //   y >= 2012            : H = V (observed VIIRS S-NPP)                       sensor = VIIRS          band = none
-//   2002-07 .. 2011-12   : H = f_TA[c,m] · (T + A)                            sensor = MODIS→VIIRS-eq band = H·exp(±1.28·σ_TA)   (≈ IC 80 %)
+//   2002-07 .. 2011-12   : H = f_TA[c,m] · (T + A)                            sensor = MODIS→VIIRS-eq band = 80 % prediction interval (below)
 //   2000-11 .. 2002-06   : H = f_T[c,m] · T   (Terra only, Aqua not yet)      sensor = MODIS-Terra→VIIRS-eq, terra_only = 1
 //   2000-01 .. 2000-10   : no data (MODIS archive starts 2000-11-01)         H = null
 // 80 % PREDICTION INTERVAL, calibrated on out-of-sample LOYO residuals (05_loyo → band_calibration.json), per satellite set:
@@ -50,8 +50,7 @@ if (!REGBINS.TA || !REGBINS.T) throw new Error('band_calibration.json has no by_
 /** signed log offsets [p10, p90] of the 80 % interval for a predicted count P under satellite set s, in region reg (null = pooled/country) */
 function bandLog(P, s, reg = null) { const bins = (reg && REGBINS[s]?.[reg]) || BINSET[s] || BINSET.TA; let b = bins[0]; for (const x of bins) if (P >= x.P_min) b = x; return [b.p10_log, b.p90_log]; }
 const regionOf = prov => REGION_OF[prov] || null;
-const EMP = { cell: BANDCAL.band.TA.by_level.cell.sigma_equiv_for_80pct, prov: BANDCAL.band.TA.by_level.prov.sigma_equiv_for_80pct, country: BANDCAL.band.TA.by_level.country.sigma_equiv_for_80pct };
-const N_CELLS_TOTAL = Object.keys(agg.cells).length, N_CELLS_PROV = N_CELLS_TOTAL / 24;
+const N_CELLS_TOTAL = Object.keys(agg.cells).length;
 // Empirical relative σ for an aggregate of n cells: the AOI-size error curve measured by LOYO on random contiguous blocks
 // (05c_aoi_error.mjs: monthly median |rel. error| for 1, 4, 9, 21, 64, 111 cells) plus the province and country references,
 // interpolated piecewise-linearly in log10(n).
@@ -66,7 +65,7 @@ export function empSigma(n, set = 'TA') {
   return C.at(-1)[1];
 }
 const setOf = (y, m) => (y < 2002 || (y === 2002 && m <= 6)) ? 'T' : 'TA';
-const SI_NOTE = '# Produced by scripts written with SI assistance (Claude, Anthropic); all values computed from NASA FIRMS archives (MODIS C6.1, VIIRS S-NPP). License CC BY 4.0. GeoFuego Harmonization, NASA Space Apps 2026.';
+const SI_NOTE = '# Produced by scripts written with SI assistance (Claude, Anthropic); all values computed from NASA FIRMS country archives (MODIS Collection 6/6.1, file versions 6.2/6.03/61.03; VIIRS S-NPP). License CC BY 4.0. GeoFuego Harmonization, NASA Space Apps 2026.';
 
 const COV = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'coverage.json'), 'utf8'));
 const outDays = (sat, y, m) => COV.by_month[sat]?.[`${y}-${String(m).padStart(2, '0')}`]?.outage_days || 0;
@@ -141,7 +140,7 @@ for (const [cid, yrs] of Object.entries(agg.cells)) {
 const AR = { n: N_CELLS_TOTAL, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)), ca: YEARS.map(() => Array(12).fill(0)), caw: YEARS.map(() => Array(12).fill(0)) };
 for (const P of Object.values(provSeries)) for (let yi = 0; yi < YEARS.length; yi++) for (let m = 0; m < 12; m++) { AR.H[yi][m] += P.H[yi][m]; AR.var[yi][m] += P.var[yi][m]; if (!P.nodata[yi][m]) AR.nodata[yi][m] = false; AR.st[yi][m] += P.st[yi][m]; AR.gf[yi][m] += P.gf[yi][m]; AR.ca[yi][m] += P.ca[yi][m]; AR.caw[yi][m] += P.caw[yi][m]; }
 provSeries['Argentina'] = AR;
-let provCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval [H*exp(p10), H*exp(p90)] calibrated out-of-sample by predicted count, satellite set and fire-regime region of the province (band_calibration.json by_region; Argentina uses the national pooled bins), widened by |0.025*ONI| per side in reconstructed months; empty for observed VIIRS months without gap fill. Tierra del Fuego: interval not verifiable (3 province-months with predicted count >= 30 in 2012-2023)\nregion,n_cells,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,sensor,gap_fill,outage_days_terra,outage_days_aqua,outage_days_snpp,cloud_anom,cloud_underdetection,static\n`;
+let provCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval [H*exp(p10), H*exp(p90)] calibrated out-of-sample by predicted count, satellite set and fire-regime region of the province (band_calibration.json by_region; Argentina uses the national pooled bins), widened by |0.025*ONI| per side in reconstructed months; empty for observed VIIRS months without gap fill. Tierra del Fuego: interval not verifiable (3 province-months with predicted count >= 30 in 2012-2023)\nunit,n_cells,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,sensor,gap_fill,outage_days_terra,outage_days_aqua,outage_days_snpp,cloud_anom,cloud_underdetection,static\n`;
 for (const [p, P] of Object.entries(provSeries)) for (let yi = 0; yi < YEARS.length; yi++) for (let m = 0; m < 12; m++) {
   if (P.nodata[yi][m]) continue;
   const yy = YEARS[yi], mm = m + 1, H = P.H[yi][m], gf = P.gf[yi][m], reg = p === 'Argentina' ? null : regionOf(p);

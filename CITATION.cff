@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this method, data or code, please cite it as below."
-title: "GeoFuego Harmonization: MODIS to VIIRS-equivalent harmonized fire-hotspot calendar for Argentina, 2000 to today (NASA Space Apps Challenge 2026)"
+title: "GeoFuego Harmonization: MODIS to VIIRS-equivalent harmonized fire-hotspot calendar for Argentina, 2000 to 2025 (NASA Space Apps Challenge 2026)"
 version: 0.1.0
 date-released: "2026-11-14"
 doi: "10.5281/zenodo.24220107"
@@ -14,7 +14,7 @@ authors:
     orcid: "https://orcid.org/0009-0007-4270-1963"
     affiliation: "AgentNeo, Buenos Aires, Argentina (GEOFUEGO and Copernicus.com.ar projects)"
 keywords: [MODIS, VIIRS, FIRMS, active fire, hotspot harmonization, fire calendar, Argentina, NASA Space Apps 2026, CONAE]
-notes: "Code written with SI assistance (Claude, Anthropic); reviewed and validated by the team. Code is MIT; data products and figures are CC BY 4.0. Input data: NASA FIRMS (MODIS C6/6.1 archive, VIIRS S-NPP/NOAA-20/NOAA-21), NOAA CPC ONI, GWIS/JRC MCD64A1 country tables, IGN Argentina."
+notes: "Code written with SI assistance (Claude, Anthropic); reviewed and validated by the team. Code is MIT; data products and figures are CC BY 4.0. Input data: NASA FIRMS (MODIS Collection 6/6.1 country archives, VIIRS S-NPP/NOAA-20/NOAA-21), ERA5 monthly cloud fraction and precipitation (Copernicus Climate Change Service, CDS; contains modified Copernicus Climate Change Service information 2026), NOAA CPC ONI, GWIS/JRC MCD64A1 country tables, IGN Argentina. Licences of all inputs are listed in README (Data sources and licences)."
 references:
   - type: software
     title: "GeoFuego Index (GFI) method package"
@@ -22,3 +22,21 @@ references:
     authors:
       - family-names: Kovacevic
         given-names: "Germán Ricardo"
+  - type: data
+    title: "NASA FIRMS active fire archive (MODIS C6/6.1, VIIRS S-NPP, NOAA-20, NOAA-21)"
+    url: "https://firms.modaps.eosdis.nasa.gov/"
+    authors:
+      - name: "NASA LANCE/FIRMS"
+  - type: article
+    title: "The ERA5 global reanalysis"
+    doi: "10.1002/qj.3803"
+    year: 2020
+    authors:
+      - family-names: Hersbach
+        given-names: Hans
+      - name: "et al."
+  - type: data
+    title: "ERA5 monthly averaged data on single levels from 1940 to present"
+    doi: "10.24381/cds.f17050d7"
+    authors:
+      - name: "Copernicus Climate Change Service (C3S), Climate Data Store"

@@ -6,8 +6,8 @@ Fit (`scripts/04b_bridge.mjs`): FIRMS Area API standard-processing archives (VII
 
 | | g = N_sat / N_snpp (country) | σ across months | provinces (w ≈ 1) |
 |---|---|---|---|
-| NOAA-20 | **0.980** | 0.053 | 0.94 (Formosa) – 1.03 (Misiones) |
-| NOAA-21 | **0.951** | 0.054 | 0.92 (Córdoba, La Pampa) – 0.99 (Entre Ríos, Río Negro) |
+| NOAA-20 | **0.979** | 0.053 | 0.94 (La Rioja) – 1.16 (San Luis); 22 provinces with w > 0.9 |
+| NOAA-21 | **0.951** | 0.054 | 0.89 (San Juan) – 0.99 (Santa Cruz); 22 provinces with w > 0.9 |
 
 Decisions taken while looking at the data:
 - **Monthly factors rejected.** Monthly ratios were dominated by satellite outages (measured day by day: S-NPP no data 10–15 and 24–28 Jul 2024; NOAA-20 no data 19–22 Jul 2023; NOAA-21 no data until early Feb 2023). July NOAA-20/S-NPP read 1.17 with σ 0.41 before pairing; 1.02 after. Same instrument, same orbit plane → no physical reason for a seasonal cycle → annual factor, monthly ratios kept as diagnostic only.
@@ -19,3 +19,7 @@ Audit with data the fit never saw:
 - NOAA-20 factor with and without NOAA-21 pairing (1 067 vs 1 006 paired days): 0.9795 vs 0.9798 → insensitive to the day set.
 
 Use: for the current month, `H_live = Σ_sat N_sat / g_sat[prov]` (g = 1 for S-NPP while it existed). For the 2026 monthly series before 18 Sep (only 3-satellite totals available) use the country-level `1 + g20 + g21 = 2.931` as divisor and flag it.
+
+
+## Addendum (14/11 16:00)
+Re-fitted after the static class grew to 1 628 cells (rule 3, MODIS type-2 sites): country g unchanged (0.979 / 0.951). Province spread in the table above updated to the committed `bridge.json` (the earlier 0.94–1.03 / 0.92–0.99 range quoted only the 14 largest provinces). The static-class NOAA-21/S-NPP ratio (0.83) remains unexplained and unused.

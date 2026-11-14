@@ -1,6 +1,6 @@
 # GeoFuego Harmonization
 
-**MODIS → VIIRS-equivalent harmonized fire-hotspot calendar for Argentina, 2000 → today, with a calibrated uncertainty band.**
+**MODIS → VIIRS-equivalent harmonized fire-hotspot calendar for Argentina, November 2000 → December 2025, with a calibrated uncertainty band** (the 2026 live months are carried by the S-NPP ↔ NOAA bridge in the app, in progress).
 
 NASA Space Apps Challenge 2026 · Challenge: *Harmonization of MODIS and VIIRS Hot Spots* (CONAE) · Local event: Buenos Aires · Team: **GeoFuego.com.ar**
 
@@ -29,6 +29,7 @@ All code in this repository was written during the hackathon window (14–15 Nov
 | Backward test inside the MODIS era, 2003–2011: Terra-only reconstruction vs Terra+Aqua reconstruction | country **0.94–1.04** per year; province-year 80th pct \|log\| 0.21: supports the 2000–mid-2002 years |
 | Terra-only set (used 2000 – mid 2002) | country 5.6 % · province 16.8 % · worst year 0.80; **multiplicative limit**: where MODIS saw nothing the model returns zero (on paired days 2012–2023, 44.5 % of VIIRS-active cell-months, holding 7 % of VIIRS hotspots, have no Terra+Aqua detection; 67 % and 20 % for Terra alone), and where MODIS saw little it over-predicts (in 23 % of Terra-only cell-months with predicted 5–15, VIIRS observed zero) |
 | 80 % prediction interval, calibrated **per fire-regime region** and predicted count; coverage measured **out-of-sample for the band itself** (`band_calibration.json`) | country 90 % · province 83 % · cell 80 %; Patagonia cells 80 % (73 % with nationally pooled bins), Neuquén 82 %, Chubut 80 %; Pampa/Cuyo provinces conservative (89–94 %); **Tierra del Fuego not verifiable** (3 province-months with predicted count ≥ 30 in 2012–2023; 33 % coverage) |
+| **80 % interval on years never used for factors or bins** (2024, 2025; Terra+Aqua) | province-months inside **83 % / 81 %** (n 206 each) · cell-months 80 % / 77 % · country 10 of 12 months both years. Terra-only set on those years: 74 % / 71 % province, 58 % / 50 % country — the Terra-only interval is calibrated for the nominal-orbit era (2000–mid 2002), and 2024–2025 Terra is 12–25 % low from orbit drift |
 | Consistency across the 2012 splice vs MODIS burned area (MCD64A1) | burned ha per hotspot pre/post 2012: **0.98** harmonized vs **3.12** naive concatenation (not an independent validation: MCD64A1 is trained with MODIS active fires, and raw MODIS on both sides gives 0.98 too) |
 | S-NPP/NOAA bridge vs production NRT data (different pipeline) | 0.982 vs 0.980 (NOAA-20); provincial spread (w > 0.9) 0.93–1.16 (NOAA-20), 0.89–0.99 (NOAA-21) |
 | ENSO dependence of the ratio (team hypothesis) | real (r = −0.37 monthly) but small; conditioning did not improve out-of-sample skill → carried as extra band width in strong-phase months |
@@ -50,9 +51,20 @@ All code in this repository was written during the hackathon window (14–15 Nov
 - **ERA5** (Copernicus Climate Data Store): monthly cloud fraction by hour of day and monthly precipitation, 0.25°, 2000–2025 — `scripts/01d_fetch_era5_cloud.py`, `01e_fetch_era5_precip.py` (needs a free CDS key); sha256 in `data/external/MANIFEST_aux.json`.
 - Raw hotspot CSVs are not committed (≈ 1 GB); derived products are published in the Zenodo record.
 
+## Data sources and licences
+
+| source | used for | licence / terms | citation |
+|---|---|---|---|
+| NASA FIRMS active fire country archives: MODIS C6/6.1 (2000–2025), VIIRS S-NPP (2012–2025); FIRMS Area API standard processing: S-NPP, NOAA-20, NOAA-21 (2023–2025) | all counts, factors, series, bridge | NASA data: public domain / free and open (NASA Earth Science Data and Information Policy); FIRMS asks for acknowledgment | "We acknowledge the use of data and/or imagery from NASA's Fire Information for Resource Management System (FIRMS), part of NASA's Earth Science Data and Information System (ESDIS)." Giglio, Schroeder & Justice (2016); Schroeder et al. (2014) |
+| ERA5 monthly cloud fraction by hour of day and total precipitation, 0.25° (Copernicus Climate Data Store) | cloud obscuration flag and interval widening | Copernicus licence (free, attribution): "Contains modified Copernicus Climate Change Service information 2026; neither the European Commission nor ECMWF is responsible for any use of this information" | Hersbach et al. (2020) QJRMS 146, doi:10.1002/qj.3803; dataset doi:10.24381/cds.f17050d7 |
+| NOAA CPC Oceanic Niño Index | ENSO tests and band widening | US Government work, public domain | NOAA Climate Prediction Center, ONI |
+| GWIS / JRC country profiles: MCD64A1 burned area tables | consistency check across the 2012 splice | GWIS data: free, attribution (European Commission JRC; Copernicus Emergency Management Service) | Giglio et al. (2018) RSE 217 (MCD64A1); GWIS country profiles |
+| IGN Argentina province polygons (simplified, via GeoFuego) | cell → province assignment | Instituto Geográfico Nacional, open data (Ley 27.275; CC BY-style attribution) | IGN Argentina, Capas SIG |
+| Leaflet 1.9.4, Leaflet.draw 1.0.4, uPlot 1.6.31 (app, vendored) | web app | BSD-2-Clause, MIT, MIT | see `deploy/` LICENSE files when the app is published |
+
 ## Known limits (declared)
 
-Observed VIIRS months carry no interval (they are the reference); the interval of Tierra del Fuego cannot be verified (3 province-months with enough fire in 2012–2023) and the intervals of Pampa/Cuyo provinces are wider than needed (coverage 85–94 %); a cloudy month still reads low (obscuration is measured and flagged, not corrected); day and night detections are pooled (split tested, no gain); the region table is hand-made; the static class removes real vegetation fire that occurs inside its 1 628 cells (0.4–0.5 % of VIIRS hotspots per year) and MODIS type-2 detections outside those cells (≈ 0.7 %) are treated differently before and after 2018; the outage detector conditions on MODIS zeros (effect < 1 % of counts per year); the unit is VIIRS-equivalent 375 m pixel counts, not fires nor area; Argentina only.
+Observed VIIRS months carry no interval (they are the reference); the interval of Tierra del Fuego cannot be verified (3 province-months with enough fire in 2012–2023) and the intervals of Pampa/Cuyo provinces are wider than needed (coverage 85–94 %); a cloudy month still reads low (obscuration is measured and flagged, not corrected); day and night detections are pooled (split tested, no gain); the region table is hand-made; the static class is time-invariant and removes the vegetation fire that occurs inside its 1 628 cells (0.4–0.5 % of VIIRS hotspots per year; before 2012, 0.5 % of MODIS detections nationally but **15 % in Neuquén**, 7 % in Santa Cruz and 43 % of Tierra del Fuego's 130 detections, where the mask may predate the wells) and MODIS type-2 detections outside those cells (≈ 0.7 %) are treated differently before and after 2018; the outage detector conditions on MODIS zeros (effect < 1 % of counts per year); the unit is VIIRS-equivalent 375 m pixel counts, not fires nor area; Argentina only.
 
 ## Pipeline
 
@@ -60,7 +72,7 @@ Observed VIIRS months carry no interval (they are the reference); the interval o
 
 ## Super Intelligence (SI) acknowledgment
 
-This project was built with SI coding assistance: **Claude (Anthropic)**, via Claude Code / OpenClaw; an independent peer review of the method was also produced with Claude (`docs/peer_review_fable52.md`). SI was used for code generation, review, debugging and English editing. The problem framing, the harmonization approach, the hypotheses tested and all validation decisions were made by the team; every number reported is produced by the scripts in this repository from NASA FIRMS data. Each script carries the header `Written with SI assistance (Claude, Anthropic); reviewed and validated by the team.` Datasets carry the same acknowledgment in their metadata. No SI-generated imagery, video or audio is used. No NASA branding is used in any generated content.
+This project was built with SI coding assistance: **Claude (Anthropic)**, via Claude Code / OpenClaw; an independent peer review of the method was also produced with Claude (`docs/peer_review_fable52.md`). SI was used for code generation, review, debugging and English editing. The problem framing, the harmonization approach, the hypotheses tested and all validation decisions were made by the team; every number reported is produced by the scripts in this repository from NASA FIRMS data. Each script carries the header `Written with SI assistance (Claude, Anthropic); reviewed and validated by the team.` The published products (`harmonized_cells.csv`, `harmonized_provinces.csv`, `cells.json`) carry the same acknowledgment in their headers; intermediate files (`data/agg`, `data/factors`, `data/validation`) do not, and are documented by the scripts that write them. The peer reviews in `docs/` were produced by an SI system (Claude) in isolated sessions and say so in their first line. No SI-generated imagery, video or audio is used. No NASA branding is used in any generated content.
 
 ## License
 
@@ -68,4 +80,4 @@ This project was built with SI coding assistance: **Claude (Anthropic)**, via Cl
 
 ## Citation
 
-See `CITATION.cff`. References: Giglio, Schroeder & Justice (2016) RSE 178; Schroeder et al. (2014) RSE 143; Giglio et al. (2018) RSE 217 (MCD64A1); NOAA CPC ONI; GWIS/JRC country profiles; IGN Argentina.
+See `CITATION.cff`. References: Giglio, Schroeder & Justice (2016) RSE 178; Schroeder et al. (2014) RSE 143; Giglio et al. (2018) RSE 217 (MCD64A1); Hersbach et al. (2020) QJRMS 146 (ERA5); NOAA CPC ONI; GWIS/JRC country profiles; IGN Argentina.

@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-14T17:54:43.996Z",
+ "generated": "2026-11-14T18:05:26.386Z",
  "years": [
   2012,
   2013,
@@ -3444,24 +3444,80 @@
    "2024": {
     "country_pred_over_obs": 1.044,
     "prov_season_mape": 0.1241,
-    "country_monthly_median_ape": 0.0765
+    "country_monthly_median_ape": 0.0765,
+    "interval_coverage": {
+     "country": {
+      "coverage": 0.833,
+      "n": 12
+     },
+     "prov": {
+      "coverage": 0.83,
+      "n": 206
+     },
+     "cell": {
+      "coverage": 0.802,
+      "n": 2862
+     }
+    }
    },
    "2025": {
     "country_pred_over_obs": 1.024,
     "prov_season_mape": 0.192,
-    "country_monthly_median_ape": 0.0826
+    "country_monthly_median_ape": 0.0826,
+    "interval_coverage": {
+     "country": {
+      "coverage": 0.833,
+      "n": 12
+     },
+     "prov": {
+      "coverage": 0.811,
+      "n": 206
+     },
+     "cell": {
+      "coverage": 0.765,
+      "n": 3205
+     }
+    }
    }
   },
   "T": {
    "2024": {
     "country_pred_over_obs": 0.88,
     "prov_season_mape": 0.1892,
-    "country_monthly_median_ape": 0.241
+    "country_monthly_median_ape": 0.241,
+    "interval_coverage": {
+     "country": {
+      "coverage": 0.583,
+      "n": 12
+     },
+     "prov": {
+      "coverage": 0.741,
+      "n": 189
+     },
+     "cell": {
+      "coverage": 0.777,
+      "n": 2454
+     }
+    }
    },
    "2025": {
     "country_pred_over_obs": 0.754,
     "prov_season_mape": 0.3408,
-    "country_monthly_median_ape": 0.2906
+    "country_monthly_median_ape": 0.2906,
+    "interval_coverage": {
+     "country": {
+      "coverage": 0.5,
+      "n": 12
+     },
+     "prov": {
+      "coverage": 0.712,
+      "n": 198
+     },
+     "cell": {
+      "coverage": 0.775,
+      "n": 2396
+     }
+    }
    }
   }
  }

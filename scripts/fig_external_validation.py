@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# fig_external_validation.py — Figure: harmonized hotspots vs independent MODIS burned area (MCD64A1, GWIS/JRC), Argentina.
+# fig_external_validation.py — Figure: harmonized hotspots vs MODIS burned area (MCD64A1, GWIS/JRC), Argentina — a consistency check, not an independent validation.
 # Written with SI assistance (Claude, Anthropic); reviewed and validated by the team.
 import csv, pathlib, sys
 import numpy as np

@@ -1,0 +1,144 @@
+{
+  "generated": "2026-11-14T12:32:10.899Z",
+  "signatures": {
+    "static": {
+      "hotspots": 34460,
+      "night_fraction": 0.743,
+      "frp_median_MW": 1.53,
+      "firms_type2_dropped_here": 51183,
+      "seasonality": {
+        "monthly_share": [
+          0.092,
+          0.086,
+          0.098,
+          0.068,
+          0.058,
+          0.056,
+          0.064,
+          0.094,
+          0.093,
+          0.099,
+          0.088,
+          0.104
+        ],
+        "max_over_min": 1.9
+      }
+    },
+    "vegetation": {
+      "hotspots": 2516007,
+      "night_fraction": 0.268,
+      "frp_median_MW": 5.31,
+      "firms_type2_dropped_here": 27277,
+      "seasonality": {
+        "monthly_share": [
+          0.078,
+          0.062,
+          0.048,
+          0.029,
+          0.024,
+          0.034,
+          0.087,
+          0.217,
+          0.192,
+          0.114,
+          0.062,
+          0.052
+        ],
+        "max_over_min": 9
+      }
+    }
+  },
+  "type2_concentration": {
+    "share_of_all_type2_inside_static_cells": 0.652,
+    "share_of_all_type0_inside_static_cells": 0.0135
+  },
+  "sensitivity": [
+    {
+      "cell_deg": 0.02,
+      "min_months_in_12": 7,
+      "static_cells": 1122,
+      "neuquen_share_static": 0.559
+    },
+    {
+      "cell_deg": 0.02,
+      "min_months_in_12": 8,
+      "static_cells": 472,
+      "neuquen_share_static": 0.519
+    },
+    {
+      "cell_deg": 0.02,
+      "min_months_in_12": 9,
+      "static_cells": 255,
+      "neuquen_share_static": 0.482
+    },
+    {
+      "cell_deg": 0.02,
+      "min_months_in_12": 10,
+      "static_cells": 141,
+      "neuquen_share_static": 0.409
+    },
+    {
+      "cell_deg": 0.02,
+      "min_months_in_12": 11,
+      "static_cells": 87,
+      "neuquen_share_static": 0.303
+    },
+    {
+      "cell_deg": 0.03,
+      "min_months_in_12": 7,
+      "static_cells": 2458,
+      "neuquen_share_static": 0.58
+    },
+    {
+      "cell_deg": 0.03,
+      "min_months_in_12": 8,
+      "static_cells": 1123,
+      "neuquen_share_static": 0.546
+    },
+    {
+      "cell_deg": 0.03,
+      "min_months_in_12": 9,
+      "static_cells": 453,
+      "neuquen_share_static": 0.529
+    },
+    {
+      "cell_deg": 0.03,
+      "min_months_in_12": 10,
+      "static_cells": 191,
+      "neuquen_share_static": 0.471
+    },
+    {
+      "cell_deg": 0.03,
+      "min_months_in_12": 11,
+      "static_cells": 100,
+      "neuquen_share_static": 0.349
+    }
+  ],
+  "by_province_viirs_share_static": {
+    "Neuquén": 0.45,
+    "Tierra del Fuego, Antártida e Islas del Atlántico Sur": 0.084,
+    "Santa Cruz": 0.052,
+    "Mendoza": 0.046,
+    "Buenos Aires": 0.025,
+    "(outside)": 0.024,
+    "La Rioja": 0.013,
+    "Entre Ríos": 0.012,
+    "Corrientes": 0.007,
+    "Catamarca": 0.007,
+    "Misiones": 0.006,
+    "Chaco": 0.005,
+    "Chubut": 0.005,
+    "Formosa": 0.004,
+    "Santa Fe": 0.004,
+    "Jujuy": 0.003,
+    "San Luis": 0.003,
+    "Santiago del Estero": 0.002,
+    "Córdoba": 0.002,
+    "Salta": 0.002,
+    "La Pampa": 0.001,
+    "Río Negro": 0.001,
+    "Tucumán": 0,
+    "San Juan": 0,
+    "Ciudad Autónoma de Buenos Aires": 0
+  }
+}

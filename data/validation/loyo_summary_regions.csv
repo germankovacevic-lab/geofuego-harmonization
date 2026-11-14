@@ -1,0 +1,4 @@
+K,CAP,level,season_mape,season_mape_scalar,monthly_median_ape,monthly_median_ape_scalar,annual_ratio_min,annual_ratio_max
+20,200,country,0.0354,0.0865,0.0589,0.0874,0.901,1.016
+20,200,prov,0.1056,0.1709,0.171,0.1972,0.901,1.016
+20,200,cell,0.299,0.3428,0.3591,0.3766,0.901,1.016

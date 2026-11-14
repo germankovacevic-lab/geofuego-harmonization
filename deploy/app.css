@@ -112,3 +112,6 @@ footer p { margin:0; }
 .seg.mini { padding:2px 4px; border-radius:8px; } .seg.mini .pill { padding:3px 10px; font-size:12px; }
 .leaflet-control-pulse a { display:flex !important; align-items:center; justify-content:center; width:30px; height:30px; color:#000; font-size:14px; text-decoration:none; }
 .pulse-label { position:absolute; left:50%; bottom:14px; transform:translateX(-50%); z-index:800; background:rgba(15,17,21,.85); color:#ffd2b3; border:1px solid #c2410c; border-radius:10px; padding:4px 14px; font:700 22px system-ui, sans-serif; pointer-events:none; }
+.cases-row { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.cases-row .case-btns .pill { padding:4px 10px; font-size:12.5px; }
+.summary .case-line { margin:8px 0 0; }

@@ -1,12 +1,42 @@
 # GeoFuego Harmonization
 
-**MODIS → VIIRS-equivalent harmonized fire-hotspot calendar for Argentina, November 2000 → December 2025, with a calibrated uncertainty band** (the 2026 live months are carried by the S-NPP ↔ NOAA bridge in the app, in progress).
+**One consistent fire-hotspot calendar for Argentina, November 2000 → December 2025, from two sensors that count fire differently** — MODIS (2000→, 1 km) converted to VIIRS-equivalent counts, with a calibrated uncertainty band on every reconstructed month. The 2026 live months are carried by the S-NPP ↔ NOAA-20/21 bridge in the app (in progress).
 
 NASA Space Apps Challenge 2026 · Challenge: *Harmonization of MODIS and VIIRS Hot Spots* (CONAE) · Local event: Buenos Aires · Team: **GeoFuego.com.ar**
 
-DOI (this work): https://doi.org/10.5281/zenodo.24220107 · App: https://spaceapps.geofuego.com.ar/
+DOI (this work): https://doi.org/10.5281/zenodo.24220107 · App: https://spaceapps.geofuego.com.ar/ · Every number below is reproduced by the scripts in this repository from NASA FIRMS data.
 
-## What this is
+## In thirty seconds
+
+**The problem.** Argentina's hotspot record is two records: MODIS since 2000 and VIIRS since 2012. VIIRS sees ≈ 3 fire pixels where MODIS sees one, and the ratio changes with region, calendar month, satellite overpass time and the kind of heat source. Glued together, the record shows a false 3× jump in 2012; kept apart, a fire manager cannot compare this season with 2008.
+
+**What we built.** A conversion factor per 0.25° cell × calendar month × satellite set, fitted on the days both sensors flew (2012–2023), with shrinkage to province, fire-regime region and country where a cell has too little data; a static-source class (gas flares, industry, and MODIS's own summer false alarms) kept as a separate column; satellite outages filled across sensors; and an 80 % prediction interval calibrated out of sample and then tested on two years never used.
+
+**Five numbers (all out of sample).**
+
+| | |
+|---|---|
+| Fire-season error of the reconstruction, leave-one-year-out 2012–2023 | **3.2 % country · 9.8 % province · 30 % single cell** (a national scalar: 8.9 / 15.0 / 34 %) |
+| Drift of the ratio between 2012–17 and 2018–23, after fixing a labelling change in the MODIS archive | **≈ 3 %** (it read ≈ 9 % before the fix) |
+| 80 % interval tested on 2024 and 2025, years used neither for the factors nor for the band | **83 % / 81 %** of province-months inside, 80 % / 77 % of cell-months |
+| Continuity across the 2012 splice: burned hectares per hotspot before vs after (MCD64A1) | **0.98** harmonized vs **3.12** naive concatenation |
+| Static-source cells separated from vegetation fire (flares, kilns, MODIS summer false alarms) | **1 628** cells of 0.02°, 3.0 % of hotspots; 59 % of Neuquén's VIIRS hotspots |
+
+## How to use it
+
+- **`data/harmonized/harmonized_provinces.csv`** — 24 provinces + Argentina, month by month, Nov 2000 → Dec 2025: `H` (VIIRS-equivalent hotspots, vegetation class), `H_lo`/`H_hi` (80 % interval; empty for observed VIIRS months), `sensor` (VIIRS · MODIS→VIIRS-eq · MODIS-Terra→VIIRS-eq), `gap_fill` and outage-day counts, `cloud_anom`/`cloud_underdetection` (ERA5 cloud at the overpass: a flagged month is likely a lower bound), `static` (separate column, never subtracted silently), `factor_source` (estimated | assigned).
+- **`data/harmonized/harmonized_cells.csv`** — the same per 0.25° cell (4 193 cells, 291 k rows): sum cells for any area of interest; the interval for an aggregate comes from `band_calibration.json` (`by_region_class`, class `agg`, bin by the aggregate's predicted count).
+- **`data/harmonized/cells.json.gz`** (1.1 MB) — the app payload: per cell, 26 × 12 harmonized counts, sensor flag, static counts, gap-fill and cloud flags, plus the interval bins by region and class and the province → region table.
+- **`data/factors/factors.csv`** — the factor itself per cell × month × set with its weight and level of origin; `bridge.csv` — S-NPP ↔ NOAA-20 / NOAA-21 (g = 0.979 / 0.951) for the live 2026 series.
+- **Read first:** Known limits below. Before 2012 a small area reads zero where MODIS saw nothing (44 % of VIIRS-active cell-months), and the static-source class removes more than half of Neuquén's hotspots from the vegetation calendar by design.
+
+## The series in one figure
+
+![Argentina 2000–2025: raw MODIS, raw VIIRS, naive concatenation and the harmonized series with its 80 % interval](figures/headline_series_Argentina.png)
+
+Raw MODIS runs through 2025 and falls after 2011 as much as the harmonized series does (2003–2011 mean over 2012–2025 mean: 1.48 raw MODIS, 1.41 harmonized): the lower fire activity of the VIIRS era is real, the ≈ 3× step of the naive splice is not.
+
+## What this is, in more detail
 
 MODIS (2000→, 1 km) and VIIRS (2012→, 375 m) count fire differently, and the ratio between them is not a constant: it depends on region, calendar month and satellite overpass time, and it is a different ratio altogether for persistent thermal sources (gas flares, industry). This repository contains:
 
@@ -17,12 +47,6 @@ MODIS (2000→, 1 km) and VIIRS (2012→, 375 m) count fire differently, and the
 5. A web app (in progress) where the user draws any area of interest, picks a date range, and gets the 26-year calendar, the current month vs the historical median, and downloadable CSV/PNG.
 
 All code in this repository was written during the hackathon window (14–15 Nov 2026, Buenos Aires time); git timestamps are the record.
-
-## The series in one figure
-
-![Argentina 2000–2025: raw MODIS, raw VIIRS, naive concatenation and the harmonized series with its 80 % interval](figures/headline_series_Argentina.png)
-
-Raw MODIS runs through 2025 and falls after 2011 as much as the harmonized series does (2003–2011 mean over 2012–2025 mean: 1.48 raw MODIS, 1.41 harmonized): the lower fire activity of the VIIRS era is real, the ≈ 3× step of the naive splice is not.
 
 ## Validation at a glance (`docs/audit_2026-11-14.md`, `docs/peer_review_fable52.md`)
 
@@ -43,11 +67,13 @@ Raw MODIS runs through 2025 and falls after 2011 as much as the harmonized serie
 | Day/night split factors (reviewer suggestion) | night VIIRS/MODIS ratio **6.1–6.7** vs day **2.7–3.0** (physics confirmed), but separate day and night factors give no net skill gain (country 3.3 → 2.9 %, province 10.2 → 10.6 %, cell 29.7 → 30.8 %): the pooled cell×month factor already absorbs the local day/night mix → not adopted, kept as an option |
 | Additive term for months where MODIS saw nothing (reviewer suggestion) | fixes single cells (Terra-only cell error 54 → 42 %) but degrades every aggregate and both out-of-time tests → not adopted; the structural zero of small pre-2012 AOIs stays declared |
 
-## Pre-existing work (declared, cited)
+## Known limits (declared)
 
-- **GeoFuego** (https://geofuego.com.ar): live national fire-monitoring platform (NASA FIRMS ingestion every 3 h, provincial calendar, GeoFuego Index). Method package: concept DOI https://doi.org/10.5281/zenodo.23017739 (current version v1.2.0: https://doi.org/10.5281/zenodo.24164911).
-- Preliminary feasibility check of the MODIS/VIIRS ratio (Sept–Nov 2026) informed the method design; its numbers are reproduced here by the scripts, not copied.
-- Province polygons (IGN Argentina, simplified) reused from GeoFuego (`lib/provincias.js`).
+Observed VIIRS months carry no interval (they are the reference); the interval of Tierra del Fuego cannot be verified (3 province-months with enough fire in 2012–2023) and the intervals of Pampa/Cuyo provinces are wider than needed (coverage 85–94 %); a cloudy month still reads low (obscuration is measured and flagged, not corrected); day and night detections are pooled (split tested, no gain); the four regions are the GFI's (declared, reused for consistency with GeoFuego); the factors of Tierra del Fuego and of the City of Buenos Aires are **assigned** from their region, not estimated (own weight 0: 180 and 8 MODIS detections in August over 12 years), and are labelled so in the province CSV; the static class is time-invariant and removes the vegetation fire that occurs inside its 1 628 cells (0.4–0.5 % of VIIRS hotspots per year; before 2012, 0.5 % of MODIS detections nationally, 15 % in Neuquén — but only the detections that precede a cell's first year of persistent night activity can be vegetation fire the mask wrongly removes: **0.3 % nationally, 6.4 % in Neuquén**, 4.3 % Santa Cruz, 44 % of Tierra del Fuego's 130 detections; `scripts/audit_flare_start_year.mjs`. A dated mask was not implemented: the gain is below the interval width everywhere except Tierra del Fuego, where nothing is estimable) and MODIS type-2 detections outside those cells (≈ 0.7 %) are treated differently before and after 2018; the outage detector conditions on MODIS zeros (effect < 1 % of counts per year; all 7 outages of ≥ 8 days and 15 of the 24 runs of ≥ 3 days match official NASA mission records, `data/validation/outages_vs_official.json`); the unit is VIIRS-equivalent 375 m pixel counts, not fires nor area; Argentina only.
+
+## Pipeline
+
+`npm run all` (or step by step) — `01_fetch` → `02_grid` → `03a_static_sources` → `03b_coverage` → `03_aggregate` → `04_factors` → `05_loyo` (+ `05b` consistency, `05c` AOI curve, `05d` ha-per-hotspot, `05e` ENSO) → `06_harmonize` → `04b_bridge`. Figures: `fig_*.py`. Everything runs with Node ≥ 20 and Python 3 (numpy, matplotlib).
 
 ## Data
 
@@ -68,13 +94,11 @@ Raw MODIS runs through 2025 and falls after 2011 as much as the harmonized serie
 | IGN Argentina province polygons (simplified, via GeoFuego) | cell → province assignment | Instituto Geográfico Nacional, open data (Ley 27.275; CC BY-style attribution) | IGN Argentina, Capas SIG |
 | Leaflet 1.9.4, Leaflet.draw 1.0.4, uPlot 1.6.31 (app, vendored) | web app | BSD-2-Clause, MIT, MIT | see `deploy/` LICENSE files when the app is published |
 
-## Known limits (declared)
+## Pre-existing work (declared, cited)
 
-Observed VIIRS months carry no interval (they are the reference); the interval of Tierra del Fuego cannot be verified (3 province-months with enough fire in 2012–2023) and the intervals of Pampa/Cuyo provinces are wider than needed (coverage 85–94 %); a cloudy month still reads low (obscuration is measured and flagged, not corrected); day and night detections are pooled (split tested, no gain); the four regions are the GFI's (declared, reused for consistency with GeoFuego); the factors of Tierra del Fuego and of the City of Buenos Aires are **assigned** from their region, not estimated (own weight 0: 180 and 8 MODIS detections in August over 12 years), and are labelled so in the province CSV; the static class is time-invariant and removes the vegetation fire that occurs inside its 1 628 cells (0.4–0.5 % of VIIRS hotspots per year; before 2012, 0.5 % of MODIS detections nationally, 15 % in Neuquén — but only the detections that precede a cell's first year of persistent night activity can be vegetation fire the mask wrongly removes: **0.3 % nationally, 6.4 % in Neuquén**, 4.3 % Santa Cruz, 44 % of Tierra del Fuego's 130 detections; `scripts/audit_flare_start_year.mjs`. A dated mask was not implemented: the gain is below the interval width everywhere except Tierra del Fuego, where nothing is estimable) and MODIS type-2 detections outside those cells (≈ 0.7 %) are treated differently before and after 2018; the outage detector conditions on MODIS zeros (effect < 1 % of counts per year; all 7 outages of ≥ 8 days and 15 of the 24 runs of ≥ 3 days match official NASA mission records, `data/validation/outages_vs_official.json`); the unit is VIIRS-equivalent 375 m pixel counts, not fires nor area; Argentina only.
-
-## Pipeline
-
-`npm run all` (or step by step) — `01_fetch` → `02_grid` → `03a_static_sources` → `03b_coverage` → `03_aggregate` → `04_factors` → `05_loyo` (+ `05b` consistency, `05c` AOI curve, `05d` ha-per-hotspot, `05e` ENSO) → `06_harmonize` → `04b_bridge`. Figures: `fig_*.py`. Everything runs with Node ≥ 20 and Python 3 (numpy, matplotlib).
+- **GeoFuego** (https://geofuego.com.ar): live national fire-monitoring platform (NASA FIRMS ingestion every 3 h, provincial calendar, GeoFuego Index). Method package: concept DOI https://doi.org/10.5281/zenodo.23017739 (current version v1.2.0: https://doi.org/10.5281/zenodo.24164911).
+- Preliminary feasibility check of the MODIS/VIIRS ratio (Sept–Nov 2026) informed the method design; its numbers are reproduced here by the scripts, not copied.
+- Province polygons (IGN Argentina, simplified) reused from GeoFuego (`lib/provincias.js`).
 
 ## Super Intelligence (SI) acknowledgment
 

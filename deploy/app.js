@@ -196,7 +196,7 @@ function applyI18n() {
   const esc = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
   const ask = document.getElementById('ask');
   if (ask) ask.innerHTML = `<thead><tr><th>${esc(T[lang].askcols[0])}</th><th>${esc(T[lang].askcols[1])}</th></tr></thead><tbody>` + T[lang].ask.map(r => `<tr><td>${esc(r[0])}</td><td><button type="button" class="asklink" data-go="${r[2]}"${r[3] ? ` data-act="${r[3]}"` : ''}>${esc(r[1])}</button></td></tr>`).join('') + '</tbody>';
-  const mv = document.getElementById('mv-bar'); if (mv) { mv.querySelector('.mv-title b').textContent = `${T[lang].pulseTitle} 2000–${YCUR}`; mv.querySelector('[data-mv="year"]').textContent = lang === 'es' ? 'Años' : 'Years'; mv.querySelector('[data-mv="month"]').textContent = lang === 'es' ? 'Meses' : 'Months'; }
+  const mv = document.getElementById('mv-bar'); if (mv) { mvTitle(); mv.querySelector('[data-mv="year"]').textContent = lang === 'es' ? 'Años' : 'Years'; mv.querySelector('[data-mv="month"]').textContent = lang === 'es' ? 'Meses' : 'Months'; }
   for (const [id, k] of [['dl-step', 'stepcsvttl'], ['dl-csv', 'csvttl'], ['dl-cells', 'cellsttl'], ['dl-png', 'pngttl']]) document.getElementById(id)?.setAttribute('title', T[lang][k]);
 }
 
@@ -354,7 +354,7 @@ function render() {
 
 function renderSummary() {
   const s = A.sel; const title = s.kind === 'country' ? t('argentina') : s.kind === 'province' ? s.label : s.kind === 'point' ? `${t('point')} ${s.label}` : s.kind === 'cells' ? `${t('cellsel')} (${A.n})` : t('drawn');
-  $('aoi-title').textContent = title;
+  $('aoi-title').textContent = title; mvTitle(); // the fire film plays the selected area: its name goes in the player bar
   const parts = [`${A.n} ${A.n === 1 ? t('cell') : t('cells')} · ~${fmt(A.km2)} ${t('km2')} · ${t('tier')} ${A.tier}`];
   if (s.kind !== 'country' && s.kind !== 'province') parts.push(`${t('dominant')} ${A.dominant} (${Math.round(100 * A.shareDom)} %)`);
   if (s.kind !== 'country') parts.push(`${t('region')}: ${A.region}`);
@@ -585,10 +585,19 @@ function movieFrames(mode) {
   all.sort((x, y) => x - y); const top = all.length ? all[Math.floor(0.99 * (all.length - 1))] : 1; // one fixed scale for the whole film (99th percentile)
   return { ids: Object.keys(vals), vals, labels, lm: Math.log1p(Math.max(1, top)), top };
 }
-let darkBase = null;
+/** the film is of the selected area and is coloured on that area's own scale: the bar names the area next to the scale */
+function mvTitle() { const bar = document.getElementById('mv-bar'); if (!bar) return; bar.querySelector('.mv-title b').textContent = `${t('pulseTitle')} 2000–${YCUR}`; const a = document.getElementById('mv-area'); a.textContent = document.getElementById('aoi-title')?.textContent || t('argentina'); a.title = a.textContent; }
+let darkBase = null, mvKeepView = false; // mvKeepView: switching Years / Months restarts the film without moving the map
+/** frame the area of the film with some context around it (a quarter of its size on every side), leaving room for the player bar */
+function movieFrame() {
+  const ids = A && A.sel.kind !== 'country' ? A.sel.cells : Object.keys(D.cells); if (!ids.length) return;
+  let s = 90, w = 180, n = -90, e = -180; for (const id of ids) { const [a, c, b, d] = cellBounds(+id); if (a < s) s = a; if (c < w) w = c; if (b > n) n = b; if (d > e) e = d; }
+  map.invalidateSize(); map.fitBounds(L.latLngBounds([[s, w], [n, e]]).pad(A && A.sel.kind !== 'country' ? 0.25 : 0.02), { paddingTopLeft: [10, 10], paddingBottomRight: [10, 104], maxZoom: 8, animate: true });
+}
 function movieOn() {
   if (!darkBase) { const esri = 'https://server.arcgisonline.com/ArcGIS/rest/services/'; darkBase = L.layerGroup([L.tileLayer(esri + 'Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, attribution: '© Esri, HERE, Garmin · NASA FIRMS' }), L.tileLayer(esri + 'Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, pane: 'shadowPane' })]); }
-  darkBase.addTo(map); syncFireLayer(); if (gridLayer) gridLayer.remove(); if (cellsLayer) cellsLayer.remove();
+  darkBase.addTo(map); syncFireLayer(); if (gridLayer) gridLayer.remove();
+  if (!mvKeepView) movieFrame(); if (cellsLayer) cellsLayer.remove();
   const F = movieFrames(movie.mode); movie.F = F; movie.layer = L.layerGroup().addTo(map); movie.rects = {};
   for (const id of F.ids) { const [a, c, b, d] = cellBounds(+id); movie.rects[id] = L.rectangle([[a, c], [b, d]], { stroke: false, fillColor: '#000', fillOpacity: 0, interactive: false }).addTo(movie.layer); }
   const sc = $('mv-scrub'); sc.max = F.labels.length - 1; $('mv-top').textContent = fmt(F.top) + (movie.mode === 'year' ? (lang === 'es' ? ' focos/año' : ' /yr') : (lang === 'es' ? ' focos/mes' : ' /mo'));
@@ -609,12 +618,13 @@ function moviePlay() {
 }
 function buildMovieBar() {
   const bar = document.createElement('div'); bar.id = 'mv-bar'; bar.className = 'mv-bar'; bar.dataset.mode = 'year';
-  bar.innerHTML = `<button id="mv-play" type="button" class="mv-play" aria-label="Play">▶</button><div class="mv-mid"><div class="mv-title"><b>${t('pulseTitle')} 2000–${YCUR}</b><span class="mv-modes"><button type="button" data-mv="year" class="on">${lang === 'es' ? 'Años' : 'Years'}</button><button type="button" data-mv="month">${lang === 'es' ? 'Meses' : 'Months'}</button></span><span id="mv-label" class="mv-label"></span><button id="mv-close" type="button" class="mv-x" title="Close" aria-label="Close">✕</button></div><input id="mv-scrub" type="range" min="0" max="25" value="0" aria-label="Frame"><div class="mv-scale"><span>0</span><i></i><span id="mv-top"></span></div></div>`;
+  bar.innerHTML = `<button id="mv-play" type="button" class="mv-play" aria-label="Play">▶</button><div class="mv-mid"><div class="mv-title"><b></b><span class="mv-modes"><button type="button" data-mv="year" class="on">${lang === 'es' ? 'Años' : 'Years'}</button><button type="button" data-mv="month">${lang === 'es' ? 'Meses' : 'Months'}</button></span><span id="mv-label" class="mv-label"></span><button id="mv-close" type="button" class="mv-x" title="Close" aria-label="Close">✕</button></div><input id="mv-scrub" type="range" min="0" max="25" value="0" aria-label="Frame"><div class="mv-scale"><span id="mv-area" class="mv-area"></span><span>0</span><i></i><span id="mv-top"></span></div></div>`;
   document.getElementById('map').appendChild(bar); L.DomEvent.disableClickPropagation(bar); L.DomEvent.disableScrollPropagation(bar);
+  mvTitle();
   $('mv-play').addEventListener('click', moviePlay);
   $('mv-close').addEventListener('click', movieOff);
   $('mv-scrub').addEventListener('input', e => { if (!movie) { movie = { mode: bar.dataset.mode, k: 0 }; movieOn(); } if (pulseTimer) { clearInterval(pulseTimer); pulseTimer = null; $('mv-play').textContent = '▶'; bar.classList.remove('playing'); } movieShow(+e.target.value); });
-  bar.querySelectorAll('[data-mv]').forEach(b => b.addEventListener('click', () => { bar.dataset.mode = b.dataset.mv; bar.querySelectorAll('[data-mv]').forEach(x => x.classList.toggle('on', x === b)); const was = !!pulseTimer; movieOff(); if (was) moviePlay(); }));
+  bar.querySelectorAll('[data-mv]').forEach(b => b.addEventListener('click', () => { bar.dataset.mode = b.dataset.mv; bar.querySelectorAll('[data-mv]').forEach(x => x.classList.toggle('on', x === b)); const was = !!pulseTimer; movieOff(); if (was) { mvKeepView = true; moviePlay(); mvKeepView = false; } }));
 }
 const startPulse = moviePlay, stopPulse = movieOff;
 
@@ -905,7 +915,7 @@ const CELL_ON = { color: '#f5a623', opacity: 1, weight: 1.2, fillOpacity: 0.35 }
 function buildGrid() {
   gridLayer = L.layerGroup();
   for (const id of Object.keys(D.cells)) { const [a, c, b, d] = cellBounds(+id); const r = L.rectangle([[a, c], [b, d]], CELL_STYLE); r.on('click', () => toggleCell(+id)); r.on('mouseover', () => { if (!picked.has(+id)) r.setStyle({ fillOpacity: 0.15 }); }); r.on('mouseout', () => { if (!picked.has(+id)) r.setStyle({ fillOpacity: 0 }); }); gridRects[id] = r; gridLayer.addLayer(r); }
-  const sync = () => { const on = map.getZoom() >= GRID_MIN_ZOOM; if (on && !map.hasLayer(gridLayer)) gridLayer.addTo(map); if (!on && map.hasLayer(gridLayer)) gridLayer.remove(); };
+  const sync = () => { const on = map.getZoom() >= GRID_MIN_ZOOM && !movie; /* the grid stays hidden while the fire film is open */ if (on && !map.hasLayer(gridLayer)) gridLayer.addTo(map); if (!on && map.hasLayer(gridLayer)) gridLayer.remove(); };
   map.on('zoomend', sync); sync();
 }
 function toggleCell(id) {

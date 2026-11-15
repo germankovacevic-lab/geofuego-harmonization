@@ -1,0 +1,17 @@
+/* About page: same tokens as the app (app.css), page scrolls as a document */
+body.about { display:block; height:auto; min-height:100vh; overflow:auto; }
+.about-main { max-width:980px; margin:0 auto; padding:24px 20px 32px; display:flex; flex-direction:column; gap:16px; }
+.a-hero { display:flex; gap:24px; align-items:center; }
+.a-photo { width:168px; height:168px; border-radius:50%; object-fit:cover; border:2px solid var(--accent); flex-shrink:0; }
+.a-kicker { margin:0 0 6px; color:var(--muted); font-size:12px; letter-spacing:.8px; text-transform:uppercase; }
+.a-hero h2 { margin:0; font-size:30px; }
+.a-role { margin:4px 0 10px; color:var(--accent); font-size:14px; }
+.a-hero p { max-width:700px; }
+.a-links { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 0; }
+.a-links .chip { display:inline-flex; align-items:center; gap:7px; }
+.a-in { background:#0a66c2; color:#fff; font-weight:700; font-size:11px; border-radius:3px; padding:1px 4px; line-height:1.2; }
+.a-card h3 { margin:0 0 10px; font-size:17px; }
+.a-card p { margin:0 0 8px; font-size:14px; line-height:1.55; }
+.a-video { display:block; width:100%; height:auto; aspect-ratio:16/9; background:#000; border-radius:8px; border:1px solid var(--line); }
+.a-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media (max-width:760px) { .a-hero { flex-direction:column; align-items:flex-start; } .a-grid { grid-template-columns:1fr; } .a-photo { width:120px; height:120px; } }

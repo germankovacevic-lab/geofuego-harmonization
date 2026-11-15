@@ -2,7 +2,7 @@
 // 03_aggregate.mjs — Count filtered hotspots per cell × year × month × satellite set.
 // Written with SI assistance (Claude, Anthropic); reviewed and validated by the team.
 //
-// Equivalent filters (declared in METHOD_DESIGN §1.2):
+// Equivalent filters (as designed before the hackathon; see README, Pre-existing work):
 //   MODIS : type == 0 (vegetation fire) AND confidence >= 30; type == 2 (static land source) is counted in the STATIC columns
 //           (never in vegetation) because the flag is not homogeneous across archive versions (03a rule 3); types 1/3 dropped
 //   VIIRS : type == 0 AND confidence != 'l'

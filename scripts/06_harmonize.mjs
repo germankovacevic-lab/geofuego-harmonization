@@ -2,7 +2,7 @@
 // 06_harmonize.mjs — Build the harmonized monthly series 2000→2025 per cell and per province, with uncertainty band.
 // Written with SI assistance (Claude, Anthropic); reviewed and validated by the team.
 //
-// Per cell c, year y, month m (METHOD_DESIGN §2.3):
+// Per cell c, year y, month m:
 //   y >= 2012            : H = V (observed VIIRS S-NPP)                       sensor = VIIRS          band = none
 //   2002-07 .. 2011-12   : H = f_TA[c,m] · (T + A)                            sensor = MODIS→VIIRS-eq band = 80 % prediction interval (below)
 //   2000-11 .. 2002-06   : H = f_T[c,m] · T   (Terra only, Aqua not yet)      sensor = MODIS-Terra→VIIRS-eq, terra_only = 1

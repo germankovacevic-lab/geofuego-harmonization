@@ -141,7 +141,7 @@ for (const [set, recs] of Object.entries(resid)) {
   const provs = [...new Set(recs.filter(x => x.level === 'prov').map(x => x.unit))];
   for (const p of provs) coverage[set].by_province[p] = cov(recs.filter(x => x.level === 'prov' && x.unit === p && x.P >= 30));
 }
-// ---- regional band test (pendiente 4): Patagonia is under-covered by the pooled bins (dominated by the Chaco and the Litoral).
+// ---- regional band test (pending item 4): Patagonia is under-covered by the pooled bins (dominated by the Chaco and the Litoral).
 // Fit the same count bins per fire-regime region (cell- and province-level residuals of that region; country stays pooled);
 // bins with fewer than MIN_BIN residuals fall back to the pooled bin. Coverage is measured OUT-OF-SAMPLE FOR THE BAND:
 // for each year, quantiles from the other 11 years' residuals, coverage on that year's residuals (both bands, same folds).

@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
 <link rel="stylesheet" href="vendor/leaflet-draw-1.0.4/leaflet.draw.css">
 <link rel="stylesheet" href="vendor/uplot-1.6.31/uPlot.min.css">
-<link rel="stylesheet" href="app.css?v=202611150822">
+<link rel="stylesheet" href="app.css?v=202611150911">
 </head>
 <body>
 <header class="top">
@@ -111,6 +111,12 @@
         </div>
         <div id="step-kpis" class="step-kpis"></div>
         <div id="step-chart"></div>
+        <details id="step-table-wrap" class="step-table" hidden>
+          <summary data-i18n="steptbl">Table · same numbers, downloadable</summary>
+          <div class="tblscroll"><table id="step-table"></table></div>
+          <button type="button" class="btn small" id="dl-step">CSV</button>
+          <p class="note" data-i18n="steptblnote"></p>
+        </details>
         <p class="note" id="step-note"></p>
       </div>
 
@@ -175,6 +181,6 @@
 <script src="vendor/leaflet-1.9.4/leaflet.js"></script>
 <script src="vendor/leaflet-draw-1.0.4/leaflet.draw.js"></script>
 <script src="vendor/uplot-1.6.31/uPlot.iife.min.js"></script>
-<script src="app.js?v=202611150822"></script>
+<script src="app.js?v=202611150911"></script>
 </body>
 </html>

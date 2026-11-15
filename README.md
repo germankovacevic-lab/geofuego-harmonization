@@ -34,7 +34,7 @@ DOI (this work): https://doi.org/10.5281/zenodo.24220107 · App: https://spaceap
 
 | the challenge statement asks for | in the app (https://spaceapps.geofuego.com.ar/) |
 |---|---|
-| MODIS and VIIRS harmonized, "so that the sensor of origin no longer matters" | panel *In 2012 the satellite changed*: naive splice vs MODIS alone vs harmonized, for the selected area · [Argentina](https://spaceapps.geofuego.com.ar/#aoi=ar) |
+| MODIS and VIIRS harmonized, "so that the sensor of origin no longer matters" | panel *In 2012 the satellite changed*: naive splice vs MODIS alone vs harmonized, for the selected area, with a yearly table (downloadable as CSV) that lists the harmonized total, its 80 % range and the raw count of each satellite: MODIS Terra + Aqua, VIIRS S-NPP, and NOAA-20 / NOAA-21 for 2023–2025 · [Argentina](https://spaceapps.geofuego.com.ar/#aoi=ar) |
 | "select a region": draw the area of interest or enter latitude and longitude | province list, Lat / Lon, cells or rectangle on the map · [a point in Córdoba](https://spaceapps.geofuego.com.ar/#pt=-31.4,-64.5) |
 | "a specific date range" | From / to · [Corrientes 2020–2022](https://spaceapps.geofuego.com.ar/#prov=Corrientes&from=2020-01&to=2022-12) |
 | a calendar of hotspots "from the early 2000s to the present" | *Burning-activity calendar*, November 2000 → today · [Corrientes](https://spaceapps.geofuego.com.ar/#prov=Corrientes) |
@@ -108,9 +108,10 @@ Three levels, from no network to everything:
 ## Data
 
 - **NASA FIRMS** active fire archive by country: MODIS (2000–2025; the `version` column reads 6.2 up to 2017, 6.03 for 2018–2022 and 61.03 for 2023–2025 — all Collection 6 / 6.1 archive products, treated as one series except for the `type` flag, which is not homogeneous across versions and is handled by rule 3 of the static class) and VIIRS S-NPP (2012–2025) — `scripts/01_fetch.mjs`, sha256 of every file in `data/raw/MANIFEST.json`.
-- **NASA FIRMS Area API**, standard processing: VIIRS S-NPP, NOAA-20, NOAA-21 2023–2025 over Argentina (bridge only) — `scripts/01b_fetch_viirs_sp.mjs` (needs a free FIRMS MAP_KEY in `~/.config/nasa/firms-map-key`).
+- **NASA FIRMS Area API**, standard processing: VIIRS S-NPP, NOAA-20, NOAA-21 2023–2025 over Argentina (bridge, and the per-satellite columns of the yearly table in the app) — `scripts/01b_fetch_viirs_sp.mjs` (needs a free FIRMS MAP_KEY in `~/.config/nasa/firms-map-key`).
 - **NOAA CPC Oceanic Niño Index** and **GWIS/JRC burned-area tables (MCD64A1, MVP64)** — `scripts/01c_fetch_aux.mjs`; Argentina rows committed in `data/external/`.
 - **ERA5** (Copernicus Climate Data Store): monthly cloud fraction by hour of day and monthly precipitation, 0.25°, 2000–2025 — `scripts/01d_fetch_era5_cloud.py`, `01e_fetch_era5_precip.py` (needs a free CDS key); sha256 in `data/external/MANIFEST_aux.json`.
+- **`deploy/data/raw.json`** (app payload, `scripts/08_app_payload.mjs`): annual raw hotspot counts per 0.25° cell, 2001–2025, vegetation class, static sources excluded, in each sensor's own units. `m` = MODIS Terra + Aqua and `v` = VIIRS S-NPP from the country archives (`data/agg/counts.json`); `vs` / `n20` / `n21` = VIIRS S-NPP / NOAA-20 / NOAA-21 for 2023–2025 from the FIRMS Area API standard-processing files, all days, same filters, clipped to the Argentine provinces. The per-cell counts of those three are versioned in `data/agg/viirs_sp_annual.json` (written by the same script when the raw CSVs are present, read from the repository otherwise), so the payload rebuilds without the raw files. Country totals 2023 / 2024 / 2025: S-NPP from the Area API over S-NPP from the country archive 1.000 / 0.998 / 0.999; NOAA-20 over S-NPP 0.951 / 1.030 / 0.991; NOAA-21 over S-NPP 1.009 / 0.957 for 2024 / 2025 (the NOAA-21 file of 2023 starts on 1 March, so that year is partial and marked as such in the app). The script prints these ratios and stops if a complete year falls outside 0.90–1.10.
 - Raw hotspot CSVs are not committed (≈ 1 GB); derived products are published in the Zenodo record.
 
 ## Data sources and licences

@@ -97,6 +97,16 @@ footer p { margin:0; }
 .step-kpis .kpi .v { font-size:26px; }
 .step-kpis .kpi.bad .v { color:#ff8a65; } .step-kpis .kpi.good .v { color:var(--accent); } .step-kpis .kpi.ref .v { color:#c9cfdb; }
 #step-chart { min-height:260px; }
+.step-table { margin:8px 0 6px; font-size:13px; } .step-table summary { color:#c9cfdb; }
+.step-table .tblscroll { overflow-x:auto; max-width:100%; margin:8px 0; border:1px solid var(--line); border-radius:8px; }
+.step-table table { border-collapse:collapse; width:100%; min-width:560px; font-size:12px; font-variant-numeric:tabular-nums; }
+.step-table th, .step-table td { padding:3px 6px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap; }
+.step-table thead th { position:sticky; top:0; background:#151821; color:var(--muted); font-weight:600; font-size:11px; white-space:normal; vertical-align:bottom; }
+.step-table tbody th { text-align:left; font-weight:600; color:#c9cfdb; position:sticky; left:0; background:var(--card); } .step-table thead th:first-child { position:sticky; left:0; z-index:1; } .step-table thead th:first-child { text-align:left; }
+.step-table tbody tr:last-child th, .step-table tbody tr:last-child td { border-bottom:0; }
+.step-table tr.prelim th, .step-table tr.prelim td { color:var(--muted); font-style:italic; }
+.step-table .pt { display:block; color:var(--muted); font-size:10px; line-height:1.1; }
+.step-table tr.prelim th { white-space:normal; min-width:92px; }
 .step-key { display:inline-block; width:14px; height:0; border-top:2px solid; vertical-align:middle; margin-right:6px; }
 .case-btns { display:flex; flex-wrap:wrap; gap:8px; }
 .case-btns .pill { border-color:var(--line); background:#151821; }

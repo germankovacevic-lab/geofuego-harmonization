@@ -34,6 +34,8 @@ const T = {
     stepharm: 'Harmonized record', stepharmd: 'follows the trend MODIS sees on its own: the step is gone',
     stepharmna: 'Before 2012 the harmonized record is not shown for an area this size.', steplow: 'Too few detections in this area for a stable before/after ratio; read the chart, not the ratios.',
     stepnote: 'Annual totals 2001–2025, whole record (the date range above does not apply). MODIS and VIIRS in each sensor’s own units: Terra + Aqua hotspots (Terra only until mid-2002, hence the rise to 2003) and VIIRS S-NPP hotspots. Harmonized = VIIRS-equivalent: reconstructed from MODIS until 2011, with its 80 % range (sum of the monthly bounds, conservative), observed by VIIRS from 2012. Spliced as recorded = raw MODIS until 2011, raw VIIRS from 2012, what you get by joining the two archives as they are. Ratios: mean of 2012–14 over mean of 2009–11. Vegetation class; fixed heat sources excluded.',
+    steptblnote: 'Same yearly totals as the chart, whole record. The raw count of VIIRS NOAA-20 and NOAA-21 sits next to S-NPP: standard processing, 2023–2025, all days, same vegetation class (NOAA-21 data begin in March 2023). Where they overlap, NOAA-20 counts within about 5 % of S-NPP and NOAA-21 up to about 5 % less (bridge on the days all three report: 0.979 and 0.951); that is why the series can continue on them. % modelled = share of the harmonized total that comes from MODIS through the factor: all of it before 2012; from 2012, only what was filled on the days S-NPP did not report. – = no value for that year.',
+    steptbl: 'Table · same numbers, downloadable', stepcsvttl: 'Yearly totals of the selected area with the raw count of each satellite', tblyear: 'Year', tblharm: 'Harmonized (VIIRS-equivalent)', tbllo: '80 % range, low', tblhi: '80 % range, high', tblmodis: 'MODIS raw (Terra + Aqua)', tblsnpp: 'VIIRS S-NPP raw', tbln20: 'VIIRS NOAA-20 raw', tbln21: 'VIIRS NOAA-21 raw', tblmdl: '% modelled', tblprelim: d => `preliminary, through ${d}`,
     viirsstarts: 'VIIRS starts', peryear: 'hotspots per year',
     tagline: 'One fire-hotspot calendar for any area of Argentina, November 2000 to today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month. Suomi NPP stopped delivering data on 2 November 2026: from that day the series continues on NOAA-20 and NOAA-21, normalized to the S-NPP scale.',
     h1sub: 'MODIS + VIIRS fire calendar', method: 'Method & code', about: 'About', province: 'Province', country: 'Whole country', latlon: 'Lat / Lon', go: 'Go', clear: 'Clear', drawhint: 'On the map: click a province, or zoom in and click the cells you want (click again to remove); the rectangle tool selects many cells at once.', cellsel: 'Selected cells', home: 'Centre on Argentina',
@@ -120,6 +122,8 @@ const T = {
     stepharm: 'Registro armonizado', stepharmd: 'sigue la tendencia que MODIS ve por su cuenta: el escalón desaparece',
     stepharmna: 'Antes de 2012 el registro armonizado no se muestra para un área de este tamaño.', steplow: 'Muy pocas detecciones en esta área para un cociente antes/después estable; leer el gráfico, no los cocientes.',
     stepnote: 'Totales anuales 2001–2025, registro completo (el rango de fechas de arriba no se aplica). MODIS y VIIRS en las unidades de cada sensor: focos Terra + Aqua (solo Terra hasta mediados de 2002, de ahí la subida hasta 2003) y focos VIIRS S-NPP. Armonizado = equivalente VIIRS: reconstruido desde MODIS hasta 2011, con su rango del 80 % (suma de las cotas mensuales, conservadora), observado por VIIRS desde 2012. Empalmado tal cual = MODIS crudo hasta 2011, VIIRS crudo desde 2012: lo que sale de pegar los dos archivos como vienen. Cocientes: media 2012–14 sobre media 2009–11. Clase vegetación; fuentes fijas de calor excluidas.',
+    steptblnote: 'Los mismos totales anuales del gráfico, registro completo. El conteo crudo de VIIRS NOAA-20 y NOAA-21 va al lado del de S-NPP: procesamiento estándar, 2023–2025, todos los días, misma clase vegetación (los datos de NOAA-21 empiezan en marzo de 2023). Donde se solapan, NOAA-20 cuenta dentro de un 5 % de S-NPP y NOAA-21 hasta un 5 % menos (puente en los días en que reportan los tres: 0,979 y 0,951); por eso la serie puede continuar con ellos. % modelado = parte del total armonizado que sale de MODIS a través del factor: todo antes de 2012; desde 2012, solo lo rellenado en los días en que S-NPP no reportó. – = sin valor para ese año.',
+    steptbl: 'Tabla · los mismos números, descargables', stepcsvttl: 'Totales anuales del área elegida con el conteo crudo de cada satélite', tblyear: 'Año', tblharm: 'Armonizado (equivalente VIIRS)', tbllo: 'Rango 80 %, bajo', tblhi: 'Rango 80 %, alto', tblmodis: 'MODIS crudo (Terra + Aqua)', tblsnpp: 'VIIRS S-NPP crudo', tbln20: 'VIIRS NOAA-20 crudo', tbln21: 'VIIRS NOAA-21 crudo', tblmdl: '% modelado', tblprelim: d => `preliminar, hasta ${d}`,
     viirsstarts: 'empieza VIIRS', peryear: 'focos por año',
     tagline: 'Un calendario de focos de calor para cualquier área de Argentina, noviembre de 2000 a hoy. MODIS convertido a conteos equivalentes VIIRS, con un rango del 80 % calibrado en cada mes reconstruido. Suomi NPP dejó de entregar datos el 2 de noviembre de 2026: desde ese día la serie sigue en NOAA-20 y NOAA-21, normalizados a la escala S-NPP.',
     h1sub: 'calendario de fuego MODIS + VIIRS', method: 'Método y código', about: 'Quiénes somos', province: 'Provincia', country: 'Todo el país', latlon: 'Lat / Lon', go: 'Ir', clear: 'Limpiar', drawhint: 'En el mapa: click en una provincia, o acercá y hacé click en las celdas que quieras (otro click las saca); la herramienta rectángulo marca muchas celdas de una.', cellsel: 'Celdas seleccionadas', home: 'Centrar en Argentina',
@@ -193,7 +197,7 @@ function applyI18n() {
   const ask = document.getElementById('ask');
   if (ask) ask.innerHTML = `<thead><tr><th>${esc(T[lang].askcols[0])}</th><th>${esc(T[lang].askcols[1])}</th></tr></thead><tbody>` + T[lang].ask.map(r => `<tr><td>${esc(r[0])}</td><td><button type="button" class="asklink" data-go="${r[2]}"${r[3] ? ` data-act="${r[3]}"` : ''}>${esc(r[1])}</button></td></tr>`).join('') + '</tbody>';
   const mv = document.getElementById('mv-bar'); if (mv) { mv.querySelector('.mv-title b').textContent = `${T[lang].pulseTitle} 2000–${YCUR}`; mv.querySelector('[data-mv="year"]').textContent = lang === 'es' ? 'Años' : 'Years'; mv.querySelector('[data-mv="month"]').textContent = lang === 'es' ? 'Meses' : 'Months'; }
-  for (const [id, k] of [['dl-csv', 'csvttl'], ['dl-cells', 'cellsttl'], ['dl-png', 'pngttl']]) document.getElementById(id)?.setAttribute('title', T[lang][k]);
+  for (const [id, k] of [['dl-step', 'stepcsvttl'], ['dl-csv', 'csvttl'], ['dl-cells', 'cellsttl'], ['dl-png', 'pngttl']]) document.getElementById(id)?.setAttribute('title', T[lang][k]);
 }
 
 // ---------- data ----------
@@ -225,9 +229,13 @@ function aggregate(sel) {
   const provH = {}, provN = {}, regionH = {}; const provHY = {}; const provCur = {};
   let km2 = 0;
   const rawM = RAW ? Array(RAW.y1 - RAW.y0 + 1).fill(0) : null, rawV = RAW ? Array(RAW.y1 - RAW.y0 + 1).fill(0) : null;
+  // raw counts per VIIRS satellite (standard processing, years RAW.sp.y0–y1): null outside those years
+  const spArr = () => RAW?.sp ? Array.from({ length: RAW.y1 - RAW.y0 + 1 }, (_, k) => (k + RAW.y0 >= RAW.sp.y0 && k + RAW.y0 <= RAW.sp.y1 ? 0 : null)) : null;
+  const rawN20 = spArr(), rawN21 = spArr(), rawVS = spArr();
   for (const id of ids) {
     const c = D.cells[id]; if (!c) continue; km2 += cellKm2(id);
     const r = RAW?.cells[id]; if (r) for (let k = 0; k < rawM.length; k++) { rawM[k] += r.m[k]; rawV[k] += r.v[k]; }
+    if (r?.vs && rawVS) for (let j = 0; j < r.vs.length; j++) { const k = RAW.sp.y0 - RAW.y0 + j; rawVS[k] += r.vs[j]; rawN20[k] += r.n20[j]; rawN21[k] += r.n21[j]; }
     provN[c.p] = (provN[c.p] || 0) + 1;
     for (let y = 0; y < YEARS; y++) {
       const hy = c.h[y], sy = c.s[y]; const Y = Y0 + y;
@@ -282,7 +290,7 @@ function aggregate(sel) {
     const months = L26.months.map(M => ({ ...M, h: M.days ? h[M.m - 1] : null, st: M.days ? s[M.m - 1] : null, partial: M.days > 0 && (M.d0 > 0 || M.d1 > 0 || M.d2 > 0) }));
     cur = { year: L26.year, through: L26.data_through, months, bridge: L26.bridge };
   }
-  return { rawM, rawV, sel, n, km2, dominant, shareDom, region, tier, stricter, lowered, tdf, borrowed, fromYear, baselineFrom, H, has, recon, gap, cloudFlag, st, lo, hi, staticShare, cur, provHY, provCur, provN };
+  return { rawM, rawV, rawN20, rawN21, rawVS, sel, n, km2, dominant, shareDom, region, tier, stricter, lowered, tdf, borrowed, fromYear, baselineFrom, H, has, recon, gap, cloudFlag, st, lo, hi, staticShare, cur, provHY, provCur, provN };
 }
 
 // ---------- state & UI ----------
@@ -387,12 +395,12 @@ const ratioFmt = x => '×' + (x >= 10 ? x.toFixed(0) : x.toFixed(2)).replace('.'
 function applyStepShow() { if (!stepPlot) return; stepPlot.setSeries(1, { show: stepShow[1] }); stepPlot.setSeries(2, { show: stepShow[1] }); stepPlot.setSeries(3, { show: stepShow[1] }); stepPlot.setSeries(4, { show: stepShow[4] }); stepPlot.setSeries(5, { show: stepShow[5] }); stepPlot.setSeries(6, { show: stepShow[6] }); }
 function renderStep() {
   const card = $('step-card'); if (!A.rawM) { card.hidden = true; return; } card.hidden = false;
-  const y0 = RAW.y0, y1 = RAW.y1, xs = [], hv = [], hlo = [], hhi = [], mv = [], vv = [], sp = [];
+  const y0 = RAW.y0, y1 = RAW.y1, xs = [], hv = [], hlo = [], hhi = [], mv = [], vv = [], sp = [], mdl = [];
   for (let y = y0; y <= y1; y++) {
     xs.push(y); const k = y - y0; mv.push(A.rawM[k]); vv.push(y >= 2012 ? A.rawV[k] : null); sp.push(y >= 2012 ? A.rawV[k] : A.rawM[k]);
-    let tot = 0, lo = 0, hi = 0, ok = true;
-    for (let m = 1; m <= 12; m++) { if (!usable(y, m)) { ok = false; break; } const h = A.H[y - Y0][m - 1]; tot += h; lo += A.lo[y - Y0][m - 1] ?? h; hi += A.hi[y - Y0][m - 1] ?? h; }
-    hv.push(ok ? tot : null); hlo.push(ok && y < 2012 ? lo : null); hhi.push(ok && y < 2012 ? hi : null);
+    let tot = 0, lo = 0, hi = 0, rc = 0, ok = true;
+    for (let m = 1; m <= 12; m++) { if (!usable(y, m)) { ok = false; break; } const h = A.H[y - Y0][m - 1]; tot += h; rc += y < 2012 ? h : Math.min(h, A.gap[y - Y0][m - 1] || 0); /* modelled: everything before 2012; from 2012 only the amount filled from MODIS on S-NPP outage days */ lo += A.lo[y - Y0][m - 1] ?? h; hi += A.hi[y - Y0][m - 1] ?? h; }
+    hv.push(ok ? tot : null); mdl.push(ok ? (tot > 0 ? rc / tot : (y < 2012 ? 1 : 0)) : null); hlo.push(ok && y < 2012 ? lo : null); hhi.push(ok && y < 2012 ? hi : null);
   }
   const mean = (arr, a, b) => { const v = []; for (let y = a; y <= b; y++) { const x = arr[y - y0]; if (x == null) return null; v.push(x); } return v.reduce((p, q) => p + q, 0) / v.length; };
   const mB = mean(mv, 2009, 2011), mA = mean(mv, 2012, 2014), vA = mean(vv, 2012, 2014), hB = mean(hv, 2009, 2011), hA = mean(hv, 2012, 2014);
@@ -403,6 +411,7 @@ function renderStep() {
     kp.push(hB ? `<div class="kpi good"><div class="l">${t('stepharm')}</div><div class="v">${ratioFmt(hA / hB)}</div><div class="d">${Math.abs(Math.log((hA / hB) / (mA / mB))) < Math.log(1.25) ? t('stepharmd') : t('stepharmd2', ratioFmt(mA / mB))}</div></div>` : `<div class="kpi"><div class="l">${t('stepharm')}</div><div class="v">—</div><div class="d">${t('stepharmna')}</div></div>`);
   } else kp.push(`<p class="note warn">${t('steplow')}</p>`);
   $('step-kpis').innerHTML = kp.join('');
+  renderStepTable(xs, hv, hlo, hhi, mv, vv, mdl);
   $('step-note').innerHTML = (A.tier !== 'A' && !A.tdf && hv.some(v => v != null) ? `<span class="warnline">${t('stepterra')}</span><br>` : '') + t('stepnote');
   const el = $('step-chart'); el.innerHTML = ''; if (stepPlot) { stepPlot.destroy(); stepPlot = null; }
   const width = Math.min(900, el.clientWidth || 900);
@@ -772,6 +781,31 @@ function renderWhere() {
   ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'left'; ctx.fillText(lang === 'es' ? `naranja: participación ${Math.max(A.fromYear, range.from[0])}–${Math.min(2025, range.to[0])} · celeste: ${YCUR} a la fecha` : `orange: share ${Math.max(A.fromYear, range.from[0])}–${Math.min(2025, range.to[0])} · blue: ${YCUR} to date`, left, Hh - 10);
 }
 
+/** yearly table under the 2012 panel: the numbers of the chart plus the raw count of each VIIRS satellite (2023–2025) */
+let stepRows = [];
+function renderStepTable(xs, hv, hlo, hhi, mv, vv, mdl) {
+  const y0 = RAW.y0, P = RAW.sp?.partial || {}; stepRows = [];
+  const part = (col, y) => P[col]?.[y] || null;
+  xs.forEach((y, i) => stepRows.push({ y, label: String(y), h: hv[i], lo: hlo[i], hi: hhi[i], m: mv[i], v: vv[i], n20: A.rawN20?.[y - y0] ?? null, n21: A.rawN21?.[y - y0] ?? null, p20: part('n20', y), p21: part('n21', y), mdl: mdl[i], note: '' }));
+  if (A.cur) { const ms = A.cur.months.filter(M => M.days); if (ms.length) stepRows.push({ y: A.cur.year, label: `${A.cur.year} · ${t('tblprelim', A.cur.through)}`, h: ms.reduce((a, M) => a + (M.h || 0), 0), lo: null, hi: null, m: null, v: null, n20: null, n21: null, mdl: null, prelim: true, note: `preliminary, through ${A.cur.through}; NOAA-20/21 in S-NPP-equivalent units, outside the harmonized record` }); }
+  const dash = '–', num = v => v == null ? dash : fmt(v), mo = r => `${t('months')[r[0] - 1]}–${t('months')[r[1] - 1]}`;
+  const sat = (v, r) => v == null ? dash : fmt(v) + (r ? ` <span class="pt">${mo(r)}</span>` : '');
+  const head = ['tblyear', 'tblharm', 'tbllo', 'tblhi', 'tblmodis', 'tblsnpp', 'tbln20', 'tbln21', 'tblmdl'].map(k => `<th>${t(k)}</th>`).join('');
+  $('step-table').innerHTML = `<thead><tr>${head}</tr></thead><tbody>` + stepRows.map(r => `<tr${r.prelim ? ' class="prelim"' : ''}><th scope="row">${r.label}</th><td>${num(r.h)}</td><td>${num(r.lo)}</td><td>${num(r.hi)}</td><td>${num(r.m)}</td><td>${num(r.v)}</td><td>${sat(r.n20, r.p20)}</td><td>${sat(r.n21, r.p21)}</td><td>${r.mdl == null ? dash : Math.round(100 * r.mdl) + ' %'}</td></tr>`).join('') + '</tbody>';
+  $('step-table-wrap').hidden = false;
+}
+function downloadStepTable() {
+  const f1 = v => v == null ? '' : v.toFixed(1), int = v => v == null ? '' : v;
+  const mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], pn = (name, r) => r ? `${name} ${mon[r[0] - 1]}-${mon[r[1] - 1]} only` : '';
+  const rows = [`# ${t('csvhdr')}`,
+    `# yearly totals, whole record (the date range of the app does not apply) · area: ${A.sel.kind} ${A.sel.label || ''} · ${A.n} cells · tier ${A.tier} · vegetation class, fixed heat sources excluded · generated ${new Date().toISOString()}`,
+    `# harmonized = VIIRS-equivalent 375 m detections (empty when the year is not complete for the size tier of the area); range80 = sum of the monthly bounds, reconstructed years only; modelled_pct = share of the harmonized total that comes from MODIS through the factor: all of it before 2012; from 2012, only the amount filled on the days S-NPP did not report`,
+    `# raw columns in each sensor's own units: MODIS Terra + Aqua and VIIRS S-NPP from the NASA FIRMS country archives; VIIRS NOAA-20 and NOAA-21 from the FIRMS Area API, standard processing, ${RAW.sp ? RAW.sp.y0 + '-' + RAW.sp.y1 : 'not available'}, all days · decimal point, comma separator`,
+    'year,harmonized_viirs_eq,range80_lo,range80_hi,modis_raw_terra_aqua,viirs_snpp_raw,viirs_noaa20_raw,viirs_noaa21_raw,modelled_pct,note'];
+  for (const r of stepRows) rows.push(csvRow([r.y, f1(r.h), f1(r.lo), f1(r.hi), int(r.m), int(r.v), int(r.n20), int(r.n21), r.mdl == null ? '' : Math.round(100 * r.mdl), [r.note, pn('NOAA-20', r.p20), pn('NOAA-21', r.p21)].filter(Boolean).join('; ')]));
+  save(new Blob(['\ufeff' + rows.join('\r\n')], { type: 'text/csv;charset=utf-8' }), `geofuego-yearly-by-satellite_${slug()}.csv`);
+}
+
 // ---------- static sources (R6) ----------
 function renderStatic() {
   const card = $('static-card'); card.hidden = !showStatic; if (!showStatic) return;
@@ -978,7 +1012,7 @@ function initUI() {
   $('tog-static').addEventListener('change', e => { showStatic = e.target.checked; renderStatic(); if (A) history.replaceState(null, '', '#' + encodeSel(A.sel)); if (showStatic) $('static-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
   $('ramp').addEventListener('change', e => { rampName = e.target.value; renderCalendar(); });
   document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => { calMode = b.dataset.mode; document.querySelectorAll('[data-mode]').forEach(x => x.classList.toggle('on', x === b)); $('ramp').disabled = calMode === 'anom'; renderCalendar(); }));
-  $('dl-csv').addEventListener('click', downloadCSV); $('dl-png').addEventListener('click', downloadPNG); $('dl-cells').addEventListener('click', downloadCells);
+  $('dl-csv').addEventListener('click', downloadCSV); $('dl-png').addEventListener('click', downloadPNG); $('dl-cells').addEventListener('click', downloadCells); $('dl-step').addEventListener('click', downloadStepTable);
   $('ask').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (!b) return; if (b.dataset.act === 'anom') document.querySelector('[data-mode="anom"]')?.click(); const el = $(b.dataset.go); if (!el) return; const box = el.closest('.card, .controls, .range') || el; if (box.hidden) return; box.scrollIntoView({ behavior: 'smooth', block: 'center' }); box.classList.add('flash'); setTimeout(() => box.classList.remove('flash'), 1800); });
   $('cal').addEventListener('mousemove', calTip); $('cal').addEventListener('mouseleave', () => { $('tip').hidden = true; });
   $('lang').addEventListener('click', () => { lang = lang === 'en' ? 'es' : 'en'; applyI18n(); applyDrawLocale(); map.fire('langchange'); if (A) { location.hash = encodeSel(A.sel); render(); } });

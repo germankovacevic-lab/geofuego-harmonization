@@ -1,6 +1,6 @@
 {
   "name": "geofuego-harmonization",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "MODIS→VIIRS-equivalent harmonized fire-hotspot calendar for Argentina, 2000→today (NASA Space Apps 2026, GeoFuego.com.ar)",
   "type": "module",
   "license": "MIT",

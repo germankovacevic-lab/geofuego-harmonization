@@ -1,0 +1,48 @@
+# GeoFuego Harmonization
+
+> One consistent monthly fire-hotspot calendar for Argentina, November 2000 to today, from two NASA sensors that count fire differently: MODIS (since 2000, 1 km pixels) converted to VIIRS-equivalent counts (375 m pixels, since 2012), with an 80 % prediction interval on every reconstructed month. Built for the NASA Space Apps Challenge 2026, challenge "Harmonization of MODIS and VIIRS Hot Spots" (CONAE), by team GeoFuego.com.ar (Buenos Aires). Code MIT, data CC BY 4.0, DOI 10.5281/zenodo.24220107.
+
+## What it offers
+
+- [Fire calendar (web app)](https://spaceapps.geofuego.com.ar/): draw any area of Argentina, pick a province or enter a point, choose a date range, and get the monthly calendar from November 2000 to today, the current month against its historical median, a fire film of the 26 years, notable fire events with NASA satellite images before and after, and downloads (CSV, PNG). English and Spanish.
+- [Method and validation](https://spaceapps.geofuego.com.ar/method/): the unit, the conversion factor, the class of fixed heat sources, the bridge from Suomi NPP to NOAA-20 and NOAA-21, the out-of-sample validation and the declared limits.
+- [About](https://spaceapps.geofuego.com.ar/about/): the team and two videos of the project (30 seconds in English, three minutes in Spanish).
+- [Code and data (GitHub)](https://github.com/germankovacevic-lab/geofuego-harmonization): every script, the harmonized products and the review reports.
+- [Archived release (Zenodo)](https://doi.org/10.5281/zenodo.24220107): citable version with DOI.
+
+## The problem
+
+Argentina's hotspot record is two records: MODIS since 2000 and VIIRS since 2012. VIIRS sees about 3 fire pixels where MODIS sees one, and the ratio changes with region, calendar month, satellite overpass time and the kind of heat source. Glued together, the record shows a false jump in 2012 (about 2.3 times in the national series, about 3 times locally); kept apart, this season cannot be compared with 2008.
+
+## The method
+
+- A conversion factor per 0.25 degree cell, calendar month and satellite set, fitted on the days both sensors flew (2012 to 2023), with shrinkage to province, fire-regime region and country where a cell has too little data.
+- Fixed heat sources (gas flares, industry, MODIS summer false alarms) are kept as a separate column, never subtracted silently.
+- Satellite outages are filled across sensors and flagged; cloud cover at the overpass is flagged, not corrected.
+- An 80 % prediction interval calibrated out of sample and tested on 2024 and 2025, years used neither for the factors nor for the band.
+- Suomi NPP stopped delivering data on 2 November 2026. The series continues on NOAA-20 and NOAA-21, converted to the Suomi NPP scale through a bridge fitted on paired days. The 2026 months are a preliminary near-real-time layer, outside the harmonized record.
+
+## Validation (all out of sample)
+
+- Fire-season error of the reconstruction, leave-one-year-out 2012 to 2023: 3.2 % for the country, 9.8 % for a province, 30 % for a single cell.
+- Continuity across the 2012 splice against MODIS burned area (MCD64A1): burned hectares per hotspot after versus before 2012 is 0.98 harmonized and 3.12 with a naive concatenation (1 means continuous).
+- 80 % interval tested on 2024 and 2025: coverage 80 % and 77 % for cells, 76 % and 73 % for provinces.
+
+## Data
+
+- `harmonized_provinces.csv`: 24 provinces and Argentina, month by month, November 2000 to December 2025.
+- `harmonized_cells.csv`: the same per 0.25 degree cell (4 193 cells).
+- Input data: NASA FIRMS active-fire archives (MODIS Collection 6/6.1; VIIRS 375 m on Suomi NPP, NOAA-20 and NOAA-21), ERA5 (Copernicus Climate Change Service), NOAA CPC ONI, GWIS/JRC MCD64A1 tables, IGN Argentina.
+
+## Who
+
+- Team GeoFuego.com.ar: [Germán Kovacevic](https://agneo.app/founder), creator of [GeoFuego](https://geofuego.com.ar/) (Argentina's open wildfire map) and Copernicus Argentina, founder of [AgentNeo](https://agneo.app).
+- Built with Super Intelligence assistance (Claude, Anthropic); reviewed and validated by the team. The presenter of the videos (Max) is generated with SI tools.
+
+## How to cite
+
+Kovacevic, G. R. (2026). GeoFuego Harmonization: MODIS to VIIRS-equivalent harmonized fire-hotspot calendar for Argentina (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.24220107
+
+## Acknowledgment
+
+We acknowledge the use of data and imagery from NASA's Fire Information for Resource Management System (FIRMS) and Global Imagery Browse Services (GIBS), part of NASA's Earth Science Data and Information System (ESDIS).

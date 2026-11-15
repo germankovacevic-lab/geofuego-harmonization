@@ -13,6 +13,7 @@ const T = {
     mcount: 'Count', manom: 'Anomaly', kcrit: 'Critical months', kcritd: (pct, peak) => `${pct} % of a typical year's activity · peak ${peak}`,
     kworst: 'Worst year', kworstd: (v, x) => `${v} hotspots · ${x} the median year`, kmean: 'Typical year', kmeand: (a, b) => `median of annual totals, ${a}–${b}`,
     kskill: 'Calibration skill', kskilld: (sc) => `fire-season error out of sample (leave-one-year-out 2012–23) · one national factor: ${sc}`, kskillsz: (n) => `fire-season error out of sample for ${n === 1 ? 'a single cell' : `areas of ~${n} cells`} (leave-one-year-out 2012–23)`,
+    kwhere: 'Where the number comes from', wobsv: 'observed', wrecv: 'reconstructed', wprev: 'preliminary', wobs: 'observed by VIIRS S-NPP', wrec: 'reconstructed from MODIS Terra + Aqua', wter: 'reconstructed from Terra alone', wpre: 'preliminary current year (NOAA-20/21, S-NPP-equivalent)', wgap: (p) => `${p} % filled across sensors (satellite outages)`, wrange: 'of the hotspots in the selected dates',
     anomlegend: (y0, y1) => `Anomaly = month ÷ median of the same month, ${y0}–${y1}. Blue below normal, red above. “·” = too little fire in the record to compare.`,
     anomnone: 'Anomaly needs at least one year of the harmonized record (2000–2025) inside the date range.',
     pulse: 'Fire pulse: play the years', pulseTitle: 'Fire film',
@@ -98,6 +99,7 @@ const T = {
     mcount: 'Conteo', manom: 'Anomalía', kcrit: 'Meses críticos', kcritd: (pct, peak) => `${pct} % de la actividad de un año típico · pico en ${peak}`,
     kworst: 'Peor año', kworstd: (v, x) => `${v} focos · ${x} el año mediano`, kmean: 'Año típico', kmeand: (a, b) => `mediana de los totales anuales, ${a}–${b}`,
     kskill: 'Calidad de la calibración', kskilld: (sc) => `error de temporada fuera de muestra (dejando un año afuera, 2012–23) · un factor nacional único: ${sc}`, kskillsz: (n) => `error de temporada fuera de muestra para ${n === 1 ? 'una celda suelta' : `áreas de ~${n} celdas`} (dejando un año afuera, 2012–23)`,
+    kwhere: 'De dónde sale el número', wobsv: 'observado', wrecv: 'reconstruido', wprev: 'preliminar', wobs: 'observado por VIIRS S-NPP', wrec: 'reconstruido desde MODIS Terra + Aqua', wter: 'reconstruido desde Terra solo', wpre: 'año en curso preliminar (NOAA-20/21, equivalente S-NPP)', wgap: (p) => `${p} % rellenado entre sensores (caídas de satélite)`, wrange: 'de los focos en las fechas elegidas',
     anomlegend: (y0, y1) => `Anomalía = mes ÷ mediana del mismo mes, ${y0}–${y1}. Azul debajo de lo normal, rojo arriba. “·” = muy poco fuego en el registro para comparar.`,
     anomnone: 'La anomalía necesita al menos un año del registro armonizado (2000–2025) dentro del rango de fechas.',
     pulse: 'Pulso de fuego: recorrer los años', pulseTitle: 'Película del fuego',
@@ -517,6 +519,23 @@ function renderKpis() {
     else if (s.kind === 'province' && SKILL.prov[s.label]) { v = SKILL.prov[s.label].mape; d = t('kskillsz', A.n).replace(/~\d+ (cells|celdas)/, s.label); d = lang === 'es' ? `error de temporada fuera de muestra en ${s.label} (dejando un año afuera, 2012–23)` : `fire-season error out of sample in ${s.label} (leave-one-year-out 2012–23)`; }
     else { const c = SKILL.curve.filter(c => c.n <= Math.max(1, A.n)).pop() || SKILL.curve[0]; v = c.mape; d = t('kskillsz', c.n); }
     if (v != null) out.push(`<div class="kpi"><div class="l">${t('kskill')}</div><div class="v">± ${pctFmt(v)}</div><div class="d">${d}</div></div>`);
+  }
+  // where the number comes from: share of the hotspots in the selected dates by origin (observed VIIRS S-NPP · reconstructed from MODIS Terra+Aqua · Terra alone · preliminary current year), plus the share filled across sensors on outage days
+  { let obs = 0, rec = 0, ter = 0, gapf = 0;
+    for (let y = Math.max(Y0, range.from[0]); y <= Math.min(2025, range.to[0]); y++) for (let m = 1; m <= 12; m++) {
+      if (!inRange(y, m) || !usable(y, m)) continue; const yi = y - Y0, h = A.H[yi][m - 1]; if (!(h > 0)) continue;
+      const r = Math.min(h, A.recon[yi][m - 1] || 0); gapf += A.gap[yi][m - 1] || 0;
+      if (terraOnly(y, m)) ter += r; else rec += r; obs += h - r;
+    }
+    let pre = 0; if (A.cur) for (const M of A.cur.months) if (M.days && inRange(A.cur.year, M.m)) pre += M.h || 0;
+    const tot = obs + rec + ter + pre;
+    if (tot > 0) {
+      const P = x => { const p = 100 * x / tot; return p > 0 && p < 0.5 ? '< 1' : String(Math.round(p)); };
+      const parts = []; if (obs > 0) parts.push(`${P(obs)} % ${t('wobs')}`); if (rec > 0) parts.push(`${P(rec)} % ${t('wrec')}`); if (ter > 0) parts.push(`${P(ter)} % ${t('wter')}`); if (pre > 0) parts.push(`${P(pre)} % ${t('wpre')}`);
+      const big = pre > obs && pre > rec + ter ? `${P(pre)} % <span class="u">${t('wprev')}</span>` : obs >= rec + ter ? `${P(obs)} % <span class="u">${t('wobsv')}</span>` : `${P(rec + ter)} % <span class="u">${t('wrecv')}</span>`;
+      const gapNote = gapf >= 0.005 * tot ? ` · ${t('wgap', (100 * gapf / tot).toFixed(1).replace('.', lang === 'es' ? ',' : '.'))}` : '';
+      out.push(`<div class="kpi where"><div class="l">${t('kwhere')}</div><div class="v">${big}</div><div class="d">${parts.join(' · ')}${gapNote} · ${t('wrange')}</div></div>`);
+    }
   }
   $('sum-kpis').innerHTML = out.join('');
 }

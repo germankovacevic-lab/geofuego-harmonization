@@ -51,7 +51,7 @@ const T = {
     how: 'How to read this',
     how1: 'Unit: the 0.25° cell. Drawn areas snap to whole cells; an area smaller than one cell becomes that cell.',
     how2: 'Size tiers: ≥ 100 cells full calendar · 25–99 full, pre-2012 labelled reconstructed · 4–24 baseline 2012–2025, pre-2012 zero = no MODIS detection · 1–3 pre-2012 greyed and excluded unless you toggle them on. Chubut and Santa Cruz: one tier stricter. Tierra del Fuego: from 2012 only.',
-    how3: '80 % range: calibrated out of sample per fire-regime region, size class and predicted count, widened in strong ENSO months and in cloudier-than-usual months. Only reconstructed months carry it.',
+    how3: '80 % range: calibrated out of sample per fire-regime region, size class and predicted count, widened in strong ENSO months and in cloudier-than-usual months. Only reconstructed months carry it; from 2012, a month partly filled from MODIS during a VIIRS outage carries the range of the filled part.',
     how4: 'Markers: ▲ cloudier than usual at overpass time (the count may be low) · ◆ partly modelled (satellite outage) · hatch: Terra-only era (Nov 2000 – Jun 2002), shown for ≥ 100 cells.',
     how5: 'Current year: preliminary, near-real-time, NOAA-20/21 converted to S-NPP-equivalent (± 5 %), month to date. Not part of the harmonized record. This is not an alert system: an empty cell does not mean there is no fire.',
     foot: "NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Team GeoFuego.com.ar · Data: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), ERA5, ERA5-Land and MODIS NDVI (2026 context line), NOAA CPC ONI, IGN Argentina · Code MIT, data CC BY 4.0 · Built with SI assistance (Claude, Anthropic); every number is computed by the open scripts from NASA FIRMS data. We acknowledge the use of data from NASA's Fire Information for Resource Management System (FIRMS), part of NASA's Earth Science Data and Information System (ESDIS).",
@@ -139,7 +139,7 @@ const T = {
     how: 'Cómo leer esto',
     how1: 'Unidad: la celda de 0,25°. Las áreas dibujadas se ajustan a celdas enteras; un área menor que una celda pasa a ser esa celda.',
     how2: 'Niveles por tamaño: ≥ 100 celdas calendario completo · 25–99 completo, pre-2012 marcado como reconstruido · 4–24 base 2012–2025, cero pre-2012 = sin detección MODIS · 1–3 pre-2012 en gris y excluido salvo que lo actives. Chubut y Santa Cruz: un nivel más estricto. Tierra del Fuego: solo desde 2012.',
-    how3: 'Rango del 80 %: calibrado fuera de muestra por región de régimen de fuego, clase de tamaño y conteo predicho; ensanchado en meses de ENSO fuerte y en meses más nublados que lo normal. Solo los meses reconstruidos lo llevan.',
+    how3: 'Rango del 80 %: calibrado fuera de muestra por región de régimen de fuego, clase de tamaño y conteo predicho; ensanchado en meses de ENSO fuerte y en meses más nublados que lo normal. Solo los meses reconstruidos lo llevan; desde 2012, un mes rellenado en parte desde MODIS durante una caída de VIIRS lleva el rango de la parte rellenada.',
     how4: 'Marcas: ▲ más nublado que lo normal a la hora de paso (el conteo puede estar bajo) · ◆ parcialmente modelado (corte de satélite) · rayado: era solo Terra (nov 2000 – jun 2002), visible con ≥ 100 celdas.',
     how5: 'Año en curso: preliminar, casi en tiempo real, NOAA-20/21 convertidos a equivalente S-NPP (± 5 %), mes a la fecha. No forma parte del registro armonizado. No es un sistema de alerta: una celda vacía no significa que no haya fuego.',
     foot: 'NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Equipo GeoFuego.com.ar · Datos: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), ERA5, ERA5-Land y NDVI MODIS (línea de contexto 2026), NOAA CPC ONI, IGN Argentina · Código MIT, datos CC BY 4.0 · Construido con asistencia de SI (Claude, Anthropic); cada número lo calculan los scripts abiertos desde datos NASA FIRMS. We acknowledge the use of data from NASA\'s Fire Information for Resource Management System (FIRMS), part of NASA\'s Earth Science Data and Information System (ESDIS).',
@@ -241,9 +241,11 @@ function aggregate(sel) {
       const hy = c.h[y], sy = c.s[y]; const Y = Y0 + y;
       for (let m = 0; m < 12; m++) {
         const h = hy[m]; if (h < 0) continue; has[y][m] = true; H[y][m] += h; (provHY[c.p] ??= Array.from({ length: YEARS }, () => Array(12).fill(0)))[y][m] += h;
-        if (sy[m]) recon[y][m] += h;
+        // gf = amount filled across sensors on satellite-outage days, in the units of H (06_harmonize; an amount, not a percentage)
+        const g = Math.min(h, c.gf?.[Y]?.[m] || 0); if (g) gap[y][m] += g;
+        // modelled amount: the whole month before 2012 (reconstructed from MODIS); from 2012 only what was filled from MODIS while S-NPP was out
+        if (sy[m]) recon[y][m] += Y >= 2012 ? g : h;
         if (Y >= 2012) provH[c.p] = (provH[c.p] || 0) + h;
-        const g = c.gf?.[Y]?.[m]; if (g) gap[y][m] += h * g / 100;
         const cl = c.cl?.[Y]?.[m]; if (cl) { cloudH[y][m] += h; cloudN[y][m]++; cloudD[y][m] += h * cl / 100; }
         const s = c.st?.[Y]?.[m]; if (s) st[y][m] += s;
       }
@@ -272,8 +274,17 @@ function aggregate(sel) {
     // R9: flag the month when the H-weighted mean cloud anomaly at overpass time (unflagged cells count as 0) is >= +0.10
     const anom = H[y][m] > 0 ? cloudD[y][m] / H[y][m] : (cloudN[y][m] / Math.max(1, n) >= 0.5 ? 0.10 : 0);
     cloudFlag[y][m] = anom >= 0.10;
-    // R10: a VIIRS-era month that is mostly gap-filled from MODIS (January 2012) is reconstructed: it gets the Terra+Aqua band
-    const s = setOf(Y, m + 1) || (H[y][m] > 0 && recon[y][m] > 0.5 * H[y][m] ? 'TA' : null); if (!s || H[y][m] <= 0) continue;
+    if (H[y][m] <= 0) continue;
+    const s = setOf(Y, m + 1);
+    if (!s) {
+      // VIIRS era: observed months carry no interval (R3). A month partly filled from MODIS on S-NPP outage days carries the interval of the
+      // filled amount only, with the Terra+Aqua bins, exactly as the published product does (06_harmonize: H − gf + gf·exp(p10 | p90));
+      // this covers R10 too (January 2012, 76 % filled, is labelled reconstructed in cellValue)
+      const g = Math.min(H[y][m], gap[y][m]); if (!(g > 0)) continue;
+      const B = bins('TA'); let b = B[0]; for (const x of B) if (g >= x.P_min) b = x;
+      lo[y][m] = H[y][m] - g + g * Math.exp(Math.min(0, b.p10_log)); hi[y][m] = H[y][m] - g + g * Math.exp(Math.max(0, b.p90_log));
+      continue;
+    }
     const B = bins(s); let b = B[0]; for (const x of B) if (H[y][m] >= x.P_min) b = x;
     const es = Math.abs(0.025 * (ONI[`${Y}-${m + 1}`] || 0));
     const dCloud = cloudFlag[y][m] && H[y][m] > 0 ? Math.max(0, cloudD[y][m] / H[y][m]) : 0;
@@ -399,7 +410,7 @@ function renderStep() {
   for (let y = y0; y <= y1; y++) {
     xs.push(y); const k = y - y0; mv.push(A.rawM[k]); vv.push(y >= 2012 ? A.rawV[k] : null); sp.push(y >= 2012 ? A.rawV[k] : A.rawM[k]);
     let tot = 0, lo = 0, hi = 0, rc = 0, ok = true;
-    for (let m = 1; m <= 12; m++) { if (!usable(y, m)) { ok = false; break; } const h = A.H[y - Y0][m - 1]; tot += h; rc += y < 2012 ? h : Math.min(h, A.gap[y - Y0][m - 1] || 0); /* modelled: everything before 2012; from 2012 only the amount filled from MODIS on S-NPP outage days */ lo += A.lo[y - Y0][m - 1] ?? h; hi += A.hi[y - Y0][m - 1] ?? h; }
+    for (let m = 1; m <= 12; m++) { if (!usable(y, m)) { ok = false; break; } const h = A.H[y - Y0][m - 1]; tot += h; rc += Math.min(h, A.recon[y - Y0][m - 1] || 0); /* modelled amount: everything before 2012; from 2012 only what was filled from MODIS on S-NPP outage days */ lo += A.lo[y - Y0][m - 1] ?? h; hi += A.hi[y - Y0][m - 1] ?? h; }
     hv.push(ok ? tot : null); mdl.push(ok ? (tot > 0 ? rc / tot : (y < 2012 ? 1 : 0)) : null); hlo.push(ok && y < 2012 ? lo : null); hhi.push(ok && y < 2012 ? hi : null);
   }
   const mean = (arr, a, b) => { const v = []; for (let y = a; y <= b; y++) { const x = arr[y - y0]; if (x == null) return null; v.push(x); } return v.reduce((p, q) => p + q, 0) / v.length; };
@@ -542,7 +553,7 @@ function renderKpis() {
       const P = x => { const p = 100 * x / tot; return p > 0 && p < 0.5 ? '< 1' : String(Math.round(p)); };
       const parts = []; if (obs > 0) parts.push(`${P(obs)} % ${t('wobs')}`); if (rec > 0) parts.push(`${P(rec)} % ${t('wrec')}`); if (ter > 0) parts.push(`${P(ter)} % ${t('wter')}`); if (pre > 0) parts.push(`${P(pre)} % ${t('wpre')}`);
       const big = pre > obs && pre > rec + ter ? `${P(pre)} % <span class="u">${t('wprev')}</span>` : obs >= rec + ter ? `${P(obs)} % <span class="u">${t('wobsv')}</span>` : `${P(rec + ter)} % <span class="u">${t('wrecv')}</span>`;
-      const gapNote = gapf >= 0.005 * tot ? ` · ${t('wgap', (100 * gapf / tot).toFixed(1).replace('.', lang === 'es' ? ',' : '.'))}` : '';
+      const gapNote = range.from[0] < 2012 && gapf >= 0.005 * tot ? ` · ${t('wgap', (100 * gapf / tot).toFixed(1).replace('.', lang === 'es' ? ',' : '.'))}` : '';
       out.push(`<div class="kpi where"><div class="l">${t('kwhere')}</div><div class="v">${big}</div><div class="d">${parts.join(' · ')}${gapNote} · ${t('wrange')}</div></div>`);
     }
   }
@@ -688,7 +699,7 @@ function calTip(ev) {
   else {
     lines.push(`${fmt(c.v)} ${t('hotspots')}`);
     lines.push(c.kind === 'obs' ? t('obs') : c.kind === 'terra' ? `${t('recon')} (${t('terra')})` : t('recon'));
-    if (c.kind !== 'obs') { if (c.v === 0) lines.push(hit.year < 2012 && (A.tier === 'C' || A.tier === 'D') ? t('nomodis') : ''); else if (c.lo != null) lines.push(`${t('range')}: ${fmt(c.lo)} – ${fmt(c.hi)}`); }
+    if (c.kind !== 'obs' && c.v === 0) lines.push(hit.year < 2012 && (A.tier === 'C' || A.tier === 'D') ? t('nomodis') : ''); else if (c.lo != null) lines.push(`${t('range')}: ${fmt(c.lo)} – ${fmt(c.hi)}`); // a VIIRS-era month partly filled from MODIS carries the range of the filled part
     if (c.cloud) lines.push('▲ ' + t('cloud'));
     if (c.gap > 0) lines.push('◆ ' + t('gap', c.gap > 0.10 ? Math.round(100 * c.gap) : ''));
     if (c.grey) lines.push(`(${t('legendgrey')})`);
@@ -706,7 +717,7 @@ function renderSeries() {
     if (!inRange(y, m)) continue; const c = cellValue(y, m); xs.push(Date.UTC(y, m - 1, 1) / 1000);
     if (c.kind === 'prelim') { cur.push(c.v); h.push(null); lo.push(null); hi.push(null); }
     else if (c.kind === 'nodata' || c.grey) { h.push(null); lo.push(null); hi.push(null); cur.push(null); }
-    else { h.push(c.v); lo.push(c.lo ?? null); hi.push(c.hi ?? null); cur.push(null); } // observed months carry no range (R3)
+    else { h.push(c.v); lo.push(c.lo ?? null); hi.push(c.hi ?? null); cur.push(null); } // observed months carry no range (R3); partly filled ones carry the range of the filled part
   }
   const el = $('series'); el.innerHTML = ''; if (uplot) { uplot.destroy(); uplot = null; }
   const width = Math.min(900, el.clientWidth || 900);
@@ -850,8 +861,9 @@ function downloadCells() {
     for (let y = 2000; y <= 2025; y++) for (let m = 1; m <= 12; m++) {
       if (!inRange(y, m)) continue; const h = c.h[y - Y0][m - 1]; if (h < 0) continue;
       const s = y >= 2012 ? (c.st?.[y]?.[m - 1] || 0) : 0; if (!(h > 0) && !(s > 0)) continue;
-      const sensor = y >= 2012 ? (c.s[y - Y0][m - 1] ? 'MODIS->VIIRS-eq (gap fill)' : 'VIIRS') : terraOnly(y, m) ? 'MODIS-Terra->VIIRS-eq' : 'MODIS->VIIRS-eq';
-      rows.push(csvRow([...head, y, m, h.toFixed(1), sensor, y >= 2012 ? s : '', usable(y, m) ? 1 : 0, '']));
+      const g = y >= 2012 ? Math.min(h, c.gf?.[y]?.[m - 1] || 0) : 0; // amount filled from MODIS on S-NPP outage days
+      const sensor = y >= 2012 ? (g > 0.5 * h ? 'MODIS->VIIRS-eq (gap fill)' : 'VIIRS') : terraOnly(y, m) ? 'MODIS-Terra->VIIRS-eq' : 'MODIS->VIIRS-eq';
+      rows.push(csvRow([...head, y, m, h.toFixed(1), sensor, y >= 2012 ? s : '', usable(y, m) ? 1 : 0, g > 0 ? `${g} of H filled from MODIS (S-NPP outage days)` : '']));
     }
     const lc = L26?.cells[id]; if (lc) for (const M of L26.months) { if (!M.days || !inRange(YCUR, M.m)) continue; const h = lc.h?.[M.m - 1] || 0, s = lc.st?.[M.m - 1] || 0; if (!(h > 0) && !(s > 0)) continue; rows.push(csvRow([...head, YCUR, M.m, h.toFixed(1), 'VIIRS NRT S-NPP-eq', s ? (+s).toFixed(1) : 0, 0, `preliminary, through ${M.through}`])); }
   }

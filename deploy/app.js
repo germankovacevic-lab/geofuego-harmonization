@@ -196,6 +196,7 @@ function applyI18n() {
   const esc = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
   const ask = document.getElementById('ask');
   if (ask) ask.innerHTML = `<thead><tr><th>${esc(T[lang].askcols[0])}</th><th>${esc(T[lang].askcols[1])}</th></tr></thead><tbody>` + T[lang].ask.map(r => `<tr><td>${esc(r[0])}</td><td><button type="button" class="asklink" data-go="${r[2]}"${r[3] ? ` data-act="${r[3]}"` : ''}>${esc(r[1])}</button></td></tr>`).join('') + '</tbody>';
+  syncRangeUI();
   const mv = document.getElementById('mv-bar'); if (mv) { mvTitle(); mv.querySelector('[data-mv="year"]').textContent = lang === 'es' ? 'Años' : 'Years'; mv.querySelector('[data-mv="month"]').textContent = lang === 'es' ? 'Meses' : 'Months'; }
   for (const [id, k] of [['dl-step', 'stepcsvttl'], ['dl-csv', 'csvttl'], ['dl-cells', 'cellsttl'], ['dl-png', 'pngttl']]) document.getElementById(id)?.setAttribute('title', T[lang][k]);
 }
@@ -965,7 +966,7 @@ function encodeSel(sel) {
 function readRangeFromHash(h) {
   const parse = s => { const [y, m] = (s || '').split('-').map(Number); return y && m ? [y, m] : null; };
   const f = parse(h.get('from')), to = parse(h.get('to'));
-  if (f || to) { range = { from: f || RANGE_DEFAULT[0], to: to || RANGE_DEFAULT[1] }; normalizeRange(); $('from').value = ym(range.from); $('to').value = ym(range.to); }
+  if (f || to) { range = { from: f || RANGE_DEFAULT[0], to: to || RANGE_DEFAULT[1] }; normalizeRange(); syncRangeUI(); }
   showPre = h.get('pre') === '1'; $('tog-pre').checked = showPre; showStatic = h.get('st') === '1'; $('tog-static').checked = showStatic;
 }
 function fromHash() {
@@ -980,6 +981,16 @@ function fromHash() {
 }
 // B5: an inverted range is swapped, out-of-bounds months are clamped
 const cmpYM = (a, b) => a[0] !== b[0] ? a[0] - b[0] : a[1] - b[1];
+/** date range controls: a month and a year list for each end (the native month field cannot be typed into without tripping the limits, and Firefox and Safari on desktop do not have it).
+ *  Fills the lists (month names follow the language) and shows the current range; months outside November 2000 – December of the current year are disabled */
+function syncRangeUI() {
+  for (const k of ['from', 'to']) {
+    const [y, m] = range[k], sm = $(k + '-m'), sy = $(k + '-y'); if (!sm || !sy) return;
+    if (sy.options.length === 0) for (let Y = RANGE_DEFAULT[0][0]; Y <= RANGE_DEFAULT[1][0]; Y++) sy.add(new Option(String(Y), String(Y)));
+    sm.innerHTML = ''; for (let M = 1; M <= 12; M++) { const o = new Option(t('months')[M - 1], String(M)); o.disabled = cmpYM([y, M], RANGE_DEFAULT[0]) < 0 || cmpYM([y, M], RANGE_DEFAULT[1]) > 0; sm.add(o); }
+    sy.value = String(y); sm.value = String(m); $(k).value = ym(range[k]);
+  }
+}
 function normalizeRange() {
   const clamp = v => cmpYM(v, RANGE_DEFAULT[0]) < 0 ? [...RANGE_DEFAULT[0]] : cmpYM(v, RANGE_DEFAULT[1]) > 0 ? [...RANGE_DEFAULT[1]] : [v[0], Math.min(12, Math.max(1, v[1]))];
   range.from = clamp(range.from); range.to = clamp(range.to);
@@ -1037,8 +1048,8 @@ function initUI() {
   $('country').addEventListener('click', () => { $('prov').value = ''; selectCountry(); });
   $('clear').addEventListener('click', clearSelection);
   $('go').addEventListener('click', () => { const lat = +$('lat').value, lon = +$('lon').value; if (!isFinite(lat) || !isFinite(lon) || !$('lat').value || !$('lon').value) { msg(t('needpt')); return; } selectPoint(lat, lon); });
-  const onRange = () => { const p = s => { const [y, m] = s.split('-').map(Number); return y && m ? [y, m] : null; }; range = { from: p($('from').value) || RANGE_DEFAULT[0], to: p($('to').value) || RANGE_DEFAULT[1] }; normalizeRange(); $('from').value = ym(range.from); $('to').value = ym(range.to); render(); renderFireMap(); };
-  $('from').addEventListener('change', onRange); $('to').addEventListener('change', onRange);
+  const onRange = () => { range = { from: [+$('from-y').value, +$('from-m').value], to: [+$('to-y').value, +$('to-m').value] }; normalizeRange(); syncRangeUI(); render(); renderFireMap(); };
+  syncRangeUI(); for (const id of ['from-m', 'from-y', 'to-m', 'to-y']) $(id).addEventListener('change', onRange);
   $('tog-pre').addEventListener('change', e => { showPre = e.target.checked; render(); });
   $('tog-static').addEventListener('change', e => { showStatic = e.target.checked; renderStatic(); if (A) history.replaceState(null, '', '#' + encodeSel(A.sel)); if (showStatic) $('static-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
   $('ramp').addEventListener('change', e => { rampName = e.target.value; renderCalendar(); });

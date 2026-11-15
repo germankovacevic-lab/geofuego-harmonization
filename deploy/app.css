@@ -52,6 +52,7 @@ select { max-width:200px; }
 .empty { color:var(--muted); padding:40px 20px; text-align:center; font-size:16px; }
 .summary h2 { margin:0 0 2px; font-size:20px; } .sub { margin:0 0 8px; color:var(--muted); }
 .range { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:6px 0; font-size:13px; }
+.range .ym { display:inline-flex; gap:4px; }
 input[type=month] { max-width:100%; }
 .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
 .card h3 { margin:0 0 8px; font-size:15px; font-weight:600; }

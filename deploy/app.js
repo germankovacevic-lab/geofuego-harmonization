@@ -216,6 +216,8 @@ const SIZE = n => n === 1 ? '1' : n <= 9 ? '2-9' : n <= 49 ? '10-49' : n <= 199 
 async function load() {
   const [a, b, c, p] = await Promise.all([fetch('data/cells.json').then(r => r.json()), fetch('data/cells_2026.json').then(r => r.json()).catch(() => null), fetch('data/oni.json').then(r => r.json()).catch(() => ({ oni: {} })), fetch('data/provincias.json').then(r => r.json()).catch(() => null)]);
   D = a; L26 = b; ONI = c.oni || {}; PROV = p;
+  // the date range ends at the last month with data: the latest month of the preliminary current year, or December of the last harmonized year
+  { const withData = L26 ? L26.months.filter(M => M.days > 0).map(M => M.m) : []; RANGE_DEFAULT[1] = withData.length ? [L26.year, Math.max(...withData)] : [Y0 + YEARS - 1, 12]; range.to = [...RANGE_DEFAULT[1]]; }
   [RAW, SKILL] = await Promise.all([fetch('data/raw.json').then(r => r.json()).catch(() => null), fetch('data/skill.json').then(r => r.json()).catch(() => null)]);
   Object.assign(grid, D.grid);
 }
@@ -324,7 +326,7 @@ function usable(y, m) { // m 1-based, y calendar year ≤ 2025
 /** years that contribute at least one usable month (R5: for tiers B–D the Terra-only years drop out here, so the label matches the statistics) */
 const baselineYears = () => { const ys = []; for (let y = Math.max(A.baselineFrom, range.from[0]); y <= Math.min(2025, range.to[0]); y++) ys.push(y); return ys.filter(y => y !== 2000 && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].some(m => usable(y, m))); };
 const daysInMonth = (y, m) => new Date(Date.UTC(y, m, 0)).getUTCDate();
-const RANGE_DEFAULT = [[2000, 11], [2026, 12]];
+const RANGE_DEFAULT = [[2000, 11], [2026, 12]]; // the end is replaced by the last month with data once the payload is loaded
 const rangeIsDefault = () => range.from[0] === RANGE_DEFAULT[0][0] && range.from[1] === RANGE_DEFAULT[0][1] && range.to[0] === RANGE_DEFAULT[1][0] && range.to[1] === RANGE_DEFAULT[1][1];
 const ym = ([y, m]) => `${y}-${String(m).padStart(2, '0')}`;
 const median = arr => { const a = arr.filter(v => v != null).sort((x, y) => x - y); if (!a.length) return null; const k = a.length / 2; return a.length % 2 ? a[Math.floor(k)] : (a[k - 1] + a[k]) / 2; };

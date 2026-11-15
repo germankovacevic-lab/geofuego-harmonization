@@ -133,6 +133,7 @@ footer p { margin:0; }
 .map-chip i { width:10px; height:10px; border-radius:50%; background:#4a4f5e; display:inline-block; }
 .map-chip.on { color:#ffd2b3; border-color:#c2410c; } .map-chip.on i { background:linear-gradient(135deg,#ffe066,#f5731f 55%,#b4231a); box-shadow:0 0 6px #f5731f; }
 .map-chip:hover { border-color:#f5a623; }
+.map-chip:disabled { opacity:.45; cursor:default; } .map-chip:disabled:hover { border-color:#3a3f4e; }
 .kpi .v .u { font-size:13px; font-weight:500; color:var(--muted); }
 .mv-bar { position:absolute; left:10px; right:10px; bottom:10px; z-index:850; display:flex; gap:12px; align-items:center; background:rgba(12,13,18,.9); border:1px solid #3a3f4e; border-radius:14px; padding:8px 12px; backdrop-filter:blur(4px); box-shadow:0 4px 16px rgba(0,0,0,.5); }
 .mv-play { flex:0 0 auto; width:44px; height:44px; border-radius:50%; border:0; background:radial-gradient(circle at 35% 30%, #ffb15c, #f5731f 55%, #b4231a); color:#14161c; font-size:16px; font-weight:700; cursor:pointer; box-shadow:0 0 12px rgba(245,115,31,.55); }

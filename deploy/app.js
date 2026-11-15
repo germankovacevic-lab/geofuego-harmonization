@@ -26,7 +26,7 @@ const T = {
     v4l: 'Burned hectares per hotspot, after vs before 2012', v4d: 'harmonized (1 = continuous); the naive splice gives 3.12 — independent check with MODIS burned area (MCD64A1)',
     caseline: (name, months, y, x, rank, n, y0, y1) => `${name}, ${months} ${y}: <b>${x}</b> the median of ${months} ${y0}–${y1}${rank === 1 ? ` — the highest of ${n} years on record for this area` : ` — ${ord(rank)} highest of ${n} years`}.`,
     caselow: (name, months, y, v, med, rank, n) => `${name}, ${months} ${y}: <b>${v}</b> hotspots against a typical ${med}${rank === 1 ? ` — the highest of ${n} years on record for this area` : ` — ${ord(rank)} highest of ${n} years`}.`,
-    times: 'the median', fireslayer: 'Hotspots · selected area and dates',
+    times: 'the median', fireslayer: 'Hotspots · selected area and dates', firesfilm: 'Hidden while the fire film is open',
     steptitle: 'In 2012 the satellite changed. The record should not jump with it.', source: 'Source', harmonized: 'Harmonized', spliced: 'Spliced as recorded',
     stepmodisd2: 'the same sensor on both sides of 2012', stepharmd2: (m) => `no sensor step; MODIS alone gives ${m}`,
     stepnaive: 'Spliced as recorded', stepnaived: 'VIIRS 2012–14 vs MODIS 2009–11: the jump comes from the change of sensor',
@@ -39,7 +39,7 @@ const T = {
     viirsstarts: 'VIIRS starts', peryear: 'hotspots per year',
     tagline: 'One fire-hotspot calendar for any area of Argentina, November 2000 to today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month. Suomi NPP stopped delivering data on 2 November 2026: from that day the series continues on NOAA-20 and NOAA-21, normalized to the S-NPP scale.',
     h1sub: 'MODIS + VIIRS fire calendar', method: 'Method & code', about: 'About', province: 'Province', country: 'Whole country', latlon: 'Lat / Lon', go: 'Go', clear: 'Clear', drawhint: 'On the map: click a province, or zoom in and click the cells you want (click again to remove); the rectangle tool selects many cells at once.', cellsel: 'Selected cells', home: 'Centre on Argentina',
-    attrib: 'Basemaps: Esri World Imagery (Esri, Maxar, Earthstar Geographics), World Boundaries & Places, World Topo, Light Gray Canvas (Esri, HERE, Garmin, OpenStreetMap contributors). Grid: 0.25°. Data: NASA FIRMS (MODIS, VIIRS).',
+    attrib: 'Basemaps: Esri World Imagery (Esri, Maxar, Earthstar Geographics), World Boundaries & Places, World Topo, Dark Gray Canvas (Esri, HERE, Garmin, OpenStreetMap contributors). Grid: 0.25°. Data: NASA FIRMS (MODIS, VIIRS).',
     empty: 'Pick a province, enter a point, or draw an area. The calendar snaps to whole 0.25° cells (about 25 × 25 km).',
     from: 'From', to: 'to', nowtitle: 'This month vs the historical median', caltitle: 'Burning-activity calendar', togpre: 'show greyed years', togstatic: 'fixed heat sources',
     unit: 'Counts are satellite fire detections expressed in VIIRS-equivalent pixels (375 m). They are not a number of fires and not burned area. A fire that burns for several days is counted on every satellite pass.',
@@ -114,7 +114,7 @@ const T = {
     v4l: 'Hectáreas quemadas por foco, después vs antes de 2012', v4d: 'armonizado (1 = continuo); el empalme ingenuo da 3,12 — control independiente con área quemada MODIS (MCD64A1)',
     caseline: (name, months, y, x, rank, n, y0, y1) => `${name}, ${months} ${y}: <b>${x}</b> la mediana de ${months} ${y0}–${y1}${rank === 1 ? ` — el más alto de ${n} años del registro para esta zona` : ` — ${rank}º más alto de ${n} años`}.`,
     caselow: (name, months, y, v, med, rank, n) => `${name}, ${months} ${y}: <b>${v}</b> focos contra un año típico de ${med}${rank === 1 ? ` — el más alto de ${n} años del registro para esta zona` : ` — ${rank}º más alto de ${n} años`}.`,
-    times: 'la mediana', fireslayer: 'Focos · área y fechas elegidas',
+    times: 'la mediana', fireslayer: 'Focos · área y fechas elegidas', firesfilm: 'Oculto mientras la película del fuego está abierta',
     steptitle: 'En 2012 cambió el satélite. El registro no debería saltar con él.', source: 'Fuente', harmonized: 'Armonizado', spliced: 'Empalmado tal cual',
     stepmodisd2: 'el mismo sensor a ambos lados de 2012', stepharmd2: (m) => `sin escalón de sensor; MODIS solo da ${m}`,
     stepnaive: 'Empalmado tal cual', stepnaived: 'VIIRS 2012–14 contra MODIS 2009–11: el salto lo produce el cambio de sensor',
@@ -127,7 +127,7 @@ const T = {
     viirsstarts: 'empieza VIIRS', peryear: 'focos por año',
     tagline: 'Un calendario de focos de calor para cualquier área de Argentina, noviembre de 2000 a hoy. MODIS convertido a conteos equivalentes VIIRS, con un rango del 80 % calibrado en cada mes reconstruido. Suomi NPP dejó de entregar datos el 2 de noviembre de 2026: desde ese día la serie sigue en NOAA-20 y NOAA-21, normalizados a la escala S-NPP.',
     h1sub: 'calendario de fuego MODIS + VIIRS', method: 'Método y código', about: 'Quiénes somos', province: 'Provincia', country: 'Todo el país', latlon: 'Lat / Lon', go: 'Ir', clear: 'Limpiar', drawhint: 'En el mapa: click en una provincia, o acercá y hacé click en las celdas que quieras (otro click las saca); la herramienta rectángulo marca muchas celdas de una.', cellsel: 'Celdas seleccionadas', home: 'Centrar en Argentina',
-    attrib: 'Mapas base: Esri World Imagery (Esri, Maxar, Earthstar Geographics), World Boundaries & Places, World Topo, Light Gray Canvas (Esri, HERE, Garmin, colaboradores de OpenStreetMap). Grilla: 0,25°. Datos: NASA FIRMS (MODIS, VIIRS).',
+    attrib: 'Mapas base: Esri World Imagery (Esri, Maxar, Earthstar Geographics), World Boundaries & Places, World Topo, Dark Gray Canvas (Esri, HERE, Garmin, colaboradores de OpenStreetMap). Grilla: 0,25°. Datos: NASA FIRMS (MODIS, VIIRS).',
     empty: 'Elegí una provincia, ingresá un punto o dibujá un área. El calendario se ajusta a celdas enteras de 0,25° (unos 25 × 25 km).',
     from: 'Desde', to: 'hasta', nowtitle: 'Este mes contra la mediana histórica', caltitle: 'Calendario de actividad de fuego', togpre: 'mostrar años grises', togstatic: 'fuentes fijas de calor',
     unit: 'Los conteos son detecciones satelitales de fuego expresadas en píxeles equivalentes VIIRS (375 m). No son cantidad de incendios ni área quemada. Un fuego que dura varios días se cuenta en cada pasada del satélite.',
@@ -493,7 +493,7 @@ let fireLayer = null;
 const FIRE = [[60, 20, 10], [140, 30, 10], [215, 70, 15], [245, 140, 30], [255, 220, 90]];
 const fireCol = x => { x = Math.max(0, Math.min(1, x)); const i = Math.min(FIRE.length - 2, Math.floor(x * (FIRE.length - 1))), f = x * (FIRE.length - 1) - i; const c = FIRE[i].map((v, k) => Math.round(v + (FIRE[i + 1][k] - v) * f)); return `rgb(${c[0]},${c[1]},${c[2]})`; };
 function renderFireMap() {
-  if (!map) return; const on = fireLayer && map.hasLayer(fireLayer); if (fireLayer) fireLayer.clearLayers(); else fireLayer = L.layerGroup();
+  if (!map) return; if (fireLayer) fireLayer.clearLayers(); else fireLayer = L.layerGroup();
   const tot = {}; let max = 0;
   const only = A && A.sel.kind !== 'country' ? new Set(A.sel.cells.map(String)) : null; // the selected area only, coloured on its own scale
   for (const [id, c] of Object.entries(D.cells)) {
@@ -507,7 +507,14 @@ function renderFireMap() {
   const r0 = rampName; rampName = 'fire';
   for (const [id, v] of Object.entries(tot)) { const x = pr(v); if (!only && x < 0.15) continue; const [a, c, b, d] = cellBounds(+id); fireLayer.addLayer(L.rectangle([[a, c], [b, d]], { stroke: false, fillColor: ramp(0.12 + 0.88 * x).css, fillOpacity: 0.3 + 0.5 * x, interactive: false })); }
   rampName = r0;
-  if (on || fireLayer._first !== false) { fireLayer.addTo(map); fireLayer._first = false; }
+  syncFireLayer();
+}
+/** the hotspot layer follows the user's switch (fireWanted) and is always hidden while the fire film is open: the totals of the selected dates would cover the film */
+let fireWanted = true, fireChip = null;
+function syncFireLayer() {
+  if (!map || !fireLayer) return; const show = fireWanted && !movie;
+  if (show && !map.hasLayer(fireLayer)) fireLayer.addTo(map); else if (!show && map.hasLayer(fireLayer)) fireLayer.remove();
+  if (fireChip) { fireChip.classList.toggle('on', show); fireChip.disabled = !!movie; fireChip.title = movie ? t('firesfilm') : ''; }
 }
 
 
@@ -581,7 +588,7 @@ function movieFrames(mode) {
 let darkBase = null;
 function movieOn() {
   if (!darkBase) { const esri = 'https://server.arcgisonline.com/ArcGIS/rest/services/'; darkBase = L.layerGroup([L.tileLayer(esri + 'Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, attribution: '© Esri, HERE, Garmin · NASA FIRMS' }), L.tileLayer(esri + 'Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, pane: 'shadowPane' })]); }
-  darkBase.addTo(map); if (fireLayer) fireLayer.remove(); if (gridLayer) gridLayer.remove(); if (cellsLayer) cellsLayer.remove();
+  darkBase.addTo(map); syncFireLayer(); if (gridLayer) gridLayer.remove(); if (cellsLayer) cellsLayer.remove();
   const F = movieFrames(movie.mode); movie.F = F; movie.layer = L.layerGroup().addTo(map); movie.rects = {};
   for (const id of F.ids) { const [a, c, b, d] = cellBounds(+id); movie.rects[id] = L.rectangle([[a, c], [b, d]], { stroke: false, fillColor: '#000', fillOpacity: 0, interactive: false }).addTo(movie.layer); }
   const sc = $('mv-scrub'); sc.max = F.labels.length - 1; $('mv-top').textContent = fmt(F.top) + (movie.mode === 'year' ? (lang === 'es' ? ' focos/año' : ' /yr') : (lang === 'es' ? ' focos/mes' : ' /mo'));
@@ -981,10 +988,11 @@ function initMap() {
   map.attributionControl.setPrefix(false);
   const esri = 'https://server.arcgisonline.com/ArcGIS/rest/services/';
   const sat = L.layerGroup([L.tileLayer(esri + 'World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, attribution: '© Esri, Maxar, Earthstar Geographics · NASA FIRMS' }), L.tileLayer(esri + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, opacity: 0.9 })]);
-  const grey = L.tileLayer(esri + 'Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, attribution: '© Esri, HERE, Garmin, OpenStreetMap contributors · NASA FIRMS' });
+  // dark, high-contrast base: the same Dark Gray Canvas the fire film uses (base + labels above the data)
+  const dark = L.layerGroup([L.tileLayer(esri + 'Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, attribution: '© Esri, HERE, Garmin · NASA FIRMS' }), L.tileLayer(esri + 'Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, pane: 'shadowPane' })]);
   const topo = L.tileLayer(esri + 'World_Topo_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom: 12, minZoom: 3, attribution: '© Esri, HERE, Garmin, FAO, NOAA, USGS · NASA FIRMS' });
   sat.addTo(map);
-  L.control.layers({ [lang === 'es' ? 'Satelital' : 'Satellite']: sat, [lang === 'es' ? 'Topográfico' : 'Topographic']: topo, [lang === 'es' ? 'Gris' : 'Light grey']: grey }, null, { position: 'bottomright', collapsed: true }).addTo(map);
+  L.control.layers({ [lang === 'es' ? 'Satelital' : 'Satellite']: sat, [lang === 'es' ? 'Topográfico' : 'Topographic']: topo, [lang === 'es' ? 'Oscuro' : 'Dark']: dark }, null, { position: 'bottomright', collapsed: true }).addTo(map);
   applyDrawLocale();
   const brand = document.createElement('img'); brand.src = 'assets/geofuego-globo.png'; brand.alt = ''; brand.className = 'map-globo'; document.getElementById('map').appendChild(brand);
   if (PROV) for (const p of PROV.provincias) { const l = L.polygon(p.rings.map(r => [r]), { color: '#ffffff', opacity: 0.7, weight: 1, fillOpacity: 0, fillColor: '#f5a623', interactive: true, bubblingMouseEvents: true }).addTo(map); l.bindTooltip(p.n === TDF ? 'Tierra del Fuego' : p.n, { sticky: true, direction: 'top', opacity: 0.9 }); l.on('click', () => { if (drawing()) return; $('prov').value = p.n; selectProvince(p.n); }); l.on('mouseover', () => { if (!(A && A.sel.kind === 'province' && A.sel.label === p.n)) l.setStyle({ fillOpacity: 0.12 }); }); l.on('mouseout', () => l.setStyle({ fillOpacity: 0 })); provLayers[p.n] = l; }
@@ -998,7 +1006,7 @@ function initMap() {
   buildGrid();
   renderFireMap();
   // hotspots layer toggle: a dark chip in the app's own style (replaces Leaflet's white overlay box)
-  const FireTog = L.Control.extend({ onAdd() { const a = L.DomUtil.create('button', 'map-chip on'); a.type = 'button'; const lab = () => { a.innerHTML = `<i></i>${t('fireslayer')}`; }; lab(); L.DomEvent.disableClickPropagation(a); L.DomEvent.on(a, 'click', () => { const on = !map.hasLayer(fireLayer); if (on) fireLayer.addTo(map); else fireLayer.remove(); a.classList.toggle('on', on); }); map.on('langchange', lab); return a; } });
+  const FireTog = L.Control.extend({ onAdd() { const a = L.DomUtil.create('button', 'map-chip on'); a.type = 'button'; fireChip = a; const lab = () => { a.innerHTML = `<i></i>${t('fireslayer')}`; syncFireLayer(); }; lab(); L.DomEvent.disableClickPropagation(a); L.DomEvent.on(a, 'click', () => { if (movie) return; fireWanted = !fireWanted; syncFireLayer(); }); map.on('langchange', lab); return a; } });
   map.addControl(new FireTog({ position: 'bottomleft' }));
 }
 

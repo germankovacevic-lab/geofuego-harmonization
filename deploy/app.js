@@ -835,6 +835,7 @@ function downloadCSV() {
   const ys = baselineYears(); const base = ys.length ? `${ys[0]}–${ys[ys.length - 1]}` : '—';
   const rows = [`# ${t('csvhdr')}`, `# unit: VIIRS-equivalent 375 m pixel counts (vegetation class; static sources in a separate column, VIIRS units from 2012) · area: ${A.sel.kind} ${A.sel.label || ''} · ${A.n} cells · tier ${A.tier} · region ${A.region} · dominant province ${A.dominant} · baseline ${base} (years with usable months) · factor_source ${A.borrowed ? 'assigned (borrowed from the region)' : 'estimated'} · generated ${new Date().toISOString()}`,
     `# rows: the months inside the selected date range, ${ym(range.from)} to ${ym(range.to)}; in_statistics = 1 marks the months that enter medians and rankings · decimal point, comma separator`,
+    `# H_hi before 2012: widened for cloud from an anomaly of +0.10 at overpass time (the province file of the repository widens from +0.05, so its upper bound can be higher); H is a sum of whole counts per cell`,
     'year,month,H,H_lo,H_hi,sensor,tier,baseline_from,in_statistics,reconstructed_share,gap_fill_share,cloud_flag,static_viirs,factor_source,note'];
   for (let y = 2000; y <= 2025; y++) for (let m = 1; m <= 12; m++) {
     if (!inRange(y, m)) continue;

@@ -20,6 +20,7 @@ table.m-tbl td.n { font-variant-numeric:tabular-nums; }
 code, .m-card pre { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12.5px; }
 .m-card pre { background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:8px; padding:10px 12px; overflow:auto; margin:6px 0 10px; white-space:pre-wrap; word-break:break-word; }
 .m-links { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 0; }
-.m-toc { display:flex; gap:8px; flex-wrap:wrap; }
-.m-toc a { font-size:13px; }
+.m-stat.bad, .m-stat.good, .m-stat.ok { border-top:3px solid var(--c); background:linear-gradient(180deg, color-mix(in srgb, var(--c) 13%, transparent), transparent 70%); }
+.m-stat.bad { --c:#ff8a65; } .m-stat.good { --c:var(--accent); } .m-stat.ok { --c:var(--ok); }
+.m-stat.bad .v, .m-stat.good .v, .m-stat.ok .v { color:var(--c); }
 @media (max-width:760px) { .m-three { grid-template-columns:1fr; } }

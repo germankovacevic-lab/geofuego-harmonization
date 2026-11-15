@@ -8,7 +8,7 @@
 // ---------- i18n ----------
 const T = {
   en: {
-    ctx26: 'Context 2026 (Argentina, preliminary): strong El Niño, ONI +2.5 in Aug–Oct, the highest for those months since 1950. In most departments of the main fire provinces, August 2026 had the greenest vegetation for an August since 2001 and very wet topsoil; September was near normal; October was the coldest October since 2001. Nationally, August and October 2026 are the lowest August and the lowest October of the VIIRS record (2012 →). Sources: NOAA CPC ONI; ERA5-Land and MODIS NDVI via the Estado hídrico dataset (doi:10.5281/zenodo.24035880).',
+    ctx26: 'Context 2026 (Argentina, preliminary): strong El Niño, ONI +2.5 in Aug–Oct, the highest for those months since 1950. In most departments of the main fire provinces, August 2026 had the greenest vegetation for an August since 2001 and very wet topsoil; September was near normal; October was the coldest October since 2001. Nationally, August and October 2026 are the lowest August and the lowest October of the VIIRS record (since 2012). Sources: NOAA CPC ONI; ERA5-Land and MODIS NDVI via the Estado hídrico dataset (doi:10.5281/zenodo.24035880).',
     stepterra: 'The harmonized line starts in 2003 here: November 2000 – June 2002 is the Terra-only era (one satellite, reconstruction error ≈ 17 % per province against ≈ 10 % with Terra + Aqua), shown only for areas of 100 cells or more. The raw MODIS line still starts in 2001.',
     mcount: 'Count', manom: 'Anomaly', kcrit: 'Critical months', kcritd: (pct, peak) => `${pct} % of a typical year's activity · peak ${peak}`,
     kworst: 'Worst year', kworstd: (v, x) => `${v} hotspots · ${x} the median year`, kmean: 'Typical year', kmeand: (a, b) => `median of annual totals, ${a}–${b}`,
@@ -34,7 +34,7 @@ const T = {
     stepharmna: 'Before 2012 the harmonized record is not shown for an area this size.', steplow: 'Too few detections in this area for a stable before/after ratio; read the chart, not the ratios.',
     stepnote: 'Annual totals 2001–2025, whole record (the date range above does not apply). MODIS and VIIRS in each sensor’s own units: Terra + Aqua hotspots (Terra only until mid-2002, hence the rise to 2003) and VIIRS S-NPP hotspots. Harmonized = VIIRS-equivalent: reconstructed from MODIS until 2011, with its 80 % range (sum of the monthly bounds, conservative), observed by VIIRS from 2012. Spliced as recorded = raw MODIS until 2011, raw VIIRS from 2012, what you get by joining the two archives as they are. Ratios: mean of 2012–14 over mean of 2009–11. Vegetation class; fixed heat sources excluded.',
     viirsstarts: 'VIIRS starts', peryear: 'hotspots per year',
-    tagline: 'One fire-hotspot calendar for any area of Argentina, November 2000 → today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month.',
+    tagline: 'One fire-hotspot calendar for any area of Argentina, November 2000 to today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month.',
     h1sub: 'MODIS + VIIRS fire calendar', method: 'Method & code', about: 'About', province: 'Province', country: 'Whole country', latlon: 'Lat / Lon', go: 'Go', clear: 'Clear', drawhint: 'On the map: click a province, or zoom in and click the cells you want (click again to remove); the rectangle tool selects many cells at once.', cellsel: 'Selected cells', home: 'Centre on Argentina',
     attrib: 'Basemaps: Esri World Imagery (Esri, Maxar, Earthstar Geographics), World Boundaries & Places, World Topo, Light Gray Canvas (Esri, HERE, Garmin, OpenStreetMap contributors). Grid: 0.25°. Data: NASA FIRMS (MODIS, VIIRS).',
     empty: 'Pick a province, enter a point, or draw an area. The calendar snaps to whole 0.25° cells (about 25 × 25 km).',
@@ -43,11 +43,11 @@ const T = {
     eras: 'From 2012 the values are observed by VIIRS. Before 2012 they are estimated from MODIS, a coarser sensor, and shown with an 80 % range: about 1 month in 5 falls outside it.',
     smallnote: 'MODIS missed many small fires that VIIRS detects. In an area this size, a month with no value before 2012 means “MODIS detected nothing”, not “nothing burned”. Do not compare how often it burned before and after 2012.',
     seriestitle: 'Monthly series with 80 % range', yearstitle: 'Which years burned most', seasontitle: 'Which months of the year', wheretitle: 'Where it burns — share of hotspots by province',
-    statictitle: 'Fixed heat sources (gas flares, industry) — separate series, VIIRS counts, 2012 →',
+    statictitle: 'Fixed heat sources (gas flares, industry) — separate series, VIIRS counts since 2012',
     staticnote: "Never added to the calendar above. In the sensor's own units: VIIRS counts since 2012; the MODIS-era values are not shown.",
     how: 'How to read this',
     how1: 'Unit: the 0.25° cell. Drawn areas snap to whole cells; an area smaller than one cell becomes that cell.',
-    how2: 'Size tiers: ≥ 100 cells full calendar · 25–99 full, pre-2012 labelled reconstructed · 4–24 baseline 2012–2025, pre-2012 zero = no MODIS detection · 1–3 pre-2012 greyed and excluded unless you toggle them on. Chubut and Santa Cruz: one tier stricter. Tierra del Fuego: 2012 → only.',
+    how2: 'Size tiers: ≥ 100 cells full calendar · 25–99 full, pre-2012 labelled reconstructed · 4–24 baseline 2012–2025, pre-2012 zero = no MODIS detection · 1–3 pre-2012 greyed and excluded unless you toggle them on. Chubut and Santa Cruz: one tier stricter. Tierra del Fuego: from 2012 only.',
     how3: '80 % range: calibrated out of sample per fire-regime region, size class and predicted count, widened in strong ENSO months and in cloudier-than-usual months. Only reconstructed months carry it.',
     how4: 'Markers: ▲ cloudier than usual at overpass time (the count may be low) · ◆ partly modelled (satellite outage) · hatch: Terra-only era (Nov 2000 – Jun 2002), shown for ≥ 100 cells.',
     how5: 'Current year: preliminary, near-real-time, NOAA-20/21 converted to S-NPP-equivalent (± 5 %), month to date. Not part of the harmonized record. This is not an alert system: an empty cell does not mean there is no fire.',
@@ -75,14 +75,14 @@ const T = {
     legendlow: 'few', legendhigh: 'many', legendgrey: 'greyed / excluded', legendnd: 'no data', mixed: '2002 mixes Terra-only and Terra+Aqua months', y2000: '2000 has two months and is never ranked',
     seasonnote: (y0, y1) => `Median and inter-quartile range by calendar month, ${y0}–${y1}.`, through: 'data through', annual: 'annual total',
     csvcells: 'CSV · cells', csvttl: 'Monthly values of the selected area, for the selected dates', cellsttl: 'One row per 0.25° cell and month with hotspots, for the selected area and dates', pngttl: 'The calendar as an image',
-    asktitle: 'What the challenge asks → where it is in this app',
+    asktitle: 'What the challenge asks and where it is in this app',
     askcols: ['The challenge asks for', 'In this app'],
     ask: [
       ['MODIS and VIIRS harmonized, so the sensor of origin no longer matters', 'Before / after the 2012 sensor change, for your area', 'step-card'],
       ['A consistent time series, tested', 'Out-of-sample validation numbers', 'valid-card'],
       ['Select a region: draw the area of interest or enter latitude and longitude', 'Province, Lat / Lon, cells or rectangle on the map', 'prov'],
       ['Select a specific date range', 'From / to', 'from'],
-      ['A calendar of hotspots from the early 2000s to the present', 'Burning-activity calendar, Nov 2000 → today', 'cal'],
+      ['A calendar of hotspots from the early 2000s to the present', 'Burning-activity calendar, Nov 2000 to today', 'cal'],
       ['Which periods of the year see more fires', 'Which months of the year · critical months', 'season'],
       ['Which years had more burning activity', 'Which years burned most · worst year', 'years'],
       ['The current month against the historical median', 'This month vs the historical median', 'now-card'],
@@ -93,7 +93,7 @@ const T = {
     csvhdr: 'GeoFuego Harmonization — CC BY 4.0 — produced by scripts written with SI assistance (Claude, Anthropic) from NASA FIRMS data',
   },
   es: {
-    ctx26: 'Contexto 2026 (Argentina, preliminar): El Niño fuerte, ONI +2,5 en ago–oct, el más alto para esos meses desde 1950. En la mayoría de los departamentos de las principales provincias con fuego, agosto 2026 tuvo la vegetación más verde para un agosto desde 2001 y el suelo superficial muy húmedo; septiembre fue casi normal; octubre fue el octubre más frío desde 2001. A nivel país, agosto y octubre 2026 son el agosto y el octubre más bajos del registro VIIRS (2012 →). Fuentes: NOAA CPC ONI; ERA5-Land y NDVI MODIS vía el dataset Estado hídrico (doi:10.5281/zenodo.24035880).',
+    ctx26: 'Contexto 2026 (Argentina, preliminar): El Niño fuerte, ONI +2,5 en ago–oct, el más alto para esos meses desde 1950. En la mayoría de los departamentos de las principales provincias con fuego, agosto 2026 tuvo la vegetación más verde para un agosto desde 2001 y el suelo superficial muy húmedo; septiembre fue casi normal; octubre fue el octubre más frío desde 2001. A nivel país, agosto y octubre 2026 son el agosto y el octubre más bajos del registro VIIRS (desde 2012). Fuentes: NOAA CPC ONI; ERA5-Land y NDVI MODIS vía el dataset Estado hídrico (doi:10.5281/zenodo.24035880).',
     stepterra: 'Acá la línea armonizada empieza en 2003: noviembre 2000 – junio 2002 es la era de solo Terra (un satélite, error de reconstrucción ≈ 17 % por provincia contra ≈ 10 % con Terra + Aqua), que se muestra solo en áreas de 100 celdas o más. La línea de MODIS crudo sí empieza en 2001.',
     mcount: 'Conteo', manom: 'Anomalía', kcrit: 'Meses críticos', kcritd: (pct, peak) => `${pct} % de la actividad de un año típico · pico en ${peak}`,
     kworst: 'Peor año', kworstd: (v, x) => `${v} focos · ${x} el año mediano`, kmean: 'Año típico', kmeand: (a, b) => `mediana de los totales anuales, ${a}–${b}`,
@@ -119,7 +119,7 @@ const T = {
     stepharmna: 'Antes de 2012 el registro armonizado no se muestra para un área de este tamaño.', steplow: 'Muy pocas detecciones en esta área para un cociente antes/después estable; leer el gráfico, no los cocientes.',
     stepnote: 'Totales anuales 2001–2025, registro completo (el rango de fechas de arriba no se aplica). MODIS y VIIRS en las unidades de cada sensor: focos Terra + Aqua (solo Terra hasta mediados de 2002, de ahí la subida hasta 2003) y focos VIIRS S-NPP. Armonizado = equivalente VIIRS: reconstruido desde MODIS hasta 2011, con su rango del 80 % (suma de las cotas mensuales, conservadora), observado por VIIRS desde 2012. Empalmado tal cual = MODIS crudo hasta 2011, VIIRS crudo desde 2012: lo que sale de pegar los dos archivos como vienen. Cocientes: media 2012–14 sobre media 2009–11. Clase vegetación; fuentes fijas de calor excluidas.',
     viirsstarts: 'empieza VIIRS', peryear: 'focos por año',
-    tagline: 'Un calendario de focos de calor para cualquier área de Argentina, noviembre 2000 → hoy. MODIS convertido a conteos equivalentes VIIRS, con un rango del 80 % calibrado en cada mes reconstruido.',
+    tagline: 'Un calendario de focos de calor para cualquier área de Argentina, noviembre de 2000 a hoy. MODIS convertido a conteos equivalentes VIIRS, con un rango del 80 % calibrado en cada mes reconstruido.',
     h1sub: 'calendario de fuego MODIS + VIIRS', method: 'Método y código', about: 'Quiénes somos', province: 'Provincia', country: 'Todo el país', latlon: 'Lat / Lon', go: 'Ir', clear: 'Limpiar', drawhint: 'En el mapa: click en una provincia, o acercá y hacé click en las celdas que quieras (otro click las saca); la herramienta rectángulo marca muchas celdas de una.', cellsel: 'Celdas seleccionadas', home: 'Centrar en Argentina',
     attrib: 'Mapas base: Esri World Imagery (Esri, Maxar, Earthstar Geographics), World Boundaries & Places, World Topo, Light Gray Canvas (Esri, HERE, Garmin, colaboradores de OpenStreetMap). Grilla: 0,25°. Datos: NASA FIRMS (MODIS, VIIRS).',
     empty: 'Elegí una provincia, ingresá un punto o dibujá un área. El calendario se ajusta a celdas enteras de 0,25° (unos 25 × 25 km).',
@@ -128,11 +128,11 @@ const T = {
     eras: 'Desde 2012 los valores son observados por VIIRS. Antes de 2012 se estiman desde MODIS, un sensor más grueso, y se muestran con un rango del 80 %: cerca de 1 mes de cada 5 cae afuera.',
     smallnote: 'MODIS no vio muchos fuegos chicos que VIIRS detecta. En un área de este tamaño, un mes sin valor antes de 2012 significa “MODIS no detectó nada”, no “no se quemó nada”. No comparar la frecuencia de meses con fuego antes y después de 2012.',
     seriestitle: 'Serie mensual con rango del 80 %', yearstitle: 'Qué años se quemó más', seasontitle: 'Qué meses del año', wheretitle: 'Dónde se quema — participación por provincia',
-    statictitle: 'Fuentes fijas de calor (antorchas de gas, industria) — serie aparte, conteos VIIRS, 2012 →',
+    statictitle: 'Fuentes fijas de calor (antorchas de gas, industria) — serie aparte, conteos VIIRS desde 2012',
     staticnote: 'Nunca se suman al calendario de arriba. En las unidades del sensor: conteos VIIRS desde 2012; los valores de la era MODIS no se muestran.',
     how: 'Cómo leer esto',
     how1: 'Unidad: la celda de 0,25°. Las áreas dibujadas se ajustan a celdas enteras; un área menor que una celda pasa a ser esa celda.',
-    how2: 'Niveles por tamaño: ≥ 100 celdas calendario completo · 25–99 completo, pre-2012 marcado como reconstruido · 4–24 base 2012–2025, cero pre-2012 = sin detección MODIS · 1–3 pre-2012 en gris y excluido salvo que lo actives. Chubut y Santa Cruz: un nivel más estricto. Tierra del Fuego: solo 2012 →.',
+    how2: 'Niveles por tamaño: ≥ 100 celdas calendario completo · 25–99 completo, pre-2012 marcado como reconstruido · 4–24 base 2012–2025, cero pre-2012 = sin detección MODIS · 1–3 pre-2012 en gris y excluido salvo que lo actives. Chubut y Santa Cruz: un nivel más estricto. Tierra del Fuego: solo desde 2012.',
     how3: 'Rango del 80 %: calibrado fuera de muestra por región de régimen de fuego, clase de tamaño y conteo predicho; ensanchado en meses de ENSO fuerte y en meses más nublados que lo normal. Solo los meses reconstruidos lo llevan.',
     how4: 'Marcas: ▲ más nublado que lo normal a la hora de paso (el conteo puede estar bajo) · ◆ parcialmente modelado (corte de satélite) · rayado: era solo Terra (nov 2000 – jun 2002), visible con ≥ 100 celdas.',
     how5: 'Año en curso: preliminar, casi en tiempo real, NOAA-20/21 convertidos a equivalente S-NPP (± 5 %), mes a la fecha. No forma parte del registro armonizado. No es un sistema de alerta: una celda vacía no significa que no haya fuego.',
@@ -159,14 +159,14 @@ const T = {
     legendlow: 'pocos', legendhigh: 'muchos', legendgrey: 'gris / excluido', legendnd: 'sin datos', mixed: '2002 mezcla meses solo Terra y Terra+Aqua', y2000: '2000 tiene dos meses y nunca se rankea',
     seasonnote: (y0, y1) => `Mediana y rango intercuartil por mes calendario, ${y0}–${y1}.`, through: 'datos hasta', annual: 'total anual',
     csvcells: 'CSV · celdas', csvttl: 'Valores mensuales del área elegida, para las fechas elegidas', cellsttl: 'Una fila por celda de 0,25° y mes con focos, para el área y las fechas elegidas', pngttl: 'El calendario como imagen',
-    asktitle: 'Qué pide el desafío → dónde está en esta app',
+    asktitle: 'Qué pide el desafío y dónde está en esta app',
     askcols: ['El desafío pide', 'En esta app'],
     ask: [
       ['MODIS y VIIRS armonizados: que el sensor de origen deje de importar', 'Antes / después del cambio de sensor de 2012, para tu área', 'step-card'],
       ['Una serie consistente, probada', 'Números de validación fuera de muestra', 'valid-card'],
       ['Elegir una región: dibujar el área de interés o ingresar latitud y longitud', 'Provincia, Lat / Lon, celdas o rectángulo en el mapa', 'prov'],
       ['Elegir un rango de fechas', 'Desde / hasta', 'from'],
-      ['Un calendario de focos desde principios de los 2000 hasta hoy', 'Calendario de actividad de quema, nov 2000 → hoy', 'cal'],
+      ['Un calendario de focos desde principios de los 2000 hasta hoy', 'Calendario de actividad de quema, nov 2000 a hoy', 'cal'],
       ['Qué períodos del año tienen más fuego', 'Qué meses del año · meses críticos', 'season'],
       ['Qué años tuvieron más actividad', 'Qué años quemaron más · peor año', 'years'],
       ['El mes actual contra la mediana histórica', 'Este mes vs la mediana histórica', 'now-card'],
@@ -188,8 +188,8 @@ function applyI18n() {
   document.getElementById('about').setAttribute('href', lang === 'es' ? 'about/#lang=es' : 'about/');
   const esc = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
   const ask = document.getElementById('ask');
-  if (ask) ask.innerHTML = `<thead><tr><th>${esc(T[lang].askcols[0])}</th><th>${esc(T[lang].askcols[1])}</th></tr></thead><tbody>` + T[lang].ask.map(r => `<tr><td>${esc(r[0])}</td><td><button type="button" class="asklink" data-go="${r[2]}"${r[3] ? ` data-act="${r[3]}"` : ''}>${esc(r[1])} →</button></td></tr>`).join('') + '</tbody>';
-  const mv = document.getElementById('mv-bar'); if (mv) { mv.querySelector('.mv-title b').textContent = `${T[lang].pulseTitle} 2000 → ${YCUR}`; mv.querySelector('[data-mv="year"]').textContent = lang === 'es' ? 'Años' : 'Years'; mv.querySelector('[data-mv="month"]').textContent = lang === 'es' ? 'Meses' : 'Months'; }
+  if (ask) ask.innerHTML = `<thead><tr><th>${esc(T[lang].askcols[0])}</th><th>${esc(T[lang].askcols[1])}</th></tr></thead><tbody>` + T[lang].ask.map(r => `<tr><td>${esc(r[0])}</td><td><button type="button" class="asklink" data-go="${r[2]}"${r[3] ? ` data-act="${r[3]}"` : ''}>${esc(r[1])}</button></td></tr>`).join('') + '</tbody>';
+  const mv = document.getElementById('mv-bar'); if (mv) { mv.querySelector('.mv-title b').textContent = `${T[lang].pulseTitle} 2000–${YCUR}`; mv.querySelector('[data-mv="year"]').textContent = lang === 'es' ? 'Años' : 'Years'; mv.querySelector('[data-mv="month"]').textContent = lang === 'es' ? 'Meses' : 'Months'; }
   for (const [id, k] of [['dl-csv', 'csvttl'], ['dl-cells', 'cellsttl'], ['dl-png', 'pngttl']]) document.getElementById(id)?.setAttribute('title', T[lang][k]);
 }
 
@@ -403,7 +403,7 @@ function renderStep() {
   $('step-note').innerHTML = (A.tier !== 'A' && !A.tdf && hv.some(v => v != null) ? `<span class="warnline">${t('stepterra')}</span><br>` : '') + t('stepnote');
   const el = $('step-chart'); el.innerHTML = ''; if (stepPlot) { stepPlot.destroy(); stepPlot = null; }
   const width = Math.min(900, el.clientWidth || 900);
-  const seam = u => { const x = Math.round(u.valToPos(2011.5, 'x', true)); const c = u.ctx; c.save(); c.strokeStyle = 'rgba(255,255,255,.45)'; c.setLineDash([4, 4]); c.lineWidth = 1; c.beginPath(); c.moveTo(x, u.bbox.top); c.lineTo(x, u.bbox.top + u.bbox.height); c.stroke(); c.setLineDash([]); c.fillStyle = 'rgba(255,255,255,.7)'; c.font = `${11 * devicePixelRatio}px system-ui, sans-serif`; c.fillText(t('viirsstarts') + ' →', x + 6 * devicePixelRatio, u.bbox.top + 14 * devicePixelRatio); c.restore(); };
+  const seam = u => { const x = Math.round(u.valToPos(2011.5, 'x', true)); const c = u.ctx; c.save(); c.strokeStyle = 'rgba(255,255,255,.45)'; c.setLineDash([4, 4]); c.lineWidth = 1; c.beginPath(); c.moveTo(x, u.bbox.top); c.lineTo(x, u.bbox.top + u.bbox.height); c.stroke(); c.setLineDash([]); c.fillStyle = 'rgba(255,255,255,.7)'; c.font = `${11 * devicePixelRatio}px system-ui, sans-serif`; c.fillText(t('viirsstarts'), x + 6 * devicePixelRatio, u.bbox.top + 14 * devicePixelRatio); c.restore(); };
   stepPlot = new uPlot({
     width, height: 260, cursor: { drag: { x: false } }, scales: { x: { time: false } }, hooks: { draw: [seam] },
     axes: [{ stroke: '#9aa3b5', grid: { stroke: '#2a3040' }, ticks: { stroke: '#2a3040' }, values: (u, vs) => vs.map(v => String(v)) }, { stroke: '#9aa3b5', grid: { stroke: '#2a3040' }, ticks: { stroke: '#2a3040' }, size: 64, values: (u, vs) => vs.map(v => fmt(v)) }],
@@ -562,7 +562,7 @@ function moviePlay() {
 }
 function buildMovieBar() {
   const bar = document.createElement('div'); bar.id = 'mv-bar'; bar.className = 'mv-bar'; bar.dataset.mode = 'year';
-  bar.innerHTML = `<button id="mv-play" type="button" class="mv-play" aria-label="Play">▶</button><div class="mv-mid"><div class="mv-title"><b>${t('pulseTitle')} 2000 → ${YCUR}</b><span class="mv-modes"><button type="button" data-mv="year" class="on">${lang === 'es' ? 'Años' : 'Years'}</button><button type="button" data-mv="month">${lang === 'es' ? 'Meses' : 'Months'}</button></span><span id="mv-label" class="mv-label"></span><button id="mv-close" type="button" class="mv-x" title="Close" aria-label="Close">✕</button></div><input id="mv-scrub" type="range" min="0" max="25" value="0" aria-label="Frame"><div class="mv-scale"><span>0</span><i></i><span id="mv-top"></span></div></div>`;
+  bar.innerHTML = `<button id="mv-play" type="button" class="mv-play" aria-label="Play">▶</button><div class="mv-mid"><div class="mv-title"><b>${t('pulseTitle')} 2000–${YCUR}</b><span class="mv-modes"><button type="button" data-mv="year" class="on">${lang === 'es' ? 'Años' : 'Years'}</button><button type="button" data-mv="month">${lang === 'es' ? 'Meses' : 'Months'}</button></span><span id="mv-label" class="mv-label"></span><button id="mv-close" type="button" class="mv-x" title="Close" aria-label="Close">✕</button></div><input id="mv-scrub" type="range" min="0" max="25" value="0" aria-label="Frame"><div class="mv-scale"><span>0</span><i></i><span id="mv-top"></span></div></div>`;
   document.getElementById('map').appendChild(bar); L.DomEvent.disableClickPropagation(bar); L.DomEvent.disableScrollPropagation(bar);
   $('mv-play').addEventListener('click', moviePlay);
   $('mv-close').addEventListener('click', movieOff);
@@ -769,7 +769,7 @@ const csvRow = a => a.map(csvField).join(',');
 function downloadCSV() {
   const ys = baselineYears(); const base = ys.length ? `${ys[0]}–${ys[ys.length - 1]}` : '—';
   const rows = [`# ${t('csvhdr')}`, `# unit: VIIRS-equivalent 375 m pixel counts (vegetation class; static sources in a separate column, VIIRS units from 2012) · area: ${A.sel.kind} ${A.sel.label || ''} · ${A.n} cells · tier ${A.tier} · region ${A.region} · dominant province ${A.dominant} · baseline ${base} (years with usable months) · factor_source ${A.borrowed ? 'assigned (borrowed from the region)' : 'estimated'} · generated ${new Date().toISOString()}`,
-    `# rows: the months inside the selected date range, ${ym(range.from)} → ${ym(range.to)}; in_statistics = 1 marks the months that enter medians and rankings · decimal point, comma separator`,
+    `# rows: the months inside the selected date range, ${ym(range.from)} to ${ym(range.to)}; in_statistics = 1 marks the months that enter medians and rankings · decimal point, comma separator`,
     'year,month,H,H_lo,H_hi,sensor,tier,baseline_from,in_statistics,reconstructed_share,gap_fill_share,cloud_flag,static_viirs,factor_source,note'];
   for (let y = 2000; y <= 2025; y++) for (let m = 1; m <= 12; m++) {
     if (!inRange(y, m)) continue;
@@ -787,7 +787,7 @@ const rangeTag = () => rangeIsDefault() ? '' : `_${ym(range.from)}_${ym(range.to
 /** one row per 0.25° cell × month with hotspots, selected area and dates: the finest unit of the harmonized record */
 function downloadCells() {
   const rows = [`# ${t('csvhdr')}`,
-    `# one row per 0.25° cell and month with hotspots (months with zero or no data are omitted) · area: ${A.sel.kind} ${A.sel.label || ''} · ${A.n} cells · dates ${ym(range.from)} → ${ym(range.to)} · generated ${new Date().toISOString()}`,
+    `# one row per 0.25° cell and month with hotspots (months with zero or no data are omitted) · area: ${A.sel.kind} ${A.sel.label || ''} · ${A.n} cells · dates ${ym(range.from)} to ${ym(range.to)} · generated ${new Date().toISOString()}`,
     `# H = VIIRS-equivalent 375 m detections, vegetation class; static_viirs = fixed heat sources (gas flares, industry), VIIRS counts from 2012, never added to H · a single cell before 2012 carries the single-cell uncertainty (about 30 %) and a missing month there means "no MODIS detection", not "no fire" · in_statistics follows the size tier of the selected area`,
     `# individual detections (point, time, FRP) are distributed by NASA FIRMS: https://firms.modaps.eosdis.nasa.gov/download/ · decimal point, comma separator`,
     'cell_id,lat_min,lon_min,lat_max,lon_max,province,year,month,H,sensor,static_viirs,in_statistics,note'];

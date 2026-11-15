@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>GeoFuego Harmonization — a 26-year fire-hotspot calendar for any area of Argentina</title>
-<meta name="description" content="MODIS and VIIRS active-fire hotspots harmonized into one monthly calendar, Nov 2000 → today, for any area of interest in Argentina. NASA Space Apps Challenge 2026.">
+<meta name="description" content="MODIS and VIIRS active-fire hotspots harmonized into one monthly calendar, Nov 2000 to today, for any area of interest in Argentina. NASA Space Apps Challenge 2026.">
 <link rel="icon" href="assets/geofuego-icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
 <link rel="stylesheet" href="vendor/leaflet-draw-1.0.4/leaflet.draw.css">
 <link rel="stylesheet" href="vendor/uplot-1.6.31/uPlot.min.css">
-<link rel="stylesheet" href="app.css?v=202611150203">
+<link rel="stylesheet" href="app.css?v=202611150341">
 </head>
 <body>
 <header class="top">
@@ -18,7 +18,7 @@
     <div>
     <a class="wordmark" href="https://geofuego.com.ar" rel="noopener"><img src="assets/geofuego-wordmark.png" alt="GEOFUEGO" width="1180" height="154"></a>
     <h1>Harmonization <span data-i18n="h1sub">MODIS + VIIRS fire calendar</span></h1>
-    <p data-i18n="tagline">One fire-hotspot calendar for any area of Argentina, November 2000 → today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month.</p>
+    <p data-i18n="tagline">One fire-hotspot calendar for any area of Argentina, November 2000 to today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month.</p>
     </div>
   </div>
   <div class="topright">
@@ -144,7 +144,7 @@
       </div>
 
       <div class="card" id="static-card" hidden>
-        <h3 data-i18n="statictitle">Fixed heat sources (gas flares, industry) — separate series, VIIRS counts, 2012 →</h3>
+        <h3 data-i18n="statictitle">Fixed heat sources (gas flares, industry) — separate series, VIIRS counts since 2012</h3>
         <canvas id="static" width="900" height="180" role="img" aria-label="Static-source detections by year"></canvas>
         <p class="note" data-i18n="staticnote">Never added to the calendar above. In the sensor's own units: VIIRS counts since 2012; the MODIS-era values are not shown.</p>
       </div>
@@ -153,7 +153,7 @@
         <summary data-i18n="how">How to read this</summary>
         <ul class="how">
           <li data-i18n="how1">Unit: the 0.25° cell. Drawn areas snap to whole cells; an area smaller than one cell becomes that cell.</li>
-          <li data-i18n="how2">Size tiers: ≥ 100 cells full calendar · 25–99 full, pre-2012 labelled reconstructed · 4–24 baseline 2012–2025, pre-2012 zero = no MODIS detection · 1–3 pre-2012 greyed and excluded unless you toggle them on. Chubut and Santa Cruz: one tier stricter. Tierra del Fuego: 2012 → only.</li>
+          <li data-i18n="how2">Size tiers: ≥ 100 cells full calendar · 25–99 full, pre-2012 labelled reconstructed · 4–24 baseline 2012–2025, pre-2012 zero = no MODIS detection · 1–3 pre-2012 greyed and excluded unless you toggle them on. Chubut and Santa Cruz: one tier stricter. Tierra del Fuego: from 2012 only.</li>
           <li data-i18n="how3">80 % range: calibrated out of sample per fire-regime region, size class and predicted count, widened in strong ENSO months and in cloudier-than-usual months. Only reconstructed months carry it.</li>
           <li data-i18n="how4">Markers: ▲ cloudier than usual at overpass time (the count may be low) · ◆ partly modelled (satellite outage) · hatch: Terra-only era (Nov 2000 – Jun 2002), shown for ≥ 100 cells.</li>
           <li data-i18n="how5">Current year: preliminary, near-real-time, NOAA-20/21 converted to S-NPP-equivalent (± 5 %), month to date. Not part of the harmonized record. This is not an alert system: an empty cell does not mean there is no fire.</li>
@@ -161,7 +161,7 @@
       </details>
 
       <details class="card" id="ask-card">
-        <summary data-i18n="asktitle">What the challenge asks → where it is in this app</summary>
+        <summary data-i18n="asktitle">What the challenge asks and where it is in this app</summary>
         <table class="ask" id="ask"></table>
       </details>
     </div>
@@ -175,6 +175,6 @@
 <script src="vendor/leaflet-1.9.4/leaflet.js"></script>
 <script src="vendor/leaflet-draw-1.0.4/leaflet.draw.js"></script>
 <script src="vendor/uplot-1.6.31/uPlot.iife.min.js"></script>
-<script src="app.js?v=202611150203"></script>
+<script src="app.js?v=202611150341"></script>
 </body>
 </html>

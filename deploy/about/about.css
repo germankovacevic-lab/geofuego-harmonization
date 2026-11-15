@@ -16,3 +16,5 @@ body.about { display:block; height:auto; min-height:100vh; overflow:auto; }
 .a-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 @media (max-width:760px) { .a-hero { flex-direction:column; align-items:flex-start; } .a-grid { grid-template-columns:1fr; } .a-photo { width:120px; height:120px; } }
 .a-h3b { margin-top:18px !important; }
+.a-card h3 a.a-yt { color:inherit; text-decoration:underline; text-decoration-color:var(--line); text-underline-offset:4px; }
+.a-card h3 a.a-yt:hover { text-decoration-color:currentColor; }

@@ -1,0 +1,16 @@
+Data products and figures in this repository (CSV, JSON, GeoJSON, KML, PNG under
+`data/` and `figures/`) are licensed under Creative Commons Attribution 4.0
+International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
+
+Copyright (c) 2026 Germán Ricardo Kovacevic (GeoFuego.com.ar)
+
+You are free to share and adapt the material for any purpose, provided you give
+appropriate credit, link to the licence and indicate if changes were made.
+Suggested credit: see CITATION.cff.
+
+The input data keep their own terms: NASA FIRMS (public domain, acknowledgment
+requested), ERA5 (Copernicus licence), NOAA CPC ONI (public domain), GWIS/JRC
+tables (free, attribution), IGN Argentina (open data, attribution). See README,
+"Data sources and licences".
+
+The source code is licensed separately under the MIT License (see LICENSE).

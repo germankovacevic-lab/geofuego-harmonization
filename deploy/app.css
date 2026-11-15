@@ -147,3 +147,9 @@ footer p { margin:0; }
 .cases-row .case-btns .pill { white-space:nowrap; font-size:clamp(11px, 0.85vw, 12.5px); padding:4px 9px; }
 .cases-row .seg-l { white-space:nowrap; }
 .cases-row { flex-wrap:wrap; row-gap:6px; } .cases-row .seg-l { width:100%; } .cases-row .case-btns { width:100%; }
+
+.ask { width:100%; border-collapse:collapse; margin-top:8px; font-size:13px; }
+.ask th { text-align:left; color:var(--muted); font-weight:600; padding:6px 8px; border-bottom:1px solid var(--line); }
+.ask td { padding:7px 8px; border-bottom:1px solid var(--line); vertical-align:top; } .ask td:first-child { width:46%; }
+.asklink { background:none; border:0; padding:0; color:var(--accent); font:inherit; text-align:left; cursor:pointer; } .asklink:hover { text-decoration:underline; }
+.flash { outline:2px solid var(--accent); outline-offset:3px; transition:outline-color .3s; }

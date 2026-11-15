@@ -14,6 +14,7 @@ const T = {
     kworst: 'Worst year', kworstd: (v, x) => `${v} hotspots · ${x} the median year`, kmean: 'Typical year', kmeand: (a, b) => `median of annual totals, ${a}–${b}`,
     kskill: 'Calibration skill', kskilld: (sc) => `fire-season error out of sample (leave-one-year-out 2012–23) · one national factor: ${sc}`, kskillsz: (n) => `fire-season error out of sample for ${n === 1 ? 'a single cell' : `areas of ~${n} cells`} (leave-one-year-out 2012–23)`,
     anomlegend: (y0, y1) => `Anomaly = month ÷ median of the same month, ${y0}–${y1}. Blue below normal, red above. “·” = too little fire in the record to compare.`,
+    anomnone: 'Anomaly needs at least one year of the harmonized record (2000–2025) inside the date range.',
     pulse: 'Fire pulse: play the years', pulseTitle: 'Fire film',
     colours: 'Colours',
     casestitle: 'Known fire seasons', validtitle: 'How well it works — tested on years the model never saw',
@@ -73,6 +74,22 @@ const T = {
     months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     legendlow: 'few', legendhigh: 'many', legendgrey: 'greyed / excluded', legendnd: 'no data', mixed: '2002 mixes Terra-only and Terra+Aqua months', y2000: '2000 has two months and is never ranked',
     seasonnote: (y0, y1) => `Median and inter-quartile range by calendar month, ${y0}–${y1}.`, through: 'data through', annual: 'annual total',
+    csvcells: 'CSV · cells', csvttl: 'Monthly values of the selected area, for the selected dates', cellsttl: 'One row per 0.25° cell and month with hotspots, for the selected area and dates', pngttl: 'The calendar as an image',
+    asktitle: 'What the challenge asks → where it is in this app',
+    askcols: ['The challenge asks for', 'In this app'],
+    ask: [
+      ['MODIS and VIIRS harmonized, so the sensor of origin no longer matters', 'Before / after the 2012 sensor change, for your area', 'step-card'],
+      ['A consistent time series, tested', 'Out-of-sample validation numbers', 'valid-card'],
+      ['Select a region: draw the area of interest or enter latitude and longitude', 'Province, Lat / Lon, cells or rectangle on the map', 'prov'],
+      ['Select a specific date range', 'From / to', 'from'],
+      ['A calendar of hotspots from the early 2000s to the present', 'Burning-activity calendar, Nov 2000 → today', 'cal'],
+      ['Which periods of the year see more fires', 'Which months of the year · critical months', 'season'],
+      ['Which years had more burning activity', 'Which years burned most · worst year', 'years'],
+      ['The current month against the historical median', 'This month vs the historical median', 'now-card'],
+      ['Anomalies against multi-year averages', 'Calendar in Anomaly mode (month ÷ median of the same month)', 'cal', 'anom'],
+      ['Accessible colour ramps', 'Colours: Viridis and Cividis are colour-blind safe', 'ramp'],
+      ['Download analytics and visualizations; a CSV of the hotspots found in a search', 'PNG · CSV (area by month) · CSV · cells (every cell and month with hotspots, selected area and dates)', 'dl-png'],
+    ],
     csvhdr: 'GeoFuego Harmonization — CC BY 4.0 — produced by scripts written with SI assistance (Claude, Anthropic) from NASA FIRMS data',
   },
   es: {
@@ -82,6 +99,7 @@ const T = {
     kworst: 'Peor año', kworstd: (v, x) => `${v} focos · ${x} el año mediano`, kmean: 'Año típico', kmeand: (a, b) => `mediana de los totales anuales, ${a}–${b}`,
     kskill: 'Calidad de la calibración', kskilld: (sc) => `error de temporada fuera de muestra (dejando un año afuera, 2012–23) · un factor nacional único: ${sc}`, kskillsz: (n) => `error de temporada fuera de muestra para ${n === 1 ? 'una celda suelta' : `áreas de ~${n} celdas`} (dejando un año afuera, 2012–23)`,
     anomlegend: (y0, y1) => `Anomalía = mes ÷ mediana del mismo mes, ${y0}–${y1}. Azul debajo de lo normal, rojo arriba. “·” = muy poco fuego en el registro para comparar.`,
+    anomnone: 'La anomalía necesita al menos un año del registro armonizado (2000–2025) dentro del rango de fechas.',
     pulse: 'Pulso de fuego: recorrer los años', pulseTitle: 'Película del fuego',
     colours: 'Colores',
     casestitle: 'Temporadas conocidas', validtitle: 'Qué tan bien funciona — probado en años que el modelo nunca vio',
@@ -140,6 +158,22 @@ const T = {
     months: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
     legendlow: 'pocos', legendhigh: 'muchos', legendgrey: 'gris / excluido', legendnd: 'sin datos', mixed: '2002 mezcla meses solo Terra y Terra+Aqua', y2000: '2000 tiene dos meses y nunca se rankea',
     seasonnote: (y0, y1) => `Mediana y rango intercuartil por mes calendario, ${y0}–${y1}.`, through: 'datos hasta', annual: 'total anual',
+    csvcells: 'CSV · celdas', csvttl: 'Valores mensuales del área elegida, para las fechas elegidas', cellsttl: 'Una fila por celda de 0,25° y mes con focos, para el área y las fechas elegidas', pngttl: 'El calendario como imagen',
+    asktitle: 'Qué pide el desafío → dónde está en esta app',
+    askcols: ['El desafío pide', 'En esta app'],
+    ask: [
+      ['MODIS y VIIRS armonizados: que el sensor de origen deje de importar', 'Antes / después del cambio de sensor de 2012, para tu área', 'step-card'],
+      ['Una serie consistente, probada', 'Números de validación fuera de muestra', 'valid-card'],
+      ['Elegir una región: dibujar el área de interés o ingresar latitud y longitud', 'Provincia, Lat / Lon, celdas o rectángulo en el mapa', 'prov'],
+      ['Elegir un rango de fechas', 'Desde / hasta', 'from'],
+      ['Un calendario de focos desde principios de los 2000 hasta hoy', 'Calendario de actividad de quema, nov 2000 → hoy', 'cal'],
+      ['Qué períodos del año tienen más fuego', 'Qué meses del año · meses críticos', 'season'],
+      ['Qué años tuvieron más actividad', 'Qué años quemaron más · peor año', 'years'],
+      ['El mes actual contra la mediana histórica', 'Este mes vs la mediana histórica', 'now-card'],
+      ['Anomalías contra promedios de varios años', 'Calendario en modo Anomalía (mes ÷ mediana del mismo mes)', 'cal', 'anom'],
+      ['Rampas de color accesibles', 'Colores: Viridis y Cividis son aptas para daltonismo', 'ramp'],
+      ['Descargar análisis y visualizaciones; un CSV de los focos encontrados en una búsqueda', 'PNG · CSV (área por mes) · CSV · celdas (cada celda y mes con focos, área y fechas elegidas)', 'dl-png'],
+    ],
     csvhdr: 'GeoFuego Harmonization — CC BY 4.0 — producido por scripts escritos con asistencia de SI (Claude, Anthropic) a partir de datos NASA FIRMS',
   }
 };
@@ -151,6 +185,11 @@ function applyI18n() {
   document.querySelectorAll('[data-i18n]').forEach(el => { const k = el.dataset.i18n; const v = T[lang][k]; if (typeof v === 'string') el.innerHTML = v; });
   document.getElementById('lang').textContent = lang === 'en' ? 'ES' : 'EN';
   document.getElementById('lang').setAttribute('aria-label', lang === 'en' ? 'Cambiar a español' : 'Switch to English');
+  const esc = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const ask = document.getElementById('ask');
+  if (ask) ask.innerHTML = `<thead><tr><th>${esc(T[lang].askcols[0])}</th><th>${esc(T[lang].askcols[1])}</th></tr></thead><tbody>` + T[lang].ask.map(r => `<tr><td>${esc(r[0])}</td><td><button type="button" class="asklink" data-go="${r[2]}"${r[3] ? ` data-act="${r[3]}"` : ''}>${esc(r[1])} →</button></td></tr>`).join('') + '</tbody>';
+  const mv = document.getElementById('mv-bar'); if (mv) { mv.querySelector('.mv-title b').textContent = `${T[lang].pulseTitle} 2000 → ${YCUR}`; mv.querySelector('[data-mv="year"]').textContent = lang === 'es' ? 'Años' : 'Years'; mv.querySelector('[data-mv="month"]').textContent = lang === 'es' ? 'Meses' : 'Months'; }
+  for (const [id, k] of [['dl-csv', 'csvttl'], ['dl-cells', 'cellsttl'], ['dl-png', 'pngttl']]) document.getElementById(id)?.setAttribute('title', T[lang][k]);
 }
 
 // ---------- data ----------
@@ -603,7 +642,7 @@ function renderCalendar() {
   // legend
   const lg = $('legend'); lg.innerHTML = '';
   const lc = document.createElement('canvas'); lc.width = 160; lc.height = 10; const g = lc.getContext('2d'); for (let i = 0; i < 160; i++) { g.fillStyle = calMode === 'anom' ? divRamp(i / 159).css : ramp(i / 159).css; g.fillRect(i, 0, 1, 10); }
-  if (calMode === 'anom') lg.append(Object.assign(document.createElement('span'), { textContent: '0,25×' }), lc, Object.assign(document.createElement('span'), { textContent: '4× · ' + t('anomlegend', ysB[0], ysB[ysB.length - 1]) }));
+  if (calMode === 'anom') lg.append(Object.assign(document.createElement('span'), { textContent: '0,25×' }), lc, Object.assign(document.createElement('span'), { textContent: '4× · ' + (ysB.length ? t('anomlegend', ysB[0], ysB[ysB.length - 1]) : t('anomnone')) }));
   else lg.append(Object.assign(document.createElement('span'), { textContent: t('legendlow') }), lc, Object.assign(document.createElement('span'), { textContent: `${t('legendhigh')} (${fmt(max)})` }));
   const sw = (color, label, dashed) => { const s = document.createElement('span'); s.innerHTML = `<i style="display:inline-block;width:12px;height:12px;background:${color};border-radius:2px;vertical-align:-2px;margin-right:4px;${dashed ? 'border:1px dashed #fff;background:transparent;' : ''}"></i>${label}`; return s; };
   lg.append(sw('#3a3f4e', t('legendgrey')), sw('#262a36', t('legendnd')), sw('', t('prelim') + ' (*)', true), Object.assign(document.createElement('span'), { textContent: '◤ ' + t('cloud').split(':')[0] }), Object.assign(document.createElement('span'), { textContent: '◆ ' + t('gap', '').replace(' ()', '') }), Object.assign(document.createElement('span'), { textContent: `${lang === 'es' ? 'Mediana' : 'Median'}: ${ys.length ? ys[0] + '–' + ys[ys.length - 1] : '—'}` }));
@@ -729,9 +768,10 @@ const csvRow = a => a.map(csvField).join(',');
 function downloadCSV() {
   const ys = baselineYears(); const base = ys.length ? `${ys[0]}–${ys[ys.length - 1]}` : '—';
   const rows = [`# ${t('csvhdr')}`, `# unit: VIIRS-equivalent 375 m pixel counts (vegetation class; static sources in a separate column, VIIRS units from 2012) · area: ${A.sel.kind} ${A.sel.label || ''} · ${A.n} cells · tier ${A.tier} · region ${A.region} · dominant province ${A.dominant} · baseline ${base} (years with usable months) · factor_source ${A.borrowed ? 'assigned (borrowed from the region)' : 'estimated'} · generated ${new Date().toISOString()}`,
-    `# rows: the full record Nov 2000 → today regardless of the date range shown on screen; in_statistics = 1 marks the months that enter medians and rankings · decimal point, comma separator`,
+    `# rows: the months inside the selected date range, ${ym(range.from)} → ${ym(range.to)}; in_statistics = 1 marks the months that enter medians and rankings · decimal point, comma separator`,
     'year,month,H,H_lo,H_hi,sensor,tier,baseline_from,in_statistics,reconstructed_share,gap_fill_share,cloud_flag,static_viirs,factor_source,note'];
   for (let y = 2000; y <= 2025; y++) for (let m = 1; m <= 12; m++) {
+    if (!inRange(y, m)) continue;
     const yi = y - Y0; if (!A.has[yi][m - 1]) continue; const v = A.H[yi][m - 1];
     const rs = v > 0 ? A.recon[yi][m - 1] / v : (y < 2012 ? 1 : 0), gs = v > 0 ? Math.min(1, A.gap[yi][m - 1] / v) : 0;
     const sensor = y >= 2012 ? (rs > 0.5 ? 'MODIS->VIIRS-eq (gap fill)' : 'VIIRS') : terraOnly(y, m) ? 'MODIS-Terra->VIIRS-eq' : 'MODIS->VIIRS-eq';
@@ -739,8 +779,28 @@ function downloadCSV() {
     const note = y < 2012 && v === 0 && (A.tier === 'C' || A.tier === 'D') ? 'no MODIS detection' : y === 2002 ? 'mixed Terra-only / Terra+Aqua year' : y === 2000 ? 'two months only' : '';
     rows.push(csvRow([y, m, v.toFixed(1), lo == null ? '' : lo.toFixed(1), hi == null ? '' : hi.toFixed(1), sensor, A.tier, A.baselineFrom, usable(y, m) ? 1 : 0, rs.toFixed(2), gs.toFixed(2), A.cloudFlag[yi][m - 1] ? 1 : 0, y >= 2012 ? A.st[yi][m - 1] : '', A.borrowed ? 'assigned' : 'estimated', note]));
   }
-  if (A.cur) for (const M of A.cur.months) if (M.days) { const complete = M.days >= daysInMonth(A.cur.year, M.m); rows.push(csvRow([A.cur.year, M.m, M.h.toFixed(1), '', '', `VIIRS NRT S-NPP-eq (NOAA-20/${A.cur.bridge['NOAA-20']}, NOAA-21/${A.cur.bridge['NOAA-21']})`, A.tier, A.baselineFrom, 0, 0, '', '', M.st.toFixed(1), '', `preliminary, ${complete ? 'complete month' : `month to date through ${M.through}`}; days with 3/2/1/0 satellites ${M.d3}/${M.d2}/${M.d1}/${M.d0}`])); }
-  save(new Blob(['﻿' + rows.join('\r\n')], { type: 'text/csv;charset=utf-8' }), `geofuego-harmonized_${slug()}.csv`);
+  if (A.cur) for (const M of A.cur.months) if (M.days && inRange(A.cur.year, M.m)) { const complete = M.days >= daysInMonth(A.cur.year, M.m); rows.push(csvRow([A.cur.year, M.m, M.h.toFixed(1), '', '', `VIIRS NRT S-NPP-eq (NOAA-20/${A.cur.bridge['NOAA-20']}, NOAA-21/${A.cur.bridge['NOAA-21']})`, A.tier, A.baselineFrom, 0, 0, '', '', M.st.toFixed(1), '', `preliminary, ${complete ? 'complete month' : `month to date through ${M.through}`}; days with 3/2/1/0 satellites ${M.d3}/${M.d2}/${M.d1}/${M.d0}`])); }
+  save(new Blob(['﻿' + rows.join('\r\n')], { type: 'text/csv;charset=utf-8' }), `geofuego-harmonized_${slug()}${rangeTag()}.csv`);
+}
+const rangeTag = () => rangeIsDefault() ? '' : `_${ym(range.from)}_${ym(range.to)}`;
+/** one row per 0.25° cell × month with hotspots, selected area and dates: the finest unit of the harmonized record */
+function downloadCells() {
+  const rows = [`# ${t('csvhdr')}`,
+    `# one row per 0.25° cell and month with hotspots (months with zero or no data are omitted) · area: ${A.sel.kind} ${A.sel.label || ''} · ${A.n} cells · dates ${ym(range.from)} → ${ym(range.to)} · generated ${new Date().toISOString()}`,
+    `# H = VIIRS-equivalent 375 m detections, vegetation class; static_viirs = fixed heat sources (gas flares, industry), VIIRS counts from 2012, never added to H · a single cell before 2012 carries the single-cell uncertainty (about 30 %) and a missing month there means "no MODIS detection", not "no fire" · in_statistics follows the size tier of the selected area`,
+    `# individual detections (point, time, FRP) are distributed by NASA FIRMS: https://firms.modaps.eosdis.nasa.gov/download/ · decimal point, comma separator`,
+    'cell_id,lat_min,lon_min,lat_max,lon_max,province,year,month,H,sensor,static_viirs,in_statistics,note'];
+  for (const id of [...A.sel.cells].sort((a, b) => a - b)) {
+    const c = D.cells[id]; if (!c) continue; const [la0, lo0, la1, lo1] = cellBounds(+id); const head = [id, la0, lo0, la1, lo1, c.p];
+    for (let y = 2000; y <= 2025; y++) for (let m = 1; m <= 12; m++) {
+      if (!inRange(y, m)) continue; const h = c.h[y - Y0][m - 1]; if (h < 0) continue;
+      const s = y >= 2012 ? (c.st?.[y]?.[m - 1] || 0) : 0; if (!(h > 0) && !(s > 0)) continue;
+      const sensor = y >= 2012 ? (c.s[y - Y0][m - 1] ? 'MODIS->VIIRS-eq (gap fill)' : 'VIIRS') : terraOnly(y, m) ? 'MODIS-Terra->VIIRS-eq' : 'MODIS->VIIRS-eq';
+      rows.push(csvRow([...head, y, m, h.toFixed(1), sensor, y >= 2012 ? s : '', usable(y, m) ? 1 : 0, '']));
+    }
+    const lc = L26?.cells[id]; if (lc) for (const M of L26.months) { if (!M.days || !inRange(YCUR, M.m)) continue; const h = lc.h?.[M.m - 1] || 0, s = lc.st?.[M.m - 1] || 0; if (!(h > 0) && !(s > 0)) continue; rows.push(csvRow([...head, YCUR, M.m, h.toFixed(1), 'VIIRS NRT S-NPP-eq', s ? (+s).toFixed(1) : 0, 0, `preliminary, through ${M.through}`])); }
+  }
+  save(new Blob(['\ufeff' + rows.join('\r\n')], { type: 'text/csv;charset=utf-8' }), `geofuego-harmonized-cells_${slug()}${rangeTag()}.csv`);
 }
 function downloadPNG() {
   const cal = $('cal'); const W = cal.width, pad = 16, titleH = 56, footH = 44; const out = document.createElement('canvas'); out.width = W + 2 * pad; out.height = cal.height + titleH + footH + 2 * pad;
@@ -897,7 +957,8 @@ function initUI() {
   $('tog-static').addEventListener('change', e => { showStatic = e.target.checked; renderStatic(); if (A) history.replaceState(null, '', '#' + encodeSel(A.sel)); if (showStatic) $('static-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
   $('ramp').addEventListener('change', e => { rampName = e.target.value; renderCalendar(); });
   document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => { calMode = b.dataset.mode; document.querySelectorAll('[data-mode]').forEach(x => x.classList.toggle('on', x === b)); $('ramp').disabled = calMode === 'anom'; renderCalendar(); }));
-  $('dl-csv').addEventListener('click', downloadCSV); $('dl-png').addEventListener('click', downloadPNG);
+  $('dl-csv').addEventListener('click', downloadCSV); $('dl-png').addEventListener('click', downloadPNG); $('dl-cells').addEventListener('click', downloadCells);
+  $('ask').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (!b) return; if (b.dataset.act === 'anom') document.querySelector('[data-mode="anom"]')?.click(); const el = $(b.dataset.go); if (!el) return; const box = el.closest('.card, .controls, .range') || el; if (box.hidden) return; box.scrollIntoView({ behavior: 'smooth', block: 'center' }); box.classList.add('flash'); setTimeout(() => box.classList.remove('flash'), 1800); });
   $('cal').addEventListener('mousemove', calTip); $('cal').addEventListener('mouseleave', () => { $('tip').hidden = true; });
   $('lang').addEventListener('click', () => { lang = lang === 'en' ? 'es' : 'en'; applyI18n(); applyDrawLocale(); map.fire('langchange'); if (A) { location.hash = encodeSel(A.sel); render(); } });
   window.addEventListener('resize', () => { if (A) { renderSeries(); renderStep(); } });

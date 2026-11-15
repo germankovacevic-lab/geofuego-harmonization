@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
 <link rel="stylesheet" href="vendor/leaflet-draw-1.0.4/leaflet.draw.css">
 <link rel="stylesheet" href="vendor/uplot-1.6.31/uPlot.min.css">
-<link rel="stylesheet" href="app.css?v=202611142348">
+<link rel="stylesheet" href="app.css?v=202611150055">
 </head>
 <body>
 <header class="top">
@@ -82,6 +82,7 @@
             <label class="tog"><span data-i18n="colours">Colours</span> <select id="ramp" aria-label="Colour scale"><option value="fire">Fire</option><option value="viridis">Viridis · colour-blind safe</option><option value="cividis">Cividis · colour-blind safe</option></select></label>
             <button id="dl-png" class="btn small" type="button">PNG</button>
             <button id="dl-csv" class="btn small" type="button">CSV</button>
+            <button id="dl-cells" class="btn small" type="button" data-i18n="csvcells">CSV · cells</button>
           </div>
         </div>
         <div class="calwrap"><canvas id="cal" width="900" height="560" role="img" aria-label="Calendar heatmap of monthly hotspots by year"></canvas><div id="tip" class="tip" hidden></div></div>
@@ -157,6 +158,11 @@
           <li data-i18n="how5">Current year: preliminary, near-real-time, NOAA-20/21 converted to S-NPP-equivalent (± 5 %), month to date. Not part of the harmonized record. This is not an alert system: an empty cell does not mean there is no fire.</li>
         </ul>
       </details>
+
+      <details class="card" id="ask-card">
+        <summary data-i18n="asktitle">What the challenge asks → where it is in this app</summary>
+        <table class="ask" id="ask"></table>
+      </details>
     </div>
   </section>
 </main>
@@ -168,6 +174,6 @@
 <script src="vendor/leaflet-1.9.4/leaflet.js"></script>
 <script src="vendor/leaflet-draw-1.0.4/leaflet.draw.js"></script>
 <script src="vendor/uplot-1.6.31/uPlot.iife.min.js"></script>
-<script src="app.js?v=202611142348"></script>
+<script src="app.js?v=202611150055"></script>
 </body>
 </html>

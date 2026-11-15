@@ -1114,6 +1114,18 @@ function initMap() {
   const brand = document.createElement('img'); brand.src = 'assets/geofuego-globo.png'; brand.alt = ''; brand.className = 'map-globo'; document.getElementById('map').appendChild(brand);
   if (PROV) for (const p of PROV.provincias) { const l = L.polygon(p.rings.map(r => [r]), { color: '#ffffff', opacity: 0.7, weight: 1, fillOpacity: 0, fillColor: '#f5a623', interactive: true, bubblingMouseEvents: true }).addTo(map); l.bindTooltip(p.n === TDF ? 'Tierra del Fuego' : p.n, { sticky: true, direction: 'top', opacity: 0.9 }); l.on('click', () => { if (drawing()) return; $('prov').value = p.n; selectProvince(p.n); }); l.on('mouseover', () => { if (!(A && A.sel.kind === 'province' && A.sel.label === p.n)) l.setStyle({ fillOpacity: 0.12 }); }); l.on('mouseout', () => l.setStyle({ fillOpacity: 0 })); provLayers[p.n] = l; }
   drawn = new L.FeatureGroup().addTo(map);
+  /* full screen of the map (same control as geofuego.com.ar/mapa: under the zoom; iOS Safari does not support it, so the button is not added there) */
+  if (document.fullscreenEnabled) {
+    const FS = L.Control.extend({ options: { position: 'topleft' }, onAdd() {
+      const d = L.DomUtil.create('div', 'leaflet-bar leaflet-control-fs'); const b = L.DomUtil.create('a', '', d); const el = document.getElementById('map');
+      const lab = () => { const on = document.fullscreenElement === el; b.title = lang === 'es' ? (on ? 'Salir de pantalla completa' : 'Pantalla completa') : (on ? 'Exit full screen' : 'Full screen'); b.setAttribute('aria-label', b.title); };
+      b.href = '#'; b.setAttribute('role', 'button'); b.innerHTML = '⛶'; lab();
+      L.DomEvent.disableClickPropagation(d); L.DomEvent.on(b, 'click', ev => { L.DomEvent.stop(ev); if (document.fullscreenElement) document.exitFullscreen(); else el.requestFullscreen(); });
+      document.addEventListener('fullscreenchange', () => { lab(); setTimeout(() => map.invalidateSize(), 120); });
+      return d;
+    } });
+    map.addControl(new FS());
+  }
   const ctl = new L.Control.Draw({ position: 'topleft', draw: { polyline: false, circle: false, circlemarker: false, marker: false, polygon: false, rectangle: { shapeOptions: DRAW_STYLE, showArea: false } }, edit: false });
   map.addControl(ctl);
   map.on(L.Draw.Event.CREATED, e => { lastDrawTs = Date.now(); $('prov').value = ''; rectToCells(e.layer); });

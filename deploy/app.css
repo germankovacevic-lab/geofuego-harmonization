@@ -184,3 +184,5 @@ html.vw-open, html.vw-open body { overflow:hidden; }
 .ask td { padding:7px 8px; border-bottom:1px solid var(--line); vertical-align:top; } .ask td:first-child { width:46%; }
 .asklink { background:none; border:0; padding:0; color:var(--accent); font:inherit; text-align:left; cursor:pointer; } .asklink:hover { text-decoration:underline; }
 .flash { outline:2px solid var(--accent); outline-offset:3px; transition:outline-color .3s; }
+#map:fullscreen { border-radius:0; }
+.leaflet-control-fs a { font-size:18px; line-height:30px; }

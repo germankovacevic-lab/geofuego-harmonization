@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
 <link rel="stylesheet" href="vendor/leaflet-draw-1.0.4/leaflet.draw.css">
 <link rel="stylesheet" href="vendor/uplot-1.6.31/uPlot.min.css">
-<link rel="stylesheet" href="app.css?v=202611151218">
+<link rel="stylesheet" href="app.css?v=202611151251">
 </head>
 <body>
 <header class="top">
@@ -61,17 +61,18 @@
         <h2 id="aoi-title">—</h2>
         <p id="aoi-sub" class="sub">—</p>
         <div class="range">
-          <label for="from-m" data-i18n="from">From</label> <span class="ym"><select id="from-m" aria-label="From: month"></select><select id="from-y" aria-label="From: year"></select></span>
-          <label for="to-m" data-i18n="to">to</label> <span class="ym"><select id="to-m" aria-label="To: month"></select><select id="to-y" aria-label="To: year"></select></span>
+          <span class="end"><label for="from-m" data-i18n="from">From</label> <span class="ym"><select id="from-m" aria-label="From: month"></select><select id="from-y" aria-label="From: year"></select></span></span>
+          <span class="end"><label for="to-m" data-i18n="to">to</label> <span class="ym"><select id="to-m" aria-label="To: month"></select><select id="to-y" aria-label="To: year"></select></span></span>
           <input id="from" type="hidden" value="2000-11"><input id="to" type="hidden" value="2026-11">
         </div>
         <div id="banners"></div>
         <div id="sum-kpis" class="sum-kpis"></div>
         <div class="cases-row" id="cases-card">
-          <span class="seg-l" data-i18n="casestitle">Known fire seasons</span>
+          <span class="seg-l" data-i18n="casestitle">Notable fire events</span>
           <div class="case-btns" id="case-btns"></div>
         </div>
         <p class="case-line" id="case-line" hidden></p>
+        <details class="case-img" id="case-img" open hidden></details>
       </div>
 
       <div class="card">
@@ -82,6 +83,7 @@
             <label class="tog"><input id="tog-static" type="checkbox"> <span data-i18n="togstatic">fixed heat sources</span></label>
             <div class="seg mini" role="group" aria-label="Measure"><button type="button" class="pill on" data-mode="count" data-i18n="mcount">Count</button><button type="button" class="pill" data-mode="anom" data-i18n="manom">Anomaly</button></div>
             <label class="tog"><span data-i18n="colours">Colours</span> <select id="ramp" aria-label="Colour scale"><option value="fire">Fire</option><option value="viridis">Viridis · colour-blind safe</option><option value="cividis">Cividis · colour-blind safe</option></select></label>
+            <button id="cal-focus" class="btn small" type="button" hidden></button>
             <button id="dl-png" class="btn small" type="button">PNG</button>
             <button id="dl-csv" class="btn small" type="button">CSV</button>
             <button id="dl-cells" class="btn small" type="button" data-i18n="csvcells">CSV · cells</button>
@@ -176,12 +178,12 @@
 </main>
 
 <footer>
-  <p data-i18n="foot">NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Team GeoFuego.com.ar · Data: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), ERA5, ERA5-Land and MODIS NDVI (2026 context line), NOAA CPC ONI, IGN Argentina · Code MIT, data CC BY 4.0 · Built with SI assistance (Claude, Anthropic); every number is computed by the open scripts from NASA FIRMS data. We acknowledge the use of data from NASA's Fire Information for Resource Management System (FIRMS), part of NASA's Earth Science Data and Information System (ESDIS).</p>
+  <p data-i18n="foot">NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Team GeoFuego.com.ar · Data: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), NASA Worldview / GIBS imagery (notable fire events), ERA5, ERA5-Land and MODIS NDVI (2026 context line), NOAA CPC ONI, IGN Argentina · Code MIT, data CC BY 4.0 · Built with SI assistance (Claude, Anthropic); every number is computed by the open scripts from NASA FIRMS data. We acknowledge the use of data from NASA's Fire Information for Resource Management System (FIRMS), part of NASA's Earth Science Data and Information System (ESDIS).</p>
 </footer>
 
 <script src="vendor/leaflet-1.9.4/leaflet.js"></script>
 <script src="vendor/leaflet-draw-1.0.4/leaflet.draw.js"></script>
 <script src="vendor/uplot-1.6.31/uPlot.iife.min.js"></script>
-<script src="app.js?v=202611151218"></script>
+<script src="app.js?v=202611151251"></script>
 </body>
 </html>

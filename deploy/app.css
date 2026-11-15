@@ -112,6 +112,21 @@ footer p { margin:0; }
 .case-btns { display:flex; flex-wrap:wrap; gap:8px; }
 .case-btns .pill { border-color:var(--line); background:#151821; }
 .case-btns .pill.on { border-color:#c2410c; background:#3a1d0e; color:#ffd2b3; }
+.case-img { margin:8px 0 0; font-size:13px; } .case-img summary { color:#c9cfdb; }
+.case-pair { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0 6px; max-width:620px; }
+.range .end { display:inline-flex; align-items:center; gap:8px; white-space:nowrap; }
+.case-pair figure { margin:0; } .case-pair img { display:block; width:100%; height:auto; border-radius:8px; border:1px solid var(--line); }
+.case-zoom { display:block; width:100%; padding:0; border:0; background:none; cursor:zoom-in; border-radius:8px; } .case-zoom:hover img, .case-zoom:focus-visible img { border-color:var(--accent); }
+/* image viewer: one image over the whole window, zoom and pan */
+html.vw-open, html.vw-open body { overflow:hidden; }
+.viewer { position:fixed; inset:0; z-index:5000; background:#08090c; display:flex; flex-direction:column; }
+.vw-bar { flex:0 0 auto; display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; padding:8px 12px; border-bottom:1px solid var(--line); }
+.vw-title { font-size:15px; } .vw-seg { display:flex; gap:6px; } .vw-seg .pill { border-color:var(--line); background:#151821; } .vw-seg .pill.on { border-color:#c2410c; background:#3a1d0e; color:#ffd2b3; }
+.vw-tools { margin-left:auto; display:flex; gap:6px; } .vw-tools .btn { min-width:34px; } .vw-tools .btn:disabled { opacity:.4; cursor:default; }
+.vw-stage { flex:1 1 auto; position:relative; overflow:hidden; touch-action:none; cursor:zoom-in; user-select:none; } .vw-stage.zoomed { cursor:grab; } .vw-stage.drag { cursor:grabbing; }
+.vw-stage img { position:absolute; left:0; top:0; max-width:none; transform-origin:0 0; will-change:transform; -webkit-user-drag:none; }
+.vw-foot { flex:0 0 auto; margin:0; padding:6px 12px; font-size:12px; color:var(--muted); border-top:1px solid var(--line); } .vw-foot a { color:#ffd2b3; }
+.case-pair figcaption { font-size:12px; color:var(--muted); margin-top:3px; } .case-pair figcaption b { color:#e8eaf0; }
 .case-line { margin:10px 0 0; font-size:15px; } .case-line b { color:#ff8a65; font-size:18px; }
 .card.valid .kpi .v { color:#ffb347; font-size:22px; white-space:nowrap; }
 #ramp { padding:3px 6px; font-size:12px; max-width:96px; }

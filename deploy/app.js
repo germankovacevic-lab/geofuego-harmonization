@@ -18,12 +18,13 @@ const T = {
     anomnone: 'Anomaly needs at least one year of the harmonized record (2000–2025) inside the date range.',
     pulse: 'Fire pulse: play the years', pulseTitle: 'Fire film',
     colours: 'Colours',
-    casestitle: 'Known fire seasons', validtitle: 'How well it works — tested on years the model never saw',
+    casestitle: 'Notable fire events', calall: 'All years', calevent: 'Event years only', validtitle: 'How well it works — tested on years the model never saw',
     validnote: 'Country-level tests, out of sample. Factors fitted on 2012–2023 only; 2024 and 2025 were used neither for the factors nor for the range. Details and every script: Method &amp; code.',
     v1l: 'Years never used: 2024 · 2025', v1d: 'reconstruction vs what VIIRS observed, country (predicted / observed 1.044 · 1.024)',
     v2l: 'Fire-season error, leave-one-year-out 2012–23', v2d: 'country · province · single cell is 30 % (one national factor: 8.9 / 15.0 / 34 %)',
     v3l: 'The 80 % range, checked on 2024 · 2025', v3d: 'share of single cells inside it; provinces 76 % · 73 %',
     v4l: 'Burned hectares per hotspot, after vs before 2012', v4d: 'harmonized (1 = continuous); the naive splice gives 3.12 — independent check with MODIS burned area (MCD64A1)',
+    casesat: 'Seen from space: before and after (NASA)', casebefore: 'Before', caseafter: 'After', casesatnote: 'The same area before and after the fires, as NASA’s MODIS Terra saw it (false colour, bands 7-2-1: vegetation is green, recently burned ground is red-brown). Context images: no number on this page is computed from them.', casesatsrc: 'Source: NASA Worldview / GIBS', casesatopen: 'open in NASA Worldview', casezoom: 'Click an image to see it full screen and zoom in.', vwin: 'Zoom in', vwout: 'Zoom out', vwfit: 'Fit', vwclose: 'Close', vwhelp: 'Scroll or pinch to zoom, drag to move, arrow keys switch before and after',
     caseline: (name, months, y, x, rank, n, y0, y1) => `${name}, ${months} ${y}: <b>${x}</b> the median of ${months} ${y0}–${y1}${rank === 1 ? ` — the highest of ${n} years on record for this area` : ` — ${ord(rank)} highest of ${n} years`}.`,
     caselow: (name, months, y, v, med, rank, n) => `${name}, ${months} ${y}: <b>${v}</b> hotspots against a typical ${med}${rank === 1 ? ` — the highest of ${n} years on record for this area` : ` — ${ord(rank)} highest of ${n} years`}.`,
     times: 'the median', fireslayer: 'Hotspots · selected area and dates', firesfilm: 'Hidden while the fire film is open',
@@ -54,7 +55,7 @@ const T = {
     how3: '80 % range: calibrated out of sample per fire-regime region, size class and predicted count, widened in strong ENSO months and in cloudier-than-usual months. Only reconstructed months carry it; from 2012, a month partly filled from MODIS during a VIIRS outage carries the range of the filled part.',
     how4: 'Markers: ▲ cloudier than usual at overpass time (the count may be low) · ◆ partly modelled (satellite outage) · hatch: Terra-only era (Nov 2000 – Jun 2002), shown for ≥ 100 cells.',
     how5: 'Current year: preliminary, near-real-time, NOAA-20/21 converted to S-NPP-equivalent (± 5 %), month to date. Not part of the harmonized record. This is not an alert system: an empty cell does not mean there is no fire.',
-    foot: "NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Team GeoFuego.com.ar · Data: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), ERA5, ERA5-Land and MODIS NDVI (2026 context line), NOAA CPC ONI, IGN Argentina · Code MIT, data CC BY 4.0 · Built with SI assistance (Claude, Anthropic); every number is computed by the open scripts from NASA FIRMS data. We acknowledge the use of data from NASA's Fire Information for Resource Management System (FIRMS), part of NASA's Earth Science Data and Information System (ESDIS).",
+    foot: "NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Team GeoFuego.com.ar · Data: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), NASA Worldview / GIBS imagery (notable fire events), ERA5, ERA5-Land and MODIS NDVI (2026 context line), NOAA CPC ONI, IGN Argentina · Code MIT, data CC BY 4.0 · Built with SI assistance (Claude, Anthropic); every number is computed by the open scripts from NASA FIRMS data. We acknowledge the use of data from NASA's Fire Information for Resource Management System (FIRMS), part of NASA's Earth Science Data and Information System (ESDIS).",
     // dynamic
     cells: 'cells', km2: 'km²', tier: 'tier', dominant: 'mostly in', region: 'region', drawn: 'Drawn area', point: 'Point', argentina: 'Argentina',
     snapped1: 'The area is smaller than one cell: the calendar is that of the cell containing it.',
@@ -106,12 +107,13 @@ const T = {
     anomnone: 'La anomalía necesita al menos un año del registro armonizado (2000–2025) dentro del rango de fechas.',
     pulse: 'Pulso de fuego: recorrer los años', pulseTitle: 'Película del fuego',
     colours: 'Colores',
-    casestitle: 'Temporadas conocidas', validtitle: 'Qué tan bien funciona — probado en años que el modelo nunca vio',
+    casestitle: 'Eventos de fuego destacados', calall: 'Todos los años', calevent: 'Solo los años del evento', validtitle: 'Qué tan bien funciona — probado en años que el modelo nunca vio',
     validnote: 'Pruebas a nivel país, fuera de muestra. Factores ajustados solo con 2012–2023; 2024 y 2025 no se usaron ni para los factores ni para el rango. Detalle y cada script: Método y código.',
     v1l: 'Años nunca usados: 2024 · 2025', v1d: 'reconstrucción contra lo que observó VIIRS, país (predicho / observado 1,044 · 1,024)',
     v2l: 'Error de temporada, dejando un año afuera 2012–23', v2d: 'país · provincia · celda suelta 30 % (un factor nacional único: 8,9 / 15,0 / 34 %)',
     v3l: 'El rango del 80 %, verificado en 2024 · 2025', v3d: 'proporción de celdas sueltas adentro; provincias 76 % · 73 %',
     v4l: 'Hectáreas quemadas por foco, después vs antes de 2012', v4d: 'armonizado (1 = continuo); el empalme ingenuo da 3,12 — control independiente con área quemada MODIS (MCD64A1)',
+    casesat: 'Visto desde el espacio: antes y después (NASA)', casebefore: 'Antes', caseafter: 'Después', casesatnote: 'La misma zona antes y después de los incendios, como la vio MODIS Terra de NASA (falso color, bandas 7-2-1: la vegetación se ve verde y el suelo recién quemado, rojo-marrón). Imágenes de contexto: ningún número de esta página se calcula a partir de ellas.', casesatsrc: 'Fuente: NASA Worldview / GIBS', casesatopen: 'abrir en NASA Worldview', casezoom: 'Hacé click en una imagen para verla a pantalla completa y acercarla.', vwin: 'Acercar', vwout: 'Alejar', vwfit: 'Ajustar', vwclose: 'Cerrar', vwhelp: 'Rueda o pellizco para acercar, arrastrar para mover, flechas del teclado para cambiar entre antes y después',
     caseline: (name, months, y, x, rank, n, y0, y1) => `${name}, ${months} ${y}: <b>${x}</b> la mediana de ${months} ${y0}–${y1}${rank === 1 ? ` — el más alto de ${n} años del registro para esta zona` : ` — ${rank}º más alto de ${n} años`}.`,
     caselow: (name, months, y, v, med, rank, n) => `${name}, ${months} ${y}: <b>${v}</b> focos contra un año típico de ${med}${rank === 1 ? ` — el más alto de ${n} años del registro para esta zona` : ` — ${rank}º más alto de ${n} años`}.`,
     times: 'la mediana', fireslayer: 'Focos · área y fechas elegidas', firesfilm: 'Oculto mientras la película del fuego está abierta',
@@ -142,7 +144,7 @@ const T = {
     how3: 'Rango del 80 %: calibrado fuera de muestra por región de régimen de fuego, clase de tamaño y conteo predicho; ensanchado en meses de ENSO fuerte y en meses más nublados que lo normal. Solo los meses reconstruidos lo llevan; desde 2012, un mes rellenado en parte desde MODIS durante una caída de VIIRS lleva el rango de la parte rellenada.',
     how4: 'Marcas: ▲ más nublado que lo normal a la hora de paso (el conteo puede estar bajo) · ◆ parcialmente modelado (corte de satélite) · rayado: era solo Terra (nov 2000 – jun 2002), visible con ≥ 100 celdas.',
     how5: 'Año en curso: preliminar, casi en tiempo real, NOAA-20/21 convertidos a equivalente S-NPP (± 5 %), mes a la fecha. No forma parte del registro armonizado. No es un sistema de alerta: una celda vacía no significa que no haya fuego.',
-    foot: 'NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Equipo GeoFuego.com.ar · Datos: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), ERA5, ERA5-Land y NDVI MODIS (línea de contexto 2026), NOAA CPC ONI, IGN Argentina · Código MIT, datos CC BY 4.0 · Construido con asistencia de SI (Claude, Anthropic); cada número lo calculan los scripts abiertos desde datos NASA FIRMS. We acknowledge the use of data from NASA\'s Fire Information for Resource Management System (FIRMS), part of NASA\'s Earth Science Data and Information System (ESDIS).',
+    foot: 'NASA Space Apps Challenge 2026 · Harmonization of MODIS and VIIRS Hot Spots (CONAE) · Equipo GeoFuego.com.ar · Datos: NASA FIRMS (MODIS Collection 6/6.1, VIIRS S-NPP / NOAA-20 / NOAA-21), imágenes NASA Worldview / GIBS (eventos destacados), ERA5, ERA5-Land y NDVI MODIS (línea de contexto 2026), NOAA CPC ONI, IGN Argentina · Código MIT, datos CC BY 4.0 · Construido con asistencia de SI (Claude, Anthropic); cada número lo calculan los scripts abiertos desde datos NASA FIRMS. We acknowledge the use of data from NASA\'s Fire Information for Resource Management System (FIRMS), part of NASA\'s Earth Science Data and Information System (ESDIS).',
     cells: 'celdas', km2: 'km²', tier: 'nivel', dominant: 'mayormente en', region: 'región', drawn: 'Área dibujada', point: 'Punto', argentina: 'Argentina',
     snapped1: 'El área es menor que una celda: el calendario es el de la celda que la contiene.',
     tierA: 'Calendario completo, todos los años.', tierB: 'Calendario completo; los valores anteriores a 2012 son reconstruidos y llevan el rango del 80 %.',
@@ -216,6 +218,7 @@ const SIZE = n => n === 1 ? '1' : n <= 9 ? '2-9' : n <= 49 ? '10-49' : n <= 199 
 async function load() {
   const [a, b, c, p] = await Promise.all([fetch('data/cells.json').then(r => r.json()), fetch('data/cells_2026.json').then(r => r.json()).catch(() => null), fetch('data/oni.json').then(r => r.json()).catch(() => ({ oni: {} })), fetch('data/provincias.json').then(r => r.json()).catch(() => null)]);
   D = a; L26 = b; ONI = c.oni || {}; PROV = p;
+  fetch('assets/cases/cases.json').then(r => r.json()).then(j => { CASEIMG = j; renderCaseImages(); }).catch(() => {}); // context images of the notable fire events; the app works without them
   // the date range ends at the last month with data: the latest month of the preliminary current year, or December of the last harmonized year
   { const withData = L26 ? L26.months.filter(M => M.days > 0).map(M => M.m) : []; RANGE_DEFAULT[1] = withData.length ? [L26.year, Math.max(...withData)] : [Y0 + YEARS - 1, 12]; range.to = [...RANGE_DEFAULT[1]]; }
   [RAW, SKILL] = await Promise.all([fetch('data/raw.json').then(r => r.json()).catch(() => null), fetch('data/skill.json').then(r => r.json()).catch(() => null)]);
@@ -457,7 +460,7 @@ function renderValid() {
   $('valid-kpis').innerHTML = [k(es ? '+4,4 % · +2,4 %' : '+4.4 % · +2.4 %', 'v1l', 'v1d'), k(es ? '3,2 % · 9,8 %' : '3.2 % · 9.8 %', 'v2l', 'v2d'), k('80 % · 77 %', 'v3l', 'v3d'), k(es ? '0,98' : '0.98', 'v4l', 'v4d')].join('');
 }
 
-// ---------- known fire seasons (permalinks; the figure is computed live with the app's own rules) ----------
+// ---------- notable fire events (permalinks; the figure is computed live with the app's own rules) ----------
 const CASES = [
   { id: 'corrientes-2022', short: 'Corrientes', en: 'Corrientes', es: 'Corrientes', prov: 'Corrientes', y: 2022, m: [1, 2] },
   { id: 'cordoba-2020', short: 'Córdoba', en: 'Córdoba', es: 'Córdoba', prov: 'Córdoba', y: 2020, m: [8, 9, 10] },
@@ -466,18 +469,29 @@ const CASES = [
   { id: 'cholila-2015', short: 'Cholila', en: 'Cholila – Los Alerces', es: 'Cholila – Los Alerces', bbox: [-43.0, -72.0, -42.25, -71.25], y: 2015, m: [1, 2, 3] },
   { id: 'chilecito-2026', short: 'Chilecito', en: 'Chilecito – Famatina', es: 'Chilecito – Famatina', bbox: [-29.25, -68.0, -29.0, -67.25], y: 2026, m: [7] }, // preliminary current year (NRT), the example of the challenge video
 ];
-let activeCase = null;
+let activeCase = null, CASEIMG = null; // CASEIMG: before / after NASA images of each case (assets/cases/cases.json, 01f_fetch_case_images.mjs)
+/** context card of a notable fire event: the same area before and after, NASA MODIS false colour; hidden when no case is active */
+function renderCaseImages() {
+  const box = $('case-img'); if (!box) return; const c = CASES.find(x => x.id === activeCase), g = c && CASEIMG?.cases?.[c.id]; if (!g || !A) { box.hidden = true; box.innerHTML = ''; return; }
+  const day = s => { const [y, m, d] = s.split('-').map(Number); return `${d} ${t('months')[m - 1]} ${y}`; };
+  const fig = (k, lab) => `<figure><button type="button" class="case-zoom" data-k="${k}" title="${t('casezoom')}"><img src="assets/cases/${g[k].file}" width="${g.width}" height="${g.height}" loading="lazy" alt="${c[lang]} ${c.y}: ${lab.toLowerCase()}, ${day(g[k].date)} (NASA MODIS Terra, false colour)"></button><figcaption><b>${lab}</b> · ${day(g[k].date)}</figcaption></figure>`;
+  box.innerHTML = `<summary>${t('casesat')}</summary><div class="case-pair">${fig('before', t('casebefore'))}${fig('after', t('caseafter'))}</div><p class="note">${t('casezoom')} ${t('casesatnote')} ${t('casesatsrc')}.</p>`;
+  box.querySelectorAll('.case-zoom').forEach(b => b.addEventListener('click', () => viewerOpen(c.id, b.dataset.k)));
+  box.hidden = false;
+}
 function renderCaseBtns() { $('case-btns').innerHTML = CASES.map(c => `<button type="button" class="pill${activeCase === c.id ? ' on' : ''}" data-case="${c.id}" title="${c[lang]} ${c.y}">${c.short} ${c.y}${c.y === YCUR ? '*' : ''}</button>`).join(''); $('case-btns').querySelectorAll('button').forEach(b => b.addEventListener('click', () => goCase(b.dataset.case))); }
 function goCase(id) {
   const c = CASES.find(x => x.id === id); if (!c) return;
   if (c.prov) { $('prov').value = c.prov; selectProvince(c.prov); }
   else { $('prov').value = ''; if (drawn) drawn.clearLayers(); const r = L.rectangle([[c.bbox[0], c.bbox[1]], [c.bbox[2], c.bbox[3]]], DRAW_STYLE); drawn.addLayer(r); selectLayer(r); map.fitBounds(r.getBounds(), { padding: [20, 20], animate: false }); }
-  activeCase = id; history.replaceState(null, '', '#' + encodeSel(A.sel)); renderCase(); renderCalendar();
-  // bring the framed row into view
+  activeCase = id; calFocus = true; history.replaceState(null, '', '#' + encodeSel(A.sel)); renderCase(); renderCalendar();
+  // with the before / after images, keep the case in view where it was chosen: its line and the images, with the calendar right below (the row of the season stays framed there)
+  if (CASEIMG?.cases?.[id]) { requestAnimationFrame(() => document.getElementById('cases-card')?.scrollIntoView({ block: 'start', behavior: 'smooth' })); return; }
+  // without images: bring the framed row into view
   requestAnimationFrame(() => { if (calCaseY == null) return; const cv = $('cal'), r = cv.getBoundingClientRect(), y = r.top + calCaseY * (r.height / cv.height); const main = document.querySelector('main'); const sc = main.scrollHeight > main.clientHeight + 4 ? main : null; const box = sc ? sc.getBoundingClientRect() : { top: 0, height: window.innerHeight }; const dy = y - (box.top + box.height * 0.55); if (Math.abs(dy) > 40) (sc || window).scrollBy({ top: dy, behavior: 'smooth' }); });
 }
 function renderCase() {
-  renderCaseBtns(); requestAnimationFrame(() => { const e = $('case-line'); if (e) e.title = e.textContent; }); const el = $('case-line'); const c = CASES.find(x => x.id === activeCase); if (!c || !A) { el.hidden = true; return; }
+  renderCaseBtns(); renderCaseImages(); requestAnimationFrame(() => { const e = $('case-line'); if (e) e.title = e.textContent; }); const el = $('case-line'); const c = CASES.find(x => x.id === activeCase); if (!c || !A) { el.hidden = true; return; }
   const mn = c.m.length > 1 ? `${t('months')[c.m[0] - 1]}–${t('months')[c.m[c.m.length - 1] - 1]}` : t('months')[c.m[0] - 1];
   // the current year comes from the preliminary near-real-time layer (A.cur), compared with the harmonized record of the same months
   const sum = y => y === YCUR ? c.m.reduce((a, m) => a + (A.cur?.months[m - 1]?.h || 0), 0) : c.m.reduce((a, m) => a + A.H[y - Y0][m - 1], 0);
@@ -489,6 +503,75 @@ function renderCase() {
   const yl = c.y === YCUR ? `${c.y}*` : c.y; const y0 = ys[0], y1 = ys[ys.length - 1];
   if (med < 10) { el.innerHTML = t('caselow', c[lang], mn, yl, fmt(v), fmt(med), rank, n) + (c.y === YCUR ? ` <span class="note">* ${lang === 'es' ? 'preliminar' : 'preliminary'}</span>` : ''); return; }
   el.innerHTML = t('caseline', c[lang], mn, yl, (v / med).toFixed(1).replace('.', lang === 'es' ? ',' : '.') + '×', rank, n, y0, y1) + (c.y === YCUR ? ` <span class="note">* ${lang === 'es' ? 'preliminar' : 'preliminary'}</span>` : '');
+}
+
+// ---------- image viewer: a before / after image over the whole window, with zoom and pan ----------
+let viewer = null; // { c, g, k, s, x, y, fit, el, img, stage, back }
+const VW_MAX = 6; // deepest zoom: one image pixel on six screen pixels
+function viewerOpen(caseId, k) {
+  const c = CASES.find(x => x.id === caseId), g = c && CASEIMG?.cases?.[c.id]; if (!g) return;
+  viewerClose();
+  const el = document.createElement('div'); el.className = 'viewer'; el.id = 'viewer'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
+  el.innerHTML = `<div class="vw-bar"><b class="vw-title"></b><span class="vw-seg" role="group"><button type="button" class="pill" data-k="before"></button><button type="button" class="pill" data-k="after"></button></span><span class="vw-tools"><button type="button" class="btn small" data-z="out" title="${t('vwout')}" aria-label="${t('vwout')}">−</button><button type="button" class="btn small" data-z="in" title="${t('vwin')}" aria-label="${t('vwin')}">+</button><button type="button" class="btn small" data-z="fit">${t('vwfit')}</button><button type="button" class="btn small vw-x" title="${t('vwclose')}" aria-label="${t('vwclose')}">✕</button></span></div><div class="vw-stage"><img alt="" draggable="false"></div><p class="vw-foot"></p>`;
+  document.body.appendChild(el);
+  viewer = { c, g, k, s: 1, x: 0, y: 0, fit: 1, el, img: el.querySelector('img'), stage: el.querySelector('.vw-stage'), back: document.activeElement };
+  const V = viewer, st = V.stage;
+  el.querySelectorAll('[data-k]').forEach(b => b.addEventListener('click', () => viewerShow(b.dataset.k)));
+  el.querySelector('[data-z="in"]').addEventListener('click', () => viewerZoom(1.6));
+  el.querySelector('[data-z="out"]').addEventListener('click', () => viewerZoom(1 / 1.6));
+  el.querySelector('[data-z="fit"]').addEventListener('click', () => viewerFit());
+  el.querySelector('.vw-x').addEventListener('click', viewerClose);
+  st.addEventListener('wheel', e => { e.preventDefault(); const r = st.getBoundingClientRect(); viewerZoom(Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0022)), e.clientX - r.left, e.clientY - r.top); }, { passive: false });
+  st.addEventListener('dblclick', e => { const r = st.getBoundingClientRect(); viewerZoom(V.s > V.fit * 1.05 && V.s >= VW_MAX * 0.95 ? V.fit / V.s : 2, e.clientX - r.left, e.clientY - r.top); });
+  /* drag to pan with one pointer, pinch to zoom with two */
+  const pts = new Map(); let pinch = 0;
+  st.addEventListener('pointerdown', e => { st.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); pinch = 0; st.classList.add('drag'); });
+  st.addEventListener('pointermove', e => {
+    const p = pts.get(e.pointerId); if (!p) return; const dx = e.clientX - p[0], dy = e.clientY - p[1]; pts.set(e.pointerId, [e.clientX, e.clientY]);
+    if (pts.size === 1) { V.x += dx; V.y += dy; viewerPaint(); return; }
+    const [a, b] = [...pts.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]), r = st.getBoundingClientRect();
+    if (pinch > 0 && d > 0) viewerZoom(d / pinch, (a[0] + b[0]) / 2 - r.left, (a[1] + b[1]) / 2 - r.top); pinch = d;
+  });
+  const up = e => { pts.delete(e.pointerId); pinch = 0; if (!pts.size) st.classList.remove('drag'); };
+  st.addEventListener('pointerup', up); st.addEventListener('pointercancel', up);
+  el.addEventListener('click', e => { if (e.target === el) viewerClose(); });
+  document.addEventListener('keydown', viewerKey); window.addEventListener('resize', viewerFit);
+  document.documentElement.classList.add('vw-open');
+  viewerShow(k); el.querySelector('.vw-x').focus();
+}
+function viewerKey(e) {
+  if (!viewer) return;
+  if (e.key === 'Escape') viewerClose(); else if (e.key === '+' || e.key === '=') viewerZoom(1.6); else if (e.key === '-' || e.key === '_') viewerZoom(1 / 1.6); else if (e.key === '0') viewerFit();
+  else if (e.key === 'ArrowLeft') viewerShow('before'); else if (e.key === 'ArrowRight') viewerShow('after'); else return;
+  e.preventDefault();
+}
+/** switch between the two images keeping zoom and position, so the same place can be compared */
+function viewerShow(k) {
+  const V = viewer; if (!V) return; const first = !V.img.getAttribute('src'); V.k = k; const g = V.g, c = V.c;
+  const day = s => { const [y, m, d] = s.split('-').map(Number); return `${d} ${t('months')[m - 1]} ${y}`; };
+  V.img.src = `assets/cases/${g[k].file}`; V.img.width = g.width; V.img.height = g.height; V.img.alt = `${c[lang]} ${c.y}: ${t(k === 'before' ? 'casebefore' : 'caseafter').toLowerCase()}, ${day(g[k].date)} (NASA MODIS Terra, false colour)`;
+  V.el.setAttribute('aria-label', V.img.alt); V.el.querySelector('.vw-title').textContent = `${c[lang]} ${c.y}`;
+  V.el.querySelectorAll('[data-k]').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.textContent = `${t(b.dataset.k === 'before' ? 'casebefore' : 'caseafter')} · ${day(g[b.dataset.k].date)}`; });
+  V.el.querySelector('.vw-foot').innerHTML = `${t('vwhelp')} · ${t('casesatsrc')}, MODIS Terra 7-2-1, 250 m · <a href="${g[k].worldview}" target="_blank" rel="noopener">${t('casesatopen')}</a>`;
+  if (first) viewerFit(); else viewerPaint();
+}
+function viewerFit() { const V = viewer; if (!V) return; const r = V.stage.getBoundingClientRect(); V.fit = Math.min(r.width / V.g.width, r.height / V.g.height); V.s = V.fit; V.x = (r.width - V.g.width * V.s) / 2; V.y = (r.height - V.g.height * V.s) / 2; viewerPaint(); }
+/** zoom by a factor around a point of the stage (its centre by default) */
+function viewerZoom(f, px, py) {
+  const V = viewer; if (!V) return; const r = V.stage.getBoundingClientRect(); if (px == null) { px = r.width / 2; py = r.height / 2; }
+  const ns = Math.min(Math.max(VW_MAX, V.fit), Math.max(V.fit, V.s * f)); V.x = px - (px - V.x) * ns / V.s; V.y = py - (py - V.y) * ns / V.s; V.s = ns; viewerPaint();
+}
+function viewerPaint() {
+  const V = viewer; if (!V) return; const r = V.stage.getBoundingClientRect(), w = V.g.width * V.s, h = V.g.height * V.s;
+  /* an image smaller than the stage stays centred; a larger one cannot be dragged past its edges */
+  V.x = w <= r.width ? (r.width - w) / 2 : Math.min(0, Math.max(r.width - w, V.x)); V.y = h <= r.height ? (r.height - h) / 2 : Math.min(0, Math.max(r.height - h, V.y));
+  V.img.style.transform = `translate(${V.x}px, ${V.y}px) scale(${V.s})`; V.img.style.imageRendering = V.s > 2.5 ? 'pixelated' : 'auto';
+  V.stage.classList.toggle('zoomed', V.s > V.fit * 1.01);
+  V.el.querySelector('[data-z="out"]').disabled = V.s <= V.fit * 1.001; V.el.querySelector('[data-z="in"]').disabled = V.s >= Math.max(VW_MAX, V.fit) * 0.999;
+}
+function viewerClose() {
+  const V = viewer; if (!V) return; viewer = null; document.removeEventListener('keydown', viewerKey); window.removeEventListener('resize', viewerFit);
+  document.documentElement.classList.remove('vw-open'); V.el.remove(); if (V.back && document.contains(V.back)) V.back.focus();
 }
 
 // ---------- hotspots on the map: cells coloured by the harmonized count in the selected range ----------
@@ -636,6 +719,13 @@ let calCells = [], calCaseY = null; // for hit testing
 function calendarRows() {
   const rows = []; for (let y = Math.max(range.from[0], 2000); y <= Math.min(range.to[0], 2026); y++) rows.push(y); return rows;
 }
+/** rows drawn: with a notable event selected the calendar shows the year of the event with the year before and the year after (display only: medians, rankings and the colour scale keep using every year of the date range); the All years button shows them all */
+let calFocus = true;
+function calendarShown(all) {
+  const c = activeCase && CASES.find(x => x.id === activeCase), can = !!c && all.includes(c.y) && all.length > 3;
+  const b = document.getElementById('cal-focus'); if (b) { b.hidden = !can; b.textContent = t(calFocus ? 'calall' : 'calevent'); b.setAttribute('aria-pressed', String(!calFocus)); }
+  return can && calFocus ? all.filter(y => Math.abs(y - c.y) <= 1) : all;
+}
 function cellValue(y, m) { // y calendar, m 1-based → { v, kind, lo, hi, flags }
   if (y === YCUR) { const M = A.cur?.months[m - 1]; if (!M || !M.days) return { v: null, kind: 'nodata' }; return { v: M.h, kind: 'prelim', partial: M.partial, through: M.through, complete: M.days >= daysInMonth(YCUR, m) }; }
   const yi = y - Y0; if (!A.has[yi][m - 1]) return { v: null, kind: 'nodata' };
@@ -646,18 +736,18 @@ function cellValue(y, m) { // y calendar, m 1-based → { v, kind, lo, hi, flags
   return o;
 }
 function renderCalendar() {
-  const cv = $('cal'), ctx = cv.getContext('2d'); const rows = calendarRows();
+  const cv = $('cal'), ctx = cv.getContext('2d'); const all = calendarRows(), rows = calendarShown(all); // all = every year of the date range (statistics, colour scale); rows = the years drawn
   const W = 900, left = 50, top = 24, totW = 96, cw = (W - left - totW - 8) / 12, ch = 22; const Hh = top + (rows.length + 1) * ch + 14;
   cv.width = W; cv.height = Hh; ctx.clearRect(0, 0, W, Hh);
   ctx.fillStyle = '#1e2230'; ctx.fillRect(0, 0, W, Hh);
-  let max = 0; const vals = []; for (const y of rows) for (let m = 1; m <= 12; m++) { if (!inRange(y, m)) continue; const c = cellValue(y, m); if (c.v != null && !c.grey) { max = Math.max(max, c.v); vals.push(c.v); } }
-  // colour by percentile of the months shown (full contrast at any scale); zero is always the bottom colour
+  let max = 0; const vals = []; for (const y of all) for (let m = 1; m <= 12; m++) { if (!inRange(y, m)) continue; const c = cellValue(y, m); if (c.v != null && !c.grey) { max = Math.max(max, c.v); vals.push(c.v); } }
+  // colour by percentile of the months of the date range (full contrast at any scale; the same colours when only the years of an event are drawn); zero is always the bottom colour
   vals.sort((a, b) => a - b);
   const scale = v => { if (v <= 0 || vals.length < 2) return 0; let lo = 0, hi = vals.length; while (lo < hi) { const mid = (lo + hi) >> 1; if (vals[mid] <= v) lo = mid + 1; else hi = mid; } return (lo - 1) / (vals.length - 1); };
   const ysB = baselineYears(); const monMed = []; for (let m = 1; m <= 12; m++) monMed.push(median(ysB.filter(y => usable(y, m)).map(y => A.H[y - Y0][m - 1])));
   // annual totals of the shown range (usable months; current year = preliminary sum)
   const tot = {}; let tmax = 1;
-  for (const y of rows) { let v = 0, n = 0; for (let m = 1; m <= 12; m++) { if (!inRange(y, m)) continue; const c = cellValue(y, m); if (c.v != null && !c.grey && c.kind !== 'nodata') { v += c.v; n++; } } if (n) { tot[y] = v; if (y !== 2000) tmax = Math.max(tmax, v); } }
+  for (const y of all) { let v = 0, n = 0; for (let m = 1; m <= 12; m++) { if (!inRange(y, m)) continue; const c = cellValue(y, m); if (c.v != null && !c.grey && c.kind !== 'nodata') { v += c.v; n++; } } if (n) { tot[y] = v; if (y !== 2000) tmax = Math.max(tmax, v); } }
   ctx.font = '12px system-ui, sans-serif'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#9aa3b5'; ctx.textAlign = 'center';
   for (let m = 0; m < 12; m++) ctx.fillText(t('months')[m], left + m * cw + cw / 2, 12);
   const tx = left + 12 * cw + 8; ctx.textAlign = 'left'; ctx.fillText(lang === 'es' ? 'Total año' : 'Year total', tx, 12);
@@ -1056,6 +1146,7 @@ function initUI() {
   $('tog-static').addEventListener('change', e => { showStatic = e.target.checked; renderStatic(); if (A) history.replaceState(null, '', '#' + encodeSel(A.sel)); if (showStatic) $('static-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
   $('ramp').addEventListener('change', e => { rampName = e.target.value; renderCalendar(); });
   document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => { calMode = b.dataset.mode; document.querySelectorAll('[data-mode]').forEach(x => x.classList.toggle('on', x === b)); $('ramp').disabled = calMode === 'anom'; renderCalendar(); }));
+  $('cal-focus').addEventListener('click', () => { calFocus = !calFocus; renderCalendar(); });
   $('dl-csv').addEventListener('click', downloadCSV); $('dl-png').addEventListener('click', downloadPNG); $('dl-cells').addEventListener('click', downloadCells); $('dl-step').addEventListener('click', downloadStepTable);
   $('ask').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (!b) return; if (b.dataset.act === 'anom') document.querySelector('[data-mode="anom"]')?.click(); const el = $(b.dataset.go); if (!el) return; const box = el.closest('.card, .controls, .range') || el; if (box.hidden) return; box.scrollIntoView({ behavior: 'smooth', block: 'center' }); box.classList.add('flash'); setTimeout(() => box.classList.remove('flash'), 1800); });
   $('cal').addEventListener('mousemove', calTip); $('cal').addEventListener('mouseleave', () => { $('tip').hidden = true; });

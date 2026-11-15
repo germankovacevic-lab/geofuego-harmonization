@@ -1,0 +1,162 @@
+{
+ "source": "NASA Worldview Snapshots (https://wvs.earthdata.nasa.gov), imagery from NASA GIBS; layer MODIS_Terra_CorrectedReflectance_Bands721 (MODIS Terra corrected reflectance, bands 7-2-1, daily, 250 m; false colour: vegetation green, burned ground red-brown). Context images: no number is computed from them. We acknowledge the use of imagery from the NASA Worldview application (https://worldview.earthdata.nasa.gov), part of the NASA Earth Science Data and Information System (ESDIS). Produced by scripts/01f_fetch_case_images.mjs",
+ "layer": "MODIS_Terra_CorrectedReflectance_Bands721",
+ "cases": {
+  "corrientes-2022": {
+   "bbox": [
+    -30.8,
+    -59.8,
+    -27.2,
+    -55.5
+   ],
+   "width": 1911,
+   "height": 1600,
+   "before": {
+    "date": "2021-12-23",
+    "file": "corrientes-2022_before.jpg",
+    "bytes": 478515,
+    "sha256": "9f54b8f348f36e4c9e4e3d10ce22c3583b9d1c504f18c92c4b18c45f22e42905",
+    "request": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2021-12-23&BBOX=-30.8%2C-59.8%2C-27.2%2C-55.5&CRS=EPSG%3A4326&LAYERS=MODIS_Terra_CorrectedReflectance_Bands721&WRAP=day&FORMAT=image%2Fjpeg&WIDTH=1911&HEIGHT=1600",
+    "worldview": "https://worldview.earthdata.nasa.gov/?v=-59.8,-30.8,-55.5,-27.2&l=MODIS_Terra_CorrectedReflectance_Bands721&t=2021-12-23"
+   },
+   "after": {
+    "date": "2022-02-26",
+    "file": "corrientes-2022_after.jpg",
+    "bytes": 347523,
+    "sha256": "225f01c1730f9b6699ef7c9ea417bdf9b6b5df024b4e07508b0a2e4873e901b4",
+    "request": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2022-02-26&BBOX=-30.8%2C-59.8%2C-27.2%2C-55.5&CRS=EPSG%3A4326&LAYERS=MODIS_Terra_CorrectedReflectance_Bands721&WRAP=day&FORMAT=image%2Fjpeg&WIDTH=1911&HEIGHT=1600",
+    "worldview": "https://worldview.earthdata.nasa.gov/?v=-59.8,-30.8,-55.5,-27.2&l=MODIS_Terra_CorrectedReflectance_Bands721&t=2022-02-26"
+   }
+  },
+  "cordoba-2020": {
+   "bbox": [
+    -32.1,
+    -65.5,
+    -30.2,
+    -63.6
+   ],
+   "width": 844,
+   "height": 844,
+   "before": {
+    "date": "2020-07-28",
+    "file": "cordoba-2020_before.jpg",
+    "bytes": 102432,
+    "sha256": "fb7c9df687078281d73e744849f8b8fbfa26992723987bee3de8ad5a3b8a7090",
+    "request": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2020-07-28&BBOX=-32.1%2C-65.5%2C-30.2%2C-63.6&CRS=EPSG%3A4326&LAYERS=MODIS_Terra_CorrectedReflectance_Bands721&WRAP=day&FORMAT=image%2Fjpeg&WIDTH=844&HEIGHT=844",
+    "worldview": "https://worldview.earthdata.nasa.gov/?v=-65.5,-32.1,-63.6,-30.2&l=MODIS_Terra_CorrectedReflectance_Bands721&t=2020-07-28"
+   },
+   "after": {
+    "date": "2020-11-03",
+    "file": "cordoba-2020_after.jpg",
+    "bytes": 98217,
+    "sha256": "6a89a9568c279c4cbc40b784fe22b7ff46b6f2ace9e18f3db11baf1a75ff4dc4",
+    "request": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2020-11-03&BBOX=-32.1%2C-65.5%2C-30.2%2C-63.6&CRS=EPSG%3A4326&LAYERS=MODIS_Terra_CorrectedReflectance_Bands721&WRAP=day&FORMAT=image%2Fjpeg&WIDTH=844&HEIGHT=844",
+    "worldview": "https://worldview.earthdata.nasa.gov/?v=-65.5,-32.1,-63.6,-30.2&l=MODIS_Terra_CorrectedReflectance_Bands721&t=2020-11-03"
+   }
+  },
+  "delta-2020": {
+   "bbox": [
+    -34,
+    -60.75,
+    -32.5,
+    -58.5
+   ],
+   "width": 1000,
+   "height": 667,
+   "before": {
+    "date": "2020-05-10",
+    "file": "delta-2020_before.jpg",
+    "bytes": 103652,
+    "sha256": "0a433c6190e1a2fc21131cf4f6d2e4dadfa69b9be974f5d48e1ee4306291eaf7",
+    "request": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2020-05-10&BBOX=-34%2C-60.75%2C-32.5%2C-58.5&CRS=EPSG%3A4326&LAYERS=MODIS_Terra_CorrectedReflectance_Bands721&WRAP=day&FORMAT=image%2Fjpeg&WIDTH=1000&HEIGHT=667",
+    "worldview": "https://worldview.earthdata.nasa.gov/?v=-60.75,-34,-58.5,-32.5&l=MODIS_Terra_CorrectedReflectance_Bands721&t=2020-05-10"
+   },
+   "after": {
+    "date": "2020-09-28",
+    "file": "delta-2020_after.jpg",
+    "bytes": 71485,
+    "sha256": "ebe77add94cef0361fc740da7811b3becc249f73349c390d9447cc750b3029c9",
+    "request": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2020-09-28&BBOX=-34%2C-60.75%2C-32.5%2C-58.5&CRS=EPSG%3A4326&LAYERS=MODIS_Terra_CorrectedReflectance_Bands721&WRAP=day&FORMAT=image%2Fjpeg&WIDTH=1000&HEIGHT=667",
+    "worldview": "https://worldview.earthdata.nasa.gov/?v=-60.75,-34,-58.5,-32.5&l=MODIS_Terra_CorrectedReflectance_Bands721&t=2020-09-28"
+   }
+  },
+  "comarca-2021": {
+   "bbox": [
+    -42.6,
+    -72,
+    -41.6,
+    -70.9
+   ],
+   "width": 640,
+   "height": 582,
+   "before": {
+    "date": "2021-01-13",
+    "file": "comarca-2021_before.jpg",
+    "bytes": 56141,
+    "sha256": "c3be97a39b6270f26587907e0831f9a3f989995b897d0e478e838719a3073273",
+    "request": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2021-01-13&BBOX=-42.6%2C-72%2C-41.6%2C-70.9&CRS=EPSG%3A4326&LAYERS=MODIS_Terra_CorrectedReflectance_Bands721&WRAP=day&FORMAT=image%2Fjpeg&WIDTH=640&HEIGHT=582",
+    "worldview": "https://worldview.earthdata.nasa.gov/?v=-72,-42.6,-70.9,-41.6&l=MODIS_Terra_CorrectedReflectance_Bands721&t=2021-01-13"
+   },
+   "after": {
+    "date": "2021-03-18",
+    "file": "comarca-2021_after.jpg",
+    "bytes": 75336,
+    "sha256": "a8d96f901f11682dfd62005156e3c23cd30fae1da75ac3b9b435ab9158e22b13",
+    "request": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2021-03-18&BBOX=-42.6%2C-72%2C-41.6%2C-70.9&CRS=EPSG%3A4326&LAYERS=MODIS_Terra_CorrectedReflectance_Bands721&WRAP=day&FORMAT=image%2Fjpeg&WIDTH=640&HEIGHT=582",
+    "worldview": "https://worldview.earthdata.nasa.gov/?v=-72,-42.6,-70.9,-41.6&l=MODIS_Terra_CorrectedReflectance_Bands721&t=2021-03-18"
+   }
+  },
+  "cholila-2015": {
+   "bbox": [
+    -43.1,
+    -72.2,
+    -42.1,
+    -71
+   ],
+   "width": 640,
+   "height": 533,
+   "before": {
+    "date": "2015-01-20",
+    "file": "cholila-2015_before.jpg",
+    "bytes": 66221,
+    "sha256": "3213bdb8c51ecabb9093b5337cd4bc8876726c913e9cf51539715e8e357d5529",
+    "request": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2015-01-20&BBOX=-43.1%2C-72.2%2C-42.1%2C-71&CRS=EPSG%3A4326&LAYERS=MODIS_Terra_CorrectedReflectance_Bands721&WRAP=day&FORMAT=image%2Fjpeg&WIDTH=640&HEIGHT=533",
+    "worldview": "https://worldview.earthdata.nasa.gov/?v=-72.2,-43.1,-71,-42.1&l=MODIS_Terra_CorrectedReflectance_Bands721&t=2015-01-20"
+   },
+   "after": {
+    "date": "2015-03-20",
+    "file": "cholila-2015_after.jpg",
+    "bytes": 73554,
+    "sha256": "648488a9b9cb0bcde5bc687e48d591ae31aa3b822c0e764878b033e326b332ed",
+    "request": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2015-03-20&BBOX=-43.1%2C-72.2%2C-42.1%2C-71&CRS=EPSG%3A4326&LAYERS=MODIS_Terra_CorrectedReflectance_Bands721&WRAP=day&FORMAT=image%2Fjpeg&WIDTH=640&HEIGHT=533",
+    "worldview": "https://worldview.earthdata.nasa.gov/?v=-72.2,-43.1,-71,-42.1&l=MODIS_Terra_CorrectedReflectance_Bands721&t=2015-03-20"
+   }
+  },
+  "chilecito-2026": {
+   "bbox": [
+    -29.5,
+    -68.2,
+    -28.7,
+    -67
+   ],
+   "width": 640,
+   "height": 427,
+   "before": {
+    "date": "2026-06-30",
+    "file": "chilecito-2026_before.jpg",
+    "bytes": 66997,
+    "sha256": "29118fa34978f93218187ea7261a7f902f6aba3c0bb628e0e116bd25d97dc971",
+    "request": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2026-06-30&BBOX=-29.5%2C-68.2%2C-28.7%2C-67&CRS=EPSG%3A4326&LAYERS=MODIS_Terra_CorrectedReflectance_Bands721&WRAP=day&FORMAT=image%2Fjpeg&WIDTH=640&HEIGHT=427",
+    "worldview": "https://worldview.earthdata.nasa.gov/?v=-68.2,-29.5,-67,-28.7&l=MODIS_Terra_CorrectedReflectance_Bands721&t=2026-06-30"
+   },
+   "after": {
+    "date": "2026-08-09",
+    "file": "chilecito-2026_after.jpg",
+    "bytes": 60012,
+    "sha256": "3d89b75c85490659e2965180aaf888e123c0da9e69b652c80a3355bd774735b4",
+    "request": "https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=2026-08-09&BBOX=-29.5%2C-68.2%2C-28.7%2C-67&CRS=EPSG%3A4326&LAYERS=MODIS_Terra_CorrectedReflectance_Bands721&WRAP=day&FORMAT=image%2Fjpeg&WIDTH=640&HEIGHT=427",
+    "worldview": "https://worldview.earthdata.nasa.gov/?v=-68.2,-29.5,-67,-28.7&l=MODIS_Terra_CorrectedReflectance_Bands721&t=2026-08-09"
+   }
+  }
+ }
+}

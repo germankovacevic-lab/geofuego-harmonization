@@ -7,6 +7,8 @@
 //                                  (VIIRS S-NPP / NOAA-20 / NOAA-21 standard processing, 2023–2025; rebuilt here from
 //                                  data/raw/viirs-sp_*.csv when those files are present, read as versioned otherwise)
 //   deploy/data/oni.json         ← data/external/oni/oni.ascii.txt, { "YYYY-M": ONI } for 2000–2011 (interval widening pre-2012)
+//   deploy/assets/cases/         — before / after NASA images of the notable fire events (01f_fetch_case_images.mjs), checked
+//                                  here against the sha256 recorded in deploy/assets/cases/cases.json
 //   deploy/vendor/               — Leaflet 1.9.4, Leaflet.draw 1.0.4, uPlot 1.6.31 with their LICENSE files, versioned in the
 //                                  repository and checked here against deploy/vendor/SHA256SUMS.txt (no private paths involved)
 // Usage: node scripts/08_app_payload.mjs
@@ -139,6 +141,16 @@ for (const line of (await readFile(path.join(VEND, 'SHA256SUMS.txt'), 'utf8')).s
 if (bad) { console.error(`08_app_payload: ${bad} vendored file(s) do not match SHA256SUMS.txt`); process.exit(1); }
 for (const f of ['cells.json', 'cells_2026.json', 'oni.json', 'provincias.json', 'raw.json', 'skill.json']) console.log(f, ((await stat(path.join(OUT, f))).size / 1e6).toFixed(2), 'MB');
 console.log(`vendor: ${nv} files verified against SHA256SUMS.txt`);
+// context images of the notable fire events (01f_fetch_case_images.mjs): every file must match the sha256 recorded in cases.json
+{
+  const CD = path.join(ROOT, 'deploy', 'assets', 'cases'); let nc = 0, badc = 0;
+  if (existsSync(path.join(CD, 'cases.json'))) {
+    const J = JSON.parse(await readFile(path.join(CD, 'cases.json'), 'utf8'));
+    for (const [id, c] of Object.entries(J.cases)) for (const k of ['before', 'after']) { nc++; const f = path.join(CD, c[k].file); const h = existsSync(f) ? createHash('sha256').update(await readFile(f)).digest('hex') : null; if (h !== c[k].sha256) { badc++; console.error('case image missing or altered:', c[k].file); } }
+    if (badc) { console.error(`08_app_payload: ${badc} case image(s) do not match deploy/assets/cases/cases.json (run scripts/01f_fetch_case_images.mjs)`); process.exit(1); }
+    console.log(`case images: ${nc} files verified against cases.json`);
+  } else process.stderr.write('08_app_payload: deploy/assets/cases/cases.json not found; the app runs without the before / after images of the notable fire events\n');
+}
 
 // cache-busting: stamp the version of app.css / app.js in index.html (browsers and the edge cache them for hours)
 { const idx = path.join(ROOT, 'deploy', 'index.html'); const v = new Date().toISOString().replace(/\D/g, '').slice(0, 12); const html = (await readFile(idx, 'utf8')).replace(/app\.css(\?v=\d+)?"/, `app.css?v=${v}"`).replace(/app\.js(\?v=\d+)?"/, `app.js?v=${v}"`); await writeFile(idx, html); console.log('index.html assets stamped v=' + v); }

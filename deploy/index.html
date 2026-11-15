@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
 <link rel="stylesheet" href="vendor/leaflet-draw-1.0.4/leaflet.draw.css">
 <link rel="stylesheet" href="vendor/uplot-1.6.31/uPlot.min.css">
-<link rel="stylesheet" href="app.css?v=202611150341">
+<link rel="stylesheet" href="app.css?v=202611150811">
 </head>
 <body>
 <header class="top">
@@ -18,14 +18,14 @@
     <div>
     <a class="wordmark" href="https://geofuego.com.ar" rel="noopener"><img src="assets/geofuego-wordmark.png" alt="GEOFUEGO" width="1180" height="154"></a>
     <h1>Harmonization <span data-i18n="h1sub">MODIS + VIIRS fire calendar</span></h1>
-    <p data-i18n="tagline">One fire-hotspot calendar for any area of Argentina, November 2000 to today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month.</p>
+    <p data-i18n="tagline">One fire-hotspot calendar for any area of Argentina, November 2000 to today. MODIS converted to VIIRS-equivalent counts, with a calibrated 80 % range on every reconstructed month. Suomi NPP stopped delivering data on 2 November 2026: from that day the series continues on NOAA-20 and NOAA-21, normalized to the S-NPP scale.</p>
     </div>
   </div>
   <div class="topright">
     <img class="globo" src="assets/geofuego-globo.png" alt="" width="545" height="423">
     <button id="lang" class="chip" type="button" aria-label="Cambiar a español">ES</button>
     <a class="chip" id="about" href="about/" data-i18n="about">About</a>
-    <a class="chip" href="https://github.com/germankovacevic-lab/geofuego-harmonization" target="_blank" rel="noopener" data-i18n="method">Method &amp; code</a>
+    <a class="chip" id="method" href="method/" data-i18n="method">Method &amp; code</a>
     <a class="chip" href="https://doi.org/10.5281/zenodo.24220107" target="_blank" rel="noopener">DOI</a>
   </div>
 </header>
@@ -175,6 +175,6 @@
 <script src="vendor/leaflet-1.9.4/leaflet.js"></script>
 <script src="vendor/leaflet-draw-1.0.4/leaflet.draw.js"></script>
 <script src="vendor/uplot-1.6.31/uPlot.iife.min.js"></script>
-<script src="app.js?v=202611150341"></script>
+<script src="app.js?v=202611150811"></script>
 </body>
 </html>

@@ -8,6 +8,7 @@
     b.textContent = lang === 'en' ? 'ES' : 'EN';
     b.setAttribute('aria-label', lang === 'en' ? 'Cambiar a español' : 'Switch to English');
     document.getElementById('back').setAttribute('href', lang === 'es' ? '../#lang=es' : '../');
+    document.getElementById('method').setAttribute('href', lang === 'es' ? '../method/#lang=es' : '../method/');
   }
   document.getElementById('lang').addEventListener('click', function () { lang = lang === 'en' ? 'es' : 'en'; history.replaceState(null, '', lang === 'es' ? '#lang=es' : location.pathname); apply(); });
   apply();

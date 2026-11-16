@@ -1,0 +1,317 @@
+{
+  "modis_2001_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2001,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2001/modis_2001_Falkland_Islands.csv",
+    "bytes": 5177,
+    "sha256": "f8c5bdbc11552299329c9637a3a937f26092494964a478b6a6684e1e3c8e27da",
+    "rows": 63,
+    "fetched_at": "2026-11-16T23:45:00.812Z"
+  },
+  "modis_2002_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2002,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2002/modis_2002_Falkland_Islands.csv",
+    "bytes": 1880,
+    "sha256": "e06f4f4d1020f18229cdfb3bb672f215e4ca2ce539e99322ad23d3cbfc9dae30",
+    "rows": 22,
+    "fetched_at": "2026-11-16T23:45:01.043Z"
+  },
+  "modis_2003_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2003,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2003/modis_2003_Falkland_Islands.csv",
+    "bytes": 997,
+    "sha256": "5066cc66d4214dd74fb66faac9b4115421f7eae5630f5a720e627bc0e611b596",
+    "rows": 11,
+    "fetched_at": "2026-11-16T23:45:01.291Z"
+  },
+  "modis_2004_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2004,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2004/modis_2004_Falkland_Islands.csv",
+    "bytes": 3517,
+    "sha256": "ef1727a2d2e0bea4b9cc8ed08f3f7bd93ae0cb3ed12eecf3ff4aab88679fb3b7",
+    "rows": 43,
+    "fetched_at": "2026-11-16T23:45:01.535Z"
+  },
+  "modis_2005_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2005,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2005/modis_2005_Falkland_Islands.csv",
+    "bytes": 2241,
+    "sha256": "717f4e8898554a951106ca28e9e2ff76eb4b6e87811d519dc0b044d6f11bee14",
+    "rows": 27,
+    "fetched_at": "2026-11-16T23:45:01.822Z"
+  },
+  "modis_2006_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2006,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2006/modis_2006_Falkland_Islands.csv",
+    "bytes": 4163,
+    "sha256": "fcca5b347c63bcae76652391bbc31169c16a7115b9bfeda80cea2cf476092cec",
+    "rows": 52,
+    "fetched_at": "2026-11-16T23:45:02.107Z"
+  },
+  "modis_2007_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2007,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2007/modis_2007_Falkland_Islands.csv",
+    "bytes": 911,
+    "sha256": "eb667044aa41c85c75d220d7c3e9bfae402aeee868f981c153fb0813bc575538",
+    "rows": 10,
+    "fetched_at": "2026-11-16T23:45:02.375Z"
+  },
+  "modis_2008_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2008,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2008/modis_2008_Falkland_Islands.csv",
+    "bytes": 2170,
+    "sha256": "3095e0757ee8d02a8fdc9193295d3280edf4cbca735ae9aeaa0577e124a14dba",
+    "rows": 26,
+    "fetched_at": "2026-11-16T23:45:02.633Z"
+  },
+  "modis_2009_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2009,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2009/modis_2009_Falkland_Islands.csv",
+    "bytes": 1293,
+    "sha256": "046ae56845172a14f245a9d328ab8fecae47089f94ec546df0804f8f3241f8c0",
+    "rows": 15,
+    "fetched_at": "2026-11-16T23:45:02.890Z"
+  },
+  "modis_2010_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2010,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2010/modis_2010_Falkland_Islands.csv",
+    "bytes": 1090,
+    "sha256": "af2724a74e2ae49d96e9f55c6b9de5b764af73265d3c51e0b24445ec9785663d",
+    "rows": 12,
+    "fetched_at": "2026-11-16T23:45:03.117Z"
+  },
+  "modis_2011_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2011,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2011/modis_2011_Falkland_Islands.csv",
+    "bytes": 2435,
+    "sha256": "b266c101177e14d2bc2824506fd297f59f8d64d5b45525019a461e0815863996",
+    "rows": 29,
+    "fetched_at": "2026-11-16T23:45:03.383Z"
+  },
+  "modis_2012_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2012,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2012/modis_2012_Falkland_Islands.csv",
+    "bytes": 7028,
+    "sha256": "f0d24af48d335309bca432de067c8867d6dc05f359b346f866ae36ea45af761f",
+    "rows": 87,
+    "fetched_at": "2026-11-16T23:45:03.623Z"
+  },
+  "modis_2013_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2013,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2013/modis_2013_Falkland_Islands.csv",
+    "bytes": 1974,
+    "sha256": "31e33af96516adcda3156fb267a8de661ddf2ff4d6075c28f37db6560e17b8e8",
+    "rows": 23,
+    "fetched_at": "2026-11-16T23:45:03.943Z"
+  },
+  "modis_2014_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2014,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2014/modis_2014_Falkland_Islands.csv",
+    "bytes": 592,
+    "sha256": "047fef99e1eb07f223508720af221633865651de41cde6f770f3249de963a41a",
+    "rows": 6,
+    "fetched_at": "2026-11-16T23:45:04.272Z"
+  },
+  "modis_2015_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2015,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2015/modis_2015_Falkland_Islands.csv",
+    "bytes": 910,
+    "sha256": "644225ab18b920e83e201eb781b5b6426ee4a71949c756b973b705ad1190bfdd",
+    "rows": 10,
+    "fetched_at": "2026-11-16T23:45:04.545Z"
+  },
+  "modis_2016_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2016,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2016/modis_2016_Falkland_Islands.csv",
+    "bytes": 1781,
+    "sha256": "6e2cd84e5bb19824c42329dbf37c04260c7d275638c2da45c6b4d9e7d9fb0996",
+    "rows": 21,
+    "fetched_at": "2026-11-16T23:45:04.780Z"
+  },
+  "modis_2017_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2017,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2017/modis_2017_Falkland_Islands.csv",
+    "bytes": 1231,
+    "sha256": "509a04a161ec6c16af4a1205751959c3ad117daabec6e47094a786eb35745478",
+    "rows": 14,
+    "fetched_at": "2026-11-16T23:45:05.107Z"
+  },
+  "modis_2020_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2020,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2020/modis_2020_Falkland_Islands.csv",
+    "bytes": 363,
+    "sha256": "b7ccf9a1e0dc94feb1d368da04cb9e44ce691b9c41aeed351016205120c1bd84",
+    "rows": 3,
+    "fetched_at": "2026-11-16T23:45:05.749Z"
+  },
+  "modis_2021_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2021,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2021/modis_2021_Falkland_Islands.csv",
+    "bytes": 984,
+    "sha256": "53064ac0b768d6da1ed0ba8f04ec979be4c7742e3a0dfa24e75bb2557213acdc",
+    "rows": 11,
+    "fetched_at": "2026-11-16T23:45:06.003Z"
+  },
+  "modis_2022_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2022,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2022/modis_2022_Falkland_Islands.csv",
+    "bytes": 2389,
+    "sha256": "1391d6716a0a8222a2154b1a6399e5e12c1a1fb921f39b8cde107dc5e7ee5235",
+    "rows": 29,
+    "fetched_at": "2026-11-16T23:45:06.265Z"
+  },
+  "modis_2023_Falkland_Islands.csv": {
+    "sensor": "modis",
+    "year": 2023,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/modis/2023/modis_2023_Falkland_Islands.csv",
+    "bytes": 211,
+    "sha256": "143e75a3ad94fdba8f287d767502c781a1b185520120f32f8ef88c35f8f36a3b",
+    "rows": 1,
+    "fetched_at": "2026-11-16T23:45:06.512Z"
+  },
+  "viirs-snpp_2012_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2012,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2012/viirs-snpp_2012_Falkland_Islands.csv",
+    "bytes": 46568,
+    "sha256": "646ba2d2bf6e64447a73bf70a91a7c1da68fa3bfc8d8af6b812b6938affaedfa",
+    "rows": 579,
+    "fetched_at": "2026-11-16T23:45:07.311Z"
+  },
+  "viirs-snpp_2013_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2013,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2013/viirs-snpp_2013_Falkland_Islands.csv",
+    "bytes": 7422,
+    "sha256": "f928d5a2fcedfb282dbd1729296b5862570925e6829b67c1102079e4c43b1413",
+    "rows": 91,
+    "fetched_at": "2026-11-16T23:45:07.543Z"
+  },
+  "viirs-snpp_2014_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2014,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2014/viirs-snpp_2014_Falkland_Islands.csv",
+    "bytes": 930,
+    "sha256": "d697fd44065f73d749a0a87a93b73b5b9c88cc2a2364c6a8a469e304b7e1147c",
+    "rows": 10,
+    "fetched_at": "2026-11-16T23:45:07.799Z"
+  },
+  "viirs-snpp_2015_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2015,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2015/viirs-snpp_2015_Falkland_Islands.csv",
+    "bytes": 5700,
+    "sha256": "38650218333c77937f166ec0f6e7fb1f6c772baad571013da6010f0536bca73e",
+    "rows": 69,
+    "fetched_at": "2026-11-16T23:45:08.051Z"
+  },
+  "viirs-snpp_2016_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2016,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2016/viirs-snpp_2016_Falkland_Islands.csv",
+    "bytes": 11546,
+    "sha256": "866cf507e54d5689137f05ce1e77bfef0c426b5c98af01e1be0f98d0c81afcc2",
+    "rows": 142,
+    "fetched_at": "2026-11-16T23:45:08.308Z"
+  },
+  "viirs-snpp_2017_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2017,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2017/viirs-snpp_2017_Falkland_Islands.csv",
+    "bytes": 9202,
+    "sha256": "70bbee78a98d7ff0d596d6a845ec4cacb303b984ceddffb8754b10dc1dfb47b2",
+    "rows": 113,
+    "fetched_at": "2026-11-16T23:45:08.559Z"
+  },
+  "viirs-snpp_2018_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2018,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2018/viirs-snpp_2018_Falkland_Islands.csv",
+    "bytes": 2296,
+    "sha256": "b83122886b062969a599793fbca1e135e96a7c0bfef62aa254e2a77072103041",
+    "rows": 27,
+    "fetched_at": "2026-11-16T23:45:08.795Z"
+  },
+  "viirs-snpp_2019_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2019,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2019/viirs-snpp_2019_Falkland_Islands.csv",
+    "bytes": 1013,
+    "sha256": "bae3fe8e80911aab4c8c69bb3c962c7ab9d74ea8f0ae42216891234470a468f4",
+    "rows": 11,
+    "fetched_at": "2026-11-16T23:45:09.040Z"
+  },
+  "viirs-snpp_2020_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2020,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2020/viirs-snpp_2020_Falkland_Islands.csv",
+    "bytes": 1085,
+    "sha256": "4f0eb4fc6110f14be20fdd908f9d023dd9364abc1e3d4e03e033a820c5c0d54e",
+    "rows": 12,
+    "fetched_at": "2026-11-16T23:45:09.279Z"
+  },
+  "viirs-snpp_2021_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2021,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2021/viirs-snpp_2021_Falkland_Islands.csv",
+    "bytes": 4892,
+    "sha256": "05a122a834bafaca5b0500e0abf60713c30e6d40c47eccd989eac83d4c0db1f7",
+    "rows": 59,
+    "fetched_at": "2026-11-16T23:45:09.514Z"
+  },
+  "viirs-snpp_2022_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2022,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2022/viirs-snpp_2022_Falkland_Islands.csv",
+    "bytes": 24065,
+    "sha256": "d8e6490375eefd612aa2b3a0c477e7c8e2c979fc7caecf247786d519672a2a64",
+    "rows": 297,
+    "fetched_at": "2026-11-16T23:45:09.757Z"
+  },
+  "viirs-snpp_2023_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2023,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2023/viirs-snpp_2023_Falkland_Islands.csv",
+    "bytes": 2357,
+    "sha256": "53683da8bd73e6a24430ce12abf717672c9e44efa7885f1a51ae122f06c2ae3f",
+    "rows": 28,
+    "fetched_at": "2026-11-16T23:45:09.985Z"
+  },
+  "viirs-snpp_2024_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2024,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2024/viirs-snpp_2024_Falkland_Islands.csv",
+    "bytes": 612,
+    "sha256": "5069e641006522beec83ccc7c8ef3120e7bf4777570e04fd2e7ef5f0f704bcb8",
+    "rows": 6,
+    "fetched_at": "2026-11-16T23:45:10.258Z"
+  },
+  "viirs-snpp_2025_Falkland_Islands.csv": {
+    "sensor": "viirs-snpp",
+    "year": 2025,
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/country/viirs-snpp/2025/viirs-snpp_2025_Falkland_Islands.csv",
+    "bytes": 207,
+    "sha256": "3b31295f59475b9b19ee26b55690a15f98f3f6fba1c69a3891f1ed96dfc8836a",
+    "rows": 1,
+    "fetched_at": "2026-11-16T23:45:10.505Z"
+  }
+}

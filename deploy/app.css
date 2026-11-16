@@ -186,3 +186,6 @@ html.vw-open, html.vw-open body { overflow:hidden; }
 .flash { outline:2px solid var(--accent); outline-offset:3px; transition:outline-color .3s; }
 #map:fullscreen { border-radius:0; }
 .leaflet-control-fs a { font-size:18px; line-height:30px; }
+
+header.top p.ver { margin:6px 0 0; font-size:12px; line-height:1.4; color:var(--muted, #9aa); max-width:760px; }
+header.top p.ver a { color:inherit; text-decoration:underline; }

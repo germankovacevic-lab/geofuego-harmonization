@@ -20,6 +20,8 @@
 //
 // Output: data/agg/counts.json   { cells: { <cellId>: { <year>: { <month>: [V,T,A,Vs,Ts,As] } } }, drops, totals }
 //         data/agg/country_year.csv  year, V, T, A, Vs, Ts, As, ratio_V_over_TA, ratio_static
+// v1.1.0: `--tag=_malvinas` reads data/raw/MANIFEST_malvinas.json (01g) and writes counts_malvinas.json / country_year_malvinas.csv
+//         with exactly the same filters; the default run (no tag) is unchanged and reproduces v1.0.0 byte for byte.
 
 import { createReadStream } from 'node:fs';
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
@@ -33,7 +35,8 @@ const RAW = path.join(ROOT, 'data', 'raw');
 const OUT = path.join(ROOT, 'data', 'agg');
 await mkdir(OUT, { recursive: true });
 
-const manifest = JSON.parse(await readFile(path.join(RAW, 'MANIFEST.json'), 'utf8'));
+const TAG = process.argv.find(a => a.startsWith('--tag='))?.split('=')[1] || '';
+const manifest = JSON.parse(await readFile(path.join(RAW, `MANIFEST${TAG}.json`), 'utf8'));
 const index = JSON.parse(await readFile(path.join(ROOT, 'data', 'grid', 'cells_index.json'), 'utf8'));
 const landCell = new Set(index.cells.map(c => c.id));
 const STATIC = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'static_cells.json'), 'utf8'));
@@ -101,7 +104,7 @@ for (const [file, meta] of Object.entries(manifest)) {
 const years = Object.keys(country).map(Number).sort();
 let csv = 'year,V,T,A,Vs,Ts,As,Vp,Tp,Ap,M_snppOut,A_terraOut,T_aquaOut,Vpd,Vpn,Tpd,Tpn,Apd,Apn,ratio_V_over_TA,ratio_paired,ratio_static,ratio_day,ratio_night\n';
 for (const y of years) { const [V, T, A, Vs, Ts, As, Vp, Tp, Ap, g1, g2, g3, Vd, Vn, Td, Tn, Ad, An] = country[y]; csv += `${y},${V},${T},${A},${Vs},${Ts},${As},${Vp},${Tp},${Ap},${g1},${g2},${g3},${Vd},${Vn},${Td},${Tn},${Ad},${An},${T + A ? (V / (T + A)).toFixed(3) : ''},${Tp + Ap ? (Vp / (Tp + Ap)).toFixed(3) : ''},${Ts + As ? (Vs / (Ts + As)).toFixed(3) : ''},${Td + Ad ? (Vd / (Td + Ad)).toFixed(3) : ''},${Tn + An ? (Vn / (Tn + An)).toFixed(3) : ''}\n`; }
-await writeFile(path.join(OUT, 'country_year.csv'), csv);
-await writeFile(path.join(OUT, 'counts.json'), JSON.stringify({ generated: new Date().toISOString(), filters: { modis: 'vegetation: type==0 && confidence>=30 && not in a static cell; static columns: type==2 (conf>=30) or any detection in a static cell', viirs: 'type==0 && confidence!=l' }, columns: ['V', 'T', 'A', 'Vs', 'Ts', 'As', 'Vp', 'Tp', 'Ap', 'M_snppOut', 'A_terraOut', 'T_aquaOut', 'Vpd', 'Vpn', 'Tpd', 'Tpn', 'Apd', 'Apn'], static_rule: STATIC.rule, coverage_rule: COV.rule, read, kept, static: staticN, paired: pairedN, on_outage_days: gapN, drops, cells }));
+await writeFile(path.join(OUT, `country_year${TAG}.csv`), csv);
+await writeFile(path.join(OUT, `counts${TAG}.json`), JSON.stringify({ generated: new Date().toISOString(), filters: { modis: 'vegetation: type==0 && confidence>=30 && not in a static cell; static columns: type==2 (conf>=30) or any detection in a static cell', viirs: 'type==0 && confidence!=l' }, columns: ['V', 'T', 'A', 'Vs', 'Ts', 'As', 'Vp', 'Tp', 'Ap', 'M_snppOut', 'A_terraOut', 'T_aquaOut', 'Vpd', 'Vpn', 'Tpd', 'Tpn', 'Apd', 'Apn'], static_rule: STATIC.rule, coverage_rule: COV.rule, read, kept, static: staticN, paired: pairedN, on_outage_days: gapN, drops, cells }));
 console.log(`\nread=${read} kept=${kept} static=${staticN} (${(100 * staticN / kept).toFixed(2)}%) paired=${pairedN} on_outage_days=${gapN} drops=${JSON.stringify(drops)} cells_with_data=${Object.keys(cells).length} in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
 console.log(csv);

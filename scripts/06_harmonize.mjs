@@ -34,6 +34,7 @@ import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
+import { existsSync } from 'node:fs';
 import { REGION_OF } from '../lib/regions.js';
 import { readJsonMaybeGz } from '../lib/io.js';
 
@@ -104,6 +105,27 @@ const cloudAnom = (cell, y, m, e) => { if (!CLOUD) return null; const r = CLOUD.
 let cloudFlagged = 0;
 const era = (y, m) => y >= 2012 ? 'VIIRS' : (y > 2002 || (y === 2002 && m >= 7)) ? 'MODIS->VIIRS-eq' : (y > 2000 || m >= 11) ? 'MODIS-Terra->VIIRS-eq' : null;
 
+// v1.1.0 — Islas Malvinas coverage addition (province of Tierra del Fuego, Antártida e Islas del Atlántico Sur; Ley 23.775, IGN).
+// The FIRMS country archive "Argentina" excludes them; their counts come from the separate FIRMS archive (01g + 03 --tag=_malvinas).
+// They are merged HERE, after every quantity derived from the v1.0.0 record (factors, bands, Terra/Aqua ratios), so nothing fitted
+// changes. Their cells have no own factor: they take the frozen province factor with own weight 0 — the v1.0.0 rule for any cell
+// without own paired data. They add to Tierra del Fuego like any other area of the province.
+let MALVINAS_CELLS = 0;
+{
+  const mp = path.join(ROOT, 'data', 'agg', 'counts_malvinas.json');
+  if (existsSync(mp)) {
+    const MV = JSON.parse(await readFile(mp, 'utf8'));
+    for (const [cid, yrs] of Object.entries(MV.cells)) {
+      const prov = provOf.get(+cid);
+      if (!prov) continue; // outside the IGN province polygon: same rule as 03 (no_land_cell)
+      if (agg.cells[cid]) throw new Error(`06: Malvinas cell ${cid} already has v1.0.0 counts`);
+      agg.cells[cid] = yrs; MALVINAS_CELLS++;
+      for (const s of ['TA', 'T']) if (!F.cell[s][cid]) F.cell[s][cid] = F.prov[s][prov].map(e => [e.f, e.sigma, 0, 0]);
+    }
+    console.log(`v1.1.0 Islas Malvinas: ${MALVINAS_CELLS} cells merged with the frozen province factor`);
+  }
+}
+
 let cellsCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval calibrated out-of-sample by predicted count, satellite set and fire-regime region (cell-level residuals; band_calibration.json by_region_size class '1'); lower bound clamped to H; empty for observed VIIRS months\ncell,prov,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,V,T,A,sensor,terra_only,gap_fill,additive,cloud_anom,cloud_underdetection,static_viirs,static_modis\n`;
 let fillTotal = { snpp: 0, terra: 0, aqua: 0, terra_only: 0, additive: 0 };
 const compact = { grid: index.grid, years: YEARS, terra_only_until: '2002-06', band_by_count: BINSET, band_by_region_class: RC, band_by_region_size: { size_classes: SIZE_CLASSES, TA: RS.TA, T: RS.T }, region_of_prov: REGION_OF, band: '80% prediction interval [H*exp(p10), H*exp(p90)] with p10/p90 from the bin containing the predicted count H in band_by_region_size[set][region][size_class]; size_class by the number of 0.25° cells inside the AOI (1 | 2-9 | 10-49 | 50-199 | 200+); region = region of the cells carrying the largest share of H; the whole country uses band_by_region_class[set].national.agg; clamp p10 <= 0 <= p90; set T before 2002-07, TA until 2011-12, none for observed VIIRS months; widen by |0.025*ONI| per side in reconstructed months. band_by_region_class and band_by_count are kept for reference', sigma_curve_by_cells_diagnostic: CURVES, note: SI_NOTE.slice(2), cells: {} };
@@ -151,7 +173,7 @@ for (const [cid, yrs] of Object.entries(agg.cells)) {
 }
 
 // provinces + country
-const AR = { n: N_CELLS_TOTAL, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)), ca: YEARS.map(() => Array(12).fill(0)), caw: YEARS.map(() => Array(12).fill(0)) };
+const AR = { n: N_CELLS_TOTAL + MALVINAS_CELLS, H: YEARS.map(() => Array(12).fill(0)), var: YEARS.map(() => Array(12).fill(0)), nodata: YEARS.map(() => Array(12).fill(true)), st: YEARS.map(() => Array(12).fill(0)), gf: YEARS.map(() => Array(12).fill(0)), ca: YEARS.map(() => Array(12).fill(0)), caw: YEARS.map(() => Array(12).fill(0)) };
 for (const P of Object.values(provSeries)) for (let yi = 0; yi < YEARS.length; yi++) for (let m = 0; m < 12; m++) { AR.H[yi][m] += P.H[yi][m]; AR.var[yi][m] += P.var[yi][m]; if (!P.nodata[yi][m]) AR.nodata[yi][m] = false; AR.st[yi][m] += P.st[yi][m]; AR.gf[yi][m] += P.gf[yi][m]; AR.ca[yi][m] += P.ca[yi][m]; AR.caw[yi][m] += P.caw[yi][m]; }
 provSeries['Argentina'] = AR;
 let provCsv = `${SI_NOTE}\n# H_lo/H_hi = 80% prediction interval [H*exp(p10), H*exp(p90)] calibrated out-of-sample by predicted count, satellite set, fire-regime region and SIZE CLASS of the province (number of cells: 2-9 | 10-49 | 50-199 | 200+; band_calibration.json by_region_size; Argentina uses the national aggregate bins); lower bound clamped to H, widened by |0.025*ONI| per side in reconstructed months; empty for observed VIIRS months without gap fill. Tierra del Fuego: interval not verifiable (3 province-months with predicted count >= 30 in 2012-2023). factor_source = estimated (own weight >= 0.5 at province level for that month and set) or assigned (more than half of the factor is borrowed from the region: Tierra del Fuego, Ciudad Autónoma de Buenos Aires, and a few Terra-only months of Santa Cruz and Chubut)\nunit,n_cells,year,month,H,H_lo,H_hi,band_p10_log,band_p90_log,sensor,gap_fill,outage_days_terra,outage_days_aqua,outage_days_snpp,cloud_anom,cloud_underdetection,static,factor_source\n`;

@@ -8,10 +8,10 @@
     "node": ">=20"
   },
   "scripts": {
-    "fetch": "node scripts/01_fetch.mjs && node scripts/01c_fetch_aux.mjs && python3 scripts/01d_fetch_era5_cloud.py && python3 scripts/01e_fetch_era5_precip.py",
+    "fetch": "node scripts/01_fetch.mjs && node scripts/01g_fetch_malvinas.mjs && node scripts/01c_fetch_aux.mjs && python3 scripts/01d_fetch_era5_cloud.py && python3 scripts/01e_fetch_era5_precip.py",
     "fetch:bridge": "node scripts/01b_fetch_viirs_sp.mjs",
     "fetch:cases": "node scripts/01f_fetch_case_images.mjs",
-    "build": "node scripts/02_grid.mjs && node scripts/03a_static_sources.mjs && node scripts/03b_coverage.mjs && python3 scripts/03c_cloud_cells.py && python3 scripts/03d_precip_cells.py && node scripts/03_aggregate.mjs && node scripts/04_factors.mjs && node scripts/05_loyo.mjs && node scripts/05c_aoi_error.mjs && node scripts/05g_size_bins.mjs && node scripts/06_harmonize.mjs",
+    "build": "node scripts/02_grid.mjs && node scripts/03a_static_sources.mjs && node scripts/03b_coverage.mjs && python3 scripts/03c_cloud_cells.py && python3 scripts/03d_precip_cells.py && node scripts/03_aggregate.mjs && node scripts/03_aggregate.mjs --tag=_malvinas && node scripts/04_factors.mjs && node scripts/05_loyo.mjs && node scripts/05c_aoi_error.mjs && node scripts/05g_size_bins.mjs && node scripts/06_harmonize.mjs",
     "validate": "node scripts/05_loyo.mjs --ablation --tag=_ablation && node scripts/05b_external_validation.mjs && node scripts/05d_ha_per_hotspot.mjs && node scripts/05e_enso.mjs && node scripts/05f_cloud.mjs && node scripts/05h_structural_zeros.mjs && node scripts/audit_static_sources.mjs",
     "bridge": "node scripts/04b_bridge.mjs",
     "figures": "python3 scripts/fig_factor_map.py 8 TA && python3 scripts/fig_factor_map.py 8 T && python3 scripts/fig_external_validation.py Argentina && python3 scripts/fig_ablation.py && python3 scripts/fig_headline_series.py",

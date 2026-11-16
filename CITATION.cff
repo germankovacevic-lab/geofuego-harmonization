@@ -2,9 +2,9 @@ cff-version: 1.2.0
 message: "If you use this method, data or code, please cite it as below."
 type: software
 title: "GeoFuego Harmonization: MODIS to VIIRS-equivalent harmonized fire-hotspot calendar for Argentina, 2000 to 2025 (NASA Space Apps Challenge 2026)"
-version: 1.0.0
-date-released: "2026-11-15"
-doi: "10.5281/zenodo.24220107"
+version: 1.1.0
+date-released: "2026-11-16"
+doi: "10.5281/zenodo.24220106"
 url: "https://spaceapps.geofuego.com.ar"
 repository-code: "https://github.com/germankovacevic-lab/geofuego-harmonization"
 license: MIT

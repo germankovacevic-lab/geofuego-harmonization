@@ -46,6 +46,8 @@ for (const line of (await readFile(path.join(ROOT, 'data', 'external', 'oni', 'o
 // payload can be rebuilt without the raw CSVs, which are not committed.
 {
   const C = JSON.parse(await readFile(path.join(ROOT, 'data', 'agg', 'counts.json'), 'utf8'));
+  // v1.1.0: Islas Malvinas counts (separate FIRMS archive, see 01g / 06) join the raw series exactly as in 06_harmonize.
+  { const mp = path.join(ROOT, 'data', 'agg', 'counts_malvinas.json'); if (existsSync(mp)) { const MV = JSON.parse(await readFile(mp, 'utf8')); for (const [id, y] of Object.entries(MV.cells)) if (!C.cells[id]) C.cells[id] = y; } }
   const iV = C.columns.indexOf('V'), iT = C.columns.indexOf('T'), iA = C.columns.indexOf('A');
   const RY0 = 2001, RY1 = 2025, cells = {};
   for (const [id, byYear] of Object.entries(C.cells)) {
